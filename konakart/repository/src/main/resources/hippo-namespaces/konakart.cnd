@@ -1,0 +1,26 @@
+<'hippo'='http://www.onehippo.org/jcr/hippo/nt/2.0.4'>
+<'hippostd'='http://www.onehippo.org/jcr/hippostd/nt/2.0'>
+<'hippostdpubwf'='http://www.onehippo.org/jcr/hippostdpubwf/nt/1.0'>
+<'konakart'='http://www.onehippo.org/jcr/konakart/nt/1.0'>
+<'nt'='http://www.jcp.org/jcr/nt/1.0'>
+
+[konakart:Price] > hippo:compound, hippostd:relaxed
+  orderable
+
+[konakart:basedocument] > hippo:document, hippostd:publishableSummary, hippostdpubwf:document
+
+[konakart:compoundprice] > hippo:compound, hippostd:relaxed
+  orderable
+
+[konakart:config] > nt:base
+  - konakart:engineClassName (string)
+  - konakart:updateKonakartProductsToRepository (boolean)
+  - konakart:password (string)
+  - konakart:isCustomersShared (boolean)
+  - konakart:enabled (boolean)
+  - konakart:username (string)
+  - konakart:lastUpdatedTime (date)
+  - konakart:enginemode (long)
+  - konakart:isProductsShared (boolean)
+
+[konakart:konakart] > hippo:compound, hippostd:relaxed

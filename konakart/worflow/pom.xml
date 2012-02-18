@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.onehippo.forge.konakart</groupId>
+        <artifactId>konakart</artifactId>
+        <version>1.00.00-SNAPSHOT</version>
+    </parent>
+
+    <name>Hippo Konakart Addon Workflow</name>
+    <groupId>org.onehippo.forge.konakart</groupId>
+    <artifactId>hippo-addon-konakart-workflow</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <org.datanucleus.version>2.2.2</org.datanucleus.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.onehippo.forge</groupId>
+            <artifactId>hippo-addon-konakart-common</artifactId>
+            <version>1.00.00-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Hippo dependencies -->
+        <dependency>
+            <groupId>org.onehippo.cms7</groupId>
+            <artifactId>hippo-repository-api</artifactId>
+            <version>${hippo.cms.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.cms7</groupId>
+            <artifactId>hippo-repository-builtin</artifactId>
+            <version>${hippo.cms.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <defaultGoal>install</defaultGoal>
+        <plugins>
+            <plugin>
+                <groupId>org.datanucleus</groupId>
+                <artifactId>maven-datanucleus-plugin</artifactId>
+                <version>2.2.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.datanucleus</groupId>
+                        <artifactId>datanucleus-core</artifactId>
+                        <version>${org.datanucleus.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>javax.jcr</groupId>
+                        <artifactId>jcr</artifactId>
+                        <version>${javax.jcr.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                        <version>${slf4j.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.onehippo.cms7</groupId>
+                        <artifactId>hippo-repository-api</artifactId>
+                        <version>${hippo.repository.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.onehippo.cms7</groupId>
+                        <artifactId>hippo-repository-utilities</artifactId>
+                        <version>${hippo.repository.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.onehippo.cms7</groupId>
+                        <artifactId>hippo-repository-builtin</artifactId>
+                        <version>${hippo.repository.version}</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <!--mappingIncludes>**/*.jdo, **/*.class</mappingIncludes-->
+                    <log4jConfiguration>log4j.xml</log4jConfiguration>
+                    <verbose>true</verbose>
+                    <enhancerName>ASM</enhancerName>
+                    <props>jdo.properties</props>
+                    <persistenceUnitName>Konakartworkflowevents</persistenceUnitName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>enhance</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <forkMode>always</forkMode>
+                    <workingDirectory>${project.build.directory}</workingDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

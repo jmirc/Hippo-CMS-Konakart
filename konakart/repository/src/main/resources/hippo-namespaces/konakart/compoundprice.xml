@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node sv:name="compoundprice" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>hipposysedit:templatetype</sv:value>
+    </sv:property>
+    <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
+        <sv:value>mix:referenceable</sv:value>
+        <sv:value>editor:editable</sv:value>
+        <sv:value>hippo:translated</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>0bb47ec9-11ed-49cf-8248-8f13f9b56d28</sv:value>
+    </sv:property>
+    <sv:node sv:name="hipposysedit:nodetype">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>hippo:handle</sv:value>
+        </sv:property>
+        <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
+            <sv:value>hippo:hardhandle</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>21f4572a-3ec4-474a-afd0-d651c635b703</sv:value>
+        </sv:property>
+        <sv:node sv:name="hipposysedit:nodetype">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>hipposysedit:nodetype</sv:value>
+            </sv:property>
+            <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
+                <sv:value>hipposysedit:remodel</sv:value>
+                <sv:value>hippo:harddocument</sv:value>
+            </sv:property>
+            <sv:property sv:name="jcr:uuid" sv:type="String">
+                <sv:value>cf41a088-14d3-4988-a835-9ef0dfd76ee1</sv:value>
+            </sv:property>
+            <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
+            <sv:property sv:name="hipposysedit:node" sv:type="Boolean">
+                <sv:value>true</sv:value>
+            </sv:property>
+            <sv:property sv:multiple="true" sv:name="hipposysedit:supertype" sv:type="String">
+                <sv:value>hippo:compound</sv:value>
+                <sv:value>hippostd:relaxed</sv:value>
+            </sv:property>
+            <sv:property sv:name="hipposysedit:uri" sv:type="String">
+                <sv:value>http://www.onehippo.org/jcr/konakart/nt/1.0</sv:value>
+            </sv:property>
+            <sv:node sv:name="priceextax">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>hipposysedit:field</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:mandatory" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:multiple" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:ordered" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:path" sv:type="String">
+                    <sv:value>konakart:priceextax</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:primary" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:type" sv:type="String">
+                    <sv:value>Double</sv:value>
+                </sv:property>
+            </sv:node>
+            <sv:node sv:name="price1extax">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>hipposysedit:field</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:mandatory" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:multiple" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:ordered" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:path" sv:type="String">
+                    <sv:value>konakart:price1extax</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:primary" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:type" sv:type="String">
+                    <sv:value>Double</sv:value>
+                </sv:property>
+            </sv:node>
+            <sv:node sv:name="price2extax">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>hipposysedit:field</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:mandatory" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:multiple" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:ordered" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:path" sv:type="String">
+                    <sv:value>konakart:price2extax</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:primary" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:type" sv:type="String">
+                    <sv:value>Double</sv:value>
+                </sv:property>
+            </sv:node>
+            <sv:node sv:name="price3extax">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>hipposysedit:field</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:mandatory" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:multiple" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:ordered" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:path" sv:type="String">
+                    <sv:value>konakart:price3extax</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:primary" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:type" sv:type="String">
+                    <sv:value>Double</sv:value>
+                </sv:property>
+            </sv:node>
+        </sv:node>
+    </sv:node>
+    <sv:node sv:name="hipposysedit:prototypes">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>hipposysedit:prototypeset</sv:value>
+        </sv:property>
+        <sv:node sv:name="hipposysedit:prototype">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>konakart:compoundprice</sv:value>
+            </sv:property>
+            <sv:property sv:name="konakart:price1extax" sv:type="Double">
+                <sv:value>0.0</sv:value>
+            </sv:property>
+            <sv:property sv:name="konakart:price2extax" sv:type="Double">
+                <sv:value>0.0</sv:value>
+            </sv:property>
+            <sv:property sv:name="konakart:price3extax" sv:type="Double">
+                <sv:value>0.0</sv:value>
+            </sv:property>
+            <sv:property sv:name="konakart:priceextax" sv:type="Double">
+                <sv:value>0.0</sv:value>
+            </sv:property>
+        </sv:node>
+    </sv:node>
+    <sv:node sv:name="editor:templates">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>editor:templateset</sv:value>
+        </sv:property>
+        <sv:node sv:name="_default_">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>frontend:plugincluster</sv:value>
+            </sv:property>
+            <sv:property sv:multiple="true" sv:name="frontend:properties" sv:type="String">
+                <sv:value>mode</sv:value>
+            </sv:property>
+            <sv:property sv:multiple="true" sv:name="frontend:references" sv:type="String">
+                <sv:value>wicket.model</sv:value>
+                <sv:value>model.compareTo</sv:value>
+                <sv:value>engine</sv:value>
+                <sv:value>validator.id</sv:value>
+            </sv:property>
+            <sv:property sv:multiple="true" sv:name="frontend:services" sv:type="String">
+                <sv:value>wicket.id</sv:value>
+                <sv:value>validator.id</sv:value>
+            </sv:property>
+            <sv:property sv:name="type" sv:type="String">
+                <sv:value>konakart:compoundprice</sv:value>
+            </sv:property>
+            <sv:node sv:name="root">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>frontend:plugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="item" sv:type="String">
+                    <sv:value>${cluster.id}.field</sv:value>
+                </sv:property>
+                <sv:property sv:name="plugin.class" sv:type="String">
+                    <sv:value>org.hippoecm.frontend.service.render.ListViewPlugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.id" sv:type="String">
+                    <sv:value>${wicket.id}</sv:value>
+                </sv:property>
+            </sv:node>
+            <sv:node sv:name="priceextax">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>frontend:plugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="caption" sv:type="String">
+                    <sv:value>Price Ex Tax</sv:value>
+                </sv:property>
+                <sv:property sv:name="engine" sv:type="String">
+                    <sv:value>${engine}</sv:value>
+                </sv:property>
+                <sv:property sv:name="field" sv:type="String">
+                    <sv:value>priceextax</sv:value>
+                </sv:property>
+                <sv:property sv:name="mode" sv:type="String">
+                    <sv:value>view</sv:value>
+                </sv:property>
+                <sv:property sv:name="model.compareTo" sv:type="String">
+                    <sv:value>${model.compareTo}</sv:value>
+                </sv:property>
+                <sv:property sv:name="plugin.class" sv:type="String">
+                    <sv:value>org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="translator.id" sv:type="String">
+                    <sv:value>${cluster.id}.translator</sv:value>
+                </sv:property>
+                <sv:property sv:name="validator.id" sv:type="String">
+                    <sv:value>${validator.id}</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.id" sv:type="String">
+                    <sv:value>${cluster.id}.field</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.model" sv:type="String">
+                    <sv:value>${wicket.model}</sv:value>
+                </sv:property>
+                <sv:node sv:name="cluster.options">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>frontend:pluginconfig</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
+            <sv:node sv:name="price1extax">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>frontend:plugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="caption" sv:type="String">
+                    <sv:value>Price1 Ex Tax</sv:value>
+                </sv:property>
+                <sv:property sv:name="engine" sv:type="String">
+                    <sv:value>${engine}</sv:value>
+                </sv:property>
+                <sv:property sv:name="field" sv:type="String">
+                    <sv:value>price1extax</sv:value>
+                </sv:property>
+                <sv:property sv:name="mode" sv:type="String">
+                    <sv:value>view</sv:value>
+                </sv:property>
+                <sv:property sv:name="model.compareTo" sv:type="String">
+                    <sv:value>${model.compareTo}</sv:value>
+                </sv:property>
+                <sv:property sv:name="plugin.class" sv:type="String">
+                    <sv:value>org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="translator.id" sv:type="String">
+                    <sv:value>${cluster.id}.translator</sv:value>
+                </sv:property>
+                <sv:property sv:name="validator.id" sv:type="String">
+                    <sv:value>${validator.id}</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.id" sv:type="String">
+                    <sv:value>${cluster.id}.field</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.model" sv:type="String">
+                    <sv:value>${wicket.model}</sv:value>
+                </sv:property>
+                <sv:node sv:name="cluster.options">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>frontend:pluginconfig</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
+            <sv:node sv:name="price2extax">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>frontend:plugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="caption" sv:type="String">
+                    <sv:value>Price2 Ex Tax</sv:value>
+                </sv:property>
+                <sv:property sv:name="engine" sv:type="String">
+                    <sv:value>${engine}</sv:value>
+                </sv:property>
+                <sv:property sv:name="field" sv:type="String">
+                    <sv:value>price2extax</sv:value>
+                </sv:property>
+                <sv:property sv:name="mode" sv:type="String">
+                    <sv:value>view</sv:value>
+                </sv:property>
+                <sv:property sv:name="model.compareTo" sv:type="String">
+                    <sv:value>${model.compareTo}</sv:value>
+                </sv:property>
+                <sv:property sv:name="plugin.class" sv:type="String">
+                    <sv:value>org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="translator.id" sv:type="String">
+                    <sv:value>${cluster.id}.translator</sv:value>
+                </sv:property>
+                <sv:property sv:name="validator.id" sv:type="String">
+                    <sv:value>${validator.id}</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.id" sv:type="String">
+                    <sv:value>${cluster.id}.field</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.model" sv:type="String">
+                    <sv:value>${wicket.model}</sv:value>
+                </sv:property>
+                <sv:node sv:name="cluster.options">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>frontend:pluginconfig</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
+            <sv:node sv:name="price3extax">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>frontend:plugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="caption" sv:type="String">
+                    <sv:value>Price3 Ex Tax</sv:value>
+                </sv:property>
+                <sv:property sv:name="engine" sv:type="String">
+                    <sv:value>${engine}</sv:value>
+                </sv:property>
+                <sv:property sv:name="field" sv:type="String">
+                    <sv:value>price3extax</sv:value>
+                </sv:property>
+                <sv:property sv:name="mode" sv:type="String">
+                    <sv:value>view</sv:value>
+                </sv:property>
+                <sv:property sv:name="model.compareTo" sv:type="String">
+                    <sv:value>${model.compareTo}</sv:value>
+                </sv:property>
+                <sv:property sv:name="plugin.class" sv:type="String">
+                    <sv:value>org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="translator.id" sv:type="String">
+                    <sv:value>${cluster.id}.translator</sv:value>
+                </sv:property>
+                <sv:property sv:name="validator.id" sv:type="String">
+                    <sv:value>${validator.id}</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.id" sv:type="String">
+                    <sv:value>${cluster.id}.field</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.model" sv:type="String">
+                    <sv:value>${wicket.model}</sv:value>
+                </sv:property>
+                <sv:node sv:name="cluster.options">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>frontend:pluginconfig</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
+            <sv:node sv:name="translator">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>frontend:plugin</sv:value>
+                </sv:property>
+                <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
+                    <sv:value>hippostd:translated</sv:value>
+                </sv:property>
+                <sv:property sv:name="plugin.class" sv:type="String">
+                    <sv:value>org.hippoecm.frontend.i18n.ConfigTraversingPlugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="translator.id" sv:type="String">
+                    <sv:value>${cluster.id}.translator</sv:value>
+                </sv:property>
+                <sv:node sv:name="hippostd:translations">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>hippostd:translations</sv:value>
+                    </sv:property>
+                    <sv:node sv:name="priceextax">
+                        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                            <sv:value>frontend:plugin</sv:value>
+                        </sv:property>
+                        <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
+                            <sv:value>hippo:translated</sv:value>
+                        </sv:property>
+                        <sv:node sv:name="hippo:translation">
+                            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                                <sv:value>hippo:translation</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:language" sv:type="String">
+                                <sv:value>fr</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:message" sv:type="String">
+                                <sv:value>Prix</sv:value>
+                            </sv:property>
+                        </sv:node>
+                        <sv:node sv:name="hippo:translation">
+                            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                                <sv:value>hippo:translation</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:language" sv:type="String">
+                                <sv:value>en</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:message" sv:type="String">
+                                <sv:value>Price</sv:value>
+                            </sv:property>
+                        </sv:node>
+                    </sv:node>
+                    <sv:node sv:name="price1extax">
+                        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                            <sv:value>frontend:plugin</sv:value>
+                        </sv:property>
+                        <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
+                            <sv:value>hippo:translated</sv:value>
+                        </sv:property>
+                        <sv:node sv:name="hippo:translation">
+                            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                                <sv:value>hippo:translation</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:language" sv:type="String">
+                                <sv:value>fr</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:message" sv:type="String">
+                                <sv:value>Prix 1</sv:value>
+                            </sv:property>
+                        </sv:node>
+                        <sv:node sv:name="hippo:translation">
+                            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                                <sv:value>hippo:translation</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:language" sv:type="String">
+                                <sv:value>en</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:message" sv:type="String">
+                                <sv:value>Price 1</sv:value>
+                            </sv:property>
+                        </sv:node>
+                    </sv:node>
+                    <sv:node sv:name="price2extax">
+                        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                            <sv:value>frontend:plugin</sv:value>
+                        </sv:property>
+                        <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
+                            <sv:value>hippo:translated</sv:value>
+                        </sv:property>
+                        <sv:node sv:name="hippo:translation">
+                            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                                <sv:value>hippo:translation</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:language" sv:type="String">
+                                <sv:value>fr</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:message" sv:type="String">
+                                <sv:value>Prix 2</sv:value>
+                            </sv:property>
+                        </sv:node>
+                        <sv:node sv:name="hippo:translation">
+                            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                                <sv:value>hippo:translation</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:language" sv:type="String">
+                                <sv:value>en</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:message" sv:type="String">
+                                <sv:value>Price 2</sv:value>
+                            </sv:property>
+                        </sv:node>
+                    </sv:node>
+                    <sv:node sv:name="price3extax">
+                        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                            <sv:value>frontend:plugin</sv:value>
+                        </sv:property>
+                        <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
+                            <sv:value>hippo:translated</sv:value>
+                        </sv:property>
+                        <sv:node sv:name="hippo:translation">
+                            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                                <sv:value>hippo:translation</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:language" sv:type="String">
+                                <sv:value>fr</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:message" sv:type="String">
+                                <sv:value>Prix 3</sv:value>
+                            </sv:property>
+                        </sv:node>
+                        <sv:node sv:name="hippo:translation">
+                            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                                <sv:value>hippo:translation</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:language" sv:type="String">
+                                <sv:value>en</sv:value>
+                            </sv:property>
+                            <sv:property sv:name="hippo:message" sv:type="String">
+                                <sv:value>Price 3</sv:value>
+                            </sv:property>
+                        </sv:node>
+                    </sv:node>
+                </sv:node>
+            </sv:node>
+        </sv:node>
+    </sv:node>
+    <sv:node sv:name="hippo:translation">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>hippo:translation</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:language" sv:type="String">
+            <sv:value>en</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:message" sv:type="String">
+            <sv:value>Standard Price</sv:value>
+        </sv:property>
+    </sv:node>
+    <sv:node sv:name="hippo:translation">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>hippo:translation</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:language" sv:type="String">
+            <sv:value>fr</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:message" sv:type="String">
+            <sv:value>Prix Standard</sv:value>
+        </sv:property>
+    </sv:node>
+</sv:node>

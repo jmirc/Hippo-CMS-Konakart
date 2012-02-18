@@ -1,0 +1,158 @@
+package org.onehippo.forge.konakart.replication;
+
+
+import com.konakart.app.*;
+import com.konakart.appif.DataDescriptorIf;
+import com.konakart.appif.LanguageIf;
+import com.konakart.appif.ProductSearchIf;
+import org.apache.commons.lang.StringUtils;
+import org.onehippo.forge.konakart.common.bl.CustomProductMgr;
+import org.onehippo.forge.konakart.common.engine.KKEngine;
+import org.onehippo.forge.konakart.common.engine.KKEngineConfig;
+import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
+import org.onehippo.forge.konakart.replication.config.HippoRepoConfig;
+import org.onehippo.forge.konakart.replication.factory.ProductFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class KonakartProductReplicator {
+
+    private static Logger log = LoggerFactory.getLogger(KonakartProductReplicator.class);
+
+    private javax.jcr.Session jcrSession;
+    private HippoRepoConfig hippoRepoConfig;
+    private String productFactoryClassName;
+
+    public void setJcrSession(javax.jcr.Session jcrSession) {
+        this.jcrSession = jcrSession;
+    }
+
+    public void setHippoRepoConfig(HippoRepoConfig hippoRepoConfig) {
+        this.hippoRepoConfig = hippoRepoConfig;
+    }
+
+    public void setProductFactory(String productFactoryClassName) {
+        this.productFactoryClassName = productFactoryClassName;
+    }
+
+    /**
+     * Start the replication
+     */
+    public void execute() {
+        log.debug("Executing Konakart Products Replicator ...");
+
+        // load the konakart module config.
+        HippoModuleConfig config = HippoModuleConfig.load(jcrSession);
+
+        if (!config.isIntialized()) {
+            log.warn("Failed to read the configuration from Konakart config module.");
+        }
+
+        if (!config.isEnabled()) {
+            log.warn("The Konakart replicator is disabled. No replication will be operated.");
+            return;
+        }
+
+        try {
+            boolean isUpdated = updateKonakartProductsToRepository(config);
+
+            if (isUpdated) {
+                config.setLastUpdatedTimeToNow(jcrSession);
+            }
+        } catch (Exception e) {
+            log.warn("Failed to update Konakart products to Repository. ", e);
+        }
+    }
+
+    /**
+     * Copy products from Konakart to Hippo
+     * @param config the config which contains the Konakart configuration
+     * @return true if the product has been updated, false otherwise
+     * @throws Exception an exception
+     */
+    private boolean updateKonakartProductsToRepository(HippoModuleConfig config) throws Exception {
+
+        boolean isUpdated = false;
+
+        KKEngineConfig engineConfig = config.getEngineConfig();
+        KKEngine kkengine = new KKEngine(engineConfig);
+
+        // login
+        kkengine.login(engineConfig.getUsername(), engineConfig.getPassword());
+
+        // Retrieve the product factory
+        CustomProductMgr productMgr = new CustomProductMgr(kkengine.getEngine(), config.getLastUpdatedTime());
+
+        // Get only visible products
+        DataDescriptorIf dataDescriptorIf = new DataDescriptor();
+        dataDescriptorIf.setShowInvisible(false);
+        dataDescriptorIf.setFillDescription(true);
+
+        // Search products from all stores
+        ProductSearchIf productSearchIf = new ProductSearch();
+        productSearchIf.setSearchAllStores(true);
+
+        // Used default products options
+        FetchProductOptions fetchProductOptions = new FetchProductOptions();
+
+        // Retrieve the list of languages defined into konakart.
+        LanguageIf[] languages = kkengine.getEngine().getAllLanguages();
+
+        // For each language defined into Konakart we need to add the product under Hippo
+        for (LanguageIf language : languages) {
+            Products products = productMgr.searchForProductsWithOptions(kkengine.getSessionId(), dataDescriptorIf,
+                    productSearchIf, language.getId(), fetchProductOptions);
+
+            // Get the Hippo content root
+            String contentRoot = hippoRepoConfig.getContentRoot(language.getLocale());
+
+            if (contentRoot == null) {
+                continue;
+            }
+
+            if (!isUpdated && products.getProductArray().length > 0) {
+                isUpdated = true;
+            }
+
+            // Insert products into konakart
+            for (Product product : products.getProductArray()) {
+                ProductFactory productFactory = createProductFactory();
+
+                if (productFactory == null) {
+                    continue;
+                }
+
+                productFactory.setSession(jcrSession);
+                productFactory.setContentRoot(contentRoot);
+
+                // Create the product
+                String uuid = productFactory.add(product, language);
+
+                // Set the Hippo Node UUID
+                productMgr.updateUUID(product.getId(), uuid);
+            }
+        }
+
+        // Logout.
+        kkengine.logout();
+        
+        return isUpdated;
+    }
+
+    private ProductFactory createProductFactory() {
+        if (StringUtils.isNotBlank(productFactoryClassName)) {
+            try {
+                return (ProductFactory) Class.forName(productFactoryClassName).newInstance();
+
+            } catch (InstantiationException e) {
+                log.error("Unable to find the extension class: " + e.toString());
+            } catch (IllegalAccessException e) {
+                log.error("Unable to find the extension class: " + e.toString());
+            } catch (ClassNotFoundException e) {
+                log.error("Unable to find the extension class: " + e.toString());
+            }
+        }
+
+        return null;
+    }
+}

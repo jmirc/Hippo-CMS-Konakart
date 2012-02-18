@@ -1,0 +1,17 @@
+<'hippo'='http://www.onehippo.org/jcr/hippo/nt/2.0.4'>
+<'hippostd'='http://www.onehippo.org/jcr/hippostd/nt/2.0'>
+<'hippostdpubwf'='http://www.onehippo.org/jcr/hippostdpubwf/nt/1.0'>
+<'myhippoproject'='http://www.onehippo.org/myhippoproject/nt/1.0'>
+
+[myhippoproject:basedocument] > hippo:document, hippostd:publishableSummary, hippostdpubwf:document
+  orderable
+
+[myhippoproject:newsdocument] > hippostd:relaxed, myhippoproject:basedocument
+  orderable
+
+[myhippoproject:productdocument] > hippostd:relaxed, myhippoproject:basedocument
+  orderable
+
+[myhippoproject:textdocument] > hippostd:relaxed, myhippoproject:basedocument
+  orderable
+

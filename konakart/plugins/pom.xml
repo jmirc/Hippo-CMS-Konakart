@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.onehippo.forge.konakart</groupId>
+        <artifactId>konakart</artifactId>
+        <version>1.00.00-SNAPSHOT</version>
+    </parent>
+
+    <name>Hippo Konakart Addon Plugins</name>
+    <groupId>org.onehippo.forge.konakart</groupId>
+    <artifactId>hippo-addon-konakart-plugins</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.onehippo.forge.konakart</groupId>
+            <artifactId>hippo-addon-konakart-dependencies</artifactId>
+            <version>1.00.00-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Hippo dependencies -->
+        <dependency>
+            <groupId>org.onehippo.cms7</groupId>
+            <artifactId>hippo-package-cms-dependencies</artifactId>
+            <version>${hippo.cms.version}</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <defaultGoal>package</defaultGoal>
+        <resources>
+            <resource>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/java</directory>
+                <includes>
+                    <include>**/*.html</include>
+                    <include>**/*.css</include>
+                    <include>**/*.png</include>
+                    <include>**/*.gif</include>
+                    <include>**/*.js</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/etc</directory>
+                <includes>
+                    <include>**/*.txt</include>
+                </includes>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**/*.cnd</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>

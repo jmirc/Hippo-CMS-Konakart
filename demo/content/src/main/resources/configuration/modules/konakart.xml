@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="konakart">
+  <sv:property sv:name="jcr:primaryType" sv:type="Name">
+    <sv:value>hipposys:module</sv:value>
+  </sv:property>
+  <sv:node sv:name="hippo:moduleconfig">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>konakart:config</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:enabled" sv:type="Boolean">
+      <sv:value>true</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:lastUpdatedTime" sv:type="Date">
+      <sv:value>2012-02-11T14:21:03.304-05:00</sv:value>
+    </sv:property>
+  </sv:node>
+</sv:node>

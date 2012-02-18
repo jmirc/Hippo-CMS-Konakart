@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.onehippo.forge.konakart</groupId>
+        <artifactId>konakart</artifactId>
+        <version>1.00.00-SNAPSHOT</version>
+    </parent>
+
+    <name>Hippo Konakart Dependencies Replication</name>
+    <groupId>org.onehippo.forge.konakart</groupId>
+    <artifactId>hippo-addon-konakart-dependencies</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.javaVersion>1.6</project.build.javaVersion>
+
+        <jcr.version>2.0</jcr.version>
+        <hippo.repository.version>2.22.02</hippo.repository.version>
+        <lib.slf4j.version>1.6.1</lib.slf4j.version>
+        <plugin.compiler.version>2.3.2</plugin.compiler.version>
+    </properties>
+
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${lib.slf4j.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.jcr</groupId>
+            <artifactId>jcr</artifactId>
+            <version>${jcr.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!-- Konakart dependencies -->
+        <dependency>
+            <groupId>com.konakart</groupId>
+            <artifactId>konakart</artifactId>
+            <version>6.0.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart</groupId>
+            <artifactId>konakart</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>admin</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart</groupId>
+            <artifactId>konakart</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>admin_custom</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart</groupId>
+            <artifactId>konakart</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>utils</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart</groupId>
+            <artifactId>konakart</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>custom</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart</groupId>
+            <artifactId>konakart</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>custom_utils</classifier>
+        </dependency>
+
+        <!-- Konakart Order Total dependencies -->
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>order-total</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>buyxgetyfree</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>order-total</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>freeproduct</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>order-total</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>productdiscount</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>order-total</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>redeempoints</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>order-total</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>rewardpoints</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>order-total</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>shipping</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>order-total</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>shippingdiscount</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>order-total</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>subtotal</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>order-total</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>tax</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>order-total</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>taxcloud</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>order-total</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>total</classifier>
+        </dependency>
+
+        <!-- Konakart Payment dependencies -->
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>payment</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>paypal</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>payment</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>cashondelivery</classifier>
+        </dependency>
+
+        <!-- Konakart Shipping dependencies -->
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>shipping</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>digitaldownload</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>shipping</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>flat</classifier>
+        </dependency>
+
+        <!-- database depedencies -->
+        <dependency>
+            <groupId>org.apache.torque</groupId>
+            <artifactId>torque</artifactId>
+            <version>3.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.torque</groupId>
+            <artifactId>village</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+
+
+        <!-- apache commons dependencies -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.7</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-dbcp</groupId>
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-pool</groupId>
+            <artifactId>commons-pool</artifactId>
+            <version>1.5.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.16</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${plugin.compiler.version}</version>
+                <configuration>
+                    <source>${project.build.javaVersion}</source>
+                    <target>${project.build.javaVersion}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <resources>
+            <resource>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/java</directory>
+                <includes>
+                    <include>**/*.html</include>
+                    <include>**/*.properties</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>
