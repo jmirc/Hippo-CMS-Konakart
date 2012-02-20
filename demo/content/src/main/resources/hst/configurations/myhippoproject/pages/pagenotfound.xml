@@ -4,7 +4,7 @@
     <sv:value>hst:component</sv:value>
   </sv:property>
   <sv:property sv:name="jcr:uuid" sv:type="String">
-    <sv:value>5e3fcf2f-a30e-45bb-837b-3e9b90fc8031</sv:value>
+    <sv:value>f04f8eeb-879b-4563-9fe4-74a69a142af1</sv:value>
   </sv:property>
   <sv:property sv:name="hst:referencecomponent" sv:type="String">
     <sv:value>hst:pages/standard</sv:value>
@@ -14,14 +14,14 @@
       <sv:value>hst:component</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>9a0795d8-8838-4fa4-9267-938036773a7b</sv:value>
+      <sv:value>8153763a-fdf1-44ed-b57b-bda11821c4a5</sv:value>
     </sv:property>
     <sv:node sv:name="content">
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:component</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>540793f3-3499-4372-8db5-7750516c73f0</sv:value>
+        <sv:value>6c1dbc78-cc3b-4480-89db-2d9e694b2c6b</sv:value>
       </sv:property>
       <sv:property sv:name="hst:referencecomponent" sv:type="String">
         <sv:value>hst:components/notfound</sv:value>

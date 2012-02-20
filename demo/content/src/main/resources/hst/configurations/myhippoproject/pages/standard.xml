@@ -4,7 +4,7 @@
     <sv:value>hst:component</sv:value>
   </sv:property>
   <sv:property sv:name="jcr:uuid" sv:type="String">
-    <sv:value>aa3c904e-dab2-4c84-846c-a8de22792e33</sv:value>
+    <sv:value>548df665-2c4e-4bde-b8f9-ad8ff9ebcab9</sv:value>
   </sv:property>
   <sv:property sv:name="hst:template" sv:type="String">
     <sv:value>layout.webpage</sv:value>
@@ -14,7 +14,7 @@
       <sv:value>hst:component</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>f73678f7-ffce-4ffc-be68-3c7a8e2dc0b3</sv:value>
+      <sv:value>e201a8b0-960f-4603-a731-d9a04e159e5b</sv:value>
     </sv:property>
     <sv:property sv:name="hst:referencecomponent" sv:type="String">
       <sv:value>hst:components/header</sv:value>
@@ -25,7 +25,7 @@
       <sv:value>hst:component</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>8a9c4602-3acc-4db7-a40b-0502bf9367c9</sv:value>
+      <sv:value>e6c3709a-cab0-4b13-9553-ad9b5361e88b</sv:value>
     </sv:property>
     <sv:property sv:name="hst:template" sv:type="String">
       <sv:value>standard.main</sv:value>
@@ -35,7 +35,7 @@
         <sv:value>hst:component</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>66b0033d-a9c7-422f-a680-50124da77f8f</sv:value>
+        <sv:value>9db6280d-d15c-464d-a920-29f714b0aa1a</sv:value>
       </sv:property>
       <sv:property sv:name="hst:referencecomponent" sv:type="String">
         <sv:value>hst:components/leftmenu</sv:value>
@@ -46,7 +46,7 @@
         <sv:value>hst:component</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>0eeb6a2f-8da4-48b4-98fe-abf4f4ebc050</sv:value>
+        <sv:value>9b218b55-9bee-48cf-b939-f82d02cdf82e</sv:value>
       </sv:property>
       <sv:property sv:name="hst:template" sv:type="String">
         <sv:value>standard.main.right</sv:value>

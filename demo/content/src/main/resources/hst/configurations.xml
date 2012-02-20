@@ -83,14 +83,6 @@
       <sv:value>hst:configuration</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>d3ee1e8e-6a8e-4244-b308-e91580b95206</sv:value>
-    </sv:property>
-  </sv:node>
-  <sv:node sv:name="myhippoproject-preview">
-    <sv:property sv:name="jcr:primaryType" sv:type="Name">
-      <sv:value>hst:configuration</sv:value>
-    </sv:property>
-    <sv:property sv:name="jcr:uuid" sv:type="String">
       <sv:value>6d9b4684-65f4-4f4f-8ed0-1eb42acc2c66</sv:value>
     </sv:property>
   </sv:node>
