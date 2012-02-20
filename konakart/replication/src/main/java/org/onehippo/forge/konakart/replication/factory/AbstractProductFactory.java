@@ -3,15 +3,16 @@ package org.onehippo.forge.konakart.replication.factory;
 import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
 import org.apache.commons.lang.StringUtils;
-import org.apache.jackrabbit.value.DoubleValue;
-import org.apache.jackrabbit.value.LongValue;
 import org.joda.time.DateTime;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.replication.utils.NodeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jcr.*;
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -115,6 +116,10 @@ public abstract class AbstractProductFactory implements ProductFactory {
             versionManager.checkout(productNode.getPath());
             hasCheckout = true;
         }
+
+        // Set the state of the product
+        String state = (product.getStatus() == 0) ? NodeHelper.UNPUBLISHED_STATE : NodeHelper.PUBLISHED_STATE;
+        nodeHelper.updateState(productNode, state);
 
         // Update the node
         updateProperties(product, productNode);

@@ -16,6 +16,9 @@ import java.util.UUID;
 
 public class NodeHelper {
 
+    public static final String PUBLISHED_STATE = "published";
+    public static final String UNPUBLISHED_STATE = "unpublished";
+
     public static final Logger log = LoggerFactory.getLogger(NodeHelper.class);
 
 
@@ -236,19 +239,18 @@ public class NodeHelper {
         childNode.setProperty("hippostdpubwf:publicationDate", new GregorianCalendar());
         childNode.setProperty("hippostdpubwf:createdBy", ownerId);
 
-        
-        String state = "published";
-
-        if (product.getStatus() == 0) {
-            state = "unpublished";
-        }
-        
-        childNode.setProperty("hippostd:state", state);
-        
-        
         return childNode;
 
     }
+
+    /**
+     * Update the hippostd state
+     * @param state the state of the document
+     */
+    public void updateState(Node node, String state) throws RepositoryException {
+        node.setProperty("hippostd:state", state);
+    }
+
 
 
     /**
