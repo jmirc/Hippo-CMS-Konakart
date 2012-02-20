@@ -3,6 +3,8 @@ package org.onehippo.forge.konakart.replication.factory;
 import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
 import org.apache.commons.lang.StringUtils;
+import org.apache.jackrabbit.value.DoubleValue;
+import org.apache.jackrabbit.value.LongValue;
 import org.joda.time.DateTime;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.replication.utils.NodeHelper;
@@ -201,30 +203,37 @@ public abstract class AbstractProductFactory implements ProductFactory {
         konakartNode.setProperty(KKCndConstants.PRODUCT_LANGUAGE_ID, languageId);
         konakartNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER, product.getManufacturerName());
         konakartNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER_ID, product.getManufacturerId());
-        konakartNode.setProperty(KKCndConstants.PRODUCT_RATING, product.getRating());
+
+        long rating = 0;
+
+        if (product.getRating() != null) {
+            rating = product.getRating().longValue();
+        }
+
+        konakartNode.setProperty(KKCndConstants.PRODUCT_RATING, rating);
 
         if (product.getPrice0() != null) {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_0, product.getPrice0().doubleValue());
+            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_0, new DoubleValue(product.getPrice0().doubleValue()));
         } else {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_0, 0L);
+            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_0, new DoubleValue(0));
         }
 
         if (product.getPrice1() != null) {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_1, product.getPrice1().doubleValue());
+            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_1, new DoubleValue(product.getPrice1().doubleValue()));
         } else {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_1, 0L);
+            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_1, new DoubleValue(0));
         }
 
         if (product.getPrice2() != null) {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_2, product.getPrice2().doubleValue());
+            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_2, new DoubleValue(product.getPrice2().doubleValue()));
         } else {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_2, 0L);
+            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_2, new DoubleValue(0));
         }
 
         if (product.getPrice3() != null) {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_3, product.getPrice3().doubleValue());
+            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_3, new DoubleValue(product.getPrice3().doubleValue()));
         } else {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_3, 0L);
+            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_3, new DoubleValue(0));
         }
 
         if (product.getSpecialPriceExTax() != null) {

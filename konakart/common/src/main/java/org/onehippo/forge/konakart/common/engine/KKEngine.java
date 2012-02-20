@@ -197,28 +197,12 @@ public class KKEngine implements KKEngineIf {
     }
 
 
-    /**
-     * Used to create a string in order to visualize a price. It ensures that the decimal places,
-     * the thousands separator and the currency symbol are correct. Uses the default currency.
-     *
-     * @param number to be formatted
-     * @return The formatted price
-     * @throws KKException .
-     */
+    @Override
     public String formatPrice(BigDecimal number) throws KKException {
         return formatPrice(number, null);
     }
 
-    /**
-     * Used to create a string in order to visualise a price. It ensures that the decimal places,
-     * the thousands separator and the currency symbol are correct.
-     * An entry must exist in the database for the currency code passed in as a parameter.
-     *
-     * @param numberToFormat number to be formatted
-     * @param currencyCode   Three letter currency code (USD, GBP, EUR etc.)
-     * @return The formatted price
-     * @throws KKException .
-     */
+    @Override
     public String formatPrice(BigDecimal numberToFormat, String currencyCode) throws KKException {
 
         if (numberToFormat == null) {
