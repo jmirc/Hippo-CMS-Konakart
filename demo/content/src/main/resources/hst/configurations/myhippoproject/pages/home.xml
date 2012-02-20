@@ -3,6 +3,9 @@
   <sv:property sv:name="jcr:primaryType" sv:type="Name">
     <sv:value>hst:component</sv:value>
   </sv:property>
+  <sv:property sv:name="jcr:uuid" sv:type="String">
+    <sv:value>1071c5cb-eff1-4c29-8262-3068bbd919ce</sv:value>
+  </sv:property>
   <sv:property sv:name="hst:referencecomponent" sv:type="String">
     <sv:value>hst:pages/standard</sv:value>
   </sv:property>
@@ -10,9 +13,15 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:component</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>8023a099-a52e-4f8f-92f8-aea0c4ed5989</sv:value>
+    </sv:property>
     <sv:node sv:name="content">
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:component</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>bff8049d-e72b-4fb3-9845-feb7ace1db1d</sv:value>
       </sv:property>
       <sv:property sv:name="hst:referencecomponent" sv:type="String">
         <sv:value>hst:components/content</sv:value>
@@ -25,11 +34,14 @@
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:containercomponent</sv:value>
       </sv:property>
-      <sv:property sv:name="hst:xtype" sv:type="String">
-        <sv:value>HST.UnorderedList</sv:value>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>b1626893-85ec-4c26-8011-fd08a5995354</sv:value>
       </sv:property>
       <sv:property sv:name="hst:componentclassname" sv:type="String">
         <sv:value>org.hippoecm.hst.pagecomposer.builtin.components.StandardContainerComponent</sv:value>
+      </sv:property>
+      <sv:property sv:name="hst:xtype" sv:type="String">
+        <sv:value>HST.UnorderedList</sv:value>
       </sv:property>
     </sv:node>
   </sv:node>

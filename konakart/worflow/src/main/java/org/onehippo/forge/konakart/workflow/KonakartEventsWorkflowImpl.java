@@ -37,13 +37,16 @@ public class KonakartEventsWorkflowImpl extends WorkflowImpl implements Workflow
     @Persistent(column = "./myhippoproject:konakart/konakart:languageid")
     private Long languageId;
 
+    @Persistent(column = "hippostd:state")
+    private String state;
+
     public KonakartEventsWorkflowImpl() throws RemoteException {
     }
 
     @Override
     public void fire() throws WorkflowException, RepositoryException, RemoteException {
 
-        if (productId == null) {
+        if (productId == null || productId == 0) {
             return;
         }
 
@@ -57,8 +60,9 @@ public class KonakartEventsWorkflowImpl extends WorkflowImpl implements Workflow
             // Try to retrieve the product by id
             CustomProductMgr productMgr = new CustomProductMgr(KKEngine.getEngine(), config.getLastUpdatedTime());
 
-            // update the UUID
-            productMgr.updateUUID(productId.intValue(), uuid);
+            // update the product
+            boolean publishedState = (state != null) && (state.equals("published"));
+            productMgr.updateProduct(productId.intValue(), uuid, publishedState);
 
         } catch (Exception e) {
             log.warn("Failed to synchronize the product for the UUID - " + uuid, e);

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sv:node sv:name="notfound" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="notfound">
   <sv:property sv:name="jcr:primaryType" sv:type="Name">
     <sv:value>hst:component</sv:value>
+  </sv:property>
+  <sv:property sv:name="jcr:uuid" sv:type="String">
+    <sv:value>3d3fe657-f739-425d-a32f-16ad28b4e92c</sv:value>
   </sv:property>
   <sv:property sv:name="hst:componentclassname" sv:type="String">
     <sv:value>org.example.components.NotFound</sv:value>

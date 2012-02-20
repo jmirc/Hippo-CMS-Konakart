@@ -11,6 +11,7 @@ import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngineConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.replication.config.HippoRepoConfig;
+import org.onehippo.forge.konakart.replication.factory.DefaultProductFactory;
 import org.onehippo.forge.konakart.replication.factory.ProductFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,16 +24,52 @@ public class KonakartProductReplicator {
     private HippoRepoConfig hippoRepoConfig;
     private String productFactoryClassName;
 
+    /**
+     * the hippo document type which defined a product. This document must contain the konakart:konakart compound
+     */
+    private String productDocType;
+
+    /**
+     * The name of the property associated to the konakart:konaker document.
+     */
+    private String konakartProductPropertyName;
+
+    /**
+     * @param jcrSession the JCR session
+     */
     public void setJcrSession(javax.jcr.Session jcrSession) {
         this.jcrSession = jcrSession;
     }
 
+    /**
+     * @param hippoRepoConfig some hippo configuration
+     */
     public void setHippoRepoConfig(HippoRepoConfig hippoRepoConfig) {
         this.hippoRepoConfig = hippoRepoConfig;
     }
 
+    /**
+     * By default the DefaultProductFactory will be used if no factory is set
+     *
+     * @param productFactoryClassName the product factory class name.
+     */
     public void setProductFactory(String productFactoryClassName) {
         this.productFactoryClassName = productFactoryClassName;
+    }
+
+    /**
+     * @param productDocType the product document type
+     */
+    public void setProductDocType(String productDocType) {
+        this.productDocType = productDocType;
+    }
+
+    /**
+     *
+     * @param konakartProductPropertyName .
+     */
+    public void setKonakartProductPropertyName(String konakartProductPropertyName) {
+        this.konakartProductPropertyName = konakartProductPropertyName;
     }
 
     /**
@@ -124,6 +161,8 @@ public class KonakartProductReplicator {
 
                 productFactory.setSession(jcrSession);
                 productFactory.setContentRoot(contentRoot);
+                productFactory.setProductDocType(productDocType);
+                productFactory.setKonakartProductPropertyName(konakartProductPropertyName);
 
                 // Create the product
                 String uuid = productFactory.add(product, language);
@@ -153,6 +192,6 @@ public class KonakartProductReplicator {
             }
         }
 
-        return null;
+        return new DefaultProductFactory();
     }
 }

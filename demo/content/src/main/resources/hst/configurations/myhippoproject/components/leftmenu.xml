@@ -3,6 +3,9 @@
   <sv:property sv:name="jcr:primaryType" sv:type="Name">
     <sv:value>hst:component</sv:value>
   </sv:property>
+  <sv:property sv:name="jcr:uuid" sv:type="String">
+    <sv:value>d82126e3-bae6-4dcf-b5bd-9557afda82f8</sv:value>
+  </sv:property>
   <sv:property sv:name="hst:componentclassname" sv:type="String">
     <sv:value>org.example.components.LeftMenu</sv:value>
   </sv:property>

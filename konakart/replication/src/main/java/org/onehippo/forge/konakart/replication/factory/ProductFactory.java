@@ -20,9 +20,20 @@ public interface ProductFactory {
      */
     void setContentRoot(String contentRoot);
 
+
     /**
-     * Used to add a product to hippo
+     * @param productDocType the product document type
+     */
+    void setProductDocType(String productDocType);
+
+    /**
      *
+     * @param konakartProductPropertyName .
+     */
+    void setKonakartProductPropertyName(String konakartProductPropertyName);
+
+    /**
+     * Add a product to hippo
      *
      * @param product the product to add
      * @param language the language associated to this product

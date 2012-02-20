@@ -82,7 +82,7 @@ the parent version to 7.7.1 then the property definitions below can be removed -
 
         <forge.springdaemon.version>1.01.00</forge.springdaemon.version>
 
-       <!--<hippoecm.export.dir>${project.basedir}/content/src/main/resources</hippoecm.export.dir>-->
+       <hippoecm.export.dir>${project.basedir}/content/src/main/resources</hippoecm.export.dir>
 
         <filesync.override>false</filesync.override>
         <maven.plugins.filesync.version>1.0.0</maven.plugins.filesync.version>
@@ -247,10 +247,8 @@ the parent version to 7.7.1 then the property definitions below can be removed -
                             </configuration>
                             <container>
                                 <systemProperties>
-                                    <derby.stream.error.file>${project.basedir}/target/derby.log
-                                    </derby.stream.error.file>
-                                    <log4j.configuration>file:${project.basedir}/conf/log4j-dev.xml
-                                    </log4j.configuration>
+                                    <derby.stream.error.file>${project.basedir}/target/derby.log</derby.stream.error.file>
+                                    <log4j.configuration>file:${project.basedir}/conf/log4j-dev.xml</log4j.configuration>
                                     <rebel.log4j-plugin>true</rebel.log4j-plugin>
                                 </systemProperties>
                             </container>

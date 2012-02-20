@@ -44,7 +44,8 @@
 
             </bean>
         </property>
-        <property name="productFactory" value="org.onehippo.forge.konakart.demo.MyProductFactory"/>
+        <property name="productDocType"  value="myhippoproject:productdocument"/>
+        <property name="konakartProductPropertyName"  value="myhippoproject:konakart"/>
     </bean>
 
     <task:scheduled-tasks scheduler="konakartImportingScheduler">

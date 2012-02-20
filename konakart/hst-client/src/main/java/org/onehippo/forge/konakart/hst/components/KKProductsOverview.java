@@ -14,7 +14,6 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.util.SearchInputParsingUtils;
 import org.hippoecm.hst.utils.BeanUtils;
-import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngineIf;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.ComponentUtil;
@@ -98,9 +97,9 @@ public abstract class KKProductsOverview<T extends KKProductDocument> extends KK
                     if ("-lastModificationDate".equals(order)) {
                         hstQuery.addOrderByDescending("hippostdpubwf:lastModificationDate");
                     } else if (order.startsWith("-")) {
-                        hstQuery.addOrderByDescending(getProductNamespace() + ":" + order.substring(1));
+                        hstQuery.addOrderByDescending(order.substring(1));
                     } else {
-                        hstQuery.addOrderByAscending(getProductNamespace() + ":" + order);
+                        hstQuery.addOrderByAscending(order);
                     }
                 } else {
                     hstQuery.addOrderByDescending(orderBy);
@@ -138,7 +137,7 @@ public abstract class KKProductsOverview<T extends KKProductDocument> extends KK
                     resultCount = result.getCount();
                 }
             }
-            request.setAttribute("docs", pages);
+            request.setAttribute("products", pages);
             request.setAttribute("count", resultCount);
         } catch (QueryException qe) {
             log.error("Error while getting the documents " + qe.getMessage(), qe);

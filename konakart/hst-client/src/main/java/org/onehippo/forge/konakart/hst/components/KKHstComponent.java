@@ -1,6 +1,7 @@
 package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.app.KKException;
+import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
@@ -115,10 +116,4 @@ public abstract class KKHstComponent extends BaseHstComponent {
     protected String getCatalogIdFromChannel() {
         return null;
     }
-
-    /**
-     * @return the product namespace. Most of the time, this value is defined when the project is created
-     */
-    protected abstract String getProductNamespace();
-
 }

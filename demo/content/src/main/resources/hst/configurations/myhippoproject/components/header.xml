@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sv:node sv:name="header" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="header">
   <sv:property sv:name="jcr:primaryType" sv:type="Name">
     <sv:value>hst:component</sv:value>
+  </sv:property>
+  <sv:property sv:name="jcr:uuid" sv:type="String">
+    <sv:value>ecce7cb8-da01-41d8-9e42-0cb7702a42eb</sv:value>
   </sv:property>
   <sv:property sv:name="hst:componentclassname" sv:type="String">
     <sv:value>org.example.components.Header</sv:value>

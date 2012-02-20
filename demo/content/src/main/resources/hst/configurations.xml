@@ -1,16 +1,97 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sv:node sv:name="hst:configurations" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="hst:configurations">
   <sv:property sv:name="jcr:primaryType" sv:type="Name">
     <sv:value>hst:configurations</sv:value>
   </sv:property>
-  <sv:node sv:name="myhippoproject">
+  <sv:property sv:name="jcr:uuid" sv:type="String">
+    <sv:value>942e2e9c-607c-4a59-ad9d-075ba01561eb</sv:value>
+  </sv:property>
+  <sv:node sv:name="hst:default">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:configuration</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>4237d1a5-feb4-4aab-9e12-70f72006e740</sv:value>
+    </sv:property>
+    <sv:node sv:name="hst:sitemap">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>hst:sitemap</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>b5779144-f793-4ea6-b03d-df68077a682e</sv:value>
+      </sv:property>
+    </sv:node>
+    <sv:node sv:name="hst:pages">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>hst:pages</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>be4ea1e5-87cb-4ef9-97ac-f8d07aac9a45</sv:value>
+      </sv:property>
+    </sv:node>
+    <sv:node sv:name="hst:components">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>hst:components</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>7502c9f4-398c-4ecb-8e7e-582eb2b812f2</sv:value>
+      </sv:property>
+    </sv:node>
+    <sv:node sv:name="hst:templates">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>hst:templates</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>08c6bfd9-b0d8-4392-9d73-9f5119dfe50f</sv:value>
+      </sv:property>
+    </sv:node>
+    <sv:node sv:name="hst:sitemenus">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>hst:sitemenus</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>0d920817-168f-4b97-acf3-0d7c4d2b5946</sv:value>
+      </sv:property>
+    </sv:node>
+    <sv:node sv:name="hst:sitemapitemhandlers">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>hst:sitemapitemhandlers</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>1f697f40-1f84-4693-b0b8-816e5102d1ea</sv:value>
+      </sv:property>
+    </sv:node>
+    <sv:node sv:name="hst:catalog">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>hst:catalog</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>89cea800-df73-4df7-8d76-37c335eb4691</sv:value>
+      </sv:property>
+    </sv:node>
   </sv:node>
   <sv:node sv:name="myhippoproject-subsite-common">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:configuration</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>ae26e584-169d-488c-bb33-a120359e5203</sv:value>
+    </sv:property>
+  </sv:node>
+  <sv:node sv:name="myhippoproject">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:configuration</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>d3ee1e8e-6a8e-4244-b308-e91580b95206</sv:value>
+    </sv:property>
+  </sv:node>
+  <sv:node sv:name="myhippoproject-preview">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:configuration</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>6d9b4684-65f4-4f4f-8ed0-1eb42acc2c66</sv:value>
     </sv:property>
   </sv:node>
 </sv:node>

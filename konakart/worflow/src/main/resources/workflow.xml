@@ -19,7 +19,7 @@
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hipposys:workflowcategory</sv:value>
         </sv:property>
-        <sv:node sv:name="test">
+        <sv:node sv:name="konakart-publish">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
                 <sv:value>hipposys:workflowboundmethodevent</sv:value>
             </sv:property>
@@ -27,16 +27,10 @@
                 <sv:value>hippostdpubwf:document</sv:value>
             </sv:property>
             <sv:property sv:name="hipposys:display" sv:type="String">
-                <sv:value>publication</sv:value>
+                <sv:value>Konakart Workflow Events</sv:value>
             </sv:property>
             <sv:property sv:name="hipposys:classname" sv:type="String">
                 <sv:value>org.onehippo.forge.konakart.workflow.KonakartEventsWorkflowImpl</sv:value>
-            </sv:property>
-            <sv:property sv:name="hipposys:eventconditioncategory" sv:type="String">
-                <sv:value>default</sv:value>
-            </sv:property>
-            <sv:property sv:name="hipposys:eventconditionmethod" sv:type="String">
-                <sv:value>publish</sv:value>
             </sv:property>
         </sv:node>
     </sv:node>

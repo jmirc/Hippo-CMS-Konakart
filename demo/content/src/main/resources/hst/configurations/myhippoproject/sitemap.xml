@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sv:node sv:name="hst:sitemap" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="hst:sitemap">
   <sv:property sv:name="jcr:primaryType" sv:type="Name">
     <sv:value>hst:sitemap</sv:value>
+  </sv:property>
+  <sv:property sv:name="jcr:uuid" sv:type="String">
+    <sv:value>c59c24ce-2a0c-4a63-98e2-358469507aa2</sv:value>
   </sv:property>
   <sv:node sv:name="root">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:sitemapitem</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>93e35813-1c9c-4185-80ea-7ed312daf339</sv:value>
     </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/home</sv:value>
@@ -18,6 +24,9 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>8722209d-63e3-4978-b289-2cfbe3837626</sv:value>
+    </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/textpage</sv:value>
     </sv:property>
@@ -29,6 +38,9 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>1ac9326d-971b-4827-8ff6-6acd1e7f05b5</sv:value>
+    </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/newsoverview</sv:value>
     </sv:property>
@@ -38,6 +50,9 @@
     <sv:node sv:name="_any_.html">
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:sitemapitem</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>27cb3a87-5776-4112-8b3d-a33733ceda69</sv:value>
       </sv:property>
       <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
         <sv:value>hst:pages/newspage</sv:value>
@@ -49,6 +64,9 @@
     <sv:node sv:name="_any_">
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:sitemapitem</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>8f59a97a-468f-45f3-b98c-fbb372d18d3b</sv:value>
       </sv:property>
       <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
         <sv:value>hst:pages/newsoverview</sv:value>
@@ -62,17 +80,36 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>538d1153-170c-47ad-803b-087b5b5de30e</sv:value>
+    </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/search</sv:value>
     </sv:property>
   </sv:node>
+  <sv:node sv:name="products">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:sitemapitem</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>c5eed950-9e4d-4e1b-8081-d862f8d42968</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
+      <sv:value>hst:pages/productoverview</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:relativecontentpath" sv:type="String">
+      <sv:value>products</sv:value>
+    </sv:property>
+  </sv:node>
   <sv:node sv:name="_any_">
-      <sv:property sv:name="jcr:primaryType" sv:type="Name">
-        <sv:value>hst:sitemapitem</sv:value>
-      </sv:property>
-      <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
-        <sv:value>hst:pages/pagenotfound</sv:value>
-      </sv:property>
-    </sv:node>
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:sitemapitem</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>aecfa4b1-b9b6-45ab-937a-f341889c25f2</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
+      <sv:value>hst:pages/pagenotfound</sv:value>
+    </sv:property>
+  </sv:node>
 </sv:node>
-

@@ -3,6 +3,9 @@
   <sv:property sv:name="jcr:primaryType" sv:type="Name">
     <sv:value>hst:component</sv:value>
   </sv:property>
+  <sv:property sv:name="jcr:uuid" sv:type="String">
+    <sv:value>0991fb6b-89eb-4106-8f49-17b1082dffec</sv:value>
+  </sv:property>
   <sv:property sv:name="hst:componentclassname" sv:type="String">
     <sv:value>org.example.components.Overview</sv:value>
   </sv:property>

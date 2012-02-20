@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sv:node sv:name="hst:templates" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="hst:templates">
   <sv:property sv:name="jcr:primaryType" sv:type="Name">
     <sv:value>hst:templates</sv:value>
+  </sv:property>
+  <sv:property sv:name="jcr:uuid" sv:type="String">
+    <sv:value>0f429331-4079-4b4f-872f-5cebe1d32027</sv:value>
   </sv:property>
   <sv:node sv:name="home.main.content">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>48a10495-74b8-48b7-a9e0-0470c99d5d90</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/home/main/content.jsp</sv:value>
@@ -15,6 +21,9 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>f5da8ea1-a820-4869-82df-e1f4305e39c9</sv:value>
+    </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/layout/webpage.jsp</sv:value>
     </sv:property>
@@ -22,6 +31,9 @@
   <sv:node sv:name="news.main.content">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>86c4665d-7a2c-4067-8f93-68ee67aa0d64</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/news/main/content.jsp</sv:value>
@@ -31,6 +43,9 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>32fe483a-88f1-4ba3-8397-72199fcbd61e</sv:value>
+    </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/notfound/main/content.jsp</sv:value>
     </sv:property>
@@ -38,6 +53,9 @@
   <sv:node sv:name="overview.main.content">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>449268ab-46f5-4056-bb40-06ef8efe2897</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/overview/main/content.jsp</sv:value>
@@ -47,6 +65,9 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>ed398468-fb91-42d7-ab4c-cdd127a67dd6</sv:value>
+    </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/search/main/content.jsp</sv:value>
     </sv:property>
@@ -54,6 +75,9 @@
   <sv:node sv:name="standard.header">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>dddbb8f3-2786-4045-a4e6-8c09824ef60a</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/header.jsp</sv:value>
@@ -63,6 +87,9 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>205e0bdc-b1ee-472b-b7c5-15c5c5e16d6f</sv:value>
+    </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/main.jsp</sv:value>
     </sv:property>
@@ -70,6 +97,9 @@
   <sv:node sv:name="standard.main.leftmenu">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>238cd412-0574-46e9-8bc9-11b9168f3fe8</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/main/leftmenu.jsp</sv:value>
@@ -79,6 +109,9 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>3dbf3640-105e-4f07-85e8-603da287ba71</sv:value>
+    </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/main/right.jsp</sv:value>
     </sv:property>
@@ -86,6 +119,9 @@
   <sv:node sv:name="standard.main.content">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>5efdde0f-2bc7-4d9f-a513-1f67bb570c7a</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/main/content.jsp</sv:value>
@@ -95,10 +131,23 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>c6c50af1-8073-45f8-9091-8f120a946b2d</sv:value>
+    </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/main/list.jsp</sv:value>
     </sv:property>
   </sv:node>
-  
-  
+  <sv:node sv:name="products.main.content">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:template</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>8511afd7-60a0-48d4-8a6a-6cd3a14a667e</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:containers" sv:type="String" sv:multiple="true"/>
+    <sv:property sv:name="hst:renderpath" sv:type="String">
+      <sv:value>jsp/product/main/content.jsp</sv:value>
+    </sv:property>
+  </sv:node>
 </sv:node>

@@ -37,6 +37,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
     protected javax.jcr.Session session;
     private NodeHelper nodeHelper;
     private String contentRoot;
+    private String productDocType;
+    private String konakartProductPropertyName;
 
     public void setSession(Session session) throws RepositoryException {
         this.session = session;
@@ -46,7 +48,14 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     public void setContentRoot(String contentRoot) {
         this.contentRoot = contentRoot;
+    }
 
+    public void setKonakartProductPropertyName(String konakartProductPropertyName) {
+        this.konakartProductPropertyName = konakartProductPropertyName;
+    }
+
+    public void setProductDocType(String productDocType) {
+        this.productDocType = productDocType;
     }
 
     @Override
@@ -101,7 +110,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
             Node rootFolder = nodeHelper.createMissingFolders(absPath);
 
             // Create the document
-            productNode = nodeHelper.createDocument(rootFolder, product, getProductDocType(),
+            productNode = nodeHelper.createDocument(rootFolder, product, productDocType,
                     session.getUserID(), language.getCode());
 
             if (log.isInfoEnabled()) {
@@ -176,13 +185,13 @@ public abstract class AbstractProductFactory implements ProductFactory {
         Node standardPriceNode;
 
         // Create the node
-        if (!productNode.hasNode(getKonakartProductPropertyName())) {
-            konakartNode = productNode.addNode(getKonakartProductPropertyName(), KKCndConstants.DOCUMENT_TYPE);
+        if (!productNode.hasNode(konakartProductPropertyName)) {
+            konakartNode = productNode.addNode(konakartProductPropertyName, KKCndConstants.DOCUMENT_TYPE);
             konakartNode.setProperty(KKCndConstants.PRODUCT_ID, (long) product.getId());
             descriptionNode = konakartNode.addNode(KKCndConstants.PRODUCT_DESCRIPTION, "hippostd:html");
             standardPriceNode = konakartNode.addNode(KKCndConstants.PRODUCT_STANDARD_PRICE, KKCndConstants.CP_PRICE_TYPE);
         } else {
-            konakartNode = productNode.getNode(getKonakartProductPropertyName());
+            konakartNode = productNode.getNode(konakartProductPropertyName);
             descriptionNode = konakartNode.getNode(KKCndConstants.PRODUCT_DESCRIPTION);
             standardPriceNode = konakartNode.getNode(KKCndConstants.PRODUCT_STANDARD_PRICE);
         }
@@ -233,17 +242,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         descriptionNode.setProperty("hippostd:content", description);
     }
-
-    /**
-     * @return the hippo document type which defined a product. This document must contain
-     *         the konakart:konakart compound
-     */
-    protected abstract String getProductDocType();
-
-    /**
-     * @return the name of the property associated to the konakart:konaker document.
-     */
-    protected abstract String getKonakartProductPropertyName();
 
     /**
      * This is an helper method that could be used to set others information defined into Konakart but not

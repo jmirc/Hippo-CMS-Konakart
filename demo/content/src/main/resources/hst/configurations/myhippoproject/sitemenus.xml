@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sv:node sv:name="hst:sitemenus" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="hst:sitemenus">
   <sv:property sv:name="jcr:primaryType" sv:type="Name">
     <sv:value>hst:sitemenus</sv:value>
+  </sv:property>
+  <sv:property sv:name="jcr:uuid" sv:type="String">
+    <sv:value>accb06c8-c729-4c07-8ba8-4f7f33d2ae13</sv:value>
   </sv:property>
   <sv:node sv:name="main">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:sitemenu</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>3d99c84b-d8e2-437c-8d12-3879403b3407</sv:value>
+    </sv:property>
     <sv:node sv:name="home">
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:sitemenuitem</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>f8f69b3b-4e33-4a6b-8026-5d9a9d5021cf</sv:value>
       </sv:property>
       <sv:property sv:name="hst:referencesitemapitem" sv:type="String">
         <sv:value>root</sv:value>
@@ -19,6 +28,9 @@
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:sitemenuitem</sv:value>
       </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>f72ee93e-c5dc-4d8b-87ae-ad14a7fa7c76</sv:value>
+      </sv:property>
       <sv:property sv:name="hst:referencesitemapitem" sv:type="String">
         <sv:value>about</sv:value>
       </sv:property>
@@ -27,10 +39,23 @@
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:sitemenuitem</sv:value>
       </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>c80cad01-7179-4349-b2e8-17ee3f835ce4</sv:value>
+      </sv:property>
       <sv:property sv:name="hst:referencesitemapitem" sv:type="String">
         <sv:value>news</sv:value>
       </sv:property>
     </sv:node>
+    <sv:node sv:name="products">
+      <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>hst:sitemenuitem</sv:value>
+      </sv:property>
+      <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>d0f0eae8-b3db-4586-92f0-07aa681609a8</sv:value>
+      </sv:property>
+      <sv:property sv:name="hst:referencesitemapitem" sv:type="String">
+        <sv:value>products</sv:value>
+      </sv:property>
+    </sv:node>
   </sv:node>
 </sv:node>
-
