@@ -24,3 +24,5 @@
   - konakart:isProductsShared (boolean)
 
 [konakart:konakart] > hippo:compound, hippostd:relaxed
+
+[konakart:review] > konakart:basedocument, hippostd:relaxed

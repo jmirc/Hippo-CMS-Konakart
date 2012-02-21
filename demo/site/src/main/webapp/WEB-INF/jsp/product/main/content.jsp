@@ -8,12 +8,14 @@
             <hst:cmseditlink hippobean="${product}"/>
             <a href="${fn:escapeXml(prdlink)}"><c:out value="${product.name}"/></a>
             <br/>
-            <c:out value="${product.price}"/> |
+            <c:if test="${not empty product.specialPrice}"><s></c:if>
+            <c:out value="${product.price}"/>
+            <c:if test="${not empty product.specialPrice}"></s></c:if>
+            | <c:if test="${not empty product.specialPrice}"><c:out value="${product.specialPrice}"/></c:if>
             <div class="rating stars-${product.rating}"><a href="${fn:escapeXml(prdlink)}"><c:out value="${product.rating}"/></a></div>
             <br/>
             <br/>
-
-        </li>
+         </li>
     </c:forEach>
 </ul>
 

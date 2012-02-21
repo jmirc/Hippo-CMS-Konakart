@@ -36,12 +36,12 @@ public class RatingPlugin extends RenderPlugin {
         long reviewCount = 0;
 
         try {
-            Node parent = productNode.getParent();
+            Node parent = productNode.getParent().getParent();
             if (parent.isNodeType("mix:referenceable")) {
-                String query = "//*[(*/@hippo:docbase = '" + parent.getUUID() + "') and (@jcr:primaryType='hippogogreen:review')]";
+                String query = "select * from konakart:review where konakart:reviewproductlink = '" + parent.getIdentifier() +"'";
 
-                QueryManager queryManager = productNode.getSession().getWorkspace().getQueryManager();
-                Query reviewsQuery = queryManager.createQuery(query, Query.XPATH);
+               QueryManager queryManager = productNode.getSession().getWorkspace().getQueryManager();
+                Query reviewsQuery = queryManager.createQuery(query, Query.SQL);
 
                 QueryResult queryResult = reviewsQuery.execute();
 
@@ -50,8 +50,8 @@ public class RatingPlugin extends RenderPlugin {
                 while (iterator.hasNext()) {
                     reviewCount++;
                     final Node review = iterator.nextNode();
-                    if (review.hasProperty("hippogogreen:rating")) {
-                        totalRating += review.getProperty("hippogogreen:rating").getLong();
+                    if (review.hasProperty("konakart:reviewrating")) {
+                        totalRating += review.getProperty("konakart:reviewrating").getLong();
                     }
                 }
 
@@ -61,8 +61,8 @@ public class RatingPlugin extends RenderPlugin {
 
                 IEditor.Mode mode = IEditor.Mode.fromString(config.getString("mode", "view"));
                 if (mode == IEditor.Mode.EDIT) {
-                    productNode.setProperty("hippogogreen:rating", avgRating);
-                    productNode.setProperty("hippogogreen:votes", reviewCount);
+                    productNode.setProperty("konakart:reviewrating", avgRating);
+                    productNode.setProperty("konakart:reviewvotes", reviewCount);
                 }
             }
         } catch (RepositoryException e) {

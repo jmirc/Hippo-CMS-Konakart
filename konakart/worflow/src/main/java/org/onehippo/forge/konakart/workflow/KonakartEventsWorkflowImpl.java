@@ -34,9 +34,6 @@ public class KonakartEventsWorkflowImpl extends WorkflowImpl implements Workflow
     @Persistent(column = "./myhippoproject:konakart/konakart:id")
     private Long productId;
 
-    @Persistent(column = "./myhippoproject:konakart/konakart:languageid")
-    private Long languageId;
-
     @Persistent(column = "hippostd:state")
     private String state;
 
@@ -62,10 +59,10 @@ public class KonakartEventsWorkflowImpl extends WorkflowImpl implements Workflow
 
             // update the product
             boolean publishedState = (state != null) && (state.equals("published"));
-            productMgr.updateProduct(productId.intValue(), uuid, publishedState);
+            productMgr.updateStatus(productId.intValue(), publishedState);
 
         } catch (Exception e) {
-            log.warn("Failed to synchronize the product for the UUID - " + uuid, e);
+            log.warn("Failed to update the statut for the following UUID product : " + uuid, e);
         }
     }
 

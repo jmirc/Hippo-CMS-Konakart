@@ -60,15 +60,13 @@ public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
     }
 
     /**
-     * Update the following information
+     * Update the status of a product
      * @param productId id of the product to update
-     * @param uuid the node's UUID
      * @param publishedState true if the product is in a published state, false otherwise
      */
-    public void updateProduct(Integer productId, String uuid, boolean publishedState) throws Exception {
+    public void updateStatus(Integer productId, boolean publishedState) throws Exception {
         KKCriteria localKKCriteria = getNewCriteria(isMultiStoreShareProducts());
         localKKCriteria.add(BaseProductsPeer.PRODUCTS_ID, productId);
-        localKKCriteria.add(BaseProductsPeer.CUSTOM1, uuid);
         localKKCriteria.add(BaseProductsPeer.PRODUCTS_STATUS, publishedState);
 
         BasePeer.doUpdate(localKKCriteria);

@@ -50,6 +50,16 @@ public class Konakart extends HippoItem {
         return standardPrice;
     }
 
+    /**
+     * @return the special price. Used for promotion for a defined duration.
+     */
+    public Double getSpecialPrice() {
+        return getProperty(KKCndConstants.PRODUCT_SPECIAL_PRICE);
+    }
+
+    /**
+     * @return the product's rating
+     */
     public Long getRating() {
         return getProperty(KKCndConstants.PRODUCT_RATING);
     }

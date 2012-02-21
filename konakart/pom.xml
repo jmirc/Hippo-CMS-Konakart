@@ -29,7 +29,7 @@
         <module>dependencies</module>
         <module>common</module>
         <module>worflow</module>
-        <!--<module>plugins</module>-->
+        <module>plugins</module>
         <module>repository</module>
         <module>replication</module>
         <module>hst-client</module>

@@ -50,7 +50,7 @@ public class NodeHelper {
     /**
      * The codec which is used for the node names
      */
-    protected StringCodec uriEncoding = new StringCodecFactory.UriEncoding();
+    public StringCodec uriEncoding = new StringCodecFactory.UriEncoding();
 
     protected Session session;
 

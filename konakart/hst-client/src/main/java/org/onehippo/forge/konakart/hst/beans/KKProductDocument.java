@@ -155,6 +155,24 @@ public abstract class KKProductDocument extends HippoDocument {
 
 
     /**
+     * @return the special product's price
+     */
+    public String getSpecialPrice() {
+
+        Double specialPrice = konakart.getSpecialPrice();
+
+        if (specialPrice == null) {
+            return "";
+        }
+
+        try {
+            return kkEngine.formatPrice(new BigDecimal(specialPrice));
+        } catch (KKException e) {
+            return "";
+        }
+    }
+
+    /**
      * @return the rating value
      */
     public Long getRating() {

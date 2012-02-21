@@ -68,7 +68,12 @@ public abstract class AbstractProductFactory implements ProductFactory {
         // Try to get the product node by identifier
         if (!StringUtils.isEmpty(product.getCustom1())) {
             try {
-                productNode = session.getNodeByIdentifier(product.getCustom1());
+                Node productHandle = session.getNodeByIdentifier(product.getCustom1());
+
+                if (productHandle != null) {
+                    String encodingName = nodeHelper.uriEncoding.encode(product.getName());
+                    productNode = productHandle.getNode(encodingName);
+                }
             } catch (RepositoryException e) {
                 // not found do nothing
                 log.warn("Unable to find the product with the UUID - " + product.getCustom1() + " - " + e.toString());
@@ -147,7 +152,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
             versionManager.checkin(productNode.getPath());
         }
 
-        return productNode.getIdentifier();
+        // Return the hanlde's UUID of the product.
+        return productNode.getParent().getIdentifier();
 
     }
 
