@@ -4,21 +4,21 @@
     <sv:value>hst:sitemenus</sv:value>
   </sv:property>
   <sv:property sv:name="jcr:uuid" sv:type="String">
-    <sv:value>b8c024e0-ceec-44b2-bfb1-9464fb71d6bf</sv:value>
+    <sv:value>dfdcb7b9-1b7c-47c3-af01-999679054247</sv:value>
   </sv:property>
   <sv:node sv:name="main">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:sitemenu</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>78f1885e-7aae-42a4-85e9-48174065d4ec</sv:value>
+      <sv:value>9f4e4de6-e1fb-4909-8c4f-668d37885b69</sv:value>
     </sv:property>
     <sv:node sv:name="home">
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:sitemenuitem</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>1a2e9839-8c39-469e-a29f-20639634c4f3</sv:value>
+        <sv:value>83727e36-74ff-4d15-9965-c5d79d927683</sv:value>
       </sv:property>
       <sv:property sv:name="hst:referencesitemapitem" sv:type="String">
         <sv:value>root</sv:value>
@@ -29,7 +29,7 @@
         <sv:value>hst:sitemenuitem</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>0c7209d5-beb7-4c78-ad1f-2b5678ca0649</sv:value>
+        <sv:value>9bf75c0e-add1-4471-a8ba-c87a34b65450</sv:value>
       </sv:property>
       <sv:property sv:name="hst:referencesitemapitem" sv:type="String">
         <sv:value>about</sv:value>
@@ -40,7 +40,7 @@
         <sv:value>hst:sitemenuitem</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>8912ea22-f03d-404a-9a5d-b7f1fa296277</sv:value>
+        <sv:value>c35452ab-8420-4ef7-8c75-689bcb26541a</sv:value>
       </sv:property>
       <sv:property sv:name="hst:referencesitemapitem" sv:type="String">
         <sv:value>news</sv:value>
@@ -51,7 +51,7 @@
         <sv:value>hst:sitemenuitem</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>023edcfe-da36-4313-b1c8-726fb8130eca</sv:value>
+        <sv:value>9a20a90a-51a4-43a3-8631-d13c497a5c15</sv:value>
       </sv:property>
       <sv:property sv:name="hst:referencesitemapitem" sv:type="String">
         <sv:value>products</sv:value>

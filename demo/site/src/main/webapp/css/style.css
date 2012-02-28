@@ -127,3 +127,17 @@ h1.subsite {
 #content #page-nav li.next.disabled { background: url(../images/icon-nav.png) no-repeat right -32px; padding: 0 10px 0 5px; }
 #content #page-nav li.next a { background: url(../images/icon-nav.png) no-repeat right 4px; padding: 0 10px 0 5px; }
 
+/* Body - Products - Detail */
+#content #product .seperator { vertical-align: text-bottom; }
+#content #product .info { margin: 10px 0 5px; }
+#content #product .rating { margin-left:-114px; margin-right:3px; padding-left:230px; padding-top:3px; vertical-align: text-top; }
+#content #product .rating .votes { margin-left: 5px; }
+#content #article-footer .rate li { display: inline-block; width: 16px; height: 18px;  background: url(../images/rating.png) no-repeat 0 0; float: left; padding: 0 1px; }
+#content #article-footer .rate li:hover { cursor: pointer; background-position: 0 -200px; }
+#content #article-footer .rate li.on, #bd #content #article-footer .rate li.hover { background-position: 0 -200px; }
+#content #article-footer .rate li.hover-off { background-position: 0 0; }
+#content #article-footer .rate li.hover-on { background-position: 0 -200px; opacity: 0.75; filter: alpha(opacity=75); }
+#content #article-footer .rate li span { position: absolute; left: -9999px; }
+
+
+

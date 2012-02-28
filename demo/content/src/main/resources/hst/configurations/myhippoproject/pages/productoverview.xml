@@ -4,7 +4,7 @@
     <sv:value>hst:component</sv:value>
   </sv:property>
   <sv:property sv:name="jcr:uuid" sv:type="String">
-    <sv:value>e5a09c04-c498-42f2-9ff9-b82560341cab</sv:value>
+    <sv:value>ca838e44-340b-463b-9d32-0df83479b265</sv:value>
   </sv:property>
   <sv:property sv:name="hst:parameternames" sv:type="String" sv:multiple="true"/>
   <sv:property sv:name="hst:parametervalues" sv:type="String" sv:multiple="true"/>
@@ -19,14 +19,14 @@
       <sv:value>hst:component</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>4e3fd61f-8393-4bc3-b6da-d9d538f181a4</sv:value>
+      <sv:value>0334222d-4cc1-4aa8-806c-7b7fc9057414</sv:value>
     </sv:property>
     <sv:node sv:name="content">
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:component</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>d4253cfe-d405-4fa7-a375-854446bcea3f</sv:value>
+        <sv:value>3d87a54c-bb7f-4351-a113-3a14e7f63232</sv:value>
       </sv:property>
       <sv:property sv:name="hst:parameternames" sv:type="String" sv:multiple="true"/>
       <sv:property sv:name="hst:parametervalues" sv:type="String" sv:multiple="true"/>

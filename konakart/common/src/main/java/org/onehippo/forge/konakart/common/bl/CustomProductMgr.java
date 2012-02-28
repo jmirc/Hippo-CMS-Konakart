@@ -45,16 +45,18 @@ public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
 
     /**
      * 
-     * Update the product with UUID of the Hippo node. This is used to synchronize Hippo and Konakart
+     * Used to synchronize Hippo and Konakart
      *
      * @param productId id of the product to update
-     * @param uuid the uuid
-     * @throws Exception if any exception occurs
+     * @param uuid the uuid of the product's handle
+     * @param reviewsFolderName the name of the folder where the review will be saved
+     * @throws Exception if the update could not be done
      */
-    public void updateUUID(Integer productId, String uuid) throws Exception {
+    public void synchronizeHippoKK(Integer productId, String uuid, String reviewsFolderName) throws Exception {
         KKCriteria localKKCriteria = getNewCriteria(isMultiStoreShareProducts());
         localKKCriteria.add(BaseProductsPeer.PRODUCTS_ID, productId);
         localKKCriteria.add(BaseProductsPeer.CUSTOM1, uuid);
+        localKKCriteria.add(BaseProductsPeer.CUSTOM2, reviewsFolderName);
 
         BasePeer.doUpdate(localKKCriteria);
     }
@@ -63,6 +65,7 @@ public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
      * Update the status of a product
      * @param productId id of the product to update
      * @param publishedState true if the product is in a published state, false otherwise
+     * @throws Exception if the update could not be done
      */
     public void updateStatus(Integer productId, boolean publishedState) throws Exception {
         KKCriteria localKKCriteria = getNewCriteria(isMultiStoreShareProducts());

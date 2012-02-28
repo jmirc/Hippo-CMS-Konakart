@@ -1,11 +1,9 @@
 package org.onehippo.forge.konakart.common.engine;
 
 import com.konakart.app.KKException;
+import com.konakart.appif.KKEngIf;
 import com.konakart.appif.LanguageIf;
-import org.onehippo.forge.konakart.common.al.BasketMgr;
-import org.onehippo.forge.konakart.common.al.CustomerMgr;
-import org.onehippo.forge.konakart.common.al.ProductMgr;
-import org.onehippo.forge.konakart.common.al.WishListMgr;
+import org.onehippo.forge.konakart.common.al.*;
 
 import java.math.BigDecimal;
 
@@ -13,6 +11,16 @@ public interface KKEngineIf {
 
     static final String KONAKART_PROPERTIES = "konakart.properties";
     static final String KONAKART_KEY = "konakart-key";
+
+    /**
+     * @return konakart engine
+     */
+    KKEngIf getEngine();
+
+    /**
+     * @return the session id
+     */
+    String getSessionId();
 
     /**
      * Login to the session
@@ -61,11 +69,16 @@ public interface KKEngineIf {
      */
     ProductMgr getProductMgr();
 
+    /**
+     * @return the review manager
+     */
+    ReviewMgr getReviewMgr();
 
     /**
-     * @return the language manager
+     * @return the customer tag manager
      */
-//    LanguageMgr getLangMgr();
+    CustomerTagMgr getCustomerTagMgr();
+
 
 
     /**

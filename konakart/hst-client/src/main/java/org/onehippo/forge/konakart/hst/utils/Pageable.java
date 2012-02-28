@@ -187,6 +187,10 @@ public class Pageable {
             end = (int) getTotalPages();
         } else if (pageNumber <= before) {
             end = end + (before - pageNumber) + 1;
+
+            if (end >= getTotalPages()) {
+                end = (int) getTotalPages();
+            }
         }
         return end;
     }

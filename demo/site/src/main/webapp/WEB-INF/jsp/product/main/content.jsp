@@ -12,7 +12,8 @@
             <c:out value="${product.price}"/>
             <c:if test="${not empty product.specialPrice}"></s></c:if>
             | <c:if test="${not empty product.specialPrice}"><c:out value="${product.specialPrice}"/></c:if>
-            <div class="rating stars-${product.rating}"><a href="${fn:escapeXml(prdlink)}"><c:out value="${product.rating}"/></a></div>
+            <fmt:formatNumber value="${product.rating * 10}" var="ratingStyle" pattern="#0"/>
+            <div class="rating stars-${ratingStyle}"><a href="${fn:escapeXml(prdlink)}"><c:out value="${product.rating}"/></a></div>
             <br/>
             <br/>
          </li>

@@ -4,7 +4,6 @@ import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jackrabbit.value.DoubleValue;
-import org.apache.jackrabbit.value.LongValue;
 import org.joda.time.DateTime;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.replication.utils.NodeHelper;
@@ -40,6 +39,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
     private NodeHelper nodeHelper;
     private String contentRoot;
     private String productDocType;
+    private String kkProductTypeName;
     private String konakartProductPropertyName;
 
     public void setSession(Session session) throws RepositoryException {
@@ -49,7 +49,23 @@ public abstract class AbstractProductFactory implements ProductFactory {
     }
 
     public void setContentRoot(String contentRoot) {
+        // Add a / at the end of the content root
+        if (!StringUtils.endsWith(contentRoot, "/")) {
+            contentRoot +=  "/";
+        }
+
         this.contentRoot = contentRoot;
+    }
+    
+    public String createReviewFolder(String reviewFolder) throws Exception {
+
+        if (StringUtils.isEmpty(reviewFolder)) {
+            reviewFolder = KKCndConstants.DEFAULT_REVIEWS_FOLDER;
+        }
+
+        nodeHelper.createMissingFolders(contentRoot + reviewFolder);
+
+        return nodeHelper.encodeName(reviewFolder);
     }
 
     public void setKonakartProductPropertyName(String konakartProductPropertyName) {
@@ -58,6 +74,11 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     public void setProductDocType(String productDocType) {
         this.productDocType = productDocType;
+    }
+
+    @Override
+    public void setKKProductTypeName(String productTypeName) {
+        this.kkProductTypeName = productTypeName;
     }
 
     @Override
@@ -143,8 +164,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
         // Create the konakart ref product
         createOrUpdateKonakartProduct(product, productNode, language.getId());
 
-        // Create
-
         // Save the node
         productNode.getSession().save();
 
@@ -165,10 +184,10 @@ public abstract class AbstractProductFactory implements ProductFactory {
      */
     private String createProductNodeRoot(Product product) {
 
-        String absPath = contentRoot;
+        String absPath = contentRoot + "/" + kkProductTypeName;
 
         // Get the manufacturer name
-        absPath += "/" + product.getManufacturerName();
+        absPath += product.getManufacturerName();
 
         // Get the creation time
         DateTime dateTime = new DateTime(product.getDateAdded().getTime().getTime());
@@ -194,7 +213,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         // Create the node
         if (!productNode.hasNode(konakartProductPropertyName)) {
-            konakartNode = productNode.addNode(konakartProductPropertyName, KKCndConstants.DOCUMENT_TYPE);
+            konakartNode = productNode.addNode(konakartProductPropertyName, KKCndConstants.PRODUCT_DOC_TYPE);
             konakartNode.setProperty(KKCndConstants.PRODUCT_ID, (long) product.getId());
             descriptionNode = konakartNode.addNode(KKCndConstants.PRODUCT_DESCRIPTION, "hippostd:html");
             standardPriceNode = konakartNode.addNode(KKCndConstants.PRODUCT_STANDARD_PRICE, KKCndConstants.CP_PRICE_TYPE);
@@ -209,14 +228,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
         konakartNode.setProperty(KKCndConstants.PRODUCT_LANGUAGE_ID, languageId);
         konakartNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER, product.getManufacturerName());
         konakartNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER_ID, product.getManufacturerId());
-
-        long rating = 0;
-
-        if (product.getRating() != null) {
-            rating = product.getRating().longValue();
-        }
-
-        konakartNode.setProperty(KKCndConstants.PRODUCT_RATING, rating);
 
         if (product.getPrice0() != null) {
             standardPriceNode.setProperty(KKCndConstants.CP_PRICE_0, new DoubleValue(product.getPrice0().doubleValue()));

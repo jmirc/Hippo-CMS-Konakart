@@ -4,21 +4,21 @@
     <sv:value>hst:catalog</sv:value>
   </sv:property>
   <sv:property sv:name="jcr:uuid" sv:type="String">
-    <sv:value>3c7fd258-2368-4608-8f5c-137c69d331b0</sv:value>
+    <sv:value>0621d29c-d342-471b-b264-48a8bef1412d</sv:value>
   </sv:property>
   <sv:node sv:name="myhippoproject-catalog">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:containeritempackage</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>65bd35ea-6e34-49b7-b82b-c034ac62bfca</sv:value>
+      <sv:value>56c1fd99-2e09-4aa8-a0c1-03b98ebe1c4b</sv:value>
     </sv:property>
     <sv:node sv:name="list">
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:containeritemcomponent</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>5b557c8f-9570-4cfc-ae26-3b5948097f6d</sv:value>
+        <sv:value>f194834b-bddf-47de-bc92-937ba2d32e74</sv:value>
       </sv:property>
       <sv:property sv:name="hst:componentclassname" sv:type="String">
         <sv:value>org.example.components.ListView</sv:value>

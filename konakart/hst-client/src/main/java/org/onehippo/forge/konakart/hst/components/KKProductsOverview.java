@@ -1,6 +1,5 @@
 package org.onehippo.forge.konakart.hst.components;
 
-import com.konakart.app.KKException;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.content.beans.query.HstQuery;
@@ -14,9 +13,8 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.util.SearchInputParsingUtils;
 import org.hippoecm.hst.utils.BeanUtils;
-import org.onehippo.forge.konakart.common.engine.KKEngineIf;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
-import org.onehippo.forge.konakart.hst.utils.ComponentUtil;
+import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.utils.PageableCollection;
 
 import java.lang.reflect.ParameterizedType;
@@ -51,11 +49,11 @@ public abstract class KKProductsOverview<T extends KKProductDocument> extends KK
         if (pageSizeParam == null || "".equals(pageSizeParam)) {
             pageSizeParam = getParameter(PARAM_PAGE_SIZE, request);
         }
-        int pageSize = ComponentUtil.parseIntParameter(PARAM_PAGE_SIZE, pageSizeParam, DEFAULT_PAGE_SIZE, log);
+        int pageSize = KKUtil.parseIntParameter(PARAM_PAGE_SIZE, pageSizeParam, DEFAULT_PAGE_SIZE, log);
         request.setAttribute("pageSize", pageSize);
 
         String currentPageParam = getPublicRequestParameter(request, PARAM_CURRENT_PAGE);
-        int currentPage = ComponentUtil.parseIntParameter(PARAM_CURRENT_PAGE, currentPageParam, DEFAULT_CURRENT_PAGE, log);
+        int currentPage = KKUtil.parseIntParameter(PARAM_CURRENT_PAGE, currentPageParam, DEFAULT_CURRENT_PAGE, log);
 
         String orderBy = getParameter(PARAM_ORDER_BY, request);
         if (orderBy == null || "".equals(orderBy)) {
@@ -73,9 +71,6 @@ public abstract class KKProductsOverview<T extends KKProductDocument> extends KK
         String jsEnabled = getPublicRequestParameter(request, "jsEnabled");
 
         try {
-            KKEngineIf kkEngine = super.getKKEngine(request, response);
-
-
             HstQuery hstQuery = getQueryManager(request).createQuery(getSiteContentBaseBean(request), getProductDocumentClass());
 
             if (!StringUtils.isEmpty(query)) {
@@ -132,7 +127,7 @@ public abstract class KKProductsOverview<T extends KKProductDocument> extends KK
                     }
 
                     pages = new PageableCollection<T>(beans, facNavBean.getCount().intValue(),
-                            ComponentUtil.getIntConfigurationParameter(request, PARAM_PAGE_SIZE, pageSize),
+                            KKUtil.getIntConfigurationParameter(request, PARAM_PAGE_SIZE, pageSize),
                             currentPage, kkEngine);
                     resultCount = result.getCount();
                 }
@@ -141,8 +136,6 @@ public abstract class KKProductsOverview<T extends KKProductDocument> extends KK
             request.setAttribute("count", resultCount);
         } catch (QueryException qe) {
             log.error("Error while getting the documents " + qe.getMessage(), qe);
-        } catch (KKException e) {
-            log.error("Failed to retrieve Konakart engine " + e.getMessage(), e);
         }
 
 

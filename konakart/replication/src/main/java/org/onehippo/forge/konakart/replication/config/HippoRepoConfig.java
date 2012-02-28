@@ -19,6 +19,7 @@ public class HippoRepoConfig {
      *
      *    <bean id="englishUsStore" class="org.onehippo.forge.konakart.replication.config.HippoKonakartMapping">
      *       <property name="hippoContentRoot" value="/content/documents/myhippoproject/Products"/>
+     *       <property name="hippoContentRoot" value="/content/documents/myhippoproject/Products"/>
      *    </bean>
      */
     private Map<String, HippoKonakartMapping> localeContentRootAssociation = new HashMap<String, HippoKonakartMapping>();
@@ -27,25 +28,9 @@ public class HippoRepoConfig {
         this.localeContentRootAssociation = localeContentRootAssociation;
     }
 
-    public String getStoreId(String localeName) {
+    public HippoKonakartMapping getMapping(String localeName) {
         if (localeContentRootAssociation.containsKey(localeName)) {
-            return localeContentRootAssociation.get(localeName).getStoreId();
-        }
-
-        return null;
-    }
-
-    public String getContentRoot(String localeName) {
-        if (localeContentRootAssociation.containsKey(localeName)) {
-            return localeContentRootAssociation.get(localeName).getHippoContentRoot();
-        }
-
-        return null;
-    }
-
-    public String getContentId(String localeName) {
-        if (localeContentRootAssociation.containsKey(localeName)) {
-            return localeContentRootAssociation.get(localeName).getCatalogId();
+            return localeContentRootAssociation.get(localeName);
         }
 
         return null;

@@ -24,7 +24,6 @@
             <groupId>org.onehippo.forge</groupId>
             <artifactId>hippo-addon-konakart-common</artifactId>
             <version>1.00.00-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- Hippo dependencies -->

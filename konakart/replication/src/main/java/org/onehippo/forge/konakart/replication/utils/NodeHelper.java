@@ -58,6 +58,11 @@ public class NodeHelper {
     public NodeHelper(Session session) {
         this.session = session;
     }
+    
+    
+    public String encodeName(String name) {
+        return uriEncoding.encode(name);
+    }
 
 
     /**
@@ -242,6 +247,7 @@ public class NodeHelper {
         return childNode;
 
     }
+
 
     /**
      * Update the hippostd state

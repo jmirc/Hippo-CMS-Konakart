@@ -180,7 +180,7 @@
                     <sv:value>Docbase</sv:value>
                 </sv:property>
             </sv:node>
-            <sv:node sv:name="reviewcustomerid">
+            <sv:node sv:name="reviewkonakartid">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>hipposysedit:field</sv:value>
                 </sv:property>
@@ -194,7 +194,7 @@
                     <sv:value>false</sv:value>
                 </sv:property>
                 <sv:property sv:name="hipposysedit:path" sv:type="String">
-                    <sv:value>konakart:reviewcustomerid</sv:value>
+                    <sv:value>konakart:reviewkonakartid</sv:value>
                 </sv:property>
                 <sv:property sv:name="hipposysedit:primary" sv:type="Boolean">
                     <sv:value>false</sv:value>
@@ -274,7 +274,7 @@
             <sv:property sv:name="konakart:reviewcomment" sv:type="String">
                 <sv:value/>
             </sv:property>
-            <sv:property sv:name="konakart:reviewcustomerid" sv:type="Long">
+            <sv:property sv:name="konakart:reviewkonakartid" sv:type="Long">
                 <sv:value>0</sv:value>
             </sv:property>
             <sv:property sv:name="konakart:reviewemail" sv:type="String">

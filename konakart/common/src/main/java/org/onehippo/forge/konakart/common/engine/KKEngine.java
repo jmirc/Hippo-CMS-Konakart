@@ -9,10 +9,7 @@ import com.konakart.appif.LanguageIf;
 import com.konakart.bl.ConfigConstants;
 import com.konakart.util.KKConstants;
 import org.apache.commons.lang.StringUtils;
-import org.onehippo.forge.konakart.common.al.BasketMgr;
-import org.onehippo.forge.konakart.common.al.CustomerMgr;
-import org.onehippo.forge.konakart.common.al.ProductMgr;
-import org.onehippo.forge.konakart.common.al.WishListMgr;
+import org.onehippo.forge.konakart.common.al.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +49,8 @@ public class KKEngine implements KKEngineIf {
     private BasketMgr basketMgr;
     private WishListMgr wishListMgr;
     private ProductMgr productMgr;
+    private ReviewMgr reviewMgr;
+    private CustomerTagMgr customerTagMgr;
 
     /**
      * Default contructor
@@ -93,6 +92,7 @@ public class KKEngine implements KKEngineIf {
     public void logout() throws Exception {
         if (sessionId != null) {
             engine.logout(sessionId);
+            sessionId = null;
         }
 
     }
@@ -127,6 +127,15 @@ public class KKEngine implements KKEngineIf {
         return productMgr;
     }
 
+    @Override
+    public ReviewMgr getReviewMgr() {
+        return reviewMgr;
+    }
+
+    @Override
+    public CustomerTagMgr getCustomerTagMgr() {
+        return customerTagMgr;
+    }
 
     /**
      * Called by the UI to determine whether to display prices with tax.
@@ -293,6 +302,12 @@ public class KKEngine implements KKEngineIf {
         basketMgr = new BasketMgr(this);
         wishListMgr = new WishListMgr(this);
         productMgr = new ProductMgr(this);
+        reviewMgr = new ReviewMgr(this);
+        customerTagMgr = new CustomerTagMgr(this);
+
+        // Create a guest user
+        customerMgr.createGuest();
+
 
         // Retrieve the list of languages defined into konakart.
         setLanguageId(locale);

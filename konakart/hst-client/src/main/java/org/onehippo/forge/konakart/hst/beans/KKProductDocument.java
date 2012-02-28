@@ -2,8 +2,9 @@ package org.onehippo.forge.konakart.hst.beans;
 
 import com.konakart.app.KKException;
 import com.konakart.appif.ProductIf;
+import com.konakart.appif.ReviewIf;
+import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.content.beans.standard.HippoDocument;
-import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.engine.KKEngineIf;
 import org.onehippo.forge.konakart.hst.beans.compound.Konakart;
 import org.slf4j.Logger;
@@ -36,14 +37,29 @@ public abstract class KKProductDocument extends HippoDocument {
     }
 
     /**
+     * @return the Konakart product's id
+     */
+    public int getProductId() {
+        return product.getId();
+    }
+
+
+    /**
      * @return the product's name
      */
     public String getName() {
-        if (product == null) {
-            return getProperty(KKCndConstants.PRODUCT_NAME);
+        String name = "";
+
+        if (konakart != null) {
+            name = konakart.getProductName();
         }
 
-        return product.getName();
+        // Retrieve the name from Konakart
+        if (StringUtils.isEmpty(name)) {
+            name = product.getName();
+        }
+
+        return name;
     }
 
     /**
@@ -173,10 +189,47 @@ public abstract class KKProductDocument extends HippoDocument {
     }
 
     /**
+     * @return the folder where the reviews will be saved
+     */
+    public String getReviewsFolder() {
+        return product.getCustom2();
+    }
+
+
+    /**
      * @return the rating value
      */
-    public Long getRating() {
-        return konakart.getRating();
+    public int getNumberOfReviews() {
+        return product.getNumberReviews();
+    }
+
+    /**
+     * @return the rating value
+     */
+    public Double getRating() {
+
+        try {
+            ReviewIf[] reviewIfs = kkEngine.getReviewMgr().fetchReviewsPerProduct(konakart.getProductId().intValue(),
+                    konakart.getLanguageId().intValue());
+
+            if (reviewIfs == null || reviewIfs.length == 0) {
+                return 0D;
+            }
+
+            double rating = 0;
+
+            for (ReviewIf reviewIf : reviewIfs) {
+                rating += reviewIf.getRating();
+            }
+
+
+
+            return rating / reviewIfs.length;
+
+        } catch (KKException e) {
+            log.warn("Failed to retrieve the average rating.");
+            return 0D;
+        }
     }
 
     /**
@@ -202,4 +255,6 @@ public abstract class KKProductDocument extends HippoDocument {
             }
         }
     }
+
+
 }

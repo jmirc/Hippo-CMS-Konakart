@@ -4,7 +4,7 @@
     <sv:value>hst:component</sv:value>
   </sv:property>
   <sv:property sv:name="jcr:uuid" sv:type="String">
-    <sv:value>26f332f6-abe8-42eb-b1ec-6557a5ec0965</sv:value>
+    <sv:value>7c58005a-b02d-409a-86c0-ec960cfb3b78</sv:value>
   </sv:property>
   <sv:property sv:name="hst:referencecomponent" sv:type="String">
     <sv:value>hst:pages/standard</sv:value>
@@ -14,14 +14,14 @@
       <sv:value>hst:component</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>d35fa218-34d1-49fa-b3fc-a99c321b8a77</sv:value>
+      <sv:value>69bce96d-cb92-475d-8dd0-2b36ba39abcb</sv:value>
     </sv:property>
     <sv:node sv:name="content">
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:component</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>515692cf-e31b-47dd-8442-9f28a326f327</sv:value>
+        <sv:value>25ba5ec2-a060-42b9-95a5-1f58ee9001ff</sv:value>
       </sv:property>
       <sv:property sv:name="hst:referencecomponent" sv:type="String">
         <sv:value>hst:components/content</sv:value>
@@ -35,7 +35,7 @@
         <sv:value>hst:containercomponent</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>adfd3fe2-8cc2-45cc-ad16-f10c83bf41e0</sv:value>
+        <sv:value>c454d986-ee48-44d6-a763-39d487b25ad4</sv:value>
       </sv:property>
       <sv:property sv:name="hst:componentclassname" sv:type="String">
         <sv:value>org.hippoecm.hst.pagecomposer.builtin.components.StandardContainerComponent</sv:value>

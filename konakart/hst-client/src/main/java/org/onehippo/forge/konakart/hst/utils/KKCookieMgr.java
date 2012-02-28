@@ -4,7 +4,9 @@ import com.konakart.app.KKCookie;
 import com.konakart.app.KKException;
 import com.konakart.appif.CustomerIf;
 import com.konakart.appif.KKCookieIf;
-import org.onehippo.forge.konakart.common.engine.KKEngine;
+import org.hippoecm.hst.core.component.HstRequest;
+import org.hippoecm.hst.core.component.HstResponse;
+import org.onehippo.forge.konakart.common.engine.KKEngineIf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +41,7 @@ public class KKCookieMgr {
      * @throws KKException .
      */
     public String manageCookies(HttpServletRequest request, HttpServletResponse response,
-                                 KKEngine kkEngine) throws KKException {
+                                 KKEngineIf kkEngine) throws KKException {
         if (!kkEngine.isKkCookieEnabled()) {
             return null;
         }
@@ -91,6 +93,37 @@ public class KKCookieMgr {
     }
 
     /**
+     * When we log out, ensure that the new guest customer that is created has the id saved in the
+     * browser cookie.
+     *
+     * @param request the Hst request
+     * @param response the Hst response
+     * @param kkEngine the Konakart engine
+     * @throws KKException .
+     */
+    public void manageCookieLogout(HstRequest request, HstResponse response, KKEngineIf kkEngine) throws KKException {
+        if (!kkEngine.isKkCookieEnabled()) {
+            return;
+        }
+
+        CustomerIf currentCustomer = kkEngine.getCustomerMgr().getCurrentCustomer();
+
+        if (currentCustomer != null) {
+            String guestCustomerIdStr = getKKCookie(GUEST_CUSTOMER_ID, request, response, kkEngine);
+            // Only get the basket items if we can retrieve a temporary customer from the cookie
+            if (guestCustomerIdStr != null) {
+                try {
+                    currentCustomer.setId(Integer.parseInt(guestCustomerIdStr));
+                    kkEngine.getBasketMgr().getBasketItemsPerCustomer();
+                } catch (NumberFormatException e) {
+                   // do nothing
+                }
+            }
+        }
+    }
+
+
+    /**
      * Utility method to read a KKCookie. It attempts to get the UUID from the browser cookie and
      * creates a new browser cookie if it doesn't find one.
      *
@@ -102,7 +135,7 @@ public class KKCookieMgr {
      * @throws com.konakart.app.KKException Failed to retrieve the cookie
      */
     protected String getKKCookie(String attrId, HttpServletRequest request,
-                                 HttpServletResponse response, KKEngine kkEngine) throws KKException {
+                                 HttpServletResponse response, KKEngineIf kkEngine) throws KKException {
         /*
          * Get the CustomerUuid from the browser cookie and create the cookie if it doesn't exist.
          */
@@ -123,7 +156,7 @@ public class KKCookieMgr {
      * @return the value of the cookie
      * @throws KKException Failed to retrieve the cookie
      */
-    protected String getKKCookie(String customerUuid, String attrId, KKEngine kkEngine)
+    protected String getKKCookie(String customerUuid, String attrId, KKEngineIf kkEngine)
             throws KKException {
         KKCookieIf kkCookie = kkEngine.getEngine().getCookie(customerUuid, attrId);
 
@@ -145,7 +178,7 @@ public class KKCookieMgr {
      * @throws KKException Failed to create the cookie
      */
     protected void setKKCookie(String attrId, String attrValue, HttpServletRequest request,
-                               HttpServletResponse response, KKEngine kkEngine) throws KKException {
+                               HttpServletResponse response, KKEngineIf kkEngine) throws KKException {
         /*
          * Get the CustomerUuid from the browser cookie and create the cookie if it doesn't exist.
          */
@@ -168,7 +201,7 @@ public class KKCookieMgr {
      * @throws KKException failed to set a cookie
      */
     protected void setKKCookie(String customerUuid, String attrId, String attrValue,
-                               KKEngine kkEngine) throws KKException
+                               KKEngineIf kkEngine) throws KKException
     {
         KKCookieIf kkCookie = new KKCookie();
         kkCookie.setCustomerUuid(customerUuid);

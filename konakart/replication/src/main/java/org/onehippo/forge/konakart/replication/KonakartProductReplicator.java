@@ -6,15 +6,19 @@ import com.konakart.appif.DataDescriptorIf;
 import com.konakart.appif.LanguageIf;
 import com.konakart.appif.ProductSearchIf;
 import org.apache.commons.lang.StringUtils;
+import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.bl.CustomProductMgr;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngineConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
+import org.onehippo.forge.konakart.replication.config.HippoKonakartMapping;
 import org.onehippo.forge.konakart.replication.config.HippoRepoConfig;
 import org.onehippo.forge.konakart.replication.factory.DefaultProductFactory;
 import org.onehippo.forge.konakart.replication.factory.ProductFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class KonakartProductReplicator {
 
@@ -65,7 +69,6 @@ public class KonakartProductReplicator {
     }
 
     /**
-     *
      * @param konakartProductPropertyName .
      */
     public void setKonakartProductPropertyName(String konakartProductPropertyName) {
@@ -103,6 +106,7 @@ public class KonakartProductReplicator {
 
     /**
      * Copy products from Konakart to Hippo
+     *
      * @param config the config which contains the Konakart configuration
      * @return true if the product has been updated, false otherwise
      * @throws Exception an exception
@@ -135,46 +139,68 @@ public class KonakartProductReplicator {
         // Retrieve the list of languages defined into konakart.
         LanguageIf[] languages = kkengine.getEngine().getAllLanguages();
 
+
+
         // For each language defined into Konakart we need to add the product under Hippo
         for (LanguageIf language : languages) {
-            Products products = productMgr.searchForProductsWithOptions(kkengine.getSessionId(), dataDescriptorIf,
-                    productSearchIf, language.getId(), fetchProductOptions);
 
-            // Get the Hippo content root
-            String contentRoot = hippoRepoConfig.getContentRoot(language.getLocale());
+            List<HippoKonakartMapping.MappingByProductType> mapping = hippoRepoConfig.getMapping(language.getLocale()).getByProductTypeList();
 
-            if (contentRoot == null) {
-                continue;
-            }
+            // Synchronized by product types.
+            for (HippoKonakartMapping.MappingByProductType mappingByProductType : mapping) {
 
-            if (!isUpdated && products.getProductArray().length > 0) {
-                isUpdated = true;
-            }
+                String productTypeName = KKCndConstants.PRODUCT_TYPE.ALL.getName();
+                
+                // Retrieve the list of products by product's type
+                if (mappingByProductType.isProductTypeSet()) {
+                    productSearchIf.setProductType(mappingByProductType.getProductType());
+                    productTypeName = KKCndConstants.PRODUCT_TYPE.findByType(mappingByProductType.getProductType()).getName();
+                }
 
-            // Insert products into konakart
-            for (Product product : products.getProductArray()) {
-                ProductFactory productFactory = createProductFactory();
+                // Search
+                Products products = productMgr.searchForProductsWithOptions(kkengine.getSessionId(), dataDescriptorIf,
+                        productSearchIf, language.getId(), fetchProductOptions);
 
-                if (productFactory == null) {
+                // Get the Hippo content root
+                String contentRoot = mappingByProductType.getHippoContentRoot();
+
+                if (contentRoot == null) {
                     continue;
                 }
 
-                productFactory.setSession(jcrSession);
-                productFactory.setContentRoot(contentRoot);
-                productFactory.setProductDocType(productDocType);
-                productFactory.setKonakartProductPropertyName(konakartProductPropertyName);
+                if (!isUpdated && products.getProductArray().length > 0) {
+                    isUpdated = true;
+                }
 
-                // Create the product
-                String uuid = productFactory.add(product, language);
+                // Insert products into konakart
+                for (Product product : products.getProductArray()) {
+                    ProductFactory productFactory = createProductFactory();
 
-                // Set the Hippo Node UUID
-                productMgr.updateUUID(product.getId(), uuid);
+                    if (productFactory == null) {
+                        continue;
+                    }
+
+                    productFactory.setSession(jcrSession);
+                    productFactory.setContentRoot(contentRoot);
+                    productFactory.setProductDocType(productDocType);
+                    productFactory.setKKProductTypeName(productTypeName);
+                    productFactory.setKonakartProductPropertyName(konakartProductPropertyName);
+
+                    // Create the reviews' folder if not exists
+                    String reviewName = productFactory.createReviewFolder(mappingByProductType.getReviewFolder());
+
+                    // Create the product
+                    String uuid = productFactory.add(product, language);
+
+                    // Set the Hippo Node UUID
+                    productMgr.synchronizeHippoKK(product.getId(), uuid, reviewName);
+                }
             }
         }
 
         // Logout.
         kkengine.logout();
-        
+
         return isUpdated;
     }
 

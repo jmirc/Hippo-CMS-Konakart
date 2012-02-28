@@ -4,7 +4,6 @@ import com.konakart.app.Customer;
 import com.konakart.app.KKException;
 import com.konakart.appif.AddressIf;
 import com.konakart.appif.CustomerIf;
-import com.konakart.appif.KKEngIf;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 
 /**
@@ -27,6 +26,13 @@ public class CustomerMgr extends BaseMgr {
      */
     public CustomerIf getCurrentCustomer() {
         return currentCustomer;
+    }
+
+    /**
+     * @return true if the customer is a guest, false otherwise
+     */
+    public boolean isGuestCustomer() {
+        return currentCustomer != null && currentCustomer.getId() < 0;
     }
 
 

@@ -52,10 +52,10 @@ public class KonakartEventsWorkflowImpl extends WorkflowImpl implements Workflow
 
         // Try to update Update the product id
         try {
-            KKEngine KKEngine = new KKEngine(config.getEngineConfig());
+            KKEngine kkEngine = new KKEngine(config.getEngineConfig());
 
             // Try to retrieve the product by id
-            CustomProductMgr productMgr = new CustomProductMgr(KKEngine.getEngine(), config.getLastUpdatedTime());
+            CustomProductMgr productMgr = new CustomProductMgr(kkEngine.getEngine(), config.getLastUpdatedTime());
 
             // update the product
             boolean publishedState = (state != null) && (state.equals("published"));

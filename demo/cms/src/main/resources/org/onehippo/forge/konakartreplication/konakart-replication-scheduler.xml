@@ -55,7 +55,17 @@
     <task:scheduler id="konakartImportingScheduler" pool-size="1" />
     
     <bean id="englishUsStore" class="org.onehippo.forge.konakart.replication.config.HippoKonakartMapping">
-        <property name="hippoContentRoot" value="/content/documents/myhippoproject/Products"/>
+        <property name="byProductTypeList">
+            <list>
+                <bean class="org.onehippo.forge.konakart.replication.config.HippoKonakartMapping$MappingByProductType">
+                    <property name="hippoContentRoot" value="/content/documents/myhippoproject/Products"/>
+                    <property name="reviewFolder" value="Products Review"/>
+                </bean>
+            </list>
+        </property>
+
+
+
     </bean>
 
 </beans>

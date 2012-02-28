@@ -21,18 +21,46 @@
     <sv:property sv:name="hippo:version" sv:type="String">
         <sv:value>konakartworkflowevent-v1</sv:value>
     </sv:property>
-    <sv:node sv:name="Konakartworkflowevents-workflow">
+    <!--<sv:node sv:name="Konakartworkflowevents-plublish-workflow">-->
+        <!--<sv:property sv:name="jcr:primaryType" sv:type="Name">-->
+            <!--<sv:value>hippo:initializeitem</sv:value>-->
+        <!--</sv:property>-->
+        <!--<sv:property sv:name="hippo:contentresource" sv:type="String">-->
+            <!--<sv:value>workflow-publish.xml</sv:value>-->
+        <!--</sv:property>-->
+        <!--<sv:property sv:name="hippo:contentroot" sv:type="String">-->
+            <!--<sv:value>/hippo:configuration</sv:value>-->
+        <!--</sv:property>-->
+        <!--<sv:property sv:name="hippo:sequence" sv:type="Double">-->
+            <!--<sv:value>20002</sv:value>-->
+        <!--</sv:property>-->
+    <!--</sv:node>-->
+    <sv:node sv:name="Konakartworkflowevents-deplublish-workflow">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hippo:initializeitem</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>workflow.xml</sv:value>
+            <sv:value>workflow-depublish.xml</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:contentroot" sv:type="String">
             <sv:value>/hippo:configuration</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>1001.0</sv:value>
+            <sv:value>20002.1</sv:value>
+        </sv:property>
+    </sv:node>
+    <sv:node sv:name="Konakartworkflowevents-review-workflow">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>hippo:initializeitem</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:contentresource" sv:type="String">
+            <sv:value>workflow-review.xml</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:contentroot" sv:type="String">
+            <sv:value>/hippo:configuration</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:sequence" sv:type="Double">
+            <sv:value>20002.2</sv:value>
         </sv:property>
     </sv:node>
 </sv:node>

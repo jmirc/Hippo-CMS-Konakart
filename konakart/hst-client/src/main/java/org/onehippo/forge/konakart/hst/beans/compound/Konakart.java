@@ -7,10 +7,12 @@ import org.onehippo.forge.konakart.common.KKCndConstants;
 
 import java.util.List;
 
-@Node(jcrType = KKCndConstants.DOCUMENT_TYPE)
+@Node(jcrType = KKCndConstants.PRODUCT_DOC_TYPE)
 public class Konakart extends HippoItem {
 
     private Price standardPrice = null;
+
+
 
     public Long getProductId() {
         return getProperty(KKCndConstants.PRODUCT_ID);
@@ -56,14 +58,6 @@ public class Konakart extends HippoItem {
     public Double getSpecialPrice() {
         return getProperty(KKCndConstants.PRODUCT_SPECIAL_PRICE);
     }
-
-    /**
-     * @return the product's rating
-     */
-    public Long getRating() {
-        return getProperty(KKCndConstants.PRODUCT_RATING);
-    }
-
 
     /**
      * Load the compound price.
