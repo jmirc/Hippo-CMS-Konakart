@@ -4,6 +4,8 @@ import com.konakart.app.Customer;
 import com.konakart.app.KKException;
 import com.konakart.appif.AddressIf;
 import com.konakart.appif.CustomerIf;
+import com.konakart.bl.ConfigConstants;
+import org.apache.commons.lang.StringUtils;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 
 /**
@@ -19,6 +21,50 @@ public class CustomerMgr extends BaseMgr {
      */
     public CustomerMgr(KKEngine kkEngine) {
         super(kkEngine);
+    }
+
+    /**
+     * Login to the session
+     *
+     * @param username the username of the user
+     * @param password the password of the user
+     *
+     * @throws Exception if the logged-in process failed
+     * @return the session id
+     */
+    public String login(String username, String password) throws Exception {
+        /*
+        * Login with default credentials
+        */
+        String sessionId = kkEng.login(username, password);
+
+        if (sessionId == null) {
+            String msg = "Login of " + username + " was unsuccessful";
+            throw new KKException(msg);
+        }
+
+        // Set the current customer
+        currentCustomer = kkEng.getCustomer(sessionId);
+
+        // Set the session id
+        kkEngine.setSessionId(sessionId);
+
+        return sessionId;
+
+    }
+
+    /**
+     * Logout from Konakart
+     * @throws Exception if the logout process failed
+     */
+    public void logout() throws Exception {
+        String sessionId = kkEngine.getSessionId();
+
+        if (sessionId != null) {
+            kkEng.logout(sessionId);
+            kkEng.logout(sessionId);
+            kkEngine.setSessionId(null);
+        }
     }
 
     /**
@@ -78,5 +124,26 @@ public class CustomerMgr extends BaseMgr {
         }
 
         return currentCustomer;
+    }
+
+    /**
+     * Normally called after a login to get and cache customer relevant data such as the customer's basket,
+     * the customer's orders and the customer's order history.
+     *
+     * If this method isn't called, then the UI will not show updated data.
+     *
+     * @throws KKException .
+     */
+    public void refreshCustomerCachedData() throws KKException {
+        kkEngine.getBasketMgr().getBasketItemsPerCustomer();
+        kkEngine.getOrderMgr().populateCustomerOrders();
+        kkEngine.getProductMgr().fetchOrderHistoryArray();
+        String enableWhishList = kkEngine.getConfig(ConfigConstants.ENABLE_WISHLIST);
+        if (!StringUtils.isEmpty(enableWhishList) && (StringUtils.equalsIgnoreCase(enableWhishList, "true"))) {
+            kkEngine.getWishListMgr().fetchCustomersWishLists();
+        }
+        kkEngine.getOrderMgr().setCouponCode(null);
+        kkEngine.getOrderMgr().setGiftCertCode(null);
+        kkEngine.getOrderMgr().setRewardPoints(0);
     }
 }

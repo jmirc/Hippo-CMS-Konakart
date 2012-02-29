@@ -42,6 +42,32 @@ public class CustomerTagMgr extends BaseMgr {
         return kkEng.getCustomerTag(kkEngine.getSessionId(), tagName);
     }
 
+    /**
+     *  A string is returned containing the value of the customer tag referenced
+     *  by the parameter tagName for the logged in customer or guest customer.
+     *
+     * @param tagName The name of the customer tag
+     *
+     * @return Returns the value of the customer tag
+     * @throws com.konakart.app.KKException .
+     */
+    public String getCustomerTagValue(String tagName) throws KKException
+    {
+        if (!isEnabled()) {
+            return null;
+        }
+
+        if (!StringUtils.isEmpty(tagName)) {
+            if (StringUtils.isEmpty(tagName) && (kkEngine.getSessionId().length() > 0)) {
+                return kkEng.getCustomerTagValue(kkEngine.getSessionId(), tagName);
+            }
+
+            return kkEng.getCustomerTagValueForGuest(kkEngine.getCustomerMgr().getCurrentCustomer().getId(), tagName);
+        }
+
+        return null;
+    }
+
 
     /**
      * Sets the tag for the logged in customer or guest customer.

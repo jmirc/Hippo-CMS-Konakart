@@ -22,7 +22,33 @@ public class KKCookieMgr {
      */
     protected Logger log = LoggerFactory.getLogger(KKCookieMgr.class);
 
+    /**
+     * Customer tags
+     */
+    protected static final String TAG_PROD_PAGE_SIZE = "PROD_PAGE_SIZE";
+
+    protected static final String TAG_ORDER_PAGE_SIZE = "ORDER_PAGE_SIZE";
+
+    protected static final String TAG_REVIEW_PAGE_SIZE = "REVIEW_PAGE_SIZE";
+
+    protected static final String TAG_PRODUCTS_VIEWED = "PRODUCTS_VIEWED";
+
+    protected static final String TAG_CATEGORIES_VIEWED = "CATEGORIES_VIEWED";
+
+    protected static final String TAG_MANUFACTURERS_VIEWED = "MANUFACTURERS_VIEWED";
+
+    protected static final String TAG_SEARCH_STRING = "SEARCH_STRING";
+
+    protected static final String TAG_COUNTRY_CODE = "COUNTRY_CODE";
+
+    protected static final String TAG_BIRTH_DATE = "BIRTH_DATE";
+
+    protected static final String TAG_IS_MALE = "IS_MALE";
+
+
     protected static final String GUEST_CUSTOMER_ID = "GUEST_CUSTOMER_ID";
+
+    protected static final String CUSTOMER_NAME = "CUSTOMER_NAME";
 
     protected static final String CUSTOMER_UUID = "CUSTOMER_UUID";
 
@@ -41,7 +67,7 @@ public class KKCookieMgr {
      * @throws KKException .
      */
     public String manageCookies(HttpServletRequest request, HttpServletResponse response,
-                                 KKEngineIf kkEngine) throws KKException {
+                                KKEngineIf kkEngine) throws KKException {
         if (!kkEngine.isKkCookieEnabled()) {
             return null;
         }
@@ -93,10 +119,60 @@ public class KKCookieMgr {
     }
 
     /**
+     * Save the customer name in a cookie so that we can greet him when he next accesses the
+     * application.
+     *
+     * @param request the Hst request
+     * @param response the Hst response
+     * @param kkEngine the konakart engine
+     * @throws KKException .
+     */
+    public void manageCookiesLogin(HttpServletRequest request, HttpServletResponse response, KKEngineIf kkEngine) throws KKException {
+        if (!kkEngine.isKkCookieEnabled()) {
+            return;
+        }
+
+        CustomerIf currentCustomer = kkEngine.getCustomerMgr().getCurrentCustomer();
+        if (currentCustomer != null) {
+            setKKCookie(CUSTOMER_NAME, currentCustomer.getFirstName() + " " + currentCustomer.getLastName(),
+                    request, response, kkEngine);
+        }
+
+        // TODO
+//        /*
+//         * Get customer preferences from customer tags. If the tag value exists, then set the
+//         * preference in the manager and set the cookie.
+//         */
+//        String prodPageSizeStr = kkEngine.getCustomerTagMgr().getCustomerTagValue(TAG_PROD_PAGE_SIZE);
+//
+//        if (prodPageSizeStr != null && prodPageSizeStr.length() > 0) {
+//            int prodPageSize = Integer.parseInt(prodPageSizeStr);
+//            kkEngine.getProductMgr().setMaxDisplaySearchResults(prodPageSize);
+//            setKKCookie(TAG_PROD_PAGE_SIZE, prodPageSizeStr, request, response, kkEngine);
+//        }
+//
+//        String orderPageSizeStr = kkEngine.getCustomerTagMgr().getCustomerTagValue(TAG_ORDER_PAGE_SIZE);
+//        if (orderPageSizeStr != null && orderPageSizeStr.length() > 0) {
+//            int orderPageSize = Integer.parseInt(orderPageSizeStr);
+//            kkEngine.getOrderMgr().setPageSize(orderPageSize);
+//            setKKCookie(TAG_ORDER_PAGE_SIZE, orderPageSizeStr, request, response, kkEngine);
+//        }
+//
+//        String reviewPageSizeStr = kkAppEng.getCustomerTagMgr().getCustomerTagValue(TAG_REVIEW_PAGE_SIZE);
+//
+//        if (reviewPageSizeStr != null && reviewPageSizeStr.length() > 0) {
+//            int reviewPageSize = Integer.parseInt(reviewPageSizeStr);
+//            kkEngine.getReviewMgr().setPageSize(reviewPageSize);
+//            setKKCookie(TAG_REVIEW_PAGE_SIZE, reviewPageSizeStr, request, response, kkEngine);
+//        }
+    }
+
+
+    /**
      * When we log out, ensure that the new guest customer that is created has the id saved in the
      * browser cookie.
      *
-     * @param request the Hst request
+     * @param request  the Hst request
      * @param response the Hst response
      * @param kkEngine the Konakart engine
      * @throws KKException .
@@ -116,7 +192,7 @@ public class KKCookieMgr {
                     currentCustomer.setId(Integer.parseInt(guestCustomerIdStr));
                     kkEngine.getBasketMgr().getBasketItemsPerCustomer();
                 } catch (NumberFormatException e) {
-                   // do nothing
+                    // do nothing
                 }
             }
         }
@@ -195,14 +271,13 @@ public class KKCookieMgr {
      * Utility method to set a KKCookie when we have the customerUuid
      *
      * @param customerUuid customer uid to save
-     * @param attrId the cookie's attribute
-     * @param attrValue the cookie's value
-     * @param kkEngine konakart engine
+     * @param attrId       the cookie's attribute
+     * @param attrValue    the cookie's value
+     * @param kkEngine     konakart engine
      * @throws KKException failed to set a cookie
      */
     protected void setKKCookie(String customerUuid, String attrId, String attrValue,
-                               KKEngineIf kkEngine) throws KKException
-    {
+                               KKEngineIf kkEngine) throws KKException {
         KKCookieIf kkCookie = new KKCookie();
         kkCookie.setCustomerUuid(customerUuid);
         kkCookie.setAttributeId(attrId);

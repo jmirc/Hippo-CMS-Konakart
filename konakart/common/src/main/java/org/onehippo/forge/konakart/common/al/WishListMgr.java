@@ -87,8 +87,10 @@ public class WishListMgr extends BaseMgr {
 
         AddToWishListOptions wishListOptions = new AddToWishListOptions();
 
-        wishListOptions.setCatalogId(kkEngine.getCatalogId());
-        wishListOptions.setUseExternalPrice(kkEngine.getCatalogId() != null);
+        if (!StringUtils.isEmpty(kkEngine.getCatalogId())) {
+            wishListOptions.setCatalogId(kkEngine.getCatalogId());
+            wishListOptions.setUseExternalPrice(kkEngine.getCatalogId() != null);
+        }
 
         if (isGuestCustomer) {
             wishListOptions.setCustomerId(kkEngine.getCustomerMgr().getCurrentCustomer().getId());

@@ -76,7 +76,7 @@ public abstract class KKHstComponent extends BaseHstComponent {
         kkEngine = getKKEngine(request, response);
 
         // Logged-in
-        loggedIn(request, response);
+        validKKSession(request, response);
     }
 
 
@@ -176,6 +176,58 @@ public abstract class KKHstComponent extends BaseHstComponent {
     }
 
     /**
+     * Log a user to Konakart
+     *
+     * @param request  the Hst request
+     * @param response the Hst response
+     * @param username the username
+     * @param password the password
+     * @return true if the user is logged-in, false otherwise
+     */
+    protected boolean loggedIn(HstRequest request, HstResponse response, String username, String password) {
+
+        try {
+            int custId = validKKSession(request, response);
+
+            // Check if the user is already logged in
+            if (custId >= 0) {
+                if (log.isDebugEnabled()) {
+                    log.debug("User already logged in");
+                }
+
+                // Refresh the data relevant to the customer such as his basked and recent orders.
+                kkEngine.getCustomerMgr().refreshCustomerCachedData();
+
+                return true;
+            }
+
+            // Get recently viewed products before logging in
+            CustomerTagIf prodsViewedTagGuest = kkEngine.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+
+            // Login
+            kkEngine.getCustomerMgr().login(username, password);
+
+            /*
+            * Manage Cookies
+            */
+            kkCookieMgr.manageCookiesLogin(request, response, kkEngine);
+
+
+            // Set recently viewed products for the logged in customer if changed as guest
+            CustomerTagIf prodsViewedTagCust = kkEngine.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+            updateRecentlyViewedProducts(prodsViewedTagGuest, prodsViewedTagCust);
+
+
+        } catch (Exception e) {
+            log.warn("Unable to logged-in", e);
+        }
+
+        return false;
+
+    }
+
+
+    /**
      * Checks to see whether we are logged in.
      *
      * @param request  the Hst request
@@ -183,7 +235,7 @@ public abstract class KKHstComponent extends BaseHstComponent {
      * @return Returns the CustomerId if logged in. Otherwise a negative number.
      * @throws HstComponentException .
      */
-    protected int loggedIn(HstRequest request, HstResponse response) throws HstComponentException {
+    protected int validKKSession(HstRequest request, HstResponse response) throws HstComponentException {
 
         try {
             // If the session is null, set the forward and return a negative number
@@ -192,15 +244,15 @@ public abstract class KKHstComponent extends BaseHstComponent {
             }
 
             // If the user can't be logged-in, an exception if thrown
-            int custId;
             try {
-                custId = kkEngine.getEngine().checkSession(kkEngine.getSessionId());
+                // At this point we return a valid customer id
+                return kkEngine.getEngine().checkSession(kkEngine.getSessionId());
             } catch (KKException e) {
 
                 //Get recently viewed products before logging out
                 CustomerTagIf prodsViewedTagCust = kkEngine.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
 
-                kkEngine.logout();
+                kkEngine.getCustomerMgr().logout();
 
                 // Ensure that the guest customer is the one in the cookie
                 kkCookieMgr.manageCookieLogout(request, response, kkEngine);
@@ -209,17 +261,12 @@ public abstract class KKHstComponent extends BaseHstComponent {
                 CustomerTagIf prodsViewedTagGuest = kkEngine.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
 
                 updateRecentlyViewedProducts(prodsViewedTagCust, prodsViewedTagGuest);
-
-                return -1;
             }
-
-
-            // At this point we return a valid customer id
-            return custId;
-
         } catch (Exception e) {
-            throw new HstComponentException("Unable to perform the loggin", e);
+            log.warn("Unable to check the Konakart session - {} ", e.toString());
         }
+
+        return -1;
     }
 
 

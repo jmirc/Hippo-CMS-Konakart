@@ -23,22 +23,6 @@ public interface KKEngineIf {
     String getSessionId();
 
     /**
-     * Login to the session
-     *
-     * @param username the username of the user
-     * @param password the password of the user
-     *
-     * @throws Exception if the logged-in process failed
-     */
-    void login(String username, String password) throws Exception;
-
-    /**
-     * Logout from Konakart
-     * @throws Exception if the logout process failed
-     */
-    void logout() throws Exception;
-
-    /**
      * @return true if the cookie are enabled, false otherwise
      */
     boolean isKkCookieEnabled();
@@ -78,6 +62,11 @@ public interface KKEngineIf {
      * @return the customer tag manager
      */
     CustomerTagMgr getCustomerTagMgr();
+
+    /**
+     * @return the order manager
+     */
+    OrderMgr getOrderMgr();
 
 
 

@@ -44,11 +44,6 @@ public abstract class KKProductDetail extends KKHstComponent {
      */
     public static final String ADD_TO_BASKET_ACTION = "addToBasket";
 
-    /**
-     * This action is used to remove a product to the baskket
-     */
-    public static final String REMOVE_TO_BASKET_ACTION = "removeToBasket";
-
 
     private static final String NAME = "name";
     private static final String COMMENT = "comment";
@@ -99,7 +94,7 @@ public abstract class KKProductDetail extends KKHstComponent {
             }
         }
 
-        request.setAttribute("allowComments", isGuestAllowComments() || !isGuestCustomer());
+        request.setAttribute("allowComments", !isGuestCustomer());
 
     }
 
@@ -111,7 +106,7 @@ public abstract class KKProductDetail extends KKHstComponent {
         /**
          * Check if a guest customer can review a product
          */
-        if (!isGuestAllowComments() && isGuestCustomer()) {
+        if (isGuestCustomer()) {
             log.warn("A guest customer can not review a product");
             return;
         }
@@ -121,17 +116,10 @@ public abstract class KKProductDetail extends KKHstComponent {
         if (StringUtils.equals(type, REVIEW_ACTION)) {
             processReview(product, request, response);
         }
-    }
 
-    /**
-     * Define if a guest customer can write comments on products
-     *
-     * By default, guest customer can write comments
-     *
-     * @return true if a guest customer can write comments, false otherwise.
-     */
-    protected boolean isGuestAllowComments() {
-        return true;
+        if (StringUtils.equals(type, ADD_TO_BASKET_ACTION)) {
+            addToBasket(product, request, response);
+        }
     }
 
     /**
@@ -224,6 +212,17 @@ public abstract class KKProductDetail extends KKHstComponent {
                 persistableSession.logout();
             }
         }
+    }
+
+
+    /**
+     * Add the product to the basket
+     * @param product the product to add
+     * @param request the Hst Request
+     * @param response the Hst Response
+     */
+    private void addToBasket(KKProductDocument product, HstRequest request, HstResponse response) {
+
     }
 
 

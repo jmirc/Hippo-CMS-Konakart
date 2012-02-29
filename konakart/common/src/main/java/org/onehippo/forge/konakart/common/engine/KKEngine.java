@@ -2,10 +2,7 @@ package org.onehippo.forge.konakart.common.engine;
 
 import com.konakart.app.EngineConfig;
 import com.konakart.app.KKException;
-import com.konakart.appif.CurrencyIf;
-import com.konakart.appif.KKConfigurationIf;
-import com.konakart.appif.KKEngIf;
-import com.konakart.appif.LanguageIf;
+import com.konakart.appif.*;
 import com.konakart.bl.ConfigConstants;
 import com.konakart.util.KKConstants;
 import org.apache.commons.lang.StringUtils;
@@ -51,6 +48,7 @@ public class KKEngine implements KKEngineIf {
     private ProductMgr productMgr;
     private ReviewMgr reviewMgr;
     private CustomerTagMgr customerTagMgr;
+    private OrderMgr orderMgr;
 
     /**
      * Default contructor
@@ -73,28 +71,6 @@ public class KKEngine implements KKEngineIf {
         this.config = config;
 
         init(locale);
-    }
-
-    @Override
-    public void login(String username, String password) throws KKException {
-        /*
-        * Login with default credentials
-        */
-        sessionId = engine.login(username, password);
-
-        if (sessionId == null) {
-            String msg = "Login of " + username + " was unsuccessful";
-            throw new KKException(msg);
-        }
-    }
-
-    @Override
-    public void logout() throws Exception {
-        if (sessionId != null) {
-            engine.logout(sessionId);
-            sessionId = null;
-        }
-
     }
 
     @Override
@@ -137,6 +113,11 @@ public class KKEngine implements KKEngineIf {
         return customerTagMgr;
     }
 
+    @Override
+    public OrderMgr getOrderMgr() {
+        return orderMgr;
+    }
+
     /**
      * Called by the UI to determine whether to display prices with tax.
      *
@@ -176,6 +157,16 @@ public class KKEngine implements KKEngineIf {
     public String getSessionId() {
         return sessionId;
     }
+
+    /**
+     * Set the session id
+     * @param sessionId session id to set
+     */
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+
+    }
+
 
     /**
      * @return the store id
@@ -304,6 +295,7 @@ public class KKEngine implements KKEngineIf {
         productMgr = new ProductMgr(this);
         reviewMgr = new ReviewMgr(this);
         customerTagMgr = new CustomerTagMgr(this);
+        orderMgr = new OrderMgr(this);
 
         // Create a guest user
         customerMgr.createGuest();
@@ -426,5 +418,4 @@ public class KKEngine implements KKEngineIf {
         }
         this.kkCookieEnabled = true;
     }
-
 }

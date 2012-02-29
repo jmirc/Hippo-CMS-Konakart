@@ -119,7 +119,7 @@ public class KonakartProductReplicator {
         KKEngine kkengine = new KKEngine(engineConfig);
 
         // login
-        kkengine.login(engineConfig.getUsername(), engineConfig.getPassword());
+        kkengine.getCustomerMgr().login(engineConfig.getUsername(), engineConfig.getPassword());
 
         // Retrieve the product factory
         CustomProductMgr productMgr = new CustomProductMgr(kkengine.getEngine(), config.getLastUpdatedTime());
@@ -199,7 +199,7 @@ public class KonakartProductReplicator {
         }
 
         // Logout.
-        kkengine.logout();
+        kkengine.getCustomerMgr().logout();
 
         return isUpdated;
     }

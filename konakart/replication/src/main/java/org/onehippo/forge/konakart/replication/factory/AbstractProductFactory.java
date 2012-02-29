@@ -184,7 +184,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
      */
     private String createProductNodeRoot(Product product) {
 
-        String absPath = contentRoot + "/" + kkProductTypeName;
+        String absPath = contentRoot + "/" + kkProductTypeName + "/";
 
         // Get the manufacturer name
         absPath += product.getManufacturerName();

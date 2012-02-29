@@ -13,6 +13,10 @@
 <div class="rating stars-${ratingStyle}"><a href="${fn:escapeXml(prdlink)}"><c:out value="${product.rating}"/></a></div>
 <br/>
 
+<hst:actionURL var="addToBasket">
+    <hst:param name="action" value="addToBasket"/>
+</hst:actionURL>
+
 
 <div id="comments">
     <c:forEach items="${reviews}" var="review">
