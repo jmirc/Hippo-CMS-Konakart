@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * This is the base product document class. Must be extended by each product's component.
  */
-public abstract class KKProductDocument extends HippoDocument {
+public class KKProductDocument extends HippoDocument {
 
     protected Logger log = LoggerFactory.getLogger(KKProductDocument.class);
 

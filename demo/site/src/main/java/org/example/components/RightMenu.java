@@ -8,12 +8,6 @@ import org.onehippo.forge.konakart.hst.utils.KKUtil;
 
 public class RightMenu extends KKHstComponent {
 
-    @Override
-    public void doBeforeRender(final HstRequest request, final HstResponse response) throws HstComponentException {
-        super.doBeforeRender(request, response);
-
-        request.setAttribute("isLogged", !isGuestCustomer());
-    }
 
     @Override
     public void doAction(HstRequest request, HstResponse response) throws HstComponentException {

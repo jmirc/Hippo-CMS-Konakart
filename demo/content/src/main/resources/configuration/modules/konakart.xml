@@ -8,7 +8,7 @@
       <sv:value>konakart:config</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:enabled" sv:type="Boolean">
-      <sv:value>true</sv:value>
+      <sv:value>false</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:engineClassName" sv:type="String">
       <sv:value>com.konakart.app.KKEng</sv:value>
@@ -23,7 +23,7 @@
       <sv:value>false</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:lastUpdatedTime" sv:type="Date">
-      <sv:value>2012-02-27T11:15:13.264-05:00</sv:value>
+      <sv:value>2012-02-29T16:24:07.501-05:00</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:password" sv:type="String">
       <sv:value>princess</sv:value>

@@ -13,6 +13,12 @@
         </form>
     </c:when>
     <c:otherwise>
-        <c:out value="${currentCustomer}"/>
+        Welcome - <c:out value="${currentCustomer.firstName}"/>
     </c:otherwise>
 </c:choose>
+
+<!-- Add the shopping Cart -->
+<tag:shoppingcart/>
+
+
+

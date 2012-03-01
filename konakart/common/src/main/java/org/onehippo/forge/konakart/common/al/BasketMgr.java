@@ -105,7 +105,7 @@ public class BasketMgr extends BaseMgr {
      * @return Total value of basket already formatted
      * @throws KKException .
      */
-    public String getBasketTotal() throws KKException {
+    public String getBasketTotal()  {
         return kkEngine.formatPrice(basketTotal);
     }
 

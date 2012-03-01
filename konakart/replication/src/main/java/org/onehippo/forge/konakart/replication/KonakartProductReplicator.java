@@ -119,7 +119,7 @@ public class KonakartProductReplicator {
         KKEngine kkengine = new KKEngine(engineConfig);
 
         // login
-        kkengine.getCustomerMgr().login(engineConfig.getUsername(), engineConfig.getPassword());
+        kkengine.getCustomerMgr().loginByAdmin(engineConfig.getUsername(), engineConfig.getPassword());
 
         // Retrieve the product factory
         CustomProductMgr productMgr = new CustomProductMgr(kkengine.getEngine(), config.getLastUpdatedTime());

@@ -6,6 +6,7 @@ import com.konakart.appif.LanguageIf;
 import org.onehippo.forge.konakart.common.al.*;
 
 import java.math.BigDecimal;
+import java.util.Locale;
 
 public interface KKEngineIf {
 
@@ -21,6 +22,11 @@ public interface KKEngineIf {
      * @return the session id
      */
     String getSessionId();
+
+    /**
+     * @return the current locle
+     */
+    String getLocale();
 
     /**
      * @return true if the cookie are enabled, false otherwise

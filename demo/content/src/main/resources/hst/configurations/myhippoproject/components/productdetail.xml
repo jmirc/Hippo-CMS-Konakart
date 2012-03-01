@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="productsoverview">
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="productdetail">
   <sv:property sv:name="jcr:primaryType" sv:type="Name">
     <sv:value>hst:component</sv:value>
   </sv:property>
   <sv:property sv:name="jcr:uuid" sv:type="String">
-    <sv:value>c42f89ea-ac3f-4642-ac0f-056168bc8bb3</sv:value>
+    <sv:value>7041fee5-3443-48de-bd88-97a9f5f1f5bf</sv:value>
   </sv:property>
   <sv:property sv:name="hst:componentclassname" sv:type="String">
-    <sv:value>org.example.components.ProductsOverview</sv:value>
+    <sv:value>org.example.components.ProductDetail</sv:value>
   </sv:property>
   <sv:property sv:name="hst:parameternames" sv:type="String" sv:multiple="true"/>
   <sv:property sv:name="hst:parametervalues" sv:type="String" sv:multiple="true"/>
   <sv:property sv:name="hst:template" sv:type="String">
-    <sv:value>products.main.content</sv:value>
+    <sv:value>product.detail.content</sv:value>
   </sv:property>
 </sv:node>

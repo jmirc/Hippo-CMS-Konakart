@@ -1,13 +1,19 @@
 package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.app.KKException;
+import com.konakart.appif.BasketIf;
 import com.konakart.appif.CustomerIf;
 import com.konakart.appif.CustomerTagIf;
+import com.konakart.appif.ProductIf;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
+import org.hippoecm.hst.content.beans.ObjectBeanManagerException;
+import org.hippoecm.hst.content.beans.manager.ObjectBeanManager;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
+import org.hippoecm.hst.core.linking.HstLink;
+import org.hippoecm.hst.core.linking.HstLinkCreator;
 import org.hippoecm.hst.core.request.ComponentConfiguration;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngineIf;
@@ -18,6 +24,8 @@ import org.onehippo.forge.konakart.hst.utils.KKCookieMgr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -26,7 +34,7 @@ import java.io.IOException;
 /**
  * This class is the based class to interact with Konakart
  */
-public abstract class KKHstComponent extends BaseHstComponent {
+public class KKHstComponent extends BaseHstComponent {
 
     /**
      * The <code>Log</code> instance for this application.
@@ -77,6 +85,15 @@ public abstract class KKHstComponent extends BaseHstComponent {
 
         // Logged-in
         validKKSession(request, response);
+
+        // Set the attribut isLogged if the user is a logged user
+        request.setAttribute("isLogged", !isGuestCustomer());
+
+        // Set the current customer
+        if (!isGuestCustomer()) {
+            request.setAttribute("currentCustomer", getCurrentCustomer());
+            request.setAttribute("basketTotal", kkEngine.getBasketMgr().getBasketTotal());
+        }
     }
 
 
@@ -134,6 +151,28 @@ public abstract class KKHstComponent extends BaseHstComponent {
         return document;
     }
 
+    /**
+     * Find and retrieve the associated KKProductDoucment with the product id.
+     *
+     * @param beanManager object content manager
+     * @param productId id of the Konakart product to find
+     *
+     * @return the Hippo Bean
+     */
+    public KKProductDocument getProductDocumentById(ObjectBeanManager beanManager, int productId) {
+
+        try {
+            ProductIf productIf = kkEngine.getProductMgr().getProductById(productId, kkEngine.getLanguage().getId());
+
+            return (KKProductDocument) beanManager.getObjectByUuid(productIf.getCustom1());
+        } catch (KKException e) {
+            log.warn("Failed to retrieve the Konakart product with the id - " + productId);
+        } catch (ObjectBeanManagerException e) {
+            log.warn("Failed to retrieve the Konakart product with the id - " + productId);
+        }
+
+        return null;
+    }
 
     /**
      * The store Id. By default this method return "store1" value or the value associated to the defaultStoreId's
@@ -207,11 +246,13 @@ public abstract class KKHstComponent extends BaseHstComponent {
             // Login
             kkEngine.getCustomerMgr().login(username, password);
 
+            // Update the custom1 of each product under the basket to set the full path of the product's node
+            updateBaskets(request);
+
             /*
             * Manage Cookies
             */
             kkCookieMgr.manageCookiesLogin(request, response, kkEngine);
-
 
             // Set recently viewed products for the logged in customer if changed as guest
             CustomerTagIf prodsViewedTagCust = kkEngine.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
@@ -223,6 +264,42 @@ public abstract class KKHstComponent extends BaseHstComponent {
         }
 
         return false;
+
+    }
+
+    /**
+     * Set for each products into the cart, the path of the associated Hippo Bean
+     * @param request the hst request
+     */
+    private void updateBaskets(HstRequest request) {
+        
+        ObjectBeanManager beanManager = getObjectBeanManager(request);
+
+        // getting hold of the link creator
+        HstLinkCreator linkCreator = request.getRequestContext().getHstLinkCreator();
+
+        // Retrieve the list of products into the basket
+        BasketIf[] basketIfs = getCurrentCustomer().getBasketItems();
+
+        for (BasketIf basketIf : basketIfs) {
+
+            String hippoUUID = basketIf.getProduct().getCustom1();
+
+            try {
+                HippoBean hippoBean = (HippoBean) beanManager.getObjectByUuid(hippoUUID);
+
+                // create HstLink
+                HstLink link = linkCreator.create(hippoBean, request.getRequestContext());
+                // create the url String
+                String url = link.toUrlForm(request.getRequestContext(), false);
+
+                // Set the path of a product
+                basketIf.setCustom1(url);
+            } catch (ObjectBeanManagerException e) {
+                log.warn("Unable to retrieve the product with UUID - " + hippoUUID);
+            }
+        }
+
 
     }
 
@@ -293,7 +370,7 @@ public abstract class KKHstComponent extends BaseHstComponent {
 
             try {
                 Session jcrSession = request.getRequestContext().getSession();
-                kkEngine = new KKEngine(HippoModuleConfig.load(jcrSession).getEngineConfig(), request.getLocale());
+                kkEngine = new KKEngine(HippoModuleConfig.load(jcrSession).getEngineConfig(), request.getRequestContext().getPreferredLocale());
                 kkEngine.setStoreId(getStoreIdFromChannel());
                 kkEngine.setCatalogId(getCatalogIdFromChannel());
 

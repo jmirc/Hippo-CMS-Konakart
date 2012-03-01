@@ -17,6 +17,7 @@ public class CustomerMgr extends BaseMgr {
 
     /**
      * Default constuctor
+     *
      * @param kkEngine the Konakart Engine
      */
     public CustomerMgr(KKEngine kkEngine) {
@@ -28,9 +29,8 @@ public class CustomerMgr extends BaseMgr {
      *
      * @param username the username of the user
      * @param password the password of the user
-     *
-     * @throws Exception if the logged-in process failed
      * @return the session id
+     * @throws Exception if the logged-in process failed
      */
     public String login(String username, String password) throws Exception {
         /*
@@ -49,12 +49,42 @@ public class CustomerMgr extends BaseMgr {
         // Set the session id
         kkEngine.setSessionId(sessionId);
 
+        // Refresh customer data
+        refreshCustomerCachedData();
+
+        return sessionId;
+
+    }
+
+    /**
+     * Login to the session
+     *
+     * @param username the username of the user
+     * @param password the password of the user
+     * @return the session id
+     * @throws Exception if the logged-in process failed
+     */
+    public String loginByAdmin(String username, String password) throws Exception {
+        /*
+        * Login with default credentials
+        */
+        String sessionId = kkEng.login(username, password);
+
+        if (sessionId == null) {
+            String msg = "Login of " + username + " was unsuccessful";
+            throw new KKException(msg);
+        }
+
+        // Set the session id
+        kkEngine.setSessionId(sessionId);
+
         return sessionId;
 
     }
 
     /**
      * Logout from Konakart
+     *
      * @throws Exception if the logout process failed
      */
     public void logout() throws Exception {
@@ -62,9 +92,11 @@ public class CustomerMgr extends BaseMgr {
 
         if (sessionId != null) {
             kkEng.logout(sessionId);
-            kkEng.logout(sessionId);
-            kkEngine.setSessionId(null);
         }
+
+        kkEngine.setSessionId(null);
+
+        createGuest();
     }
 
     /**
@@ -84,6 +116,7 @@ public class CustomerMgr extends BaseMgr {
 
     /**
      * create a guest customer
+     *
      * @throws com.konakart.app.KKException if the creation of a guest has failed
      */
     public void createGuest() throws KKException {
@@ -98,12 +131,12 @@ public class CustomerMgr extends BaseMgr {
         currentCustomer.setGlobalProdNotifier(0);
     }
 
+
     /**
-     *  Ensures that the currentCustomer object has his default address and array of addresses populated
+     * Ensures that the currentCustomer object has his default address and array of addresses populated
      *
      * @param force If set to true the addresses will be refreshed even if they already exist
      * @return the customer with populated addresses
-     *
      * @throws KKException .
      */
 
@@ -129,7 +162,7 @@ public class CustomerMgr extends BaseMgr {
     /**
      * Normally called after a login to get and cache customer relevant data such as the customer's basket,
      * the customer's orders and the customer's order history.
-     *
+     * <p/>
      * If this method isn't called, then the UI will not show updated data.
      *
      * @throws KKException .
@@ -146,4 +179,5 @@ public class CustomerMgr extends BaseMgr {
         kkEngine.getOrderMgr().setGiftCertCode(null);
         kkEngine.getOrderMgr().setRewardPoints(0);
     }
+
 }

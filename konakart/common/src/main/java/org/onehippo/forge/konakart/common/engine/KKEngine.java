@@ -32,7 +32,9 @@ public class KKEngine implements KKEngineIf {
     private String storeId = KKConstants.KONAKART_DEFAULT_STORE_ID;
     private String catalogId;
     private boolean kkCookieEnabled;
+
     private LanguageIf language;
+    private String currentLocale;
 
     // Currency
     private CurrencyIf defaultCurrency;
@@ -144,16 +146,17 @@ public class KKEngine implements KKEngineIf {
         return null;
     }
 
-    /**
-     * @return konakart engine
-     */
+    @Override
     public KKEngIf getEngine() {
         return engine;
     }
 
-    /**
-     * @return the session id
-     */
+    @Override
+    public String getLocale() {
+        return currentLocale;
+    }
+
+    @Override
     public String getSessionId() {
         return sessionId;
     }
@@ -198,15 +201,15 @@ public class KKEngine implements KKEngineIf {
 
 
     @Override
-    public String formatPrice(BigDecimal number) throws KKException {
+    public String formatPrice(BigDecimal number) {
         return formatPrice(number, null);
     }
 
     @Override
-    public String formatPrice(BigDecimal numberToFormat, String currencyCode) throws KKException {
+    public String formatPrice(BigDecimal numberToFormat, String currencyCode) {
 
         if (numberToFormat == null) {
-            return "null";
+            return null;
         }
 
         CurrencyIf localCurrencyIf;
@@ -223,11 +226,14 @@ public class KKEngine implements KKEngineIf {
             try {
                 localCurrencyIf = engine.getCurrency(currencyCode);
             } catch (KKException localKKException) {
-                throw new KKException("A currency cannot be found for currency code = " + currencyCode, localKKException);
+                log.warn("A currency cannot be found for currency code = " + currencyCode, localKKException);
+                return null;
             }
 
-            if (localCurrencyIf == null)
-                throw new KKException("A currency cannot be found for currency code = " + currencyCode);
+            if (localCurrencyIf == null) {
+                log.warn("A currency cannot be found for currency code = " + currencyCode);
+                return null;
+            }
 
             localDecimalFormat = CurrencyUtil.getFormatter(localCurrencyIf);
         }
@@ -269,6 +275,7 @@ public class KKEngine implements KKEngineIf {
      * Initialise a KonaKart engine instance and perform a login to get a session id.
      *
      * @param locale the current locale
+     *
      * @throws Exception .
      */
     private void init(Locale locale) throws Exception {
@@ -299,7 +306,6 @@ public class KKEngine implements KKEngineIf {
 
         // Create a guest user
         customerMgr.createGuest();
-
 
         // Retrieve the list of languages defined into konakart.
         setLanguageId(locale);
@@ -343,17 +349,17 @@ public class KKEngine implements KKEngineIf {
             return;
         }
 
-        String sLocale = locale.toString();
+        currentLocale = locale.toString();
 
         for (LanguageIf language : languages) {
-            if (StringUtils.equals(language.getLocale(), sLocale)) {
+            if (StringUtils.equals(language.getLocale(), currentLocale)) {
                 this.language = language;
                 break;
             }
         }
 
         if (this.language == null) {
-            log.error("Unable to find a Konakart language for the locale - " + sLocale);
+            log.error("Unable to find a Konakart language for the locale - " + currentLocale);
         }
     }
 
