@@ -4,7 +4,7 @@
     <sv:value>hst:component</sv:value>
   </sv:property>
   <sv:property sv:name="jcr:uuid" sv:type="String">
-    <sv:value>26ea7cc4-b33b-4851-be33-64b888330eeb</sv:value>
+    <sv:value>238dc640-33ce-44be-af19-b240a6d209e8</sv:value>
   </sv:property>
   <sv:property sv:name="hst:componentclassname" sv:type="String">
     <sv:value>org.example.components.Overview</sv:value>

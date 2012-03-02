@@ -28,11 +28,9 @@ import java.util.List;
 /**
  * This detail product component should be used to retrieve a product
  */
-public abstract class KKProductDetail extends KKHstComponent {
+public abstract class KKProductDetail extends KKHstActionComponent {
 
     private static final String DATE_PATTERN = "yyyy-MM-dd HH.mm.ss.SSS";
-
-    private static final String ACTION = "action";
 
     /**
      * This action is used to add a review
@@ -99,7 +97,7 @@ public abstract class KKProductDetail extends KKHstComponent {
     }
 
     @Override
-    public void doAction(HstRequest request, HstResponse response) {
+    public void doAction(String action, HstRequest request, HstResponse response) {
 
         KKProductDocument product = getProductDocument(request, response);
 
@@ -111,13 +109,11 @@ public abstract class KKProductDetail extends KKHstComponent {
             return;
         }
 
-        String type = KKUtil.getEscapedParameter(request, ACTION);
-
-        if (StringUtils.equals(type, REVIEW_ACTION)) {
+        if (StringUtils.equals(action, REVIEW_ACTION)) {
             processReview(product, request, response);
         }
 
-        if (StringUtils.equals(type, ADD_TO_BASKET_ACTION)) {
+        if (StringUtils.equals(action, ADD_TO_BASKET_ACTION)) {
             addToBasket(product, request, response);
         }
     }

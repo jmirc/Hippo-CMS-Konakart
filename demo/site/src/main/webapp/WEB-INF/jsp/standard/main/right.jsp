@@ -17,6 +17,8 @@
     </c:otherwise>
 </c:choose>
 
+<br/>
+<br/>
 <!-- Add the shopping Cart -->
 <tag:shoppingcart/>
 

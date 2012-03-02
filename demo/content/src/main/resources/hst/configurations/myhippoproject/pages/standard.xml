@@ -4,7 +4,7 @@
     <sv:value>hst:component</sv:value>
   </sv:property>
   <sv:property sv:name="jcr:uuid" sv:type="String">
-    <sv:value>23d4305d-fbc9-4bb7-a78d-3243824849cf</sv:value>
+    <sv:value>1894f629-b160-413d-802d-1918c207134c</sv:value>
   </sv:property>
   <sv:property sv:name="hst:template" sv:type="String">
     <sv:value>layout.webpage</sv:value>
@@ -14,7 +14,7 @@
       <sv:value>hst:component</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>2028dbf6-821a-4def-adb5-1f22ad966695</sv:value>
+      <sv:value>67ab5a24-29e0-49eb-b8eb-70e8a3227b38</sv:value>
     </sv:property>
     <sv:property sv:name="hst:referencecomponent" sv:type="String">
       <sv:value>hst:components/header</sv:value>
@@ -25,7 +25,7 @@
       <sv:value>hst:component</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>9d524276-c4f1-4cdb-8775-5a4a0a3207b5</sv:value>
+      <sv:value>f3cebcb8-7cb2-4e79-8f6c-e8639183ec0a</sv:value>
     </sv:property>
     <sv:property sv:name="hst:template" sv:type="String">
       <sv:value>standard.main</sv:value>
@@ -35,7 +35,7 @@
         <sv:value>hst:component</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>f4e1e646-7830-4c79-9842-13597fc0ee8a</sv:value>
+        <sv:value>6954f59c-c98d-4c7e-a4e0-8510e12259df</sv:value>
       </sv:property>
       <sv:property sv:name="hst:referencecomponent" sv:type="String">
         <sv:value>hst:components/leftmenu</sv:value>
@@ -46,7 +46,7 @@
         <sv:value>hst:component</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>55080c4a-9d58-43bf-a75f-bcd219e1de09</sv:value>
+        <sv:value>816ad1ff-b27b-4d48-9dcb-fa56da20fd2f</sv:value>
       </sv:property>
       <sv:property sv:name="hst:parameternames" sv:type="String" sv:multiple="true"/>
       <sv:property sv:name="hst:parametervalues" sv:type="String" sv:multiple="true"/>

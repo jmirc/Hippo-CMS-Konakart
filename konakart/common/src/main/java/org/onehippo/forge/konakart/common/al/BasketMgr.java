@@ -147,7 +147,7 @@ public class BasketMgr extends BaseMgr {
     /**
      * @return the basket option set with the parameter initialized by Hippo
      */
-    private AddToBasketOptionsIf getAddToBasketOptions() {
+    public AddToBasketOptionsIf getAddToBasketOptions() {
 
         AddToBasketOptions options = new AddToBasketOptions();
 

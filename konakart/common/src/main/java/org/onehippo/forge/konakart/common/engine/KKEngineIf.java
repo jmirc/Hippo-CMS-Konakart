@@ -6,7 +6,6 @@ import com.konakart.appif.LanguageIf;
 import org.onehippo.forge.konakart.common.al.*;
 
 import java.math.BigDecimal;
-import java.util.Locale;
 
 public interface KKEngineIf {
 
@@ -38,6 +37,11 @@ public interface KKEngineIf {
      */
     LanguageIf getLanguage();
 
+
+    /**
+     * @return true if the price should be displayed with Tax, false otherwise
+     */
+    boolean displayPriceWithTax();
 
     /**
      * @return the customer manager
@@ -82,9 +86,8 @@ public interface KKEngineIf {
      *
      * @param number to be formatted
      * @return The formatted price
-     * @throws KKException .
      */
-    String formatPrice(BigDecimal number) throws KKException;
+    String formatPrice(BigDecimal number) ;
 
     /**
      * Used to create a string in order to visualise a price. It ensures that the decimal places,
@@ -94,7 +97,6 @@ public interface KKEngineIf {
      * @param numberToFormat number to be formatted
      * @param currencyCode   Three letter currency code (USD, GBP, EUR etc.)
      * @return The formatted price
-     * @throws KKException .
      */
-    public String formatPrice(BigDecimal numberToFormat, String currencyCode) throws KKException;
+    public String formatPrice(BigDecimal numberToFormat, String currencyCode);
 }

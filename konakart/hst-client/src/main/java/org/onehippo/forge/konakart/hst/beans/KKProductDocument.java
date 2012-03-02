@@ -181,11 +181,7 @@ public class KKProductDocument extends HippoDocument {
             return "";
         }
 
-        try {
-            return kkEngine.formatPrice(new BigDecimal(specialPrice));
-        } catch (KKException e) {
-            return "";
-        }
+        return kkEngine.formatPrice(new BigDecimal(specialPrice));
     }
 
     /**

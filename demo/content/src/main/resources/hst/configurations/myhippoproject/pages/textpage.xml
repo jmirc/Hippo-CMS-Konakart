@@ -4,7 +4,7 @@
     <sv:value>hst:component</sv:value>
   </sv:property>
   <sv:property sv:name="jcr:uuid" sv:type="String">
-    <sv:value>f648d88c-842e-4b4d-af07-f0c102af12d6</sv:value>
+    <sv:value>06bba1f0-274f-4465-966d-9eedefd304db</sv:value>
   </sv:property>
   <sv:property sv:name="hst:referencecomponent" sv:type="String">
     <sv:value>hst:pages/standard</sv:value>
@@ -14,14 +14,14 @@
       <sv:value>hst:component</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>bcfccc25-7620-4c73-8c46-75e6f253f708</sv:value>
+      <sv:value>0f47bb52-8a6b-4b05-b09a-eb7ce5b1625a</sv:value>
     </sv:property>
     <sv:node sv:name="content">
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:component</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>f43fee97-03ea-4fbf-bc55-745a297b252c</sv:value>
+        <sv:value>7cefee56-f538-4053-9c89-e680bf97ab50</sv:value>
       </sv:property>
       <sv:property sv:name="hst:referencecomponent" sv:type="String">
         <sv:value>hst:components/content</sv:value>

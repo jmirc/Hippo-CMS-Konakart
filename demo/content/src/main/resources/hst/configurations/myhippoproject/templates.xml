@@ -4,14 +4,14 @@
     <sv:value>hst:templates</sv:value>
   </sv:property>
   <sv:property sv:name="jcr:uuid" sv:type="String">
-    <sv:value>12231921-a550-482f-9b9d-6df6433cf98b</sv:value>
+    <sv:value>652f75d0-57e4-407b-8bec-e802bda5a828</sv:value>
   </sv:property>
   <sv:node sv:name="home.main.content">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>b2a4c3b3-1adf-453d-b710-0975f8697207</sv:value>
+      <sv:value>efa60387-6207-4bb5-8712-2efb0157e566</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/home/main/content.jsp</sv:value>
@@ -22,7 +22,7 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>fe7c3e66-0f5c-4f35-a711-5c5b31757781</sv:value>
+      <sv:value>97bc9c36-50f6-4c4b-9d37-b059c5d6165d</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/layout/webpage.jsp</sv:value>
@@ -33,7 +33,7 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>b1b16d75-9f0d-457e-88f2-8cf2159a789e</sv:value>
+      <sv:value>1018381b-bcdd-4745-bf1b-e34f5db299e0</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/news/main/content.jsp</sv:value>
@@ -44,7 +44,7 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>a1c18b2c-b713-4834-bfd6-180fa94efaf6</sv:value>
+      <sv:value>bae60ebc-cf5e-48d7-a8c2-91c790010141</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/notfound/main/content.jsp</sv:value>
@@ -55,7 +55,7 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>95fd894c-d99b-4e24-aee7-a01cddda9c3f</sv:value>
+      <sv:value>cf56c9c1-2c18-463e-817b-bd2bd74b0d05</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/overview/main/content.jsp</sv:value>
@@ -66,7 +66,7 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>713bb15f-2ce4-48cb-82fc-1e5a6c4af564</sv:value>
+      <sv:value>b4981d17-b98e-4b40-b481-d402f8d62352</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/search/main/content.jsp</sv:value>
@@ -77,7 +77,7 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>e67edd8d-cac8-4698-8d9e-cb66ada3fdfd</sv:value>
+      <sv:value>6bc0c005-8fb5-4a3f-8a75-f7fa7cd23e10</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/header.jsp</sv:value>
@@ -88,7 +88,7 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>80b3745c-8b7f-45b6-af84-585974a4ede0</sv:value>
+      <sv:value>314c723d-0d55-4eee-abb5-708f7dae3160</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/main.jsp</sv:value>
@@ -99,7 +99,7 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>d6bb03c9-d113-4d15-8001-a4a41a28f5ac</sv:value>
+      <sv:value>a4fe64b2-e98d-4ca1-89dd-985aab4a1475</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/main/leftmenu.jsp</sv:value>
@@ -110,7 +110,7 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>68ae4a64-2e72-44b7-a432-3f565411cf8a</sv:value>
+      <sv:value>a765bcb2-e30c-4d64-bcda-809f36569476</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/main/right.jsp</sv:value>
@@ -121,7 +121,7 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>0ddeda4b-ce67-45c8-bf07-7fb523a08414</sv:value>
+      <sv:value>bf5c70e3-ea2b-4c5c-98cd-303da0a505a3</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/main/content.jsp</sv:value>
@@ -132,7 +132,7 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>072ca7ba-fb93-4b3c-b230-fb5b8ec9cfa6</sv:value>
+      <sv:value>e9ed92e7-cc73-4ff4-9647-0083c66eb580</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/main/list.jsp</sv:value>
@@ -143,7 +143,7 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>e4c8e211-517f-404a-8dbc-fa8e45480606</sv:value>
+      <sv:value>a31c953f-345b-4bc4-b4dd-22c18b651f41</sv:value>
     </sv:property>
     <sv:property sv:name="hst:containers" sv:type="String" sv:multiple="true"/>
     <sv:property sv:name="hst:renderpath" sv:type="String">
@@ -155,11 +155,23 @@
       <sv:value>hst:template</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>80a8913c-1b94-4279-ad61-60a70b900334</sv:value>
+      <sv:value>66f050a8-9713-4a11-8fb1-598f9920e7cb</sv:value>
     </sv:property>
     <sv:property sv:name="hst:containers" sv:type="String" sv:multiple="true"/>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/product/main/detail.jsp</sv:value>
+    </sv:property>
+  </sv:node>
+  <sv:node sv:name="cart.detail.content">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:template</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>ae7438d7-6fd9-4d7f-a768-62ebc98656d9</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:containers" sv:type="String" sv:multiple="true"/>
+    <sv:property sv:name="hst:renderpath" sv:type="String">
+      <sv:value>jsp/cart/main/detail.jsp</sv:value>
     </sv:property>
   </sv:node>
 </sv:node>

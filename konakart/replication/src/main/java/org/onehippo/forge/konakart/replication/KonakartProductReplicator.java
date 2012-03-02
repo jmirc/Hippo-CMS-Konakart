@@ -85,11 +85,11 @@ public class KonakartProductReplicator {
         HippoModuleConfig config = HippoModuleConfig.load(jcrSession);
 
         if (!config.isIntialized()) {
-            log.warn("Failed to read the configuration from Konakart config module.");
+            log.info("Failed to read the configuration from Konakart config module.");
         }
 
         if (!config.isEnabled()) {
-            log.warn("The Konakart replicator is disabled. No replication will be operated.");
+            log.info("The Konakart replicator is disabled. No replication will be operated.");
             return;
         }
 

@@ -24,8 +24,6 @@ import org.onehippo.forge.konakart.hst.utils.KKCookieMgr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jcr.Node;
-import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -63,11 +61,6 @@ public class KKHstComponent extends BaseHstComponent {
      */
     protected KKEngineIf kkEngine;
 
-    /**
-     * The current customer
-     */
-    private CustomerIf currentCustomer;
-
 
     @Override
     public void init(ServletContext servletContext, ComponentConfiguration componentConfig) throws HstComponentException {
@@ -96,7 +89,6 @@ public class KKHstComponent extends BaseHstComponent {
         }
     }
 
-
     /**
      * Check if the current customer is a guest or a registered customer
      *
@@ -112,12 +104,7 @@ public class KKHstComponent extends BaseHstComponent {
      * @return the current customer
      */
     public CustomerIf getCurrentCustomer() {
-
-        if (currentCustomer == null) {
-            currentCustomer = kkEngine.getCustomerMgr().getCurrentCustomer();
-        }
-
-        return currentCustomer;
+        return kkEngine.getCustomerMgr().getCurrentCustomer();
     }
 
     /**

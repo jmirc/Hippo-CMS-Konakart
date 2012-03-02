@@ -216,7 +216,7 @@ public class ProductMgr extends BaseMgr {
     /**
      * @return the FetchProductOptionsIf configuration.
      */
-    private FetchProductOptionsIf getFetchProdOptions() {
+    public FetchProductOptionsIf getFetchProdOptions() {
 
         FetchProductOptions fetchProductOptions = new FetchProductOptions();
         if (!StringUtils.isEmpty(kkEngine.getCatalogId())) {

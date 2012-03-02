@@ -1,6 +1,8 @@
 package org.onehippo.forge.konakart.common.al;
 
-import com.konakart.bl.ConfigConstants;
+import com.konakart.app.KKException;
+import com.konakart.appif.OrderIf;
+import com.konakart.appif.ShippingQuoteIf;
 import org.apache.commons.lang.StringUtils;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 
@@ -16,6 +18,9 @@ public class OrderMgr extends BaseMgr {
     private String couponCode;
     private int rewardPoints;
     private String giftCertCode;
+
+    private OrderIf checkoutOrder;
+    private ShippingQuoteIf[] shippingQuotes;
 
 
     /**
@@ -129,5 +134,53 @@ public class OrderMgr extends BaseMgr {
      */
     public void setGiftCertCode(String giftCertCode) {
         this.giftCertCode = giftCertCode;
+    }
+
+    /**
+     * Sets the checkout order with the order passed in as a parameter.
+     *
+     * @param checkoutOrder - The checkoutOrder to set.
+     */
+    public void setCheckoutOrder(OrderIf checkoutOrder) {
+        this.checkoutOrder = checkoutOrder;
+    }
+
+    /**
+     * Gets an array of shipping quotes from the engine. The quotes are put into the shippingQuotes array.
+     *
+     * @throws com.konakart.app.KKException .
+     */
+    public void createShippingQuotes() throws KKException {
+        shippingQuotes = kkEng.getShippingQuotes(this.checkoutOrder, kkEngine.getLanguage().getId());
+    }
+
+    /**
+     * Gets an array of shipping quotes for the current order.
+     *
+     * @return the shippingQuotes.
+     */
+    public ShippingQuoteIf[] getShippingQuotes() {
+        return shippingQuotes;
+    }
+
+
+    /**
+     * Returns the current checkout order.
+     *
+     * @return the current checkout orde
+     */
+    public OrderIf getCheckoutOrder() {
+        return checkoutOrder;
+    }
+
+    /**
+     * Calls the engine to get an array of OrderTotal objects which are added to the checkoutOrder
+     *
+     * @throws com.konakart.app.KKException .
+     */
+    public void populateCheckoutOrderWithOrderTotals() throws KKException {
+        if (this.checkoutOrder != null) {
+            this.checkoutOrder = kkEng.getOrderTotals(this.checkoutOrder, kkEngine.getLanguage().getId());
+        }
     }
 }
