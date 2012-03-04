@@ -2,20 +2,12 @@ package org.onehippo.forge.konakart.common.engine;
 
 public class KKEngineConfig {
 
-    private String engineClassName;
     private String username;
     private String password;
-    private Long engineMode;
+    private String storeId;
+    private int engineMode;
     private boolean isCustomersShared;
     private boolean isProductsShared;
-
-    public String getEngineClassName() {
-        return engineClassName;
-    }
-
-    public void setEngineClassName(String engineClassName) {
-        this.engineClassName = engineClassName;
-    }
 
     public String getUsername() {
         return username;
@@ -33,12 +25,20 @@ public class KKEngineConfig {
         this.password = password;
     }
 
-    public int getEngineMode() {
-        return engineMode.intValue();
+    public String getStoreId() {
+        return storeId;
     }
 
-    public void setEngineMode(Long engineMode) {
-        this.engineMode = engineMode;
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+
+    public int getEngineMode() {
+        return engineMode;
+    }
+
+    public void setEngineMode(long engineMode) {
+        this.engineMode = (int) engineMode;
     }
 
     public boolean isCustomersShared() {

@@ -1,11 +1,15 @@
 package org.onehippo.forge.konakart.hst.beans;
 
+import com.konakart.al.KKAppEng;
+import com.konakart.al.KKAppException;
+import com.konakart.app.DataDescriptor;
 import com.konakart.app.KKException;
+import com.konakart.appif.DataDescriptorIf;
 import com.konakart.appif.ProductIf;
 import com.konakart.appif.ReviewIf;
+import com.konakart.appif.ReviewsIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.content.beans.standard.HippoDocument;
-import org.onehippo.forge.konakart.common.engine.KKEngineIf;
 import org.onehippo.forge.konakart.hst.beans.compound.Konakart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,14 +28,15 @@ public class KKProductDocument extends HippoDocument {
 
     private ProductIf product;
 
-    private KKEngineIf kkEngine;
+    private KKAppEng kkEngine;
 
 
     /**
      * Set the Konakart engine
+     *
      * @param kkEngine the konakart engine
      */
-    public void setKkEngine(KKEngineIf kkEngine) {
+    public void setKkEngine(KKAppEng kkEngine) {
         this.kkEngine = kkEngine;
         loadProduct();
     }
@@ -40,7 +45,7 @@ public class KKProductDocument extends HippoDocument {
      * @return the Konakart product's id
      */
     public int getProductId() {
-        return product.getId();
+        return konakart.getProductId().intValue();
     }
 
 
@@ -181,7 +186,11 @@ public class KKProductDocument extends HippoDocument {
             return "";
         }
 
-        return kkEngine.formatPrice(new BigDecimal(specialPrice));
+        try {
+            return kkEngine.formatPrice(new BigDecimal(specialPrice));
+        } catch (KKAppException e) {
+            return "";
+        }
     }
 
     /**
@@ -204,26 +213,33 @@ public class KKProductDocument extends HippoDocument {
      */
     public Double getRating() {
 
-        try {
-            ReviewIf[] reviewIfs = kkEngine.getReviewMgr().fetchReviewsPerProduct(konakart.getProductId().intValue(),
-                    konakart.getLanguageId().intValue());
 
-            if (reviewIfs == null || reviewIfs.length == 0) {
+        DataDescriptorIf dataDescriptorIf = new DataDescriptor();
+        dataDescriptorIf.setShowInvisible(false);
+
+        try {
+            ReviewsIf reviewsIf = kkEngine.getEng().getReviewsPerProduct(dataDescriptorIf, product.getId());
+
+            if (reviewsIf.getTotalNumReviews() == 0) {
+                return 0D;
+            }
+
+            // Retreive the reviews.
+            ReviewIf[] reviews = reviewsIf.getReviewArray();
+
+            // Double check...
+            if (reviews == null || reviews.length == 0) {
                 return 0D;
             }
 
             double rating = 0;
 
-            for (ReviewIf reviewIf : reviewIfs) {
+            for (ReviewIf reviewIf : reviews) {
                 rating += reviewIf.getRating();
             }
 
-
-
-            return rating / reviewIfs.length;
-
+            return rating / reviews.length;
         } catch (KKException e) {
-            log.warn("Failed to retrieve the average rating.");
             return 0D;
         }
     }
@@ -245,8 +261,12 @@ public class KKProductDocument extends HippoDocument {
 
         if (product == null) {
             try {
-                product = kkEngine.getProductMgr().getProductById(konakart.getProductId().intValue(), konakart.getLanguageId().intValue());
+                // Fetch the product related data from the database
+                kkEngine.getProductMgr().fetchSelectedProduct(konakart.getProductId().intValue());
+                product = kkEngine.getProductMgr().getSelectedProduct();
             } catch (KKException e) {
+                log.error("Unable to retrieve the product with the id : " + konakart.getProductId());
+            } catch (KKAppException e) {
                 log.error("Unable to retrieve the product with the id : " + konakart.getProductId());
             }
         }

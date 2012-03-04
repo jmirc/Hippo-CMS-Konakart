@@ -13,15 +13,14 @@
   orderable
 
 [konakart:config] > nt:base
-  - konakart:engineClassName (string)
-  - konakart:updateKonakartProductsToRepository (boolean)
-  - konakart:password (string)
-  - konakart:isCustomersShared (boolean)
   - konakart:enabled (boolean)
   - konakart:username (string)
-  - konakart:lastUpdatedTime (date)
-  - konakart:enginemode (long)
+  - konakart:password (string)
+  - konakart:storeId (string)
+  - konakart:isCustomersShared (boolean)
   - konakart:isProductsShared (boolean)
+  - konakart:enginemode (long)
+  - konakart:lastUpdatedTime (date)
 
 [konakart:konakart] > hippo:compound, hippostd:relaxed
 

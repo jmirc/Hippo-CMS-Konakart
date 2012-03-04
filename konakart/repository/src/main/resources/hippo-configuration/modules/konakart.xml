@@ -10,8 +10,14 @@
         <sv:property sv:name="konakart:enabled" sv:type="Boolean">
             <sv:value>true</sv:value>
         </sv:property>
-        <sv:property sv:name="konakart:engineClassName" sv:type="String">
-            <sv:value>com.konakart.app.KKEng</sv:value>
+        <sv:property sv:name="konakart:username" sv:type="String">
+            <sv:value>admin@konakart.com</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:password" sv:type="String">
+            <sv:value>princess</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:storeId" sv:type="String">
+            <sv:value>store1</sv:value>
         </sv:property>
         <sv:property sv:name="konakart:enginemode" sv:type="Long">
             <sv:value>0</sv:value>
@@ -21,12 +27,6 @@
         </sv:property>
         <sv:property sv:name="konakart:isProductsShared" sv:type="Boolean">
             <sv:value>false</sv:value>
-        </sv:property>
-        <sv:property sv:name="konakart:username" sv:type="String">
-            <sv:value>admin@konakart.com</sv:value>
-        </sv:property>
-        <sv:property sv:name="konakart:password" sv:type="String">
-            <sv:value>princess</sv:value>
         </sv:property>
     </sv:node>
 </sv:node>

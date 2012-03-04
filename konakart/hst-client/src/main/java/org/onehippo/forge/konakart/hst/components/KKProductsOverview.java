@@ -109,7 +109,7 @@ public abstract class KKProductsOverview<T extends KKProductDocument> extends KK
 
             if (!(currentBean instanceof HippoFacetChildNavigationBean || currentBean instanceof HippoFacetNavigation)) {
                 final HstQueryResult result = hstQuery.execute();
-                pages = new PageableCollection<T>(result.getHippoBeans(), pageSize, currentPage, kkEngine);
+                pages = new PageableCollection<T>(result.getHippoBeans(), pageSize, currentPage, kkAppEng);
                 resultCount = result.getSize();
             } else {
                 final HippoFacetNavigationBean facNavBean = BeanUtils.getFacetNavigationBean(request, hstQuery, objectConverter);
@@ -128,7 +128,7 @@ public abstract class KKProductsOverview<T extends KKProductDocument> extends KK
 
                     pages = new PageableCollection<T>(beans, facNavBean.getCount().intValue(),
                             KKUtil.getIntConfigurationParameter(request, PARAM_PAGE_SIZE, pageSize),
-                            currentPage, kkEngine);
+                            currentPage, kkAppEng);
                     resultCount = result.getCount();
                 }
             }

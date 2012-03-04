@@ -1,9 +1,9 @@
 package org.onehippo.forge.konakart.hst.utils;
 
+import com.konakart.al.KKAppEng;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.content.beans.standard.HippoBeanIterator;
 import org.hippoecm.hst.content.beans.standard.HippoDocumentIterator;
-import org.onehippo.forge.konakart.common.engine.KKEngineIf;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 
 import java.util.ArrayList;
@@ -14,11 +14,11 @@ public class PageableCollection<T extends KKProductDocument> extends Pageable {
     public static final int DEFAULT_PAGE_FILL = 9;
 
     private List<T> items;
-    private KKEngineIf kkEngineIf;
+    private KKAppEng kkEngineIf;
 
 
     public PageableCollection(final HippoBeanIterator beans, final int pageSize, final int currentPage,
-                              KKEngineIf kkEngine) {
+                              KKAppEng kkEngine) {
         super(beans.getSize(), currentPage, pageSize);
         this.kkEngineIf = kkEngine;
 
@@ -27,7 +27,7 @@ public class PageableCollection<T extends KKProductDocument> extends Pageable {
     }
 
     public PageableCollection(final HippoDocumentIterator<T> beans, final int beanSize, final int pageSize,
-                              final int currentPage, KKEngineIf kkEngine) {
+                              final int currentPage, KKAppEng kkEngine) {
         super(beanSize, currentPage, pageSize);
         this.kkEngineIf = kkEngine;
 

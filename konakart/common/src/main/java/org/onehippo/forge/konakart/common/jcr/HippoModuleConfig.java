@@ -94,12 +94,13 @@ public class HippoModuleConfig {
                 lastUpdatedTime = null;
             }
 
-            engineConfig.setEngineClassName(node.getProperty("konakart:engineClassName").getString());
             engineConfig.setUsername(node.getProperty("konakart:username").getString());
             engineConfig.setPassword(node.getProperty("konakart:password").getString());
+            engineConfig.setStoreId(node.getProperty("konakart:storeId").getString());
             engineConfig.setEngineMode(node.getProperty("konakart:enginemode").getLong());
             engineConfig.setCustomersShared(node.getProperty("konakart:isCustomersShared").getBoolean());
             engineConfig.setProductsShared(node.getProperty("konakart:isProductsShared").getBoolean());
+
 
             intialized = true;
 
