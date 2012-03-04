@@ -1,6 +1,7 @@
 package org.onehippo.forge.konakart.replication;
 
 
+import com.konakart.al.KKAppEng;
 import com.konakart.app.*;
 import com.konakart.appif.DataDescriptorIf;
 import com.konakart.appif.LanguageIf;
@@ -116,13 +117,13 @@ public class KonakartProductReplicator {
         boolean isUpdated = false;
 
         KKEngineConfig engineConfig = config.getEngineConfig();
-        KKEngine kkengine = new KKEngine(engineConfig);
+        KKAppEng kkengine = KKEngine.get(engineConfig);
 
         // login
-        kkengine.getCustomerMgr().loginByAdmin(engineConfig.getUsername(), engineConfig.getPassword());
+        kkengine.getEng().login(engineConfig.getUsername(), engineConfig.getPassword());
 
         // Retrieve the product factory
-        CustomProductMgr productMgr = new CustomProductMgr(kkengine.getEngine(), config.getLastUpdatedTime());
+        CustomProductMgr productMgr = new CustomProductMgr(kkengine.getEng(), config.getLastUpdatedTime());
 
         // Get only visible products
         DataDescriptorIf dataDescriptorIf = new DataDescriptor();
@@ -137,7 +138,7 @@ public class KonakartProductReplicator {
         FetchProductOptions fetchProductOptions = new FetchProductOptions();
 
         // Retrieve the list of languages defined into konakart.
-        LanguageIf[] languages = kkengine.getEngine().getAllLanguages();
+        LanguageIf[] languages = kkengine.getEng().getAllLanguages();
 
 
 

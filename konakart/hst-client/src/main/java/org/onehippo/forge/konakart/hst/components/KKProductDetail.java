@@ -1,5 +1,7 @@
 package org.onehippo.forge.konakart.hst.components;
 
+import com.konakart.al.ReviewMgr;
+import com.konakart.app.KKException;
 import com.konakart.appif.CustomerIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.content.beans.manager.workflow.WorkflowPersistenceManager;
@@ -14,7 +16,6 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.util.ContentBeanUtils;
 import org.onehippo.forge.konakart.common.KKCndConstants;
-import org.onehippo.forge.konakart.common.al.ReviewMgr;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.beans.KKReviewDocument;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
@@ -59,6 +60,17 @@ public abstract class KKProductDetail extends KKHstActionComponent {
         KKProductDocument document = getProductDocument(request, response);
 
         request.setAttribute("product", document);
+
+
+        try {
+             //We fetch the data for the selected product
+            kkAppEng.getProductMgr().updateProductViewedCount(document.getProductId());
+            kkAppEng.getProductMgr().fetchAlsoPurchasedArray();
+            kkAppEng.getProductMgr().fetchRelatedProducts();
+        } catch (KKException e) {
+            log.info("Unable to fetch the data for the selected product {}", e.toString());
+        }
+
 
         // Set the folder where the reviews will be saved
         String reviewsFolderName = KKCndConstants.DEFAULT_REVIEWS_FOLDER;
@@ -190,8 +202,8 @@ public abstract class KKProductDetail extends KKHstActionComponent {
                 wpm.update(review);
 
                 // Add the review into konakart
-                ReviewMgr reviewMgr = kkEngine.getReviewMgr();
-                reviewMgr.writeReview(comment, rating.intValue(), currentCustomer.getId(), product.getProductId());
+                ReviewMgr reviewMgr = kkAppEng.getReviewMgr();
+                reviewMgr.writeReview(comment, rating.intValue(), currentCustomer.getId());
 
                 response.setRenderParameter(SUCCESS, SUCCESS);
             } else {

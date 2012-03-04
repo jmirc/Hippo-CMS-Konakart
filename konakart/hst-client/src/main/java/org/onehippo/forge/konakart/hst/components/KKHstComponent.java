@@ -1,10 +1,10 @@
 package org.onehippo.forge.konakart.hst.components;
 
+import com.konakart.al.KKAppEng;
+import com.konakart.al.KKAppException;
+import com.konakart.app.FetchProductOptions;
 import com.konakart.app.KKException;
-import com.konakart.appif.BasketIf;
-import com.konakart.appif.CustomerIf;
-import com.konakart.appif.CustomerTagIf;
-import com.konakart.appif.ProductIf;
+import com.konakart.appif.*;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
 import org.hippoecm.hst.content.beans.ObjectBeanManagerException;
 import org.hippoecm.hst.content.beans.manager.ObjectBeanManager;
@@ -16,11 +16,11 @@ import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
 import org.hippoecm.hst.core.request.ComponentConfiguration;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
-import org.onehippo.forge.konakart.common.engine.KKEngineIf;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.utils.KKCookieMgr;
+import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +33,10 @@ import java.io.IOException;
  * This class is the based class to interact with Konakart
  */
 public class KKHstComponent extends BaseHstComponent {
+
+    private static final String KONAKART_PROPERTIES = "konakart.properties";
+    private static final String KONAKART_APP_PROPERTIES = "konakart_app.properties";
+
 
     /**
      * The <code>Log</code> instance for this application.
@@ -59,7 +63,12 @@ public class KKHstComponent extends BaseHstComponent {
     /**
      * The Konakart engine
      */
-    protected KKEngineIf kkEngine;
+    protected KKAppEng kkAppEng;
+
+    /**
+     * Used to insert customer's event
+     */
+    protected KKCustomerEventMgr customerEventMgr = new KKCustomerEventMgr();
 
 
     @Override
@@ -73,19 +82,25 @@ public class KKHstComponent extends BaseHstComponent {
     public void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
         super.doBeforeRender(request, response);
 
-        // Retrieve the engine
-        kkEngine = getKKEngine(request, response);
+        try {
+            // Retrieve the engine
+            kkAppEng = getKKEngine(request, response);
 
-        // Logged-in
-        validKKSession(request, response);
+            // Logged-in
+            validKKSession(request, response);
 
-        // Set the attribut isLogged if the user is a logged user
-        request.setAttribute("isLogged", !isGuestCustomer());
+            // Set the attribut isLogged if the user is a logged user
+            request.setAttribute("isLogged", !isGuestCustomer());
 
-        // Set the current customer
-        if (!isGuestCustomer()) {
-            request.setAttribute("currentCustomer", getCurrentCustomer());
-            request.setAttribute("basketTotal", kkEngine.getBasketMgr().getBasketTotal());
+            // Set the current customer
+            if (!isGuestCustomer()) {
+                request.setAttribute("currentCustomer", getCurrentCustomer());
+                request.setAttribute("basketTotal", kkAppEng.getBasketMgr().getBasketTotal());
+            }
+        } catch (KKException e) {
+            log.warn("Failed to render the HST component {}", e.toString());
+        } catch (KKAppException e) {
+            log.warn("Failed to render the HST component {}", e.toString());
         }
     }
 
@@ -95,7 +110,7 @@ public class KKHstComponent extends BaseHstComponent {
      * @return true if the customer is a guest, false otherwise.
      */
     public boolean isGuestCustomer() {
-        return kkEngine.getCustomerMgr().isGuestCustomer();
+        return kkAppEng.getCustomerMgr().getCurrentCustomer().getId() < 0;
     }
 
     /**
@@ -104,7 +119,7 @@ public class KKHstComponent extends BaseHstComponent {
      * @return the current customer
      */
     public CustomerIf getCurrentCustomer() {
-        return kkEngine.getCustomerMgr().getCurrentCustomer();
+        return kkAppEng.getCustomerMgr().getCurrentCustomer();
     }
 
     /**
@@ -133,7 +148,7 @@ public class KKHstComponent extends BaseHstComponent {
         }
 
         KKProductDocument document = (KKProductDocument) currentBean;
-        document.setKkEngine(kkEngine);
+        document.setKkEngine(kkAppEng);
 
         return document;
     }
@@ -142,14 +157,14 @@ public class KKHstComponent extends BaseHstComponent {
      * Find and retrieve the associated KKProductDoucment with the product id.
      *
      * @param beanManager object content manager
-     * @param productId id of the Konakart product to find
-     *
+     * @param productId   id of the Konakart product to find
      * @return the Hippo Bean
      */
     public KKProductDocument getProductDocumentById(ObjectBeanManager beanManager, int productId) {
 
         try {
-            ProductIf productIf = kkEngine.getProductMgr().getProductById(productId, kkEngine.getLanguage().getId());
+            ProductIf productIf = kkAppEng.getEng().getProduct(kkAppEng.getSessionId(), productId,
+                    kkAppEng.getLangId());
 
             return (KKProductDocument) beanManager.getObjectByUuid(productIf.getCustom1());
         } catch (KKException e) {
@@ -189,6 +204,28 @@ public class KKHstComponent extends BaseHstComponent {
     }
 
     /**
+     * Set if konakart needs to use external price
+     * (@see catalog feature. Available with the Konakart enterprise version.
+     * By default this method return false.
+     *
+     * @return true if konakart needs to use external price, false otherwise
+     */
+    protected boolean isUseExternalPrice() {
+        return false;
+    }
+
+    /**
+     * Set if konakart needs to use external quantity
+     * (@see catalog feature. Available with the Konakart enterprise version.
+     * By default this method return false.
+     *
+     * @return true if konakart needs to use external quantity, false otherwise
+     */
+    protected boolean isUseExternalQuantity() {
+        return false;
+    }
+
+    /**
      * Redirect the user to the 404 page
      *
      * @param response the Hst response
@@ -222,16 +259,16 @@ public class KKHstComponent extends BaseHstComponent {
                 }
 
                 // Refresh the data relevant to the customer such as his basked and recent orders.
-                kkEngine.getCustomerMgr().refreshCustomerCachedData();
+                kkAppEng.getCustomerMgr().refreshCustomerCachedData();
 
                 return true;
             }
 
             // Get recently viewed products before logging in
-            CustomerTagIf prodsViewedTagGuest = kkEngine.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+            CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
 
             // Login
-            kkEngine.getCustomerMgr().login(username, password);
+            kkAppEng.getCustomerMgr().login(username, password);
 
             // Update the custom1 of each product under the basket to set the full path of the product's node
             updateBaskets(request);
@@ -239,10 +276,13 @@ public class KKHstComponent extends BaseHstComponent {
             /*
             * Manage Cookies
             */
-            kkCookieMgr.manageCookiesLogin(request, response, kkEngine);
+            kkCookieMgr.manageCookiesLogin(request, response, kkAppEng);
+
+            // Insert event
+            customerEventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_CUSTOMER_LOGIN);
 
             // Set recently viewed products for the logged in customer if changed as guest
-            CustomerTagIf prodsViewedTagCust = kkEngine.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+            CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
             updateRecentlyViewedProducts(prodsViewedTagGuest, prodsViewedTagCust);
 
 
@@ -256,10 +296,11 @@ public class KKHstComponent extends BaseHstComponent {
 
     /**
      * Set for each products into the cart, the path of the associated Hippo Bean
+     *
      * @param request the hst request
      */
     private void updateBaskets(HstRequest request) {
-        
+
         ObjectBeanManager beanManager = getObjectBeanManager(request);
 
         // getting hold of the link creator
@@ -303,26 +344,26 @@ public class KKHstComponent extends BaseHstComponent {
 
         try {
             // If the session is null, set the forward and return a negative number
-            if (kkEngine.getSessionId() == null) {
+            if (kkAppEng.getSessionId() == null) {
                 return -1;
             }
 
             // If the user can't be logged-in, an exception if thrown
             try {
                 // At this point we return a valid customer id
-                return kkEngine.getEngine().checkSession(kkEngine.getSessionId());
+                return kkAppEng.getEng().checkSession(kkAppEng.getSessionId());
             } catch (KKException e) {
 
                 //Get recently viewed products before logging out
-                CustomerTagIf prodsViewedTagCust = kkEngine.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+                CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
 
-                kkEngine.getCustomerMgr().logout();
+                kkAppEng.getCustomerMgr().logout();
 
                 // Ensure that the guest customer is the one in the cookie
-                kkCookieMgr.manageCookieLogout(request, response, kkEngine);
+                kkCookieMgr.manageCookieLogout(request, response, kkAppEng);
 
                 // Set recently viewed products for the guest customer if changed while logged in
-                CustomerTagIf prodsViewedTagGuest = kkEngine.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+                CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
 
                 updateRecentlyViewedProducts(prodsViewedTagCust, prodsViewedTagGuest);
             }
@@ -343,41 +384,47 @@ public class KKHstComponent extends BaseHstComponent {
      * @return Returns a KonaKart client engine instance
      * @throws HstComponentException .
      */
-    private KKEngineIf getKKEngine(HstRequest request, HstResponse response) throws HstComponentException {
+    private KKAppEng getKKEngine(HstRequest request, HstResponse response) throws HstComponentException {
 
         // Check if the Konakart engine has been created
         HttpSession session = request.getSession();
-        KKEngine kkEngine = (KKEngine) session.getAttribute(KKEngineIf.KONAKART_KEY);
+        KKAppEng kkAppEng = (KKAppEng) session.getAttribute(KKAppEng.KONAKART_KEY);
 
-        if (kkEngine == null) {
+        if (kkAppEng == null) {
 
             if (log.isInfoEnabled()) {
                 log.info("KKEngine not found on the session");
             }
 
             try {
+                // Create the Konakart engine
                 Session jcrSession = request.getRequestContext().getSession();
-                kkEngine = new KKEngine(HippoModuleConfig.load(jcrSession).getEngineConfig(), request.getRequestContext().getPreferredLocale());
-                kkEngine.setStoreId(getStoreIdFromChannel());
-                kkEngine.setCatalogId(getCatalogIdFromChannel());
+                kkAppEng = KKEngine.get(HippoModuleConfig.load(jcrSession).getEngineConfig());
 
+                // initialize the Fetch production options
+                FetchProductOptionsIf productOptions = new FetchProductOptions();
+                productOptions.setCatalogId(getCatalogIdFromChannel());
+                productOptions.setUseExternalPrice(isUseExternalPrice());
+                productOptions.setUseExternalQuantity(isUseExternalQuantity());
+
+                kkAppEng.setFetchProdOptions(productOptions);
 
                 if (log.isInfoEnabled()) {
                     log.info("Set KKAppEng on the session for storeId " + getStoreIdFromChannel());
                 }
 
                 // Store the engine under the session
-                session.setAttribute(KKEngine.KONAKART_KEY, kkEngine);
+                session.setAttribute(KKAppEng.KONAKART_KEY, kkAppEng);
 
                 // Create or retrieve the customer's cookie
-                kkCookieMgr.manageCookies(request, response, kkEngine);
+                kkCookieMgr.manageCookies(request, response, kkAppEng);
             } catch (Exception e) {
-                log.error("Failed to create Konakart engine {} ", e.toString());
+                log.error("Failed to create Konakart engine ", e);
                 throw new HstComponentException("Failed to create Konakart engine", e);
             }
         }
 
-        return kkEngine;
+        return kkAppEng;
     }
 
     /**
@@ -391,9 +438,10 @@ public class KKHstComponent extends BaseHstComponent {
      *               tag of the logged in customer.
      * @param newTag When logging in, it is the tag of the logged in customer. When logging out, it is
      *               the tag of the guest customer.
-     * @throws KKException .
+     * @throws com.konakart.al.KKAppException .
+     * @throws com.konakart.app.KKException   .
      */
-    private void updateRecentlyViewedProducts(CustomerTagIf oldTag, CustomerTagIf newTag) throws KKException {
+    private void updateRecentlyViewedProducts(CustomerTagIf oldTag, CustomerTagIf newTag) throws KKException, KKAppException {
         if (oldTag != null && oldTag.getDateAdded() != null && oldTag.getValue() != null
                 && oldTag.getValue().length() > 0) {
             if (newTag == null || newTag.getDateAdded() == null
@@ -402,10 +450,8 @@ public class KKHstComponent extends BaseHstComponent {
                  * If new tag doesn't exist or old tag is newer than new tag, then give newTag the
                  * value of old tag
                  */
-                kkEngine.getCustomerTagMgr().insertCustomerTag(TAG_PRODUCTS_VIEWED, oldTag.getValue());
+                kkAppEng.getCustomerTagMgr().insertCustomerTag(TAG_PRODUCTS_VIEWED, oldTag.getValue());
             }
         }
     }
-
-
 }

@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.hst.components;
 
+import com.konakart.al.KKAppException;
 import com.konakart.app.CreateOrderOptions;
 import com.konakart.app.KKException;
 import com.konakart.app.Option;
@@ -43,9 +44,9 @@ public class KKCartDetail extends KKHstActionComponent {
             if (getCurrentCustomer() != null && currentCustomer.getBasketItems() != null && currentCustomer.getBasketItems().length > 0) {
 
                 // We update the basket with the quantities in stock
-                BasketIf[] items = kkEngine.getEngine().updateBasketWithStockInfoWithOptions(
+                BasketIf[] items = kkAppEng.getEng().updateBasketWithStockInfoWithOptions(
                         currentCustomer.getBasketItems(),
-                        kkEngine.getBasketMgr().getAddToBasketOptions());
+                        kkAppEng.getBasketMgr().getAddToBasketOptions());
 
                 /*
                 * Create a temporary order to get order totals that we can display in the edit cart
@@ -55,9 +56,9 @@ public class KKCartDetail extends KKHstActionComponent {
                 OrderIf order = createTempOrder(getCurrentCustomer().getId(), items);
 
 
-                String coupon = kkEngine.getOrderMgr().getCouponCode();
-                String giftCertCode = kkEngine.getOrderMgr().getGiftCertCode();
-                int rewardPoints = kkEngine.getOrderMgr().getRewardPoints();
+                String coupon = kkAppEng.getOrderMgr().getCouponCode();
+                String giftCertCode = kkAppEng.getOrderMgr().getGiftCertCode();
+                int rewardPoints = kkAppEng.getOrderMgr().getRewardPoints();
 
                 // Set the coupon code from the one saved in the order manager
                 if (coupon != null) {
@@ -90,10 +91,18 @@ public class KKCartDetail extends KKHstActionComponent {
                                 .getProduct().getName(), b.getProduct().getImage(), b.getQuantity(),
                                 b.getQuantityInStock());
 
-                        if (kkEngine.displayPriceWithTax()) {
-                            item.setTotalPrice(kkEngine.formatPrice(b.getFinalPriceIncTax()));
+                        if (kkAppEng.displayPriceWithTax()) {
+                            try {
+                                item.setTotalPrice(kkAppEng.formatPrice(b.getFinalPriceIncTax()));
+                            } catch (KKAppException e) {
+                                // to nothing
+                            }
                         } else {
-                            item.setTotalPrice(kkEngine.formatPrice(b.getFinalPriceExTax()));
+                            try {
+                                item.setTotalPrice(kkAppEng.formatPrice(b.getFinalPriceExTax()));
+                            } catch (KKAppException e) {
+                                // do nothing
+                            }
                         }
 
                         // Set the options of the new CartItem
@@ -157,18 +166,18 @@ public class KKCartDetail extends KKHstActionComponent {
             String sessionId = null;
 
             // Reset the checkout order
-            kkEngine.getOrderMgr().setCheckoutOrder(null);
+            kkAppEng.getOrderMgr().setCheckoutOrder(null);
 
             CreateOrderOptionsIf options = new CreateOrderOptions();
             if (custId < 0) {
                 options.setUseDefaultCustomer(true);
             } else {
-                sessionId = kkEngine.getSessionId();
+                sessionId = kkAppEng.getSessionId();
                 options.setUseDefaultCustomer(false);
             }
 
             // Add extra info to the options
-            FetchProductOptionsIf productOptions = kkEngine.getProductMgr().getFetchProdOptions();
+            FetchProductOptionsIf productOptions = kkAppEng.getFetchProdOptions();
 
             if (productOptions != null) {
                 options.setPriceDate(productOptions.getPriceDate());
@@ -178,8 +187,8 @@ public class KKCartDetail extends KKHstActionComponent {
             }
 
             // Create the order
-            OrderIf order = kkEngine.getEngine().createOrderWithOptions(sessionId, items, options,
-                    kkEngine.getLanguage().getId());
+            OrderIf order = kkAppEng.getEng().createOrderWithOptions(sessionId, items, options,
+                    kkAppEng.getLangId());
 
             if (order == null) {
                 return null;
@@ -190,22 +199,22 @@ public class KKCartDetail extends KKHstActionComponent {
              * expressions are calculated correctly
              */
             if (custId < 0) {
-                order.setCustomerId(kkEngine.getCustomerMgr().getCurrentCustomer().getId());
+                order.setCustomerId(kkAppEng.getCustomerMgr().getCurrentCustomer().getId());
             }
 
             // Set the checkout order to be the new order
-            kkEngine.getOrderMgr().setCheckoutOrder(order);
+            kkAppEng.getOrderMgr().setCheckoutOrder(order);
 
             // Get shipping quotes and select the first one
-            kkEngine.getOrderMgr().createShippingQuotes();
-            if (kkEngine.getOrderMgr().getShippingQuotes() != null
-                    && kkEngine.getOrderMgr().getShippingQuotes().length > 0) {
+            kkAppEng.getOrderMgr().createShippingQuotes();
+            if (kkAppEng.getOrderMgr().getShippingQuotes() != null
+                    && kkAppEng.getOrderMgr().getShippingQuotes().length > 0) {
 
-                kkEngine.getOrderMgr().getCheckoutOrder().setShippingQuote(kkEngine.getOrderMgr().getShippingQuotes()[0]);
+                kkAppEng.getOrderMgr().getCheckoutOrder().setShippingQuote(kkAppEng.getOrderMgr().getShippingQuotes()[0]);
             }
 
             // Populate the checkout order with order totals
-            kkEngine.getOrderMgr().populateCheckoutOrderWithOrderTotals();
+            kkAppEng.getOrderMgr().populateCheckoutOrderWithOrderTotals();
 
             return order;
 

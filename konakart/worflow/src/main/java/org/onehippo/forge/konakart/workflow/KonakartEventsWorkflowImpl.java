@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.workflow;
 
+import com.konakart.al.KKAppEng;
 import org.hippoecm.repository.api.Document;
 import org.hippoecm.repository.api.WorkflowException;
 import org.hippoecm.repository.ext.WorkflowImpl;
@@ -47,15 +48,15 @@ public class KonakartEventsWorkflowImpl extends WorkflowImpl implements Workflow
             return;
         }
 
-        // load the konakart module config.
+        // Retrieve the konakart module config.
         HippoModuleConfig config = HippoModuleConfig.getConfig();
 
         // Try to update Update the product id
         try {
-            KKEngine kkEngine = new KKEngine(config.getEngineConfig());
+            KKAppEng kkAppEng = KKEngine.get(config.getEngineConfig());
 
             // Try to retrieve the product by id
-            CustomProductMgr productMgr = new CustomProductMgr(kkEngine.getEngine(), config.getLastUpdatedTime());
+            CustomProductMgr productMgr = new CustomProductMgr(kkAppEng.getEng(), config.getLastUpdatedTime());
 
             // update the product
             boolean publishedState = (state != null) && (state.equals("published"));

@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.workflow;
 
+import com.konakart.al.KKAppEng;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.repository.api.Document;
 import org.hippoecm.repository.api.WorkflowException;
@@ -61,9 +62,9 @@ public class ReviewEventsWorkflowImpl extends WorkflowImpl implements WorkflowEv
 
         // Try to update Update the product id
         try {
-            KKEngine kkEngine = new KKEngine(config.getEngineConfig());
+            KKAppEng kkAppEng = KKEngine.get(config.getEngineConfig());
 
-            CustomReviewMgr customReviewMgr = new CustomReviewMgr(kkEngine.getEngine());
+            CustomReviewMgr customReviewMgr = new CustomReviewMgr(kkAppEng.getEng());
 
             int reviewId = reviewkonakartid.intValue();
 
