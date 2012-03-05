@@ -34,10 +34,6 @@ import java.io.IOException;
  */
 public class KKHstComponent extends BaseHstComponent {
 
-    private static final String KONAKART_PROPERTIES = "konakart.properties";
-    private static final String KONAKART_APP_PROPERTIES = "konakart_app.properties";
-
-
     /**
      * The <code>Log</code> instance for this application.
      */
@@ -68,7 +64,7 @@ public class KKHstComponent extends BaseHstComponent {
     /**
      * Used to insert customer's event
      */
-    protected KKCustomerEventMgr customerEventMgr = new KKCustomerEventMgr();
+    protected KKCustomerEventMgr eventMgr = new KKCustomerEventMgr();
 
 
     @Override
@@ -279,7 +275,7 @@ public class KKHstComponent extends BaseHstComponent {
             kkCookieMgr.manageCookiesLogin(request, response, kkAppEng);
 
             // Insert event
-            customerEventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_CUSTOMER_LOGIN);
+            eventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_CUSTOMER_LOGIN);
 
             // Set recently viewed products for the logged in customer if changed as guest
             CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);

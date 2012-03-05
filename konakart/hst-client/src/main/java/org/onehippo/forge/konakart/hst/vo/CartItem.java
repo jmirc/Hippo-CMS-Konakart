@@ -6,7 +6,6 @@ public class CartItem implements Serializable {
 
     private int quantity;
     private int quantityAvailable;
-    private boolean remove = false;
     private int basketItemId;
     private String prodName;
     private String prodImage;
@@ -45,12 +44,8 @@ public class CartItem implements Serializable {
         this.quantityAvailable = quantityAvailable;
     }
 
-    public boolean isRemove() {
-        return remove;
-    }
-
-    public void setRemove(boolean remove) {
-        this.remove = remove;
+    public boolean getInStock() {
+        return this.quantityAvailable >= this.quantity;
     }
 
     public int getBasketItemId() {

@@ -24,36 +24,36 @@ public class KKCookieMgr {
     /**
      * Customer tags
      */
-    protected static final String TAG_PROD_PAGE_SIZE = "PROD_PAGE_SIZE";
+    public static final String TAG_PROD_PAGE_SIZE = "PROD_PAGE_SIZE";
 
-    protected static final String TAG_ORDER_PAGE_SIZE = "ORDER_PAGE_SIZE";
+    public static final String TAG_ORDER_PAGE_SIZE = "ORDER_PAGE_SIZE";
 
-    protected static final String TAG_REVIEW_PAGE_SIZE = "REVIEW_PAGE_SIZE";
+    public static final String TAG_REVIEW_PAGE_SIZE = "REVIEW_PAGE_SIZE";
 
-    protected static final String TAG_PRODUCTS_VIEWED = "PRODUCTS_VIEWED";
+    public static final String TAG_PRODUCTS_VIEWED = "PRODUCTS_VIEWED";
 
-    protected static final String TAG_CATEGORIES_VIEWED = "CATEGORIES_VIEWED";
+    public static final String TAG_CATEGORIES_VIEWED = "CATEGORIES_VIEWED";
 
-    protected static final String TAG_MANUFACTURERS_VIEWED = "MANUFACTURERS_VIEWED";
+    public static final String TAG_MANUFACTURERS_VIEWED = "MANUFACTURERS_VIEWED";
 
-    protected static final String TAG_SEARCH_STRING = "SEARCH_STRING";
+    public static final String TAG_SEARCH_STRING = "SEARCH_STRING";
 
-    protected static final String TAG_COUNTRY_CODE = "COUNTRY_CODE";
+    public static final String TAG_COUNTRY_CODE = "COUNTRY_CODE";
 
-    protected static final String TAG_BIRTH_DATE = "BIRTH_DATE";
+    public static final String TAG_BIRTH_DATE = "BIRTH_DATE";
 
-    protected static final String TAG_IS_MALE = "IS_MALE";
+    public static final String TAG_IS_MALE = "IS_MALE";
 
 
-    protected static final String GUEST_CUSTOMER_ID = "GUEST_CUSTOMER_ID";
+    public static final String GUEST_CUSTOMER_ID = "GUEST_CUSTOMER_ID";
 
-    protected static final String CUSTOMER_LOCALE = "CUSTOMER_LOCALE";
+    public static final String CUSTOMER_LOCALE = "CUSTOMER_LOCALE";
 
-    protected static final String CUSTOMER_NAME = "CUSTOMER_NAME";
+    public static final String CUSTOMER_NAME = "CUSTOMER_NAME";
 
-    protected static final String CUSTOMER_UUID = "CUSTOMER_UUID";
+    public static final String CUSTOMER_UUID = "CUSTOMER_UUID";
 
-    protected static final int COOKIE_MAX_AGE_IN_SECS = 365 * 24 * 60 * 60;
+    public static final int COOKIE_MAX_AGE_IN_SECS = 365 * 24 * 60 * 60;
 
 
     /**
@@ -79,8 +79,7 @@ public class KKCookieMgr {
          */
         CustomerIf currentCustomer = kkAppEng.getCustomerMgr().getCurrentCustomer();
         if (currentCustomer == null) {
-            log
-                    .warn("Current customer is set to null in the manageCookies method. This should never happen");
+            log.warn("Current customer is set to null in the manageCookies method. This should never happen");
             return null;
         }
 
@@ -253,7 +252,7 @@ public class KKCookieMgr {
      * @return the value of the cookie
      * @throws KKException .
      */
-    protected String getKKCookie(String customerUuid, String attrId, KKAppEng kkAppEng)
+    public String getKKCookie(String customerUuid, String attrId, KKAppEng kkAppEng)
             throws KKException {
         KKCookieIf kkCookie = kkAppEng.getEng().getCookie(customerUuid, attrId);
         if (kkCookie != null) {

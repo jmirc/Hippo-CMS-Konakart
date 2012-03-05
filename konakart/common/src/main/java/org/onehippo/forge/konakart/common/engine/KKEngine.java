@@ -6,6 +6,9 @@ import com.konakart.app.EngineConfig;
 
 public class KKEngine {
 
+    private static final String KONAKART_PROPERTIES = "konakart.properties";
+    private static final String KONAKART_APP_PROPERTIES = "konakart_app.properties";
+
     /**
      * Initialise a KonaKart engine instance and perform a login to get a session id.
 
@@ -24,8 +27,8 @@ public class KKEngine {
             engConf.setStoreId(config.getStoreId());
             engConf.setCustomersShared(config.isCustomersShared());
             engConf.setProductsShared(config.isProductsShared());
-            engConf.setPropertiesFileName("konakart.properties");
-            engConf.setAppPropertiesFileName("konakart_app.properties");
+            engConf.setPropertiesFileName(KONAKART_PROPERTIES);
+            engConf.setAppPropertiesFileName(KONAKART_APP_PROPERTIES);
 
             new KKAppEng(engConf);
         }

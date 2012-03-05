@@ -5,13 +5,17 @@ import com.konakart.app.CreateOrderOptions;
 import com.konakart.app.KKException;
 import com.konakart.app.Option;
 import com.konakart.appif.*;
+import com.konakart.bl.ConfigConstants;
 import org.apache.commons.lang.StringUtils;
+import org.hippoecm.hst.component.support.forms.FormField;
 import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.component.support.forms.FormUtils;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
+import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
 import org.onehippo.forge.konakart.hst.vo.CartItem;
+import org.onehippo.forge.konakart.hst.vo.OrderItem;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -24,9 +28,9 @@ import java.util.List;
 public class KKCartDetail extends KKHstActionComponent {
 
     /**
-     * This action is used to add a remove a product
+     * This action is used to add a update cart
      */
-    private static final String REMOVE_ACTION = "remove";
+    private static final String UPDATE_ACTION = "update";
 
 
     @Override
@@ -39,6 +43,9 @@ public class KKCartDetail extends KKHstActionComponent {
              * display the basket items on the screen.
              */
         CustomerIf currentCustomer = getCurrentCustomer();
+
+        // Initialize this variable to true if one of the item is set to out of stock.
+        boolean isItemOutOfStock = false;
 
         try {
             if (getCurrentCustomer() != null && currentCustomer.getBasketItems() != null && currentCustomer.getBasketItems().length > 0) {
@@ -54,7 +61,6 @@ public class KKCartDetail extends KKHstActionComponent {
                 * shipping and discounts before checkout.
                 */
                 OrderIf order = createTempOrder(getCurrentCustomer().getId(), items);
-
 
                 String coupon = kkAppEng.getOrderMgr().getCouponCode();
                 String giftCertCode = kkAppEng.getOrderMgr().getGiftCertCode();
@@ -74,7 +80,39 @@ public class KKCartDetail extends KKHstActionComponent {
                     request.setAttribute("rewardPoints", rewardPoints);
                 }
 
-                if  (order != null) {
+                if (order != null) {
+
+                    OrderTotalIf[] orderTotalIfs = order.getOrderTotals();
+
+                    if (orderTotalIfs != null && orderTotalIfs.length > 0) {
+
+                        OrderItem[] orderItems = new OrderItem[orderTotalIfs.length];
+
+                        for (int i = 0; i < orderTotalIfs.length; i++) {
+                            OrderTotalIf orderTotalIf = orderTotalIfs[i];
+
+                            OrderItem orderItem = new OrderItem();
+                            orderItem.setTitle(orderTotalIf.getTitle());
+
+                            if (orderTotalIf.getClassName().equals("ot_reward_points")) {
+                                orderItem.setValue(orderTotalIf.getValue().toString());
+                            } else if (orderTotalIf.getClassName().equals("ot_free_product")) {
+                                orderItem.setValue(orderTotalIf.getText());
+                            } else {
+                                try {
+                                    orderItem.setValue(kkAppEng.formatPrice(orderTotalIf.getValue()));
+                                } catch (KKAppException e) {
+                                    log.error("Unable to convert the price for the order total - " + orderTotalIf.getId()
+                                            + " - value " + orderTotalIf.getValue());
+                                }
+                            }
+
+                            orderItems[i] = orderItem;
+                        }
+
+                        request.setAttribute("orderTotals", orderItems);
+                    }
+
                     order.setCouponCode(coupon);
                     order.setGiftCertCode(giftCertCode);
                     order.setPointsRedeemed(rewardPoints);
@@ -90,6 +128,10 @@ public class KKCartDetail extends KKHstActionComponent {
                         CartItem item = new CartItem(b.getId(), b.getProduct().getId(), b
                                 .getProduct().getName(), b.getProduct().getImage(), b.getQuantity(),
                                 b.getQuantityInStock());
+
+                        if (!item.getInStock()) {
+                            isItemOutOfStock = true;
+                        }
 
                         if (kkAppEng.displayPriceWithTax()) {
                             try {
@@ -134,7 +176,16 @@ public class KKCartDetail extends KKHstActionComponent {
             log.warn("Unable to display the cart", e);
         }
 
+        // Display or not the coupon entry
+        request.setAttribute("displayCouponEntry", kkAppEng.getConfigAsBoolean(ConfigConstants.DISPLAY_COUPON_ENTRY, false));
 
+        // Display or not the gift certificate entry
+        request.setAttribute("displayGiftCertEntry", kkAppEng.getConfigAsBoolean(ConfigConstants.DISPLAY_GIFT_CERT_ENTRY, false));
+
+        // Set the stock information
+        request.setAttribute("stockCheck", kkAppEng.getConfigAsBoolean(ConfigConstants.STOCK_CHECK, true));
+        request.setAttribute("itemOutOfStock", isItemOutOfStock);
+        request.setAttribute("stockAllowCheckout", kkAppEng.getConfigAsBoolean(ConfigConstants.STOCK_ALLOW_CHECKOUT, true));
 
         FormMap formMap = new FormMap();
         FormUtils.populate(request, formMap);
@@ -144,10 +195,81 @@ public class KKCartDetail extends KKHstActionComponent {
     @Override
     public void doAction(String action, HstRequest request, HstResponse response) {
 
-        if (StringUtils.equals(action, REMOVE_ACTION)) {
-            //processRemove()
+        // We need to find the Basket object corresponding to the cartItem object and we remove it or
+        // update it if required.
+
+        if (StringUtils.equals(action, UPDATE_ACTION)) {
+            // basket items
+            BasketIf[] basketItems = kkAppEng.getCustomerMgr().getCurrentCustomer().getBasketItems();
+
+            String[] definedFormFields = new String[basketItems.length * 2];
+
+            int i=0;
+            for (BasketIf basketItem : basketItems) {
+                definedFormFields[i] = "quantity_" + basketItem.getId();
+                i++;
+                definedFormFields[i] = "remove_" + basketItem.getId();
+                i++;
+            }
+
+            FormMap formMap = new FormMap(request, definedFormFields);
+
+            for (BasketIf basketItem : basketItems) {
+                FormField removeFormField = formMap.getField("remove_" + basketItem.getId());
+                FormField quantityFormField = formMap.getField("quantity_" + basketItem.getId());
+
+                // Remove the basket item
+                if (removeFormField != null && removeFormField.getValues() != null
+                        && removeFormField.getValues().size() > 0) {
+                    // remove the basket item
+                    try {
+                        kkAppEng.getBasketMgr().removeFromBasket(basketItem, /** refresh **/false);
+
+                        // insert an event
+                        eventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_REMOVE_FROM_CART,
+                                basketItem.getProductId());
+                    } catch (Exception e) {
+                        log.error("Unable to remove the basket with the id - " + basketItem.getId());
+                    }
+                }
+
+                // Update the quantity
+                if (quantityFormField != null) {
+                    int quantity = Integer.parseInt(quantityFormField.getValue());
+
+                    // Remove from the basket if quantity is set to 0
+                    if (quantity == 0) {
+                        // remove the basket item
+                        try {
+                            kkAppEng.getBasketMgr().removeFromBasket(basketItem, /** refresh **/false);
+
+                            // insert an event
+                            eventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_REMOVE_FROM_CART,
+                                    basketItem.getProductId());
+                        } catch (Exception e) {
+                            log.error("Unable to remove the basket with the id - " + basketItem.getId());
+                        }
+                    }
 
 
+                    if (quantity != basketItem.getQuantity()) {
+                        basketItem.setQuantity(quantity);
+                        try {
+                            kkAppEng.getBasketMgr().updateBasket(basketItem, /* refresh */false);
+                        } catch (Exception e) {
+                            log.error("Unable to update quantity for the basket with the id - " + basketItem.getId());
+                        }
+                    }
+                }
+            }
+
+
+            // Update the basket data
+            try {
+                kkAppEng.getBasketMgr().getBasketItemsPerCustomer();
+            } catch (Exception e) {
+                log.error("Unable to update the basket - {}", e.toString());
+            } 
         }
 
 
