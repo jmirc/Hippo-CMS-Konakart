@@ -213,6 +213,10 @@ public class KKProductDocument extends HippoDocument {
      */
     public Double getRating() {
 
+        if (product == null) {
+            return 0D;
+        }
+
 
         DataDescriptorIf dataDescriptorIf = new DataDescriptor();
         dataDescriptorIf.setShowInvisible(false);
@@ -262,11 +266,8 @@ public class KKProductDocument extends HippoDocument {
         if (product == null) {
             try {
                 // Fetch the product related data from the database
-                kkEngine.getProductMgr().fetchSelectedProduct(konakart.getProductId().intValue());
-                product = kkEngine.getProductMgr().getSelectedProduct();
+                product = kkEngine.getEng().getProduct(kkEngine.getSessionId(), konakart.getProductId().intValue(), kkEngine.getLangId());
             } catch (KKException e) {
-                log.error("Unable to retrieve the product with the id : " + konakart.getProductId());
-            } catch (KKAppException e) {
                 log.error("Unable to retrieve the product with the id : " + konakart.getProductId());
             }
         }

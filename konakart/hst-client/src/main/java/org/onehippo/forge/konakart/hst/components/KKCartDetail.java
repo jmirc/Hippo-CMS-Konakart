@@ -60,7 +60,10 @@ public class KKCartDetail extends KKHstActionComponent {
                 * screen. Comment this out if you don't want to show extra information such as
                 * shipping and discounts before checkout.
                 */
-                OrderIf order = createTempOrder(getCurrentCustomer().getId(), items);
+                createTempOrder(getCurrentCustomer().getId(), items);
+
+                // Retrieve the checkout order
+                OrderIf order = kkAppEng.getOrderMgr().getCheckoutOrder();
 
                 String coupon = kkAppEng.getOrderMgr().getCouponCode();
                 String giftCertCode = kkAppEng.getOrderMgr().getGiftCertCode();
@@ -68,7 +71,7 @@ public class KKCartDetail extends KKHstActionComponent {
 
                 // Set the coupon code from the one saved in the order manager
                 if (coupon != null) {
-                    request.setAttribute("coupon", coupon);
+                    request.setAttribute("couponCode", coupon);
                 }
                 // Set the GiftCert code from the one saved in the order manager
                 if (giftCertCode != null) {
@@ -202,9 +205,13 @@ public class KKCartDetail extends KKHstActionComponent {
             // basket items
             BasketIf[] basketItems = kkAppEng.getCustomerMgr().getCurrentCustomer().getBasketItems();
 
-            String[] definedFormFields = new String[basketItems.length * 2];
+            String[] definedFormFields = new String[2 + basketItems.length * 2];
 
-            int i=0;
+            int i = 0;
+
+            definedFormFields[i++] = "couponCode";
+            definedFormFields[i++] = "giftCertCode";
+
             for (BasketIf basketItem : basketItems) {
                 definedFormFields[i] = "quantity_" + basketItem.getId();
                 i++;
@@ -263,13 +270,22 @@ public class KKCartDetail extends KKHstActionComponent {
                 }
             }
 
+            // Retrieve the coupon information
+            FormField couponField = formMap.getField("couponCode");
+
+            if (couponField != null) {
+                kkAppEng.getOrderMgr().setCouponCode(couponField.getValue());
+            } else {
+                kkAppEng.getOrderMgr().setCouponCode(null);
+            }
+
 
             // Update the basket data
             try {
                 kkAppEng.getBasketMgr().getBasketItemsPerCustomer();
             } catch (Exception e) {
                 log.error("Unable to update the basket - {}", e.toString());
-            } 
+            }
         }
 
 
@@ -299,13 +315,11 @@ public class KKCartDetail extends KKHstActionComponent {
             }
 
             // Add extra info to the options
-            FetchProductOptionsIf productOptions = kkAppEng.getFetchProdOptions();
-
-            if (productOptions != null) {
-                options.setPriceDate(productOptions.getPriceDate());
-                options.setCatalogId(productOptions.getCatalogId());
-                options.setUseExternalPrice(productOptions.isUseExternalPrice());
-                options.setUseExternalQuantity(productOptions.isUseExternalQuantity());
+            if (kkAppEng.getFetchProdOptions() != null) {
+                options.setPriceDate(kkAppEng.getFetchProdOptions().getPriceDate());
+                options.setCatalogId(kkAppEng.getFetchProdOptions().getCatalogId());
+                options.setUseExternalPrice(kkAppEng.getFetchProdOptions().isUseExternalPrice());
+                options.setUseExternalQuantity(kkAppEng.getFetchProdOptions().isUseExternalQuantity());
             }
 
             // Create the order
@@ -323,6 +337,9 @@ public class KKCartDetail extends KKHstActionComponent {
             if (custId < 0) {
                 order.setCustomerId(kkAppEng.getCustomerMgr().getCurrentCustomer().getId());
             }
+
+            // Populate the order with the coupon code if it exists
+            order.setCouponCode(kkAppEng.getOrderMgr().getCouponCode());
 
             // Set the checkout order to be the new order
             kkAppEng.getOrderMgr().setCheckoutOrder(order);

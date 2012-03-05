@@ -414,6 +414,9 @@ public class KKHstComponent extends BaseHstComponent {
 
                 // Create or retrieve the customer's cookie
                 kkCookieMgr.manageCookies(request, response, kkAppEng);
+
+                // Retrieve the config.
+                kkAppEng.refreshAllClientConfigs();
             } catch (Exception e) {
                 log.error("Failed to create Konakart engine ", e);
                 throw new HstComponentException("Failed to create Konakart engine", e);

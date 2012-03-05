@@ -20,7 +20,7 @@ public class KKEngine {
     static public KKAppEng get(KKEngineConfig config) throws Exception {
 
         // Initialize the Engine conf if not exits
-        if (KKAppEng.getEngConf() == null) {
+      //  if (KKAppEng.getEngConf() == null) {
             // Initialize the engine conf
             EngineConfig engConf = new EngineConfig();
             engConf.setMode(config.getEngineMode());
@@ -31,7 +31,7 @@ public class KKEngine {
             engConf.setAppPropertiesFileName(KONAKART_APP_PROPERTIES);
 
             new KKAppEng(engConf);
-        }
+        //}
 
         // Initialize Konakart engine
         StoreInfo storeInfo = new StoreInfo();

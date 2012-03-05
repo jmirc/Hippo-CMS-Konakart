@@ -80,7 +80,7 @@
                 <div class="msg-box-no-pad">
                     <table border="0" width="100%" cellspacing="0" cellpadding="2" class="body-content-tab">
                         <tr>
-                            <td><input type="text" size="40" name="couponEntry" property="couponCode"/></td>
+                            <td><input type="text" size="40" name="couponCode" value="${couponCode}"/></td>
                             <td>Enter the coupon code and then click <b>Update</b></td>
                         </tr>
                     </table>
@@ -93,7 +93,7 @@
                 <div class="msg-box-no-pad">
                     <table border="0" width="100%" cellspacing="0" cellpadding="2" class="body-content-tab">
                         <tr>
-                            <td><input type="text" size="40" name="couponEntry" property="couponCode"/></td>
+                            <td><input type="text" size="40" name="giftCertCode" value="${giftCertCode}"/></td>
                             <td>Enter the gift certificate and then click <b>Update</b></td>
                         </tr>
                     </table>
