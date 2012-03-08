@@ -36,45 +36,14 @@
 
     <repositories>
         <repository>
-            <releases />
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>release</id>
-            <name>Inhouse Release Repository</name>
-            <url>http://nexus.alogient.com/nexus/content/repositories/releases/</url>
+            <id>hippo</id>
+            <name>Hippo Maven 2</name>
+            <url>http://maven.onehippo.com/maven2/</url>
         </repository>
         <repository>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots />
-            <id>snapshot</id>
-            <name>Inhouse Snapshot Repository</name>
-            <url>http://nexus.alogient.com/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>central</id>
-            <name>Inhouse Snapshot Repository</name>
-            <url>http://nexus.alogient.com/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <releases />
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <id>release-cameleoncms</id>
-            <name>COS Release Repository</name>
-            <url>http://www.cameleoncms.com/nexus/content/repositories/releases/</url>
-        </repository>
-        <repository>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-            <snapshots />
-            <id>snapshot-cameleoncms</id>
-            <name>COS Snapshot Repository</name>
-            <url>http://www.cameleoncms.com/nexus/content/repositories/snapshots/</url>
+            <id>hippo-konakart</id>
+            <name>Hippo Konakart Maven 2</name>
+            <url>https://bitbucket.org/jmirc/hippo-cms-konakart/src/7b35ee2b3a90/maven2/releases/</url>
         </repository>
     </repositories>
 

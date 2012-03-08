@@ -107,6 +107,8 @@
                 </c:if>
             </c:if>
 
+            <br/><br/>
+
             <!-- Update buton -->
             <input type="submit" value="Update"/>
 
