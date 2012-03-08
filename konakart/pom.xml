@@ -41,9 +41,19 @@
             <url>http://maven.onehippo.com/maven2/</url>
         </repository>
         <repository>
-            <id>hippo-konakart</id>
-            <name>Hippo Konakart Maven 2</name>
-            <url>https://bitbucket.org/jmirc/hippo-cms-konakart/src/7b35ee2b3a90/maven2/releases/</url>
+            <id>selectionplugin</id>
+            <name>Selection plugins Maven 2</name>
+            <url>https://forge.onehippo.org/svn/selection/maven2/</url>
+        </repository>
+        <repository>
+            <id>repo1</id>
+            <name>Repo1 Maven 2</name>
+            <url>http://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>Alogient Public Nexus</id>
+            <name>Alogient Maven 2</name>
+            <url>http://www.cameleoncms.com/nexus/content/groups/public/</url>
         </repository>
     </repositories>
 
