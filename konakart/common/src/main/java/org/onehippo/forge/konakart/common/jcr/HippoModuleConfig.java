@@ -94,18 +94,10 @@ public class HippoModuleConfig {
                 lastUpdatedTime = null;
             }
 
-            engineConfig.setUsername(node.getProperty("konakart:username").getString());
-            engineConfig.setPassword(node.getProperty("konakart:password").getString());
-            engineConfig.setStoreId(node.getProperty("konakart:storeId").getString());
-            engineConfig.setEngineMode(node.getProperty("konakart:enginemode").getLong());
-            engineConfig.setCustomersShared(node.getProperty("konakart:isCustomersShared").getBoolean());
-            engineConfig.setProductsShared(node.getProperty("konakart:isProductsShared").getBoolean());
-
-
             intialized = true;
 
         } catch (RepositoryException e) {
-            log.error("Failed to load interspire configuration: " + e.toString());
+            log.error("Failed to load Hippo Module configuration: " + e.toString());
         }
     }
 }

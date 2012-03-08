@@ -4,12 +4,18 @@ import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
 import org.apache.commons.lang.StringUtils;
 import org.apache.jackrabbit.value.DoubleValue;
+import org.hippoecm.frontend.plugins.gallery.processor.ScalingGalleryProcessor;
+import org.hippoecm.frontend.plugins.gallery.processor.ScalingParameters;
 import org.joda.time.DateTime;
 import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.onehippo.forge.konakart.replication.jcr.GalleryProcesssorConfig;
+import org.onehippo.forge.konakart.replication.utils.Codecs;
 import org.onehippo.forge.konakart.replication.utils.NodeHelper;
+import org.onehippo.forge.konakart.replication.utils.NodeImagesHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -18,6 +24,11 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 import javax.jcr.version.VersionManager;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Calendar;
 
 /**
  * To use the replication plugin, you need to add a class that will extend this class to define
@@ -37,26 +48,66 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     protected javax.jcr.Session session;
     private NodeHelper nodeHelper;
+    private NodeImagesHelper nodeImagesHelper;
+
+
     private String contentRoot;
+    private String galleryRoot;
+    private String productFolder;
     private String productDocType;
     private String kkProductTypeName;
     private String konakartProductPropertyName;
 
+    /**
+     * This is an helper method that could be used to set others information defined into Konakart but not
+     * already integrated within the konakart:konakart document.
+     *
+     * @param product the konakart's product
+     * @param node    the product's node
+     */
+    protected abstract void updateProperties(Product product, Node node);
+
+
+    @Override
     public void setSession(Session session) throws RepositoryException {
         this.session = session;
         nodeHelper = new NodeHelper(session);
+        nodeImagesHelper = new NodeImagesHelper(session);
         versionManager = session.getWorkspace().getVersionManager();
     }
 
+
+    @Override
     public void setContentRoot(String contentRoot) {
-        // Add a / at the end of the content root
-        if (!StringUtils.endsWith(contentRoot, "/")) {
-            contentRoot +=  "/";
+        if (!contentRoot.endsWith("/")) {
+            contentRoot = contentRoot + "/";
         }
 
         this.contentRoot = contentRoot;
+
     }
-    
+
+    @Override
+    public void setGalleryRoot(String galleryRoot) {
+
+        if (!galleryRoot.endsWith("/")) {
+            galleryRoot = galleryRoot + "/";
+        }
+
+        this.galleryRoot = galleryRoot;
+
+    }
+
+    @Override
+    public void setProductFolder(String productFolder) {
+        if (!productFolder.endsWith("/")) {
+            productFolder = productFolder + "/";
+        }
+
+        this.productFolder = productFolder;
+    }
+
+    @Override
     public String createReviewFolder(String reviewFolder) throws Exception {
 
         if (StringUtils.isEmpty(reviewFolder)) {
@@ -65,13 +116,15 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         nodeHelper.createMissingFolders(contentRoot + reviewFolder);
 
-        return nodeHelper.encodeName(reviewFolder);
+        return Codecs.encodeNode(reviewFolder);
     }
 
+    @Override
     public void setKonakartProductPropertyName(String konakartProductPropertyName) {
         this.konakartProductPropertyName = konakartProductPropertyName;
     }
 
+    @Override
     public void setProductDocType(String productDocType) {
         this.productDocType = productDocType;
     }
@@ -82,57 +135,44 @@ public abstract class AbstractProductFactory implements ProductFactory {
     }
 
     @Override
-    public String add(Product product, LanguageIf language) throws Exception {
+    public void add(Product product, LanguageIf language, String baseImagePath) throws Exception {
 
         Node productNode = null;
 
-        // Try to get the product node by identifier
-        if (!StringUtils.isEmpty(product.getCustom1())) {
-            try {
-                Node productHandle = session.getNodeByIdentifier(product.getCustom1());
-
-                if (productHandle != null) {
-                    String encodingName = nodeHelper.uriEncoding.encode(product.getName());
-                    productNode = productHandle.getNode(encodingName);
-                }
-            } catch (RepositoryException e) {
-                // not found do nothing
-                log.warn("Unable to find the product with the UUID - " + product.getCustom1() + " - " + e.toString());
-            }
-        }
-
         // Try to get the product node by product's id
-        if (productNode == null) {
-            // Try to find the product
-            QueryManager queryManager = session.getWorkspace().getQueryManager();
+        QueryManager queryManager = session.getWorkspace().getQueryManager();
 
-            String searchProduct = "select * from konakart:konakart where konakart:id = " + product.getId();
+        String searchProduct = "select * from konakart:konakart where konakart:id = " + product.getId();
 
-            Query query = queryManager.createQuery(searchProduct, Query.SQL);
+        Query query = queryManager.createQuery(searchProduct, Query.SQL);
 
-            QueryResult result = query.execute();
+        QueryResult result = query.execute();
 
-            NodeIterator iterator = result.getNodes();
+        NodeIterator iterator = result.getNodes();
 
-            long numberOfProducts = iterator.getSize();
+        long numberOfProducts = iterator.getSize();
 
-            // A product has been found
-            if (numberOfProducts > 0) {
+        boolean addNewProduct = true;
 
-                // Number of products must be equals to 1
-                if (numberOfProducts > 1) {
-                    log.error(numberOfProducts + " has been found for the Konakart product's id: " + product.getId());
-                }
+        // A product has been found
+        if (numberOfProducts > 0) {
+            addNewProduct = true;
 
-
-                productNode = iterator.nextNode();
+            // Number of products must be equals to 1
+            if (numberOfProducts > 1) {
+                log.error(numberOfProducts + " has been found for the Konakart product's id: " + product.getId());
             }
+
+            productNode = iterator.nextNode();
+
         }
 
         // No node has been found. So add a new one.
         if (productNode == null) {
+            addNewProduct = false;
+
             // add the product node root
-            String absPath = createProductNodeRoot(product);
+            String absPath = contentRoot + productFolder + "/" + kkProductTypeName + "/" + createProductNodeRoot(product);
 
             // Create the root
             Node rootFolder = nodeHelper.createMissingFolders(absPath);
@@ -141,9 +181,9 @@ public abstract class AbstractProductFactory implements ProductFactory {
             productNode = nodeHelper.createDocument(rootFolder, product, productDocType,
                     session.getUserID(), language.getCode());
 
-            if (log.isInfoEnabled()) {
-                log.info("The konakart product with id : {} has been added", product.getId());
-            }
+            // Upload images
+            // Synchronize the image only during the creation of the product
+            uploadImages(productNode.getNode(konakartProductPropertyName), baseImagePath, product);
         }
 
         boolean hasCheckout = false;
@@ -164,27 +204,34 @@ public abstract class AbstractProductFactory implements ProductFactory {
         // Create the konakart ref product
         createOrUpdateKonakartProduct(product, productNode, language.getId());
 
-        // Save the node
+        // Save the session
         productNode.getSession().save();
 
+        // Save the node
         if (hasCheckout) {
             versionManager.checkin(productNode.getPath());
         }
 
-        // Return the hanlde's UUID of the product.
-        return productNode.getParent().getIdentifier();
-
+        if (addNewProduct) {
+            if (log.isInfoEnabled()) {
+                log.info("The konakart product with id : {} has been added", product.getId());
+            }
+        } else {
+            if (log.isInfoEnabled()) {
+                log.info("The konakart product with id : {} has been updated", product.getId());
+            }
+        }
     }
 
     /**
-     * Create the absolute path where the product will be created.
+     * Create a unique page where the product will be created.
      *
      * @param product a product
-     * @return the absolute path where the product will be created
+     * @return a unique path where the product will be created
      */
     private String createProductNodeRoot(Product product) {
 
-        String absPath = contentRoot + "/" + kkProductTypeName + "/";
+        String absPath = "";
 
         // Get the manufacturer name
         absPath += product.getManufacturerName();
@@ -199,10 +246,9 @@ public abstract class AbstractProductFactory implements ProductFactory {
     /**
      * Create or update the konakart node.
      *
-     *
      * @param product     the konakart product
      * @param productNode the hippo product's node
-     * @param languageId language's id within konakart
+     * @param languageId  language's id within konakart
      * @throws RepositoryException if any exception occurs
      */
     private void createOrUpdateKonakartProduct(Product product, Node productNode, int languageId) throws RepositoryException {
@@ -227,7 +273,9 @@ public abstract class AbstractProductFactory implements ProductFactory {
         konakartNode.setProperty(KKCndConstants.PRODUCT_SKU, product.getSku());
         konakartNode.setProperty(KKCndConstants.PRODUCT_LANGUAGE_ID, languageId);
         konakartNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER, product.getManufacturerName());
+        konakartNode.setProperty(KKCndConstants.PRODUCT_PRODUCT_TYPE, KKCndConstants.PRODUCT_TYPE.findByType(product.getType()).getName());
         konakartNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER_ID, product.getManufacturerId());
+        konakartNode.setProperty(KKCndConstants.PRODUCT_STORE_ID, product.getStoreId());
 
         if (product.getPrice0() != null) {
             standardPriceNode.setProperty(KKCndConstants.CP_PRICE_0, new DoubleValue(product.getPrice0().doubleValue()));
@@ -270,11 +318,137 @@ public abstract class AbstractProductFactory implements ProductFactory {
     }
 
     /**
-     * This is an helper method that could be used to set others information defined into Konakart but not
-     * already integrated within the konakart:konakart document.
+     * Upload the images from Konakart to Hippo CMS
      *
-     * @param product the konakart's product
-     * @param node    the product's node
+     * @param productNode product node
+     * @param baseImagePath path where the konakart's images are located
+     * @param product the konakart product
      */
-    protected abstract void updateProperties(Product product, Node node);
+    private void uploadImages(Node productNode, String baseImagePath, Product product) {
+        try {
+            // Retrieve the gallery root node
+            // add the product node root
+            String galleryRootNode = galleryRoot + productFolder + "/" + kkProductTypeName + "/" + createProductNodeRoot(product);
+
+            // Get the root folder
+            Node productGalleryNode = nodeImagesHelper.createMissingFolders(galleryRootNode);
+
+            // upload base main image
+            uploadImage(productNode, productGalleryNode, baseImagePath, product.getImage());
+
+        } catch (Exception e) {
+            log.error("Failed to add images", e);
+        }
+    }
+
+    /**
+     * Upload the image into the content's gallery
+     *
+     * @param productNode        the product node. Used to associate the image with the product's node
+     * @param productGalleryNode the product gallery node
+     * @param baseImagePath      the Konakart images' folder where the images are localed.
+     * @param productImage       the name of the product
+     * @throws RepositoryException
+     */
+    private void uploadImage(Node productNode, Node productGalleryNode, String baseImagePath, String productImage) throws RepositoryException {
+
+        if (StringUtils.isEmpty(productImage)) {
+            return;
+        }
+
+        String image = baseImagePath + "/" + productImage;
+
+        File file = new File(image);
+
+        if (!file.exists()) {
+            log.warn("Failed to import image. The image at the path {} has not been found. ", image);
+            return;
+        }
+
+        Node rootImageNode = null;
+
+        try {
+            String fileName = file.getName();
+            String contentType = new MimetypesFileTypeMap().getContentType(image);
+
+            // Create the image name
+            rootImageNode = nodeImagesHelper.createGalleryItem(productGalleryNode, fileName);
+
+            final ScalingGalleryProcessor processor = new ScalingGalleryProcessor();
+
+            // for each version, create a new image.
+            for (String imagesVersionName : GalleryProcesssorConfig.getConfig().getImagesVersionSet()) {
+
+                // Create the image's node if not exist
+                if (rootImageNode.hasNode(imagesVersionName)) {
+                    rootImageNode.getNode(imagesVersionName).remove();
+                }
+
+                if (!rootImageNode.hasNode(imagesVersionName)) {
+                    InputStream isStream = new FileInputStream(file);
+
+                    GalleryProcesssorConfig.ImageConfig thumbnailImageConfig =
+                            GalleryProcesssorConfig.getConfig().getImageConfigMap(imagesVersionName);
+
+                    ScalingParameters parameters = new ScalingParameters(thumbnailImageConfig.getWidth(),
+                            thumbnailImageConfig.getHeight(), thumbnailImageConfig.getUpscaling());
+
+                    processor.addScalingParameters(imagesVersionName, parameters);
+
+                    Node node = rootImageNode.addNode(imagesVersionName, "hippogallery:image");
+                    processor.initGalleryResource(node, isStream, contentType, fileName, Calendar.getInstance());
+                }
+            }
+
+
+        } catch (FileNotFoundException e) {
+            // should not happends. Already verified.
+        } catch (RepositoryException e) {
+            log.warn("Unable to create the different versions of the original image - {} ", e);
+        }
+
+        // Save the image
+        if (rootImageNode != null) {
+            rootImageNode.getSession().save();
+        }
+
+        // Associate the image handle with the product
+        if (rootImageNode != null) {
+            Node imageLink = null;
+
+            // Retrieve the image UUID
+            String imageUUID = rootImageNode.getParent().getIdentifier();
+
+            // Check if the image has been already added
+            if (productNode.hasNode(KKCndConstants.PRODUCT_IMAGES)) {
+                NodeIterator iterator = productNode.getNodes(KKCndConstants.PRODUCT_IMAGES);
+
+                while (iterator.hasNext()) {
+                    Node node = iterator.nextNode();
+
+                    if (node.hasProperty("hippo:docbase")) {
+                        String docbase = node.getProperty("hippo:docbase").getString();
+
+                        if (docbase.contains(imageUUID)) {
+                            imageLink = node;
+                        }
+                    }
+                }
+            }
+            if (imageLink == null) {
+                imageLink = productNode.addNode(KKCndConstants.PRODUCT_IMAGES, "hippogallerypicker:imagelink");
+            }
+
+            imageLink.setProperty("hippo:docbase", imageUUID);
+            imageLink.setProperty("hippo:facets", new String[0]);
+            imageLink.setProperty("hippo:values", new String[0]);
+            imageLink.setProperty("hippo:modes", new String[0]);
+
+
+        } else {
+            log.warn("Node has not been created for the image name - " + productImage);
+        }
+    }
+
+
 }

@@ -27,6 +27,8 @@
     <bean id="jcrSessionProvider" class="org.onehippo.forge.springdaemon.SessionProvider" />
     
     <bean id="konakartProductsReplicator" class="org.onehippo.forge.konakart.replication.KonakartProductReplicator">
+        <property name="productDocType"  value="myhippoproject:productdocument"/>
+        <property name="konakartProductPropertyName"  value="myhippoproject:konakart"/>
         <property name="jcrSession">
             <bean class="org.springframework.beans.factory.config.PropertyPathFactoryBean">
                 <property name="targetObject" ref="jcrSessionProvider" />
@@ -44,8 +46,6 @@
 
             </bean>
         </property>
-        <property name="productDocType"  value="myhippoproject:productdocument"/>
-        <property name="konakartProductPropertyName"  value="myhippoproject:konakart"/>
     </bean>
 
     <task:scheduled-tasks scheduler="konakartImportingScheduler">
@@ -58,8 +58,18 @@
         <property name="byProductTypeList">
             <list>
                 <bean class="org.onehippo.forge.konakart.replication.config.HippoKonakartMapping$MappingByProductType">
-                    <property name="hippoContentRoot" value="/content/documents/myhippoproject/Products"/>
+                    <property name="contentRoot" value="/content/documents/myhippoproject"/>
+                    <property name="galleryRoot" value="/content/gallery/myhippoproject"/>
+                    <property name="productFolder" value="Products"/>
                     <property name="reviewFolder" value="Products Review"/>
+                    <property name="storeId" value="store1"/>
+                </bean>
+                <bean class="org.onehippo.forge.konakart.replication.config.HippoKonakartMapping$MappingByProductType">
+                    <property name="contentRoot" value="/content/documents/store2"/>
+                    <property name="galleryRoot" value="/content/gallery/myhippoproject"/>
+                    <property name="productFolder" value="Products"/>
+                    <property name="reviewFolder" value="Products Review"/>
+                    <property name="storeId" value="store2"/>
                 </bean>
             </list>
         </property>

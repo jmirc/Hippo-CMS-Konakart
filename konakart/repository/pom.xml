@@ -17,8 +17,8 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.onehippo.forge.konakart</groupId>
-            <artifactId>hippo-addon-konakart-workflow</artifactId>
+            <groupId>org.onehippo.forge</groupId>
+            <artifactId>hippo-addon-konakart-common</artifactId>
             <version>1.00.00-SNAPSHOT</version>
         </dependency>
 

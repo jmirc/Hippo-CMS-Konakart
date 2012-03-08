@@ -15,10 +15,20 @@ public interface ProductFactory {
     void setSession(Session jcrSession) throws RepositoryException;
 
     /**
-     * @param contentRoot set the location where the product will be created
+     * @param contentRoot set the content root where the document will be created.
      */
     void setContentRoot(String contentRoot);
 
+    /**
+     * @param galleryRoot set the gallery root where the images will be saved
+     */
+    void setGalleryRoot(String galleryRoot);
+
+
+    /**
+     * @param productFolder set the name of the folder where the product will be created
+     */
+    void setProductFolder(String productFolder);
 
     /**
      * @param productDocType the product document type
@@ -53,9 +63,10 @@ public interface ProductFactory {
      *
      * @param product the product to add
      * @param language the language associated to this product
+     * @param baseImagePath the path where the konakart images are located
      * @throws Exception if any exceptions occurs
-     * @return the JCR node UUID
      */
-    String add(Product product, LanguageIf language) throws Exception;
+    void add(Product product, LanguageIf language, String baseImagePath) throws Exception;
+
 
 }

@@ -14,11 +14,6 @@
 
 [konakart:config] > nt:base
   - konakart:enabled (boolean)
-  - konakart:username (string)
-  - konakart:password (string)
-  - konakart:storeId (string)
-  - konakart:isCustomersShared (boolean)
-  - konakart:isProductsShared (boolean)
   - konakart:enginemode (long)
   - konakart:lastUpdatedTime (date)
 

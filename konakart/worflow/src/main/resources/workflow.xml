@@ -17,28 +17,22 @@
 <sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" xmlns:h="http://www.onehippo.org/jcr/xmlimport"
          sv:name="hippo:workflows" h:merge="combine">
 
-    <sv:node sv:name="konakart-product-publish">
+    <sv:node sv:name="konakart-product-events">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hipposys:workflowcategory</sv:value>
         </sv:property>
-        <sv:node sv:name="konakart-product-publish">
+        <sv:node sv:name="konakart-product-events">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>hipposys:workflowboundmethodevent</sv:value>
+                <sv:value>hipposys:workflowevent</sv:value>
             </sv:property>
             <sv:property sv:name="hipposys:nodetype" sv:type="String">
-                <sv:value>konakart:basedocument</sv:value>
+                <sv:value>hippostdpubwf:document</sv:value>
             </sv:property>
             <sv:property sv:name="hipposys:display" sv:type="String">
                 <sv:value>Konakart Workflow Events - Publish</sv:value>
             </sv:property>
             <sv:property sv:name="hipposys:classname" sv:type="String">
                 <sv:value>org.onehippo.forge.konakart.workflow.KonakartEventsWorkflowImpl</sv:value>
-            </sv:property>
-            <sv:property sv:name="hipposys:eventconditioncategory" sv:type="String">
-                <sv:value>default</sv:value>
-            </sv:property>
-            <sv:property sv:name="hipposys:eventconditionmethod" sv:type="String">
-                <sv:value>publish</sv:value>
             </sv:property>
         </sv:node>
     </sv:node>
@@ -51,7 +45,7 @@
                 <sv:value>hipposys:workflowboundmethodevent</sv:value>
             </sv:property>
             <sv:property sv:name="hipposys:nodetype" sv:type="String">
-                <sv:value>konakart:basedocument</sv:value>
+                <sv:value>hippostdpubwf:document</sv:value>
             </sv:property>
             <sv:property sv:name="hipposys:display" sv:type="String">
                 <sv:value>Konakart Workflow Events - Publish</sv:value>

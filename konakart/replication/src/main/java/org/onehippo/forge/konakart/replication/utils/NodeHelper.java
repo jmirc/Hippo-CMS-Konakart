@@ -47,11 +47,6 @@ public class NodeHelper {
      */
     protected String defaultWorkflowCategory = "core";
 
-    /**
-     * The codec which is used for the node names
-     */
-    public StringCodec uriEncoding = new StringCodecFactory.UriEncoding();
-
     protected Session session;
 
 
@@ -60,9 +55,6 @@ public class NodeHelper {
     }
     
     
-    public String encodeName(String name) {
-        return uriEncoding.encode(name);
-    }
 
 
     /**
@@ -106,7 +98,7 @@ public class NodeHelper {
         String folderNodePath;
 
         for (String folderName : folderNames) {
-            String folderNodeName = uriEncoding.encode(folderName);
+            String folderNodeName = Codecs.encodeNode(folderName);
 
             if (!"".equals(folderNodeName)) {
                 if (curNode == rootNode) {
@@ -173,7 +165,7 @@ public class NodeHelper {
                     }
                 }
 
-                String nodeName = uriEncoding.encode(name);
+                String nodeName = Codecs.encodeNode(name);
                 String added = fwf.add(category, nodeTypeName, nodeName);
                 if (added == null) {
                     throw new Exception("Failed to add document/folder for type '" + nodeTypeName
@@ -200,7 +192,7 @@ public class NodeHelper {
     public Node createDocument(Node parentNode, Product product, String docType, String ownerId, String locale) throws RepositoryException {
 
         // Encode the name to be able to add name with special characters
-        String encodingName = uriEncoding.encode(product.getName());
+        String encodingName = Codecs.encodeNode(product.getName());
 
         if (parentNode.hasNode(encodingName)) {
             Node handleNode = parentNode.getNode(encodingName);
@@ -257,6 +249,14 @@ public class NodeHelper {
         node.setProperty("hippostd:state", state);
     }
 
+    public String getNodeState(Node node) throws RepositoryException {
+
+        if (node.hasProperty("hippostd:state")) {
+            return node.getProperty("hippostd:state").getString();
+        }
+
+        return null;
+    }
 
 
     /**

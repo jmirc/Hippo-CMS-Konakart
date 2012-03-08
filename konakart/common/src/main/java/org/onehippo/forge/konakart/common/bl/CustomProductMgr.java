@@ -7,6 +7,7 @@ import com.konakart.appif.KKEngIf;
 import com.konakart.bl.KKCriteria;
 import com.konakart.bl.ProductMgr;
 import com.konakart.blif.ProductMgrIf;
+import com.konakart.om.BaseProductsDescriptionPeer;
 import com.konakart.om.BaseProductsPeer;
 import com.workingdogs.village.DataSetException;
 import org.apache.torque.TorqueException;
@@ -19,6 +20,10 @@ import java.util.Date;
 public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
 
     private Date lastUpDate;
+
+    public CustomProductMgr(KKEngIf kkEngIf) throws Exception {
+        super(kkEngIf);
+    }
 
     public CustomProductMgr(KKEngIf kkEngIf, Date lastUpdate) throws Exception {
         super(kkEngIf);
@@ -48,17 +53,16 @@ public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
      * Used to synchronize Hippo and Konakart
      *
      * @param productId id of the product to update
-     * @param uuid the uuid of the product's handle
      * @param reviewsFolderName the name of the folder where the review will be saved
      * @throws Exception if the update could not be done
      */
-    public void synchronizeHippoKK(Integer productId, String uuid, String reviewsFolderName) throws Exception {
+    public void synchronizeHippoKK(Integer productId, String reviewsFolderName) throws Exception {
         KKCriteria localKKCriteria = getNewCriteria(isMultiStoreShareProducts());
         localKKCriteria.add(BaseProductsPeer.PRODUCTS_ID, productId);
-        localKKCriteria.add(BaseProductsPeer.CUSTOM1, uuid);
-        localKKCriteria.add(BaseProductsPeer.CUSTOM2, reviewsFolderName);
+        localKKCriteria.add(BaseProductsPeer.CUSTOM1, reviewsFolderName);
+        localKKCriteria.add(BaseProductsPeer.CUSTOM2, "");
 
-        BasePeer.doUpdate(localKKCriteria);
+        BaseProductsPeer.doUpdate(localKKCriteria);
     }
 
     /**
@@ -72,6 +76,22 @@ public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
         localKKCriteria.add(BaseProductsPeer.PRODUCTS_ID, productId);
         localKKCriteria.add(BaseProductsPeer.PRODUCTS_STATUS, publishedState);
 
-        BasePeer.doUpdate(localKKCriteria);
+        BaseProductsPeer.doUpdate(localKKCriteria);
+    }
+
+
+    /**
+     * Update the status of a product
+     * @param productId id of the product to update
+     * @param description the description to update
+     * @throws Exception if the update could not be done
+     */
+    public void updateDescription(Integer productId, Integer languageId, String description) throws Exception {
+        KKCriteria localKKCriteria = getNewCriteria(isMultiStoreShareProducts());
+        localKKCriteria.add(BaseProductsDescriptionPeer.PRODUCTS_ID, productId);
+        localKKCriteria.add(BaseProductsDescriptionPeer.LANGUAGE_ID, languageId);
+        localKKCriteria.add(BaseProductsDescriptionPeer.PRODUCTS_DESCRIPTION, description);
+
+        BaseProductsDescriptionPeer.doUpdate(localKKCriteria);
     }
 }

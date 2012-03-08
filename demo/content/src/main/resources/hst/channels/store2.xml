@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="store2">
+  <sv:property sv:name="jcr:primaryType" sv:type="Name">
+    <sv:value>hst:channel</sv:value>
+  </sv:property>
+  <sv:property sv:name="jcr:uuid" sv:type="String">
+    <sv:value>50c1d642-2d48-4c5e-9373-2f4ea9439ced</sv:value>
+  </sv:property>
+  <sv:property sv:name="hst:channelinfoclass" sv:type="String">
+    <sv:value>org.example.channels.WebsiteInfo</sv:value>
+  </sv:property>
+  <sv:property sv:name="hst:name" sv:type="String">
+    <sv:value>Store2</sv:value>
+  </sv:property>
+  <sv:node sv:name="hst:channelinfo">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:channelinfo</sv:value>
+    </sv:property>
+    <sv:property sv:name="catalogId" sv:type="String">
+      <sv:value>store1</sv:value>
+    </sv:property>
+    <sv:property sv:name="customersShared" sv:type="Boolean">
+      <sv:value>false</sv:value>
+    </sv:property>
+    <sv:property sv:name="headerName" sv:type="String">
+      <sv:value>Konakart Store2</sv:value>
+    </sv:property>
+    <sv:property sv:name="mode" sv:type="String">
+      <sv:value>0</sv:value>
+    </sv:property>
+    <sv:property sv:name="productsShared" sv:type="Boolean">
+      <sv:value>false</sv:value>
+    </sv:property>
+    <sv:property sv:name="storeId" sv:type="String">
+      <sv:value>store2</sv:value>
+    </sv:property>
+  </sv:node>
+</sv:node>

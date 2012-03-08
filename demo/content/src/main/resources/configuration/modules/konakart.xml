@@ -8,28 +8,13 @@
       <sv:value>konakart:config</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:enabled" sv:type="Boolean">
-      <sv:value>true</sv:value>
-    </sv:property>
-    <sv:property sv:name="konakart:engineClassName" sv:type="String">
-      <sv:value>com.konakart.app.KKEng</sv:value>
+      <sv:value>false</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:enginemode" sv:type="Long">
       <sv:value>0</sv:value>
     </sv:property>
-    <sv:property sv:name="konakart:isCustomersShared" sv:type="Boolean">
-      <sv:value>false</sv:value>
-    </sv:property>
-    <sv:property sv:name="konakart:isProductsShared" sv:type="Boolean">
-      <sv:value>false</sv:value>
-    </sv:property>
     <sv:property sv:name="konakart:lastUpdatedTime" sv:type="Date">
-      <sv:value>2012-03-01T22:20:59.125-05:00</sv:value>
-    </sv:property>
-    <sv:property sv:name="konakart:password" sv:type="String">
-      <sv:value>princess</sv:value>
-    </sv:property>
-    <sv:property sv:name="konakart:username" sv:type="String">
-      <sv:value>admin@konakart.com</sv:value>
+      <sv:value>2012-03-07T13:49:41.183-05:00</sv:value>
     </sv:property>
   </sv:node>
 </sv:node>

@@ -21,10 +21,7 @@ import java.util.Iterator;
  * each time the customer updates the product
  */
 
-@PersistenceCapable(identityType = IdentityType.DATASTORE, cacheable = "false", detachable = "false")
-@DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE)
-@Inheritance(strategy = InheritanceStrategy.SUBCLASS_TABLE)
-@Discriminator(strategy = DiscriminatorStrategy.CLASS_NAME)
+@PersistenceCapable
 public class KonakartEventsWorkflowImpl extends WorkflowImpl implements WorkflowEventWorkflow {
 
     private static Logger log = LoggerFactory.getLogger(KonakartEventsWorkflowImpl.class);
@@ -34,6 +31,15 @@ public class KonakartEventsWorkflowImpl extends WorkflowImpl implements Workflow
 
     @Persistent(column = "./myhippoproject:konakart/konakart:id")
     private Long productId;
+
+    @Persistent(column = "./myhippoproject:konakart/konakart:languageid")
+    private Long languageId;
+
+    @Persistent(column = "./myhippoproject:konakart/konakart:storeid")
+    private String storeId;
+
+    @Persistent(column = "./myhippoproject:konakart/konakart:description/hippostd:content")
+    private String description;
 
     @Persistent(column = "hippostd:state")
     private String state;
@@ -53,14 +59,18 @@ public class KonakartEventsWorkflowImpl extends WorkflowImpl implements Workflow
 
         // Try to update Update the product id
         try {
-            KKAppEng kkAppEng = KKEngine.get(config.getEngineConfig());
+            KKAppEng kkAppEng = KKEngine.get(storeId);
 
             // Try to retrieve the product by id
             CustomProductMgr productMgr = new CustomProductMgr(kkAppEng.getEng(), config.getLastUpdatedTime());
 
             // update the product
             boolean publishedState = (state != null) && (state.equals("published"));
-            productMgr.updateStatus(productId.intValue(), publishedState);
+            productMgr. updateStatus(productId.intValue(), publishedState);
+
+            // Update the product description
+            productMgr.updateDescription(productId.intValue(), languageId.intValue(), description);
+
 
         } catch (Exception e) {
             log.warn("Failed to update the statut for the following UUID product : " + uuid, e);
@@ -70,10 +80,12 @@ public class KonakartEventsWorkflowImpl extends WorkflowImpl implements Workflow
     @Override
     public void fire(Document document) throws WorkflowException, RepositoryException, RemoteException {
         // should not called
+        System.out.println("coucou");
     }
 
     @Override
     public void fire(Iterator<Document> documentIterator) throws WorkflowException, RepositoryException, RemoteException {
         // should not called
+        System.out.println("coucou");
     }
 }

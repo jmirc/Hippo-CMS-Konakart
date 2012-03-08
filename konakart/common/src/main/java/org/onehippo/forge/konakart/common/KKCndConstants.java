@@ -10,10 +10,13 @@ public class KKCndConstants {
     public static final String PRODUCT_DESCRIPTION = "konakart:description";
     public static final String PRODUCT_SKU = "konakart:sku";
     public static final String PRODUCT_LANGUAGE_ID = "konakart:languageid";
+    public static final String PRODUCT_STORE_ID = "konakart:storeid";
     public static final String PRODUCT_MANUFACTURER = "konakart:manufacturer";
+    public static final String PRODUCT_PRODUCT_TYPE = "konakart:producttype";
     public static final String PRODUCT_MANUFACTURER_ID = "konakart:manufacturerid";
     public static final String PRODUCT_SPECIAL_PRICE = "konakart:specialprice";
     public static final String PRODUCT_STANDARD_PRICE = "konakart:standardcompoundprice";
+    public static final String PRODUCT_IMAGES = "konakart:images";
 
     public static final String CP_PRICE_TYPE = "konakart:compoundprice";
     public static final String CP_PRICE_0 = "konakart:priceextax";

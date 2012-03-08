@@ -6,6 +6,7 @@ import com.konakart.app.FetchProductOptions;
 import com.konakart.app.KKException;
 import com.konakart.appif.*;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
+import org.hippoecm.hst.configuration.hosting.Mount;
 import org.hippoecm.hst.content.beans.ObjectBeanManagerException;
 import org.hippoecm.hst.content.beans.manager.ObjectBeanManager;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
@@ -14,18 +15,15 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
-import org.hippoecm.hst.core.request.ComponentConfiguration;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
-import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
+import org.onehippo.forge.konakart.hst.channel.KonakartSiteInfo;
 import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.utils.KKCookieMgr;
 import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jcr.Session;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
@@ -47,11 +45,6 @@ public class KKHstComponent extends BaseHstComponent {
 
 
     /**
-     * Default StoreId as defined in the web.xml for the ContextParm *
-     */
-    public static String defaultStoreIdFromWebXml = null;
-
-    /**
      * Used to manage cookie
      */
     private KKCookieMgr kkCookieMgr = new KKCookieMgr();
@@ -66,19 +59,22 @@ public class KKHstComponent extends BaseHstComponent {
      */
     protected KKCustomerEventMgr eventMgr = new KKCustomerEventMgr();
 
-
-    @Override
-    public void init(ServletContext servletContext, ComponentConfiguration componentConfig) throws HstComponentException {
-        super.init(servletContext, componentConfig);
-
-        defaultStoreIdFromWebXml = servletContext.getInitParameter(KKConstants.DEFAULT_STORE_ID_CONTEXT_PARAMETER);
-    }
-
     @Override
     public void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
         super.doBeforeRender(request, response);
 
         try {
+            if (KKAppEng.getEngConf() == null) {
+                // Initialize the Engine Conf
+                Mount mount = request.getRequestContext().getResolvedMount().getMount();
+                KonakartSiteInfo siteInfo = mount.getChannelInfo();
+
+                if (siteInfo != null) {
+                    KKEngine.init(Integer.parseInt(siteInfo.getEngineMode()), siteInfo.isCustomersShared(),
+                            siteInfo.isProductsShared());
+                }
+            }
+
             // Retrieve the engine
             kkAppEng = getKKEngine(request, response);
 
@@ -93,9 +89,7 @@ public class KKHstComponent extends BaseHstComponent {
                 request.setAttribute("currentCustomer", getCurrentCustomer());
                 request.setAttribute("basketTotal", kkAppEng.getBasketMgr().getBasketTotal());
             }
-        } catch (KKException e) {
-            log.warn("Failed to render the HST component {}", e.toString());
-        } catch (KKAppException e) {
+        } catch (Exception e) {
             log.warn("Failed to render the HST component {}", e.toString());
         }
     }
@@ -172,31 +166,46 @@ public class KKHstComponent extends BaseHstComponent {
         return null;
     }
 
+
     /**
      * The store Id. By default this method return "store1" value or the value associated to the defaultStoreId's
      * context-param defined within the web.xml
      * <p/>
      * You can override this method to retrieve the store id from the channel info for example.
      *
+     * @param request the hst request
+     *
      * @return the store id associated to this channel.
      * @see org.hippoecm.hst.configuration.channel.ChannelInfo
      */
-    protected String getStoreIdFromChannel() {
-        if (defaultStoreIdFromWebXml == null) {
+    protected String getStoreIdFromChannel(HstRequest request) {
+        KonakartSiteInfo siteInfo = getKonakartSiteInfo(request);
+
+        if (siteInfo == null) {
             return KKConstants.DEF_STORE_ID;
+
         }
 
-        return defaultStoreIdFromWebXml;
+        return siteInfo.getStoreId();
     }
 
     /**
      * The catalog Id (@see catalog feature. Available with the Konakart enterprise version.
      * By default this method return null.
      *
+     * @param request the hst request
+     *
      * @return the catalog id associated with this channel.
      */
-    protected String getCatalogIdFromChannel() {
-        return null;
+    protected String getCatalogIdFromChannel(HstRequest request) {
+        KonakartSiteInfo siteInfo = getKonakartSiteInfo(request);
+
+        if (siteInfo == null) {
+            return null;
+
+        }
+
+        return siteInfo.getCatalogId();
     }
 
     /**
@@ -393,20 +402,21 @@ public class KKHstComponent extends BaseHstComponent {
             }
 
             try {
+                String storeId = getStoreIdFromChannel(request);
+
                 // Create the Konakart engine
-                Session jcrSession = request.getRequestContext().getSession();
-                kkAppEng = KKEngine.get(HippoModuleConfig.load(jcrSession).getEngineConfig());
+                kkAppEng = KKEngine.get(storeId);
 
                 // initialize the Fetch production options
                 FetchProductOptionsIf productOptions = new FetchProductOptions();
-                productOptions.setCatalogId(getCatalogIdFromChannel());
+                productOptions.setCatalogId(getCatalogIdFromChannel(request));
                 productOptions.setUseExternalPrice(isUseExternalPrice());
                 productOptions.setUseExternalQuantity(isUseExternalQuantity());
 
                 kkAppEng.setFetchProdOptions(productOptions);
 
                 if (log.isInfoEnabled()) {
-                    log.info("Set KKAppEng on the session for storeId " + getStoreIdFromChannel());
+                    log.info("Set KKAppEng on the session for storeId " + storeId);
                 }
 
                 // Store the engine under the session
@@ -453,4 +463,26 @@ public class KKHstComponent extends BaseHstComponent {
             }
         }
     }
+
+    /**
+     * @param request the hst request
+     *
+     * @return the Channel Info
+     */
+    private KonakartSiteInfo getKonakartSiteInfo(HstRequest request) {
+        Mount mount = request.getRequestContext().getResolvedMount().getMount();
+
+        Object o = mount.getChannelInfo();
+        
+        if (!(o instanceof KonakartSiteInfo)) {
+            log.error("//////////////////////////////////////");
+            log.error("The ChannelInfo must extends org.onehippo.forge.konakart.hst.channel.KonakartSiteInfo");
+            log.error("//////////////////////////////////////");
+            
+            return null;
+        }
+        
+        return (KonakartSiteInfo) o;
+    }
+
 }

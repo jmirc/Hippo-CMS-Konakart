@@ -39,29 +39,7 @@ public class RatingPlugin extends RenderPlugin {
         long reviewCount = 0;
 
         try {
-//            if (productNode.hasProperty(KKCndConstants.PRODUCT_ID)) {
-//
-//                long productId = productNode.getProperty(KKCndConstants.PRODUCT_ID).getLong();
-//
-//                // load the konakart module config.
-//                HippoModuleConfig hippoModuleConfig = HippoModuleConfig.getConfig();
-//
-//                // Try to update Update the product id
-//                try {
-//                    KKEngine KKEngine = new KKEngine(hippoModuleConfig.getEngineConfig());
-//
-//
-//
-//
-//
-//                } catch (Exception e) {
-//                    log.warn("Failed to update the statut for the following UUID product : " + uuid, e);
-//                }
-//            }
-
             Node parent = productNode.getParent().getParent();
-
-
 
             if (parent.isNodeType("mix:referenceable")) {
                 String query = "select * from konakart:review where konakart:reviewproductlink = '" + parent.getIdentifier() +"'";

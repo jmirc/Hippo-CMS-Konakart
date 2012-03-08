@@ -2,9 +2,11 @@
 
 <ul>
     <c:forEach var="product" items="${products.items}">
+        <hst:link var="prdImgLink" hippobean="${product.mainImage.smallThumbnail}"/>
         <hst:link var="prdlink" hippobean="${product}"/>
 
         <li class="overview-item">
+            <img src="${prdImgLink}" alt=""/><br/>
             <hst:cmseditlink hippobean="${product}"/>
             <a href="${fn:escapeXml(prdlink)}"><c:out value="${product.name}"/></a>
             <br/>

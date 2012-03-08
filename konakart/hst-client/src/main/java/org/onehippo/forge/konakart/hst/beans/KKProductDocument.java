@@ -10,6 +10,7 @@ import com.konakart.appif.ReviewIf;
 import com.konakart.appif.ReviewsIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.content.beans.standard.HippoDocument;
+import org.onehippo.forge.konakart.hst.beans.compound.ImageSet;
 import org.onehippo.forge.konakart.hst.beans.compound.Konakart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -246,6 +247,20 @@ public class KKProductDocument extends HippoDocument {
         } catch (KKException e) {
             return 0D;
         }
+    }
+
+    /**
+     * @return the list of images associated the product
+     */
+    public List<ImageSet> getImages() {
+        return konakart.getImages();
+    }
+
+    /**
+     * @return the main image
+     */
+    public ImageSet getMainImage() {
+        return konakart.getMainImage();
     }
 
     /**

@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.hst.components;
 
+import com.konakart.app.KKException;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.content.beans.query.HstQuery;
@@ -38,6 +39,16 @@ public abstract class KKProductsOverview<T extends KKProductDocument> extends KK
     @Override
     final public void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
         super.doBeforeRender(request, response);
+
+
+        // TODO this reset could be move in other place if the selected product should be reset outside
+        // the overview page
+        // Reset the state of the objects connected to the session. i.e. Selected product etc.
+        try {
+            kkAppEng.reset();
+        } catch (KKException e) {
+            log.info("Unable to reset the Konakart Engine - {} " + e.toString());
+        }
 
         HippoBean currentBean = this.getContentBean(request);
 

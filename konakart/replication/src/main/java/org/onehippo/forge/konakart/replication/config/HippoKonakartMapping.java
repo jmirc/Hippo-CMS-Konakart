@@ -42,10 +42,12 @@ public class HippoKonakartMapping {
      *
      */
     public static class MappingByProductType {
-        private String storeId = KKConstants.KONAKART_DEFAULT_STORE_ID;
-        private String hippoContentRoot;
-        private String catalogId;
+        private String storeId;
+        private String contentRoot;
+        private String galleryRoot;
+        private String productFolder;
         private String reviewFolder;
+        private String catalogId;
         private int productType = -1;
 
 
@@ -57,12 +59,28 @@ public class HippoKonakartMapping {
             this.storeId = storeId;
         }
 
-        public String getHippoContentRoot() {
-            return hippoContentRoot;
+        public String getContentRoot() {
+            return contentRoot;
         }
 
-        public void setHippoContentRoot(String hippoContentRoot) {
-            this.hippoContentRoot = hippoContentRoot;
+        public void setContentRoot(String contentRoot) {
+            this.contentRoot = contentRoot;
+        }
+
+        public String getGalleryRoot() {
+            return galleryRoot;
+        }
+
+        public void setGalleryRoot(String galleryRoot) {
+            this.galleryRoot = galleryRoot;
+        }
+
+        public String getProductFolder() {
+            return productFolder;
+        }
+
+        public void setProductFolder(String productFolder) {
+            this.productFolder = productFolder;
         }
 
         public String getCatalogId() {
@@ -72,6 +90,8 @@ public class HippoKonakartMapping {
         public void setCatalogId(String catalogId) {
             this.catalogId = catalogId;
         }
+
+
 
         public String getReviewFolder() {
             return reviewFolder;

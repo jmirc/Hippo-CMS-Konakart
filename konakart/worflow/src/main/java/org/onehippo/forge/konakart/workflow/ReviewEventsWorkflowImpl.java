@@ -27,10 +27,7 @@ import java.util.Iterator;
  *
  */
 
-@PersistenceCapable(identityType = IdentityType.DATASTORE, cacheable = "false", detachable = "false")
-@DatastoreIdentity(strategy = IdGeneratorStrategy.NATIVE)
-@Inheritance(strategy = InheritanceStrategy.SUBCLASS_TABLE)
-@Discriminator(strategy = DiscriminatorStrategy.CLASS_NAME)
+@PersistenceCapable
 public class ReviewEventsWorkflowImpl extends WorkflowImpl implements WorkflowEventWorkflow {
 
     private static Logger log = LoggerFactory.getLogger(ReviewEventsWorkflowImpl.class);
@@ -43,6 +40,9 @@ public class ReviewEventsWorkflowImpl extends WorkflowImpl implements WorkflowEv
 
     @Persistent(column = "../hippo:request/hippostdpubwf:type")
     private String type;
+
+    @Persistent(column = "./myhippoproject:konakart/konakart:storeid")
+    private String storeId;
 
     @Persistent(column = "hippostd:state")
     private String state;
@@ -62,7 +62,7 @@ public class ReviewEventsWorkflowImpl extends WorkflowImpl implements WorkflowEv
 
         // Try to update Update the product id
         try {
-            KKAppEng kkAppEng = KKEngine.get(config.getEngineConfig());
+            KKAppEng kkAppEng = KKEngine.get(storeId);
 
             CustomReviewMgr customReviewMgr = new CustomReviewMgr(kkAppEng.getEng());
 
