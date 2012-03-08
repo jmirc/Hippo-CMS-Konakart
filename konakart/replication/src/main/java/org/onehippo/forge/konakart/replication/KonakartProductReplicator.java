@@ -18,6 +18,7 @@ import org.onehippo.forge.konakart.replication.config.HippoRepoConfig;
 import org.onehippo.forge.konakart.replication.factory.DefaultProductFactory;
 import org.onehippo.forge.konakart.replication.factory.ProductFactory;
 import org.onehippo.forge.konakart.replication.jcr.GalleryProcesssorConfig;
+import org.onehippo.forge.konakart.replication.utils.Codecs;
 import org.onehippo.forge.konakart.replication.utils.NodeHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,6 +37,8 @@ public class KonakartProductReplicator {
     private javax.jcr.Session jcrSession;
     private HippoRepoConfig hippoRepoConfig;
     private String productFactoryClassName;
+
+    private HippoModuleConfig config;
 
     /**
      * the hippo document type which defined a product. This document must contain the konakart:konakart compound
@@ -91,7 +95,7 @@ public class KonakartProductReplicator {
         log.debug("Executing Konakart Products Replicator ...");
 
         // load the konakart module config.
-        HippoModuleConfig config = HippoModuleConfig.load(jcrSession);
+        config = HippoModuleConfig.load(jcrSession);
 
         if (!config.isIntialized()) {
             log.info("Failed to read the configuration from Konakart config module.");
@@ -107,32 +111,40 @@ public class KonakartProductReplicator {
 
         try {
             // Initialize the Konakart engine
-            KKEngine.init(0, false, false);
+            KKEngine.init(config.getEngineConfig().getEngineMode(), config.getEngineConfig().isCustomersShared(),
+                    config.getEngineConfig().isProductsShared());
 
-
-            updateKonakartRepositoryToKonakartProducts(config);
-
-            boolean isUpdated = updateKonakartProductsToRepository(config);
-
-            if (isUpdated) {
-                config.setLastUpdatedTimeToNow(jcrSession);
+            // Update konakart information
+            try {
+                if (config.getEngineConfig().isUpdateRepositoryToKonakart()) {
+                    updateRepositoryToKonakart();
+                    config.setLastUpdatedTimeRepositoryToKonakart(jcrSession);
+                }
+            } catch (Exception e) {
+                log.warn("Failed to update Repository to Konakart. ", e);
             }
+
+            // Update hippo product
+            try {
+                if (config.getEngineConfig().isUpdateKonakartToRepository()) {
+                    updateKonakartToRepository();
+                    config.setLastUpdatedTimeKonakartToRepository(jcrSession);
+                }
+            } catch (Exception e) {
+                log.warn("Failed to update Konakart to Repository. ", e);
+            }
+
         } catch (Exception e) {
-            log.warn("Failed to update Konakart products to Repository. ", e);
+            log.warn("Failed to initialize Konakart engine. ", e);
         }
     }
 
     /**
      * Copy products from Konakart to Hippo
      *
-     * @param config the config which contains the Konakart configuration
-     * @return true if the product has been updated, false otherwise
      * @throws Exception an exception
      */
-    private boolean updateKonakartProductsToRepository(HippoModuleConfig config) throws Exception {
-
-        boolean isUpdated = false;
-
+    private void updateKonakartToRepository() throws Exception {
 
         KKAppEng kkengine = KKEngine.get(KKConstants.KONAKART_DEFAULT_STORE_ID);
 
@@ -153,7 +165,7 @@ public class KonakartProductReplicator {
                 kkengine = KKEngine.get(storeId);
 
                 // Retrieve the product factory
-                CustomProductMgr productMgr = new CustomProductMgr(kkengine.getEng(), config.getLastUpdatedTime());
+                CustomProductMgr productMgr = new CustomProductMgr(kkengine.getEng(), config.getLastUpdatedTimeKonakartToRepository());
 
                 // Get only visible products
                 DataDescriptorIf dataDescriptorIf = new DataDescriptor();
@@ -192,10 +204,6 @@ public class KonakartProductReplicator {
                     continue;
                 }
 
-                if (!isUpdated && products.getProductArray().length > 0) {
-                    isUpdated = true;
-                }
-
                 // Insert products into konakart
                 for (Product product : products.getProductArray()) {
                     ProductFactory productFactory = createProductFactory();
@@ -228,21 +236,20 @@ public class KonakartProductReplicator {
                     product.setStoreId(storeId);
                     productFactory.add(product, language, baseImagePath);
 
-                    // Set the Hippo Node UUID
+                    // Set the Review folder
                     productMgr.synchronizeHippoKK(product.getId(), reviewName);
                 }
             }
         }
-
-        return isUpdated;
     }
 
 
     /**
      * Synchronize produts status updates and multi-store update
-     * @param config the hippoRepoConfig
+
+     * @throws Exception .
      */
-    private void updateKonakartRepositoryToKonakartProducts(HippoModuleConfig config) throws Exception {
+    private void updateRepositoryToKonakart() throws Exception {
 
         NodeHelper nodeHelper = new NodeHelper(jcrSession);
 
@@ -264,13 +271,21 @@ public class KonakartProductReplicator {
 
                 Node seed = null;
 
-                if (jcrSession.itemExists(mappingByProductType.getContentRoot())) {
-                    seed = jcrSession.getNode(mappingByProductType.getContentRoot());
+                String productRoot = mappingByProductType.getContentRoot() + "/" + Codecs.encodeNode(mappingByProductType.getProductFolder());
+                
+                if (jcrSession.itemExists(productRoot)) {
+                    seed = jcrSession.getNode(productRoot);
                 }
 
                 if (seed != null) {
                     List<SyncProduct> syncProducts = new LinkedList<SyncProduct>();
                     findAllProductIdsFromRepository(seed, syncProducts);
+
+                    if (syncProducts.size() > 0) {
+                        if (log.isInfoEnabled()) {
+                            log.info(syncProducts.size() + " Hippo product(s) will be synchronized to Konakart");
+                        }
+                    }
 
                     for (SyncProduct syncProduct : syncProducts) {
 
@@ -289,34 +304,43 @@ public class KonakartProductReplicator {
                         // If the product is null, it means that the product has been removed from the store.
                         // So the Hippo document should be unpublished.
                         if (productIf == null) {
-                            nodeHelper.updateState(node, NodeHelper.UNPUBLISHED_STATE);
+                            nodeHelper.updateState(node.getParent(), NodeHelper.UNPUBLISHED_STATE);
                         }  else {
-
                             // Synchronize the state of a product on konakart according to the state of the node,
                             // is only available when Konakart does not shared products over Stores.
                             if (!KKAppEng.getEngConf().isProductsShared()) {
-                                String nodeState = nodeHelper.getNodeState(node);
+                                Date lastUpdatedTimeRepositoryToKonakart = config.getLastUpdatedTimeRepositoryToKonakart();
 
-                                if (nodeState != null) {
-                                    if (nodeState.equalsIgnoreCase(NodeHelper.UNPUBLISHED_STATE)) {
-                                        productMgr.updateStatus(productIf.getId(), false);
-                                    } else {
-                                        productMgr.updateStatus(productIf.getId(), true);
+                                // Update only newer updated products
+                                if (syncProduct.getLastModificationDate().after(lastUpdatedTimeRepositoryToKonakart)) {
+                                    String nodeState = nodeHelper.getNodeState(node);
+
+                                    if (nodeState != null) {
+                                        if (nodeState.equalsIgnoreCase(NodeHelper.UNPUBLISHED_STATE)) {
+                                            productMgr.updateStatus(productIf.getId(), false);
+                                        } else {
+                                            productMgr.updateStatus(productIf.getId(), true);
+                                        }
+                                    }
+
+                                    // Update the description
+                                    if (node.hasNode(KKCndConstants.PRODUCT_DESCRIPTION)) {
+                                        Node descriptionNode = node.getNode(KKCndConstants.PRODUCT_DESCRIPTION);
+
+                                        String htmlDescription = descriptionNode.getProperty("hippostd:content").getString();
+
+                                        // remove the <html><body> at the beginning and the </body></html> at the end
+                                        htmlDescription = StringUtils.remove(htmlDescription, "<html>");
+                                        htmlDescription = StringUtils.remove(htmlDescription, "<body>");
+                                        htmlDescription = StringUtils.remove(htmlDescription, "</body>");
+                                        htmlDescription = StringUtils.remove(htmlDescription, "</html>");
+
+                                        productMgr.updateDescription(syncProduct.getkProductId(), syncProduct.getkLanguageId(),
+                                                htmlDescription);
                                     }
                                 }
                             }
 
-                            // Update the description
-                            if (node.hasNode(KKCndConstants.PRODUCT_DESCRIPTION)) {
-                                String htmlDescription = node.getProperty("hippostd:content").getString();
-
-                                // remove the <html><body> at the beginning and the </body></html> at the end
-                                htmlDescription = StringUtils.removeStart(htmlDescription, "<html><body>");
-                                htmlDescription = StringUtils.removeEnd(htmlDescription, "</body></html>");
-
-                                productMgr.updateDescription(syncProduct.getkProductId(), syncProduct.getkLanguageId(),
-                                        htmlDescription);
-                            }
 
                         }
                     }
@@ -332,13 +356,19 @@ public class KonakartProductReplicator {
             seed = seed.getNode(seed.getName());
         }
 
-        if (seed.isNodeType(KKCndConstants.PRODUCT_PRODUCT_TYPE)) {
+        if (seed.isNodeType(KKCndConstants.PRODUCT_DOC_TYPE)) {
+
+            Date lastModificationDate = seed.getParent().getProperty("hippostdpubwf:lastModificationDate").getDate().getTime();
+
             SyncProduct syncProduct = new SyncProduct();
             syncProduct.setHippoUuid(seed.getIdentifier());
             syncProduct.setkProductId((int) seed.getProperty(KKCndConstants.PRODUCT_ID).getLong());
+            syncProduct.setkLanguageId((int) seed.getProperty(KKCndConstants.PRODUCT_LANGUAGE_ID).getLong());
+            syncProduct.setLastModificationDate(lastModificationDate);
 
             syncProducts.add(syncProduct);
-        } else if (seed.isNodeType("hippostd:folder")) {
+
+        } else if (seed.isNodeType("hippostd:folder") || seed.isNodeType(productDocType)) {
             for (NodeIterator nodeIt = seed.getNodes(); nodeIt.hasNext();) {
                 Node child = nodeIt.nextNode();
 
@@ -371,6 +401,7 @@ public class KonakartProductReplicator {
         private int kProductId;
         private int kLanguageId;
         private String hippoUuid;
+        private Date lastModificationDate;
 
         public int getkProductId() {
             return kProductId;
@@ -394,6 +425,14 @@ public class KonakartProductReplicator {
 
         public void setHippoUuid(String hippoUuid) {
             this.hippoUuid = hippoUuid;
+        }
+
+        public Date getLastModificationDate() {
+            return lastModificationDate;
+        }
+
+        public void setLastModificationDate(Date lastModificationDate) {
+            this.lastModificationDate = lastModificationDate;
         }
     }
 }

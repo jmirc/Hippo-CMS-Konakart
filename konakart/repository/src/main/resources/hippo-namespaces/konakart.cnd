@@ -15,7 +15,13 @@
 [konakart:config] > nt:base
   - konakart:enabled (boolean)
   - konakart:enginemode (long)
-  - konakart:lastUpdatedTime (date)
+  - konakart:isCustomersShared (boolean)
+  - konakart:isProductsShared (boolean)
+  - konakart:lastUpdatedTimeKonakartToRepository (date)
+  - konakart:lastUpdatedTimeRepositoryToKonnakart (date)
+  - konakart:updateKonakartProductsToRepository (boolean)
+  - konakart:updateRepositoryToKonakartProducts (boolean)
+
 
 [konakart:konakart] > hippo:compound, hippostd:relaxed
 

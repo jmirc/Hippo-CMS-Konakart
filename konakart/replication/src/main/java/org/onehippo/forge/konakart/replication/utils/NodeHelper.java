@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.*;
+import javax.jcr.version.VersionManager;
 import java.rmi.RemoteException;
 import java.util.GregorianCalendar;
 import java.util.Map;
@@ -49,9 +50,11 @@ public class NodeHelper {
 
     protected Session session;
 
+    private VersionManager versionManager;
 
-    public NodeHelper(Session session) {
+    public NodeHelper(Session session) throws RepositoryException {
         this.session = session;
+        versionManager = session.getWorkspace().getVersionManager();
     }
     
     
@@ -189,7 +192,7 @@ public class NodeHelper {
         }
     }
 
-    public Node createDocument(Node parentNode, Product product, String docType, String ownerId, String locale) throws RepositoryException {
+    public Node createOrRetrieveDocument(Node parentNode, Product product, String docType, String ownerId, String locale) throws RepositoryException {
 
         // Encode the name to be able to add name with special characters
         String encodingName = Codecs.encodeNode(product.getName());
@@ -198,11 +201,7 @@ public class NodeHelper {
             Node handleNode = parentNode.getNode(encodingName);
 
             if (handleNode.hasNode(encodingName)) {
-                Node docName = handleNode.getNode(encodingName);
-
-                docName.getProperty("hippostdpubwf:lastModificationDate").setValue(new GregorianCalendar());
-
-                return docName;
+                return handleNode.getNode(encodingName);
             }
 
             return null;
@@ -246,7 +245,27 @@ public class NodeHelper {
      * @param state the state of the document
      */
     public void updateState(Node node, String state) throws RepositoryException {
+
+        boolean hasCheckout = false;
+
+        // Check if the node is check-in
+        if (!node.isCheckedOut()) {
+            checkout(node.getPath());
+            hasCheckout = true;
+        }
+
         node.setProperty("hippostd:state", state);
+
+        if (state.equals(UNPUBLISHED_STATE)) {
+            node.setProperty("hippo:availability", new String[]{"preview"});
+        } else {
+            node.setProperty("hippo:availability", new String[]{"live", "preview"});
+        }
+
+        if (hasCheckout) {
+            checkin(node.getPath());
+        }
+
     }
 
     public String getNodeState(Node node) throws RepositoryException {
@@ -347,5 +366,13 @@ public class NodeHelper {
             }
         }
         return folderNode;
+    }
+
+    public void checkout(String path) throws RepositoryException {
+        versionManager.checkout(path);
+    }
+
+    public void checkin(String path) throws RepositoryException {
+        versionManager.checkin(path);
     }
 }

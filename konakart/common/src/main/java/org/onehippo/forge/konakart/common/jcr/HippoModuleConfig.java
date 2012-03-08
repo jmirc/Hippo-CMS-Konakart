@@ -21,7 +21,9 @@ public class HippoModuleConfig {
     private boolean intialized = false;
 
     private boolean enabled;
-    private Date lastUpdatedTime;
+    private Date lastUpdatedTimeKonakartToRepository;
+    private Date lastUpdatedTimeRepositoryToKonakart;
+
     private KKEngineConfig engineConfig = new KKEngineConfig();
 
     /**
@@ -63,16 +65,39 @@ public class HippoModuleConfig {
         return enabled;
     }
 
-    public Date getLastUpdatedTime() {
-        return lastUpdatedTime;
+    public Date getLastUpdatedTimeKonakartToRepository() {
+        return lastUpdatedTimeKonakartToRepository;
     }
 
-
-    public void setLastUpdatedTimeToNow(Session session) {
+    public void setLastUpdatedTimeKonakartToRepository(Session session) {
         try {
             Node node = session.getNode(CONFIG_NODE_PATH);
 
-            node.setProperty("konakart:lastUpdatedTime", new GregorianCalendar());
+            GregorianCalendar currentTime = new GregorianCalendar();
+
+            lastUpdatedTimeKonakartToRepository = currentTime.getTime();
+
+            node.setProperty("konakart:lastUpdatedTimeKonakartToRepository", currentTime);
+
+            node.getSession().save();
+        } catch (RepositoryException e) {
+            log.error("Failed to set the upated date time: " + e.toString());
+        }
+    }
+
+    public Date getLastUpdatedTimeRepositoryToKonakart() {
+        return lastUpdatedTimeRepositoryToKonakart;
+    }
+
+    public void setLastUpdatedTimeRepositoryToKonakart(Session session) {
+        try {
+            Node node = session.getNode(CONFIG_NODE_PATH);
+
+            GregorianCalendar currentTime = new GregorianCalendar();
+
+            lastUpdatedTimeRepositoryToKonakart = currentTime.getTime();
+
+            node.setProperty("konakart:lastUpdatedTimeRepositoryToKonnakart", currentTime);
 
             node.getSession().save();
         } catch (RepositoryException e) {
@@ -88,11 +113,24 @@ public class HippoModuleConfig {
 
             enabled = node.getProperty("konakart:enabled").getBoolean();
 
-            if (node.hasProperty("konakart:lastUpdatedTime")) {
-                lastUpdatedTime = node.getProperty("konakart:lastUpdatedTime").getDate().getTime();
+            if (node.hasProperty("konakart:lastUpdatedTimeRepositoryToKonnakart")) {
+                lastUpdatedTimeRepositoryToKonakart = node.getProperty("konakart:lastUpdatedTimeRepositoryToKonnakart").getDate().getTime();
             } else {
-                lastUpdatedTime = null;
+                lastUpdatedTimeRepositoryToKonakart = null;
             }
+
+            if (node.hasProperty("konakart:lastUpdatedTimeKonakartToRepository")) {
+                lastUpdatedTimeKonakartToRepository = node.getProperty("konakart:lastUpdatedTimeKonakartToRepository").getDate().getTime();
+            } else {
+                lastUpdatedTimeKonakartToRepository = null;
+            }
+
+            engineConfig.setEngineMode(node.getProperty("konakart:enginemode").getLong());
+            engineConfig.setCustomersShared(node.getProperty("konakart:isCustomersShared").getBoolean());
+            engineConfig.setProductsShared(node.getProperty("konakart:isProductsShared").getBoolean());
+            engineConfig.setUpdateKonakartProductsToRepository(node.getProperty("konakart:updateKonakartProductsToRepository").getBoolean());
+            engineConfig.setUpdateRepositoryToKonakartProducts(node.getProperty("konakart:updateRepositoryToKonakartProducts").getBoolean());
+
 
             intialized = true;
 

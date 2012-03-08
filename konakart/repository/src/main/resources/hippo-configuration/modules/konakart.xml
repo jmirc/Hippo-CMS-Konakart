@@ -8,7 +8,19 @@
             <sv:value>konakart:config</sv:value>
         </sv:property>
         <sv:property sv:name="konakart:enabled" sv:type="Boolean">
-            <sv:value>true</sv:value>
+            <sv:value>false</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:updateKonakartProductsToRepository" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:updateRepositoryToKonakartProducts" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:isCustomersShared" sv:type="Boolean">
+            <sv:value>false</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:isProductsShared" sv:type="Boolean">
+            <sv:value>false</sv:value>
         </sv:property>
         <sv:property sv:name="konakart:enginemode" sv:type="Long">
             <sv:value>0</sv:value>
