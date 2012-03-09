@@ -11,10 +11,10 @@
             <sv:value>false</sv:value>
         </sv:property>
         <sv:property sv:name="konakart:updateKonakartProductsToRepository" sv:type="Boolean">
-            <sv:value>false</sv:value>
+            <sv:value>true</sv:value>
         </sv:property>
         <sv:property sv:name="konakart:updateRepositoryToKonakartProducts" sv:type="Boolean">
-            <sv:value>false</sv:value>
+            <sv:value>true</sv:value>
         </sv:property>
         <sv:property sv:name="konakart:isCustomersShared" sv:type="Boolean">
             <sv:value>false</sv:value>
