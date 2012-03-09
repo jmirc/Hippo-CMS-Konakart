@@ -1,0 +1,17 @@
+
+/demo/.idea
+/demo/target
+/demo/myrepo
+/konakart/target
+/konakart/common/target
+/konakart/dependencies/target
+/konakart/hst-client/target
+/konakart/repository/target
+/konakart/replication/target
+/konakart/plugins/target
+/konakart/.idea
+/demo/cms/overlays
+/demo/cms/target
+/demo/site/target
+/demo/content/target
+*.iml
