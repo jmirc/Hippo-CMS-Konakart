@@ -7,7 +7,7 @@
 <hst:link var="cartLink" siteMapItemRefId="detailCartId"/>
 <hst:link var="cartImage" path="/images/cart_16x16.png"/>
 
-<br/><br/><a href="${cartLink}"><img src="${cartImage}"/></a> SHOPPING CART <br/>
+<br/><br/><a href="${cartLink}"><i class="icon-shopping-cart"></i></a> SHOPPING CART <br/>
 <c:choose>
     <c:when test="${!empty currentCustomer.basketItems}">
         <c:forEach var="item" items="${currentCustomer.basketItems}">

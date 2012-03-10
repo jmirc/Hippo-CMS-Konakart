@@ -10,7 +10,7 @@ import com.konakart.appif.ReviewIf;
 import com.konakart.appif.ReviewsIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.content.beans.standard.HippoDocument;
-import org.onehippo.forge.konakart.hst.beans.compound.ImageSet;
+import org.hippoecm.hst.content.beans.standard.HippoGalleryImageSet;
 import org.onehippo.forge.konakart.hst.beans.compound.Konakart;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +31,6 @@ public class KKProductDocument extends HippoDocument {
 
     private KKAppEng kkEngine;
 
-
     /**
      * Set the Konakart engine
      *
@@ -39,13 +38,23 @@ public class KKProductDocument extends HippoDocument {
      */
     public void setKkEngine(KKAppEng kkEngine) {
         this.kkEngine = kkEngine;
+        loadKonakart();
         loadProduct();
+    }
+
+    /**
+     * @return the konakart compound object
+     */
+    public Konakart getKonakart() {
+        return konakart;
     }
 
     /**
      * @return the Konakart product's id
      */
     public int getProductId() {
+        loadKonakart();
+
         return konakart.getProductId().intValue();
     }
 
@@ -54,6 +63,8 @@ public class KKProductDocument extends HippoDocument {
      * @return the product's name
      */
     public String getName() {
+        loadKonakart();
+
         String name = "";
 
         if (konakart != null) {
@@ -79,6 +90,8 @@ public class KKProductDocument extends HippoDocument {
      * @return the product's price
      */
     public String getPrice0() {
+        loadKonakart();
+
         BigDecimal price = null;
 
         try {
@@ -104,6 +117,8 @@ public class KKProductDocument extends HippoDocument {
      * @return the product's price
      */
     public String getPrice1() {
+        loadKonakart();
+
         BigDecimal price = null;
 
         try {
@@ -129,6 +144,8 @@ public class KKProductDocument extends HippoDocument {
      * @return the product's price
      */
     public String getPrice2() {
+        loadKonakart();
+
         BigDecimal price = null;
 
         try {
@@ -154,6 +171,8 @@ public class KKProductDocument extends HippoDocument {
      * @return the product's price
      */
     public String getPrice3() {
+        loadKonakart();
+
         BigDecimal price = null;
 
         try {
@@ -180,6 +199,7 @@ public class KKProductDocument extends HippoDocument {
      * @return the special product's price
      */
     public String getSpecialPrice() {
+        loadKonakart();
 
         Double specialPrice = konakart.getSpecialPrice();
 
@@ -252,32 +272,42 @@ public class KKProductDocument extends HippoDocument {
     /**
      * @return the list of images associated the product
      */
-    public List<ImageSet> getImages() {
+    public List<HippoGalleryImageSet> getImages() {
+        loadKonakart();
+
         return konakart.getImages();
     }
 
     /**
      * @return the main image
      */
-    public ImageSet getMainImage() {
+    public HippoGalleryImageSet getMainImage() {
+        loadKonakart();
+
         return konakart.getMainImage();
+    }
+
+    /**
+     * Retrieve konakart compoud object
+     */
+    private void loadKonakart() {
+        if (konakart == null) {
+            // Retrieve Konakart node
+            List<Konakart> konakartList = getChildBeans(Konakart.class);
+
+            // Should not happends
+            if ((konakartList == null) || (konakartList.size() == 0)) {
+                return;
+            }
+
+            konakart = konakartList.get(0);
+        }
     }
 
     /**
      * Retrieve the konakart product based on the product ID.
      */
     private void loadProduct() {
-
-        // Retrieve Konakart node
-        List<Konakart> konakartList = getChildBeans(Konakart.class);
-
-        // Should not happends
-        if ((konakartList == null) || (konakartList.size() == 0)) {
-            return;
-        }
-
-        konakart = konakartList.get(0);
-
         if (product == null) {
             try {
                 // Fetch the product related data from the database

@@ -11,7 +11,7 @@ import java.util.List;
 public class Konakart extends HippoItem {
 
     private Price standardPrice = null;
-    private List<ImageSet> images;
+    private List<HippoGalleryImageSet> images;
 
 
     public Long getProductId() {
@@ -55,7 +55,7 @@ public class Konakart extends HippoItem {
     /**
      * @return the list of images associated the product
      */
-    public List<ImageSet> getImages() {
+    public List<HippoGalleryImageSet> getImages() {
         if (images == null) {
             loadImages();
         }
@@ -65,7 +65,7 @@ public class Konakart extends HippoItem {
     /**
      * @return the main image
      */
-    public ImageSet getMainImage() {
+    public HippoGalleryImageSet getMainImage() {
         if (images == null) {
             loadImages();
         }
@@ -83,14 +83,14 @@ public class Konakart extends HippoItem {
      * load the images
      */
     private void loadImages() {
-        images = new ArrayList<ImageSet>();
+        images = new ArrayList<HippoGalleryImageSet>();
         List<HippoMirror> mirrors = getChildBeansByName(KKCndConstants.PRODUCT_IMAGES);
         for (HippoBean mirror : mirrors) {
             if (mirror instanceof HippoFacetSelect) {
                 HippoFacetSelect facetSelect = (HippoFacetSelect) mirror;
                 HippoBean referenced = facetSelect.getReferencedBean();
-                if (referenced instanceof ImageSet) {
-                    ImageSet image = (ImageSet) referenced;
+                if (referenced instanceof HippoGalleryImageSet) {
+                    HippoGalleryImageSet image = (HippoGalleryImageSet) referenced;
                     images.add(image);
                 }
             }

@@ -1,8 +1,12 @@
 package org.onehippo.forge.konakart.hst.components;
 
+import com.konakart.al.KKAppException;
 import com.konakart.al.ReviewMgr;
+import com.konakart.app.Basket;
 import com.konakart.app.KKException;
+import com.konakart.appif.BasketIf;
 import com.konakart.appif.CustomerIf;
+import com.konakart.appif.ProductIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.content.beans.manager.workflow.WorkflowPersistenceManager;
 import org.hippoecm.hst.content.beans.query.HstQuery;
@@ -41,8 +45,9 @@ public abstract class KKProductDetail extends KKHstActionComponent {
     /**
      * This action is used to add a product to the baskket
      */
-    public static final String ADD_TO_BASKET_ACTION = "addToBasket";
+    private static final String ADD_TO_BASKET_ACTION = "addToBasket";
 
+    private static final String PRODUCT_ID = "prodId";
 
     private static final String NAME = "name";
     private static final String COMMENT = "comment";
@@ -230,6 +235,41 @@ public abstract class KKProductDetail extends KKHstActionComponent {
      * @param response the Hst Response
      */
     private void addToBasket(KKProductDocument product, HstRequest request, HstResponse response) {
+
+        String productId = KKUtil.getEscapedParameter(request, PRODUCT_ID);
+
+        if (StringUtils.isEmpty(productId)) {
+            return;
+        }
+
+        int prodId = Integer.valueOf(productId);
+
+
+        // Get the product from its Id
+        try {
+            kkAppEng.getProductMgr().fetchSelectedProduct(prodId);
+            ProductIf selectedProd = kkAppEng.getProductMgr().getSelectedProduct();
+
+            if (selectedProd == null) {
+                return;
+            }
+
+            /*
+             * Create a basket item. Only the product id is required to save the basket item. Note
+             * that the array of options may be null.
+             */
+            BasketIf b = new Basket();
+            b.setQuantity(1);
+            b.setProductId(selectedProd.getId());
+
+            kkAppEng.getBasketMgr().addToBasket(b, /* refresh */true);
+
+        } catch (KKException e) {
+            e.printStackTrace();
+        } catch (KKAppException e) {
+            e.printStackTrace();
+        }
+
 
     }
 

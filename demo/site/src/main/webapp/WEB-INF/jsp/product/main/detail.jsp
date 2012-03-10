@@ -1,21 +1,51 @@
 <%@ include file="/WEB-INF/jspf/htmlTags.jspf" %>
 
-<hst:link var="prdlink" hippobean="${product}"/>
+<hst:headContribution category="jsInternal">
+    <hst:link var="jquery" path="/js/jquery-1.4.2.min.js"/>
+    <script src="${jquery}" type="text/javascript"></script>
+</hst:headContribution>
 
-<hst:cmseditlink hippobean="${product}"/>
-<a href="${fn:escapeXml(prdlink)}"><c:out value="${product.name}"/></a>
-<br/>
-<c:if test="${not empty product.specialPrice}"><s></c:if>
-<c:out value="${product.price}"/>
-<c:if test="${not empty product.specialPrice}"></s></c:if>
-| <c:if test="${not empty product.specialPrice}"><c:out value="${product.specialPrice}"/></c:if><br/>
-<fmt:formatNumber value="${product.rating * 10}" var="ratingStyle" pattern="#0"/>
-<div class="rating stars-${ratingStyle}"><a href="${fn:escapeXml(prdlink)}"><c:out value="${product.rating}"/></a></div>
-<br/>
+<hst:headContribution category="jsInternal">
+    <hst:link var="rateJs" path="/js/rate.js"/>
+    <script src="${rateJs}" type="text/javascript"></script>
+</hst:headContribution>
+
 
 <hst:actionURL var="addToBasket">
     <hst:param name="action" value="addToBasket"/>
+    <hst:param name="prodId" value="${product.productId}"/>
 </hst:actionURL>
+
+
+<hst:link var="prdImgLink" hippobean="${product.mainImage.original}"/>
+<hst:link var="prdlink" hippobean="${product}"/>
+
+<div class="thumbnail">
+
+    <div class="caption">
+        <img src="${prdImgLink}" alt=""/><br/>
+        <h4><c:out value="${product.name}"/></h4>
+
+        <p>
+            <c:if test="${not empty product.specialPrice}"><s></c:if>
+            <c:out value="${product.price}"/>
+            <c:if test="${not empty product.specialPrice}"></s></c:if>
+            <c:if test="${not empty product.specialPrice}">&nbsp;|&nbsp;
+                <c:out value="${product.specialPrice}"/></c:if>
+        </p>
+        <fmt:formatNumber value="${product.rating * 10}" var="ratingStyle" pattern="#0"/>
+
+        <p class="rating stars-${ratingStyle}"><a href="${fn:escapeXml(prdlink)}">
+            <span style="margin-left: 100px;"><c:out value="${product.rating}"/></span>
+        </a>
+        </p>
+
+        <p>
+            <br/>
+            <a class="btn btn-primary" href="${addToBasket}">Add to basket</a>
+        </p>
+    </div>
+</div>
 
 
 <div id="comments">
@@ -42,84 +72,83 @@
         <hst:param name="action" value="review"/>
     </hst:actionURL>
 
-    <div id="article-footer">
-        <h3><fmt:message key="products.detail.reviewarticle"/></h3>
-        <ul class="box-bottom box-form" id="review">
-            <li class="content">
-                <form id="frmRating" action="${reviewUrl}" method="post">
-                    <input type="hidden" name="type" value="review">
-                    <table>
-                        <tr>
-                            <td colspan="2">
-                                <c:if test="${not empty success}">
-                                    <fmt:message key="products.detail.thanksforreview"/>
-                                    <br/>
-                                    <br/>
+    <br/>
+    <br/>
+
+    <div class="span8">
+        <c:if test="${not empty success}">
+            <fmt:message key="products.detail.thanksforreview"/>
+            <br/>
+            <br/>
+        </c:if>
+
+        <form id="frmRating" action="${reviewUrl}" method="post" class="form-horizontal">
+            <input type="hidden" name="type" value="review">
+            <fieldset>
+                <legend><fmt:message key="products.detail.reviewarticle"/></legend>
+                <div class="control-group">
+                    <label class="control-label" ><fmt:message key="products.detail.name"/></label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" value="${fn:escapeXml(name)}" name="name"/>
+                        <c:if test="${not empty errors}">
+                            <c:forEach items="${errors}" var="error">
+                                <c:if test="${error eq 'invalid.name-label'}">
+                                        <span class="form-error"><fmt:message
+                                                key="products.detail.name.error"/></span><br/>
                                 </c:if>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label"><fmt:message key="products.detail.name"/></td>
-                            <td class="input"><input type="text" value="${fn:escapeXml(name)}" name="name"/>
-                                <c:if test="${not empty errors}">
-                                    <c:forEach items="${errors}" var="error">
-                                        <c:if test="${error eq 'invalid.name-label'}">
-                                            <span class="form-error"><fmt:message
-                                                    key="products.detail.name.error"/></span><br/>
-                                        </c:if>
-                                    </c:forEach>
+                            </c:forEach>
+                        </c:if>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" ><fmt:message key="products.detail.email"/></label>
+                    <div class="controls">
+                        <input type="text" class="input-xlarge" value="${fn:escapeXml(email)}" name="email"/>
+                        <c:if test="${not empty errors}">
+                            <c:forEach items="${errors}" var="error">
+                                <c:if test="${error eq 'invalid.name-label'}">
+                                        <span class="form-error"><fmt:message
+                                                key="products.detail.email.error"/></span><br/>
                                 </c:if>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label"><fmt:message key="products.detail.email"/></td>
-                            <td class="input"><input type="text" value="${fn:escapeXml(email)}" name="email"/>
-                                <c:if test="${not empty errors}">
-                                    <c:forEach items="${errors}" var="error">
-                                        <c:if test="${error eq 'invalid.email-label'}">
-                                            <span class="form-error"><fmt:message key="products.detail.email.error"/></span><br/>
-                                        </c:if>
-                                    </c:forEach>
+                            </c:forEach>
+                        </c:if>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label"><fmt:message key="products.detail.score"/></label>
+                    <div class="controls">
+                        <ol class="rate">
+                            <li><span title="Rate: 1">1</span></li>
+                            <li><span title="Rate: 2">2</span></li>
+                            <li><span title="Rate: 3">3</span></li>
+                            <li><span title="Rate: 4">4</span></li>
+                            <li><span title="Rate: 5">5</span></li>
+                        </ol>
+                        <input type="hidden" value="0" name="rating" id="ratingField"/>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" ><fmt:message key="products.detail.review"/></label>
+                    <div class="controls">
+                        <textarea name="comment" id="comment" rows="8" cols="50" class="input-xlarge"></textarea>
+                        <c:if test="${not empty errors}">
+                            <c:forEach items="${errors}" var="error">
+                                <c:if test="${error eq 'invalid.name-label'}">
+                                        <span class="form-error"><fmt:message
+                                                key="products.detail.review.error"/></span><br/>
                                 </c:if>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label vtop"><fmt:message key="products.detail.score"/></td>
-                            <td class="input">
-                                <ol class="rate">
-                                    <li><span title="Rate: 1">1</span></li>
-                                    <li><span title="Rate: 2">2</span></li>
-                                    <li><span title="Rate: 3">3</span></li>
-                                    <li><span title="Rate: 4">4</span></li>
-                                    <li><span title="Rate: 5">5</span></li>
-                                </ol>
-                                <input type="hidden" value="0" name="rating" id="ratingField"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="label vtop"><fmt:message key="products.detail.review"/></td>
-                            <%--Do not split next line in rows, else the textarea will show white spaces on initialization--%>
-                            <td class="input"><textarea name="comment" id="comment" rows="8" cols="50"><c:if
-                                    test="${not empty comment}"><c:out value="${comment}"/></c:if></textarea>
-                                <c:if test="${not empty errors}">
-                                    <c:forEach items="${errors}" var="error">
-                                        <c:if test="${error eq 'invalid.comment-label'}">
-                                            <span class="form-error"><fmt:message
-                                                    key="products.detail.review.error"/></span><br/>
-                                        </c:if>
-                                    </c:forEach>
-                                </c:if>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="submit fright"><input type="submit"
-                                                             value="<fmt:message key="products.detail.submit.label"/>"
-                                                             id="comment-button"/></td>
-                        </tr>
-                    </table>
-                </form>
-            </li>
-        </ul>
+                            </c:forEach>
+                        </c:if>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls">
+                        <input class="btn btn-primary" type="submit" value="<fmt:message key="products.detail.submit.label"/>"/>
+                    </div>
+                </div>
+            </fieldset>
+
+        </form>
     </div>
 </c:if>

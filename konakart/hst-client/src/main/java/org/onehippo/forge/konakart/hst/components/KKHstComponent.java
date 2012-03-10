@@ -5,18 +5,26 @@ import com.konakart.al.KKAppException;
 import com.konakart.app.FetchProductOptions;
 import com.konakart.app.KKException;
 import com.konakart.appif.*;
+import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
 import org.hippoecm.hst.configuration.hosting.Mount;
 import org.hippoecm.hst.content.beans.ObjectBeanManagerException;
 import org.hippoecm.hst.content.beans.manager.ObjectBeanManager;
+import org.hippoecm.hst.content.beans.query.HstQuery;
+import org.hippoecm.hst.content.beans.query.HstQueryManager;
+import org.hippoecm.hst.content.beans.query.HstQueryResult;
+import org.hippoecm.hst.content.beans.query.exceptions.QueryException;
+import org.hippoecm.hst.content.beans.query.filter.Filter;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
+import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
+import org.onehippo.forge.konakart.hst.beans.compound.Konakart;
 import org.onehippo.forge.konakart.hst.channel.KonakartSiteInfo;
 import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.utils.KKCookieMgr;
@@ -24,6 +32,7 @@ import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.jcr.Node;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
@@ -150,17 +159,32 @@ public class KKHstComponent extends BaseHstComponent {
      * @param productId   id of the Konakart product to find
      * @return the Hippo Bean
      */
-    public KKProductDocument getProductDocumentById(ObjectBeanManager beanManager, int productId) {
+    public KKProductDocument getProductDocumentById(HstRequest request, int productId) {
+
+        HippoBean scope = super.getSiteContentBaseBean(request);
+
+        HstQueryManager queryManager = getQueryManager(request);
 
         try {
-            ProductIf productIf = kkAppEng.getEng().getProduct(kkAppEng.getSessionId(), productId,
-                    kkAppEng.getLangId());
+            HstQuery hstQuery = queryManager.createQuery(scope, "myhippoproject:productdocument");
+            Filter filter = hstQuery.createFilter();
+            filter.addEqualTo("myhippoproject:konakart/konakart:id", new Long(productId));
 
-            return (KKProductDocument) beanManager.getObjectByUuid(productIf.getCustom1());
-        } catch (KKException e) {
-            log.warn("Failed to retrieve the Konakart product with the id - " + productId);
-        } catch (ObjectBeanManagerException e) {
-            log.warn("Failed to retrieve the Konakart product with the id - " + productId);
+            hstQuery.setFilter(filter);
+
+            HstQueryResult queryResult = hstQuery.execute();
+
+            // No result
+            if (queryResult.getTotalSize() == 0) {
+                return null;
+            }
+
+            KKProductDocument productDocument =  (KKProductDocument) queryResult.getHippoBeans().nextHippoBean();
+            //productDocument.loadProduct();
+            return productDocument;
+
+        } catch (QueryException e) {
+            e.printStackTrace();
         }
 
         return null;

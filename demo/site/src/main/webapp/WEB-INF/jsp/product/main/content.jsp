@@ -1,25 +1,42 @@
 <%@ include file="/WEB-INF/jspf/htmlTags.jspf" %>
 
-<ul>
-    <c:forEach var="product" items="${products.items}">
-        <hst:link var="prdImgLink" hippobean="${product.mainImage.smallThumbnail}"/>
-        <hst:link var="prdlink" hippobean="${product}"/>
 
-        <li class="overview-item">
-            <img src="${prdImgLink}" alt=""/><br/>
-            <hst:cmseditlink hippobean="${product}"/>
-            <a href="${fn:escapeXml(prdlink)}"><c:out value="${product.name}"/></a>
-            <br/>
-            <c:if test="${not empty product.specialPrice}"><s></c:if>
-            <c:out value="${product.price}"/>
-            <c:if test="${not empty product.specialPrice}"></s></c:if>
-            | <c:if test="${not empty product.specialPrice}"><c:out value="${product.specialPrice}"/></c:if>
-            <fmt:formatNumber value="${product.rating * 10}" var="ratingStyle" pattern="#0"/>
-            <div class="rating stars-${ratingStyle}"><a href="${fn:escapeXml(prdlink)}"><c:out value="${product.rating}"/></a></div>
-            <br/>
-            <br/>
-         </li>
+<ul class="thumbnails">
+
+    <c:forEach var="product" items="${products.items}">
+        <hst:link var="prdImgLink" hippobean="${product.mainImage.original}"/>
+        <hst:link var="prdlink" hippobean="${product}"/>
+        <hst:cmseditlink hippobean="${product}"/>
+
+        <li class="span4">
+            <div class="thumbnail">
+                <img src="${prdImgLink}" alt=""/><br/>
+
+                <div class="caption">
+                    <h4><c:out value="${product.name}"/></h4>
+
+                    <p>
+                        <c:if test="${not empty product.specialPrice}"><s></c:if>
+                        <c:out value="${product.price}"/>
+                        <c:if test="${not empty product.specialPrice}"></s></c:if>
+                        <c:if test="${not empty product.specialPrice}">&nbsp;|&nbsp;
+                            <c:out value="${product.specialPrice}"/></c:if>
+                    </p>
+                        <fmt:formatNumber value="${product.rating * 10}" var="ratingStyle" pattern="#0"/>
+
+                    <p class="rating stars-${ratingStyle}"><a href="${fn:escapeXml(prdlink)}">
+                        <span style="margin-left: 100px;"><c:out value="${product.rating}"/></span>
+                    </a>
+                    </p>
+                    <p>
+                        <br/>
+                        <a class="btn btn-primary" href="${fn:escapeXml(prdlink)}">Learn more</a>
+                    </p>
+                </div>
+            </div>
+        </li>
     </c:forEach>
+
 </ul>
 
 <c:choose>

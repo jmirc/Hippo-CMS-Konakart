@@ -27,12 +27,17 @@
                             <table border="0" cellspacing="2" cellpadding="2">
                                 <tr>
                                     <td class="productListing-data" align="center">
-                                        <a href="${item.custom1}"><img src="#" border="0" alt="${item.prodName}"
+                                        <hst:link var="prdLink" hippobean="${item.productDocument}"/>
+                                        <hst:link var="prdImgLink" hippobean="${item.productDocument.mainImage.original}"/>
+
+
+
+                                        <a href="${prdLink}"><img src="${prdImgLink}" border="0" alt="${item.prodName}"
                                                                        title="${item.prodName}" width="100"
                                                                        height="80"></a>
                                     </td>
                                     <td class="productListing-data" valign="top">
-                                        <a href="${item.custom1}"><b><c:out value="${item.prodName}"/></b></a>
+                                        <a href="${prdLink}"><b><c:out value="${item.prodName}"/></b></a>
                                         <c:if test="${!item.inStock}"><span
                                                 class="markProductOutOfStock">***</span></c:if>
 
@@ -46,7 +51,7 @@
                             </table>
                         </td>
                         <td align="center" class="productListing-data" valign="top">
-                            <input type="text" name="quantity_${item.basketItemId}" size="4" value="${item.quantity}"/>
+                            <input type="text" name="quantity_${item.basketItemId}" class="input-mini" size="4" value="${item.quantity}"/>
                         </td>
                         <td align="center" class="productListing-data" valign="top">
                             <c:out value="${item.totalPrice}"/>
@@ -110,7 +115,11 @@
             <br/><br/>
 
             <!-- Update buton -->
-            <input type="submit" value="Update"/>
+            <div class="inline">
+                <input class="btn" type="submit" value="Update"/>
+                <a class="btn btn-success" href="#"><i class="icon-shopping-cart icon-large icon-white"></i> Checkout</a>
+            </div>
+
 
         </form>
 

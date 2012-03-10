@@ -1,5 +1,8 @@
 package org.onehippo.forge.konakart.hst.vo;
 
+import org.hippoecm.hst.content.beans.standard.HippoGalleryImageSet;
+import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
+
 import java.io.Serializable;
 
 public class CartItem implements Serializable {
@@ -8,7 +11,7 @@ public class CartItem implements Serializable {
     private int quantityAvailable;
     private int basketItemId;
     private String prodName;
-    private String prodImage;
+    private KKProductDocument kkProductDocument;
     private String[] optNameArray;
     private int prodId;
     private String totalPrice;
@@ -18,12 +21,11 @@ public class CartItem implements Serializable {
     private String custom4 = null;
     private String custom5 = null;
 
-    public CartItem(int basketItemId, int prodId, String prodName, String prodImage, int quantity,
+    public CartItem(int basketItemId, int prodId, String prodName, int quantity,
                     int quantityAvailable) {
         this.basketItemId = basketItemId;
         this.prodId = prodId;
         this.prodName = prodName;
-        this.prodImage = prodImage;
         this.quantity = quantity;
         this.quantityAvailable = quantityAvailable;
     }
@@ -64,12 +66,12 @@ public class CartItem implements Serializable {
         this.prodName = prodName;
     }
 
-    public String getProdImage() {
-        return prodImage;
+    public KKProductDocument getProductDocument() {
+        return kkProductDocument;
     }
 
-    public void setProdImage(String prodImage) {
-        this.prodImage = prodImage;
+    public void setProductDocument(KKProductDocument kkProductDocument) {
+        this.kkProductDocument = kkProductDocument;
     }
 
     public String[] getOptNameArray() {
