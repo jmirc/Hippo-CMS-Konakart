@@ -43,10 +43,17 @@ public class KKProductDocument extends HippoDocument {
     }
 
     /**
-     * @return the konakart compound object
+     * @return the Hippo konakart compound object
      */
     public Konakart getKonakart() {
         return konakart;
+    }
+
+    /**
+     * @return the product
+     */
+    public ProductIf getProduct() {
+        return product;
     }
 
     /**

@@ -124,6 +124,20 @@
         </form>
 
 
+        <c:if test="${itemOutOfStock}">
+            <c:if test="${stockAllowCheckout}">
+                <div class="alert">
+                    <fmt:message key="outofstock"/>
+                </div>
+            </c:if>
+            <c:if test="${!stockAllowCheckout}">
+                <div class="alert alert-error">
+                    <fmt:message key="outofstock.error"/>
+                </div>
+            </c:if>
+        </c:if>
+
+
     </c:when>
     <c:otherwise>
         Your Shopping Cart is empty!

@@ -1,12 +1,10 @@
 package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.al.KKAppException;
+import com.konakart.al.ProdOptionContainer;
 import com.konakart.al.ReviewMgr;
-import com.konakart.app.Basket;
 import com.konakart.app.KKException;
-import com.konakart.appif.BasketIf;
 import com.konakart.appif.CustomerIf;
-import com.konakart.appif.ProductIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.content.beans.manager.workflow.WorkflowPersistenceManager;
 import org.hippoecm.hst.content.beans.query.HstQuery;
@@ -47,6 +45,11 @@ public abstract class KKProductDetail extends KKHstActionComponent {
      */
     private static final String ADD_TO_BASKET_ACTION = "addToBasket";
 
+    /**
+     * This action is used to add a product to the wishlist
+     */
+    private static final String ADD_TO_WISH_LIST_ACTION = "addToWishList";
+
     private static final String PRODUCT_ID = "prodId";
 
     private static final String NAME = "name";
@@ -64,16 +67,28 @@ public abstract class KKProductDetail extends KKHstActionComponent {
 
         KKProductDocument document = getProductDocument(request, response);
 
-        request.setAttribute("product", document);
-
+        request.setAttribute("document", document);
 
         try {
+
+            // Fetch the product related data from the database
+            kkAppEng.getProductMgr().fetchSelectedProduct(document.getProductId());
+
              //We fetch the data for the selected product
             kkAppEng.getProductMgr().updateProductViewedCount(document.getProductId());
             kkAppEng.getProductMgr().fetchAlsoPurchasedArray();
             kkAppEng.getProductMgr().fetchRelatedProducts();
         } catch (KKException e) {
             log.info("Unable to fetch the data for the selected product {}", e.toString());
+        } catch (KKAppException e) {
+            log.info("Unable to fetch the selected product {}", e.toString());
+        }
+
+        // Retrieve options
+        List<ProdOptionContainer> opts = kkAppEng.getProductMgr().getSelectedProductOptions();
+
+        if (opts != null) {
+            request.setAttribute("prodOptContainer", opts);
         }
 
 
@@ -118,21 +133,19 @@ public abstract class KKProductDetail extends KKHstActionComponent {
 
         KKProductDocument product = getProductDocument(request, response);
 
-        /**
-         * Check if a guest customer can review a product
-         */
-        if (isGuestCustomer()) {
-            log.warn("A guest customer can not review a product");
-            return;
-        }
-
         if (StringUtils.equals(action, REVIEW_ACTION)) {
             processReview(product, request, response);
         }
 
         if (StringUtils.equals(action, ADD_TO_BASKET_ACTION)) {
-            addToBasket(product, request, response);
+            String productId = KKUtil.getEscapedParameter(request, PRODUCT_ID);
+
+            if (StringUtils.isNotEmpty(productId)) {
+                super.addProductToBasket(request, Integer.valueOf(productId));
+            }
         }
+
+
     }
 
     /**
@@ -226,53 +239,6 @@ public abstract class KKProductDetail extends KKHstActionComponent {
             }
         }
     }
-
-
-    /**
-     * Add the product to the basket
-     * @param product the product to add
-     * @param request the Hst Request
-     * @param response the Hst Response
-     */
-    private void addToBasket(KKProductDocument product, HstRequest request, HstResponse response) {
-
-        String productId = KKUtil.getEscapedParameter(request, PRODUCT_ID);
-
-        if (StringUtils.isEmpty(productId)) {
-            return;
-        }
-
-        int prodId = Integer.valueOf(productId);
-
-
-        // Get the product from its Id
-        try {
-            kkAppEng.getProductMgr().fetchSelectedProduct(prodId);
-            ProductIf selectedProd = kkAppEng.getProductMgr().getSelectedProduct();
-
-            if (selectedProd == null) {
-                return;
-            }
-
-            /*
-             * Create a basket item. Only the product id is required to save the basket item. Note
-             * that the array of options may be null.
-             */
-            BasketIf b = new Basket();
-            b.setQuantity(1);
-            b.setProductId(selectedProd.getId());
-
-            kkAppEng.getBasketMgr().addToBasket(b, /* refresh */true);
-
-        } catch (KKException e) {
-            e.printStackTrace();
-        } catch (KKAppException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
 
     private String createReviewFolderPath(HstRequest request, KKProductDocument product, String reviewsFolderName) {
         StringBuilder builder = new StringBuilder();

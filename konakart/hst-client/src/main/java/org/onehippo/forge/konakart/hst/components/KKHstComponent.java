@@ -93,11 +93,12 @@ public class KKHstComponent extends BaseHstComponent {
             // Set the attribut isLogged if the user is a logged user
             request.setAttribute("isLogged", !isGuestCustomer());
 
+            // Set the attribut displayPriceWithTax used to display or not the price with or without tax
+            request.setAttribute("displayPriceWithTax", kkAppEng.displayPriceWithTax());
+
             // Set the current customer
-            if (!isGuestCustomer()) {
-                request.setAttribute("currentCustomer", getCurrentCustomer());
-                request.setAttribute("basketTotal", kkAppEng.getBasketMgr().getBasketTotal());
-            }
+            request.setAttribute("currentCustomer", getCurrentCustomer());
+            request.setAttribute("basketTotal", kkAppEng.getBasketMgr().getBasketTotal());
         } catch (Exception e) {
             log.warn("Failed to render the HST component {}", e.toString());
         }
@@ -108,7 +109,7 @@ public class KKHstComponent extends BaseHstComponent {
      *
      * @return true if the customer is a guest, false otherwise.
      */
-    public boolean isGuestCustomer() {
+    protected  boolean isGuestCustomer() {
         return kkAppEng.getCustomerMgr().getCurrentCustomer().getId() < 0;
     }
 
@@ -117,7 +118,7 @@ public class KKHstComponent extends BaseHstComponent {
      *
      * @return the current customer
      */
-    public CustomerIf getCurrentCustomer() {
+    protected CustomerIf getCurrentCustomer() {
         return kkAppEng.getCustomerMgr().getCurrentCustomer();
     }
 
@@ -130,7 +131,7 @@ public class KKHstComponent extends BaseHstComponent {
      * @throws org.hippoecm.hst.core.component.HstComponentException
      *          thrown if the document is not a type of KKProductDocument
      */
-    public KKProductDocument getProductDocument(HstRequest request, HstResponse response) throws HstComponentException {
+    protected KKProductDocument getProductDocument(HstRequest request, HstResponse response) throws HstComponentException {
 
         HippoBean currentBean = this.getContentBean(request);
 
@@ -153,13 +154,13 @@ public class KKHstComponent extends BaseHstComponent {
     }
 
     /**
-     * Find and retrieve the associated KKProductDoucment with the product id.
+     * Find and retrieve the associated KKProductDoucment from a product id.
      *
-     * @param beanManager object content manager
+     * @param request the Hst Request
      * @param productId   id of the Konakart product to find
      * @return the Hippo Bean
      */
-    public KKProductDocument getProductDocumentById(HstRequest request, int productId) {
+    protected KKProductDocument getProductDocumentById(HstRequest request, int productId) {
 
         HippoBean scope = super.getSiteContentBaseBean(request);
 
@@ -179,12 +180,10 @@ public class KKHstComponent extends BaseHstComponent {
                 return null;
             }
 
-            KKProductDocument productDocument =  (KKProductDocument) queryResult.getHippoBeans().nextHippoBean();
-            //productDocument.loadProduct();
-            return productDocument;
+            return (KKProductDocument) queryResult.getHippoBeans().nextHippoBean();
 
         } catch (QueryException e) {
-            e.printStackTrace();
+            log.error("Failed to find the Hippo product document for the productId {} - {}", productId, e.toString());
         }
 
         return null;

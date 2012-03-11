@@ -13,39 +13,75 @@
 
 <hst:actionURL var="addToBasket">
     <hst:param name="action" value="addToBasket"/>
-    <hst:param name="prodId" value="${product.productId}"/>
+    <hst:param name="prodId" value="${document.productId}"/>
 </hst:actionURL>
 
+<hst:link var="prdImgLink" hippobean="${document.mainImage.original}"/>
+<hst:link var="prdlink" hippobean="${document}"/>
 
-<hst:link var="prdImgLink" hippobean="${product.mainImage.original}"/>
-<hst:link var="prdlink" hippobean="${product}"/>
+<form action="${addToBasket}" method="post">
 
-<div class="thumbnail">
+    <div class="thumbnail">
 
-    <div class="caption">
-        <img src="${prdImgLink}" alt=""/><br/>
-        <h4><c:out value="${product.name}"/></h4>
+        <div class="caption">
+            <img src="${prdImgLink}" alt=""/><br/>
+            <h4><c:out value="${document.name}"/></h4>
 
-        <p>
-            <c:if test="${not empty product.specialPrice}"><s></c:if>
-            <c:out value="${product.price}"/>
-            <c:if test="${not empty product.specialPrice}"></s></c:if>
-            <c:if test="${not empty product.specialPrice}">&nbsp;|&nbsp;
-                <c:out value="${product.specialPrice}"/></c:if>
-        </p>
-        <fmt:formatNumber value="${product.rating * 10}" var="ratingStyle" pattern="#0"/>
+            <p>
+                <c:if test="${not empty document.specialPrice}"><s></c:if>
+                <c:out value="${document.price}"/>
+                <c:if test="${not empty document.specialPrice}"></s></c:if>
+                <c:if test="${not empty document.specialPrice}">&nbsp;|&nbsp;
+                    <c:out value="${document.specialPrice}"/></c:if>
+            </p>
+            <fmt:formatNumber value="${document.rating * 10}" var="ratingStyle" pattern="#0"/>
 
-        <p class="rating stars-${ratingStyle}"><a href="${fn:escapeXml(prdlink)}">
-            <span style="margin-left: 100px;"><c:out value="${product.rating}"/></span>
-        </a>
-        </p>
+            <p class="rating stars-${ratingStyle}"><a href="${fn:escapeXml(prdlink)}">
+                <span style="margin-left: 100px;"><c:out value="${document.rating}"/></span>
+            </a>
+            </p>
 
-        <p>
-            <br/>
-            <a class="btn btn-primary" href="${addToBasket}">Add to basket</a>
-        </p>
+            <p>
+
+                <br/>
+                <c:if test="${not empty prodOptContainer}">
+                    <h5>Available options :</h5><br/>
+
+
+                    <c:forEach var="opt" items="${prodOptContainer}" varStatus="rowCounter">
+
+                        <div class="control-group">
+                            <label class="control-label"><c:out value="${opt.name}"/>&nbsp;:&nbsp;</label>
+                            <div class="controls">
+                                <select name="${opt.id}" id="${opt.name}">
+                                    <c:forEach var="optValue" items="${opt.optValues}">
+                                        <c:choose>
+                                            <c:when test="${opt.type == 0}">
+                                                <c:if test="${displayPriceWithTax}">
+                                                    <option value="${optValue.id}"><c:out value="${optValue.formattedValueIncTax}"/></option>
+                                                </c:if>
+
+                                                <c:if test="${not displayPriceWithTax}">
+                                                    <option value="${optValue.id}"><c:out value="${optValue.formattedValueExTax}"/></option>
+                                                </c:if>
+                                            </c:when>
+                                        </c:choose>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </c:if>
+
+            </p>
+
+            <p>
+                <br/>
+                <input type="submit" class="btn btn-primary" value="Add to basket"/>
+            </p>
+        </div>
     </div>
-</div>
+</form>
 
 
 <div id="comments">
@@ -87,7 +123,8 @@
             <fieldset>
                 <legend><fmt:message key="products.detail.reviewarticle"/></legend>
                 <div class="control-group">
-                    <label class="control-label" ><fmt:message key="products.detail.name"/></label>
+                    <label class="control-label"><fmt:message key="products.detail.name"/></label>
+
                     <div class="controls">
                         <input type="text" class="input-xlarge" value="${fn:escapeXml(name)}" name="name"/>
                         <c:if test="${not empty errors}">
@@ -101,7 +138,8 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" ><fmt:message key="products.detail.email"/></label>
+                    <label class="control-label"><fmt:message key="products.detail.email"/></label>
+
                     <div class="controls">
                         <input type="text" class="input-xlarge" value="${fn:escapeXml(email)}" name="email"/>
                         <c:if test="${not empty errors}">
@@ -116,6 +154,7 @@
                 </div>
                 <div class="control-group">
                     <label class="control-label"><fmt:message key="products.detail.score"/></label>
+
                     <div class="controls">
                         <ol class="rate">
                             <li><span title="Rate: 1">1</span></li>
@@ -128,7 +167,8 @@
                     </div>
                 </div>
                 <div class="control-group">
-                    <label class="control-label" ><fmt:message key="products.detail.review"/></label>
+                    <label class="control-label"><fmt:message key="products.detail.review"/></label>
+
                     <div class="controls">
                         <textarea name="comment" id="comment" rows="8" cols="50" class="input-xlarge"></textarea>
                         <c:if test="${not empty errors}">
@@ -144,7 +184,8 @@
 
                 <div class="control-group">
                     <div class="controls">
-                        <input class="btn btn-primary" type="submit" value="<fmt:message key="products.detail.submit.label"/>"/>
+                        <input class="btn btn-primary" type="submit"
+                               value="<fmt:message key="products.detail.submit.label"/>"/>
                     </div>
                 </div>
             </fieldset>
