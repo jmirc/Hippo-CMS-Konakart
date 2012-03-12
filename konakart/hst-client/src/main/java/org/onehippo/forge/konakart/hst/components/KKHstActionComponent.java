@@ -6,9 +6,11 @@ import com.konakart.al.ProdOptionContainer;
 import com.konakart.app.Basket;
 import com.konakart.app.KKException;
 import com.konakart.app.Option;
+import com.konakart.app.WishListItem;
 import com.konakart.appif.BasketIf;
 import com.konakart.appif.OptionIf;
 import com.konakart.appif.ProductIf;
+import com.konakart.appif.WishListItemIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.forms.FormField;
 import org.hippoecm.hst.component.support.forms.FormMap;
@@ -19,7 +21,6 @@ import org.onehippo.forge.konakart.hst.utils.KKUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public abstract class KKHstActionComponent extends KKHstComponent {
 
@@ -71,13 +72,16 @@ public abstract class KKHstActionComponent extends KKHstComponent {
             OptionIf[] optionIfs = retrieveSelectedProductOptions(request);
 
             /*
-             * Create a basket item. Only the product id is required to save the basket item. Note
-             * that the array of options may be null.
-             */
+            * Create a basket item. Only the product id is required to save the basket item. Note
+            * that the array of options may be null.
+            */
             BasketIf b = new Basket();
             b.setQuantity(1);
             b.setOpts(optionIfs);
             b.setProductId(selectedProd.getId());
+
+            // Set the product
+            b.setCustom1(generateHstLink(request, selectedProd.getId()));
 
             kkAppEng.getBasketMgr().addToBasket(b, /* refresh */true);
 
@@ -91,6 +95,46 @@ public abstract class KKHstActionComponent extends KKHstComponent {
 
         return false;
     }
+
+
+    /**
+     * Add a product to a wish list
+     *
+     * @param request    Hst Request
+     * @param wishListId id of the wishlist to use
+     * @param productId  id of the product
+     */
+    public void addProductToWishList(HstRequest request, Integer wishListId, Integer productId) {
+
+        // Get the selected options if exists
+        OptionIf[] optionIfs = retrieveSelectedProductOptions(request);
+
+        try {
+            // Add an item to the customer's wish list
+            if (wishListEnabled()) {
+                WishListItemIf wli = new WishListItem();
+                wli.setOpts(optionIfs);
+                wli.setProductId(productId);
+
+                // WishListId defaults to -1 to pick up default wish list or create a new one
+                wli.setWishListId(wishListId);
+                // Medium priority
+                wli.setPriority(3);
+                // Quantity = 1
+                wli.setQuantityDesired(1);
+                // Add the item
+                kkAppEng.getWishListMgr().addToWishList(wli);
+                // Refresh the customer's wish list
+                kkAppEng.getWishListMgr().fetchCustomersWishLists();
+            }
+        } catch (KKException e) {
+            log.warn("Failed to add the product with the id {} to the wishlist - {} ", productId, e.toString());
+        } catch (KKAppException e) {
+            log.warn("Failed to add the product with the id {} to the wishlist - {} ", productId, e.toString());
+        }
+
+    }
+
 
     /**
      * Used to retrieve for a product the option that has been selected by the customer.
@@ -115,7 +159,7 @@ public abstract class KKHstActionComponent extends KKHstComponent {
 
         OptionIf[] results = new OptionIf[opts.size()];
 
-        int i=0;
+        int i = 0;
 
         // Retrieve selected options
         for (ProdOptionContainer opt : opts) {
@@ -147,4 +191,5 @@ public abstract class KKHstActionComponent extends KKHstComponent {
 
         return results;
     }
+
 }

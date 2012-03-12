@@ -2,6 +2,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="hst" uri="http://www.hippoecm.org/jsp/hst/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%--@elvariable id="currentCustomer" type="com.konakart.appif.CustomerIf"--%>
+<%--@elvariable id="item" type="org.onehippo.forge.konakart.hst.vo.CartItem"--%>
+
+
+
 
 
 <c:choose>

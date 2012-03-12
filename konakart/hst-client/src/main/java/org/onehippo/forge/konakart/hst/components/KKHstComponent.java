@@ -2,14 +2,13 @@ package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.al.KKAppEng;
 import com.konakart.al.KKAppException;
+import com.konakart.al.WishListMgr;
 import com.konakart.app.FetchProductOptions;
 import com.konakart.app.KKException;
 import com.konakart.appif.*;
-import org.apache.commons.lang.StringUtils;
+import com.konakart.bl.ConfigConstants;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
 import org.hippoecm.hst.configuration.hosting.Mount;
-import org.hippoecm.hst.content.beans.ObjectBeanManagerException;
-import org.hippoecm.hst.content.beans.manager.ObjectBeanManager;
 import org.hippoecm.hst.content.beans.query.HstQuery;
 import org.hippoecm.hst.content.beans.query.HstQueryManager;
 import org.hippoecm.hst.content.beans.query.HstQueryResult;
@@ -21,10 +20,8 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
-import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
-import org.onehippo.forge.konakart.hst.beans.compound.Konakart;
 import org.onehippo.forge.konakart.hst.channel.KonakartSiteInfo;
 import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.utils.KKCookieMgr;
@@ -32,7 +29,6 @@ import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.jcr.Node;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
@@ -96,6 +92,12 @@ public class KKHstComponent extends BaseHstComponent {
             // Set the attribut displayPriceWithTax used to display or not the price with or without tax
             request.setAttribute("displayPriceWithTax", kkAppEng.displayPriceWithTax());
 
+            // Set the attibute wishListEnabled. Set to true if the wish list functionality is allowed, false otherwise
+            request.setAttribute("wishListEnabled", wishListEnabled());
+
+            // Set the default wish list if exists
+            request.setAttribute("defaultWishList", getDefaultWishList());
+
             // Set the current customer
             request.setAttribute("currentCustomer", getCurrentCustomer());
             request.setAttribute("basketTotal", kkAppEng.getBasketMgr().getBasketTotal());
@@ -111,6 +113,17 @@ public class KKHstComponent extends BaseHstComponent {
      */
     protected  boolean isGuestCustomer() {
         return kkAppEng.getCustomerMgr().getCurrentCustomer().getId() < 0;
+    }
+
+    /**
+     * Check if the wish list is enabled.
+     * @return true if the wish list is enabled, false otherwise
+     */
+    protected boolean wishListEnabled() {
+        boolean wishListEnabled = kkAppEng.getConfigAsBoolean(ConfigConstants.ENABLE_WISHLIST, false);
+        boolean allowWishListWhenNotLoggedIn = kkAppEng.getConfigAsBoolean(ConfigConstants.ALLOW_WISHLIST_WHEN_NOT_LOGGED_IN, false);
+
+        return wishListEnabled && (!isGuestCustomer() || (isGuestCustomer() && allowWishListWhenNotLoggedIn));
     }
 
     /**
@@ -169,7 +182,7 @@ public class KKHstComponent extends BaseHstComponent {
         try {
             HstQuery hstQuery = queryManager.createQuery(scope, "myhippoproject:productdocument");
             Filter filter = hstQuery.createFilter();
-            filter.addEqualTo("myhippoproject:konakart/konakart:id", new Long(productId));
+            filter.addEqualTo("myhippoproject:konakart/konakart:id", (long) productId);
 
             hstQuery.setFilter(filter);
 
@@ -187,6 +200,27 @@ public class KKHstComponent extends BaseHstComponent {
         }
 
         return null;
+    }
+
+    /**
+     * Generate the HstLink for the product defined by his id
+     *
+     * @param request Hst Request
+     * @param productId id of the product
+     * @return the generated HstLink or empty if the product id doesn't not exist.
+     */
+    protected String generateHstLink(HstRequest request, int productId) {
+        // getting hold of the link creator
+        HstLinkCreator linkCreator = request.getRequestContext().getHstLinkCreator();
+
+        // The associated Hippo Bean
+        KKProductDocument document = getProductDocumentById(request, productId);
+
+        // create HstLink
+        HstLink link = linkCreator.create(document, request.getRequestContext());
+
+        // create the url String
+        return link.toUrlForm(request.getRequestContext(), false);
     }
 
 
@@ -328,35 +362,32 @@ public class KKHstComponent extends BaseHstComponent {
      * @param request the hst request
      */
     private void updateBaskets(HstRequest request) {
-
-        ObjectBeanManager beanManager = getObjectBeanManager(request);
-
-        // getting hold of the link creator
-        HstLinkCreator linkCreator = request.getRequestContext().getHstLinkCreator();
-
         // Retrieve the list of products into the basket
         BasketIf[] basketIfs = getCurrentCustomer().getBasketItems();
 
         for (BasketIf basketIf : basketIfs) {
+            // Set the path of a product
+            basketIf.setCustom1(generateHstLink(request, basketIf.getProduct().getId()));
+        }
+    }
 
-            String hippoUUID = basketIf.getProduct().getCustom1();
+    /**
+     * @return the wish list that has the type equals to 0
+     */
+    protected WishListIf getDefaultWishList() {
+        if (!wishListEnabled()) {
+            return null;
+        }
 
-            try {
-                HippoBean hippoBean = (HippoBean) beanManager.getObjectByUuid(hippoUUID);
+        WishListIf[] wishLists = kkAppEng.getCustomerMgr().getCurrentCustomer().getWishLists();
 
-                // create HstLink
-                HstLink link = linkCreator.create(hippoBean, request.getRequestContext());
-                // create the url String
-                String url = link.toUrlForm(request.getRequestContext(), false);
-
-                // Set the path of a product
-                basketIf.setCustom1(url);
-            } catch (ObjectBeanManagerException e) {
-                log.warn("Unable to retrieve the product with UUID - " + hippoUUID);
+        for (WishListIf wishList : wishLists) {
+            if (wishList.getListType() == WishListMgr.WISH_LIST_TYPE) {
+                return wishList;
             }
         }
 
-
+        return null;
     }
 
 
@@ -507,5 +538,6 @@ public class KKHstComponent extends BaseHstComponent {
         
         return (KonakartSiteInfo) o;
     }
+
 
 }

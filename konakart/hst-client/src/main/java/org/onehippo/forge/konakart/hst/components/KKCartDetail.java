@@ -196,10 +196,6 @@ public class KKCartDetail extends KKHstActionComponent {
         request.setAttribute("stockCheck", kkAppEng.getConfigAsBoolean(ConfigConstants.STOCK_CHECK, true));
         request.setAttribute("itemOutOfStock", isItemOutOfStock);
         request.setAttribute("stockAllowCheckout", kkAppEng.getConfigAsBoolean(ConfigConstants.STOCK_ALLOW_CHECKOUT, true));
-
-        FormMap formMap = new FormMap();
-        FormUtils.populate(request, formMap);
-        request.setAttribute("form", formMap);
     }
 
     @Override

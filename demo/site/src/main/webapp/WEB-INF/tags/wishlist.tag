@@ -2,19 +2,19 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="hst" uri="http://www.hippoecm.org/jsp/hst/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%--@elvariable id="currentCustomer" type="com.konakart.appif.CustomerIf"--%>
+<%--@elvariable id="defaultWishList" type="com.konakart.appif.WishListIf"--%>
 
 
-<hst:link var="cartLink" siteMapItemRefId="detailCartId"/>
+
+<hst:link var="cartLink" siteMapItemRefId="whishListId"/>
 <hst:link var="cartImage" path="/images/cart_16x16.png"/>
 
 <div class="thumbnail">
-    <a href="${cartLink}"><i class="icon-shopping-cart"></i></a> SHOPPING CART <br/><br/>
+    <a href="${cartLink}"><i class="icon-list-alt"></i></a> WISH LIST <br/><br/>
     <c:choose>
-        <c:when test="${!empty currentCustomer.basketItems}">
-            <c:forEach var="item" items="${currentCustomer.basketItems}">
-                <c:out value="${item.quantity}"/>&nbsp;x&nbsp; <a href="${item.custom1}"><c:out
-                    value="${item.product.name}"/></a>
+        <c:when test="${!empty defaultWishList}">
+            <c:forEach var="item" items="${defaultWishList.wishListItems}">
+                <a href="${item.custom1}"><c:out value="${item.product.name}"/></a>
                 <br/>
             </c:forEach>
             <br/>

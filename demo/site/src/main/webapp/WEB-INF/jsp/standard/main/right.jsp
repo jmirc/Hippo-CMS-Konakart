@@ -46,5 +46,11 @@
 <!-- Add the shopping Cart -->
 <tag:shoppingcart/>
 
+<!-- Add the wish list -->
+<c:if test="${wishListEnabled}">
+   <br/>
+    <tag:wishlist/>
+</c:if>
+
 
 

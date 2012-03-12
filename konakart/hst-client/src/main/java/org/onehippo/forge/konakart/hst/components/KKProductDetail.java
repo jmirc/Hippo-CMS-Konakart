@@ -45,12 +45,9 @@ public abstract class KKProductDetail extends KKHstActionComponent {
      */
     private static final String ADD_TO_BASKET_ACTION = "addToBasket";
 
-    /**
-     * This action is used to add a product to the wishlist
-     */
-    private static final String ADD_TO_WISH_LIST_ACTION = "addToWishList";
-
     private static final String PRODUCT_ID = "prodId";
+    private static final String ADD_TO_WISH_LIST = "addToWishList";
+    private static final String WISH_LIST_ID = "wishListId";
 
     private static final String NAME = "name";
     private static final String COMMENT = "comment";
@@ -74,7 +71,7 @@ public abstract class KKProductDetail extends KKHstActionComponent {
             // Fetch the product related data from the database
             kkAppEng.getProductMgr().fetchSelectedProduct(document.getProductId());
 
-             //We fetch the data for the selected product
+            //We fetch the data for the selected product
             kkAppEng.getProductMgr().updateProductViewedCount(document.getProductId());
             kkAppEng.getProductMgr().fetchAlsoPurchasedArray();
             kkAppEng.getProductMgr().fetchRelatedProducts();
@@ -139,19 +136,57 @@ public abstract class KKProductDetail extends KKHstActionComponent {
 
         if (StringUtils.equals(action, ADD_TO_BASKET_ACTION)) {
             String productId = KKUtil.getEscapedParameter(request, PRODUCT_ID);
+            String addToWishList = KKUtil.getEscapedParameter(request, ADD_TO_WISH_LIST);
 
+            // Add this product to the basket
             if (StringUtils.isNotEmpty(productId)) {
-                super.addProductToBasket(request, Integer.valueOf(productId));
+                // Add this product to the wish list
+                if (StringUtils.isNotEmpty(addToWishList) && Boolean.valueOf(addToWishList)) {
+                    String wishListId = KKUtil.getEscapedParameter(request, WISH_LIST_ID);
+
+                    if (StringUtils.isNotEmpty(wishListId)) {
+                        super.addProductToWishList(request, Integer.valueOf(wishListId), Integer.valueOf(productId));
+
+                        redirectAfterProductAddedToWishList(request, response);
+                    }
+                } else {
+                    super.addProductToBasket(request, Integer.valueOf(productId));
+
+                    redirectAfterProductAddedToBasket(request, response);
+                }
             }
+
         }
+    }
+
+    /**
+     * Called when the product is added to the cart.
+     * <p/>
+     * By default no redirection is done
+     *
+     * @param request  the Hst Request
+     * @param response the Hst Response
+     */
+    protected void redirectAfterProductAddedToBasket(HstRequest request, HstResponse response) {
+    }
 
 
+    /**
+     * Called when the product is added to the wish list.
+     * <p/>
+     * By default no redirection is done
+     *
+     * @param request  the Hst Request
+     * @param response the Hst Response
+     */
+    protected void redirectAfterProductAddedToWishList(HstRequest request, HstResponse response) {
     }
 
     /**
      * Process a review
-     * @param product the product to review
-     * @param request the HST request
+     *
+     * @param product  the product to review
+     * @param request  the HST request
      * @param response the HST response
      */
     private void processReview(KKProductDocument product, HstRequest request, HstResponse response) {
@@ -179,7 +214,7 @@ public abstract class KKProductDetail extends KKHstActionComponent {
         if (StringUtils.isEmpty(comment)) {
             errors.add("invalid.comment-label");
         }
-        if (StringUtils.isEmpty(email) || email.indexOf('@')== -1) {
+        if (StringUtils.isEmpty(email) || email.indexOf('@') == -1) {
             errors.add("invalid.email-label");
         }
         if (errors.size() > 0) {

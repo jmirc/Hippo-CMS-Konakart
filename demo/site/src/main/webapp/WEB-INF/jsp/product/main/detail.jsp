@@ -6,8 +6,8 @@
 </hst:headContribution>
 
 <hst:headContribution category="jsInternal">
-    <hst:link var="rateJs" path="/js/rate.js"/>
-    <script src="${rateJs}" type="text/javascript"></script>
+    <hst:link var="cartJs" path="/js/cart.js"/>
+    <script src="${cartJs}" type="text/javascript"></script>
 </hst:headContribution>
 
 
@@ -16,10 +16,31 @@
     <hst:param name="prodId" value="${document.productId}"/>
 </hst:actionURL>
 
+
 <hst:link var="prdImgLink" hippobean="${document.mainImage.original}"/>
 <hst:link var="prdlink" hippobean="${document}"/>
 
-<form action="${addToBasket}" method="post">
+<script type="text/javascript"><!--
+function setAddToWishList() {
+    document.addToCartForm.addToWishList.value="true";
+    document.addToCartForm.wishListId.value="-1";
+}
+
+function resetAddToWishList() {
+    document.addToCartForm.addToWishList.value="false";
+}
+
+function setWishListId(id) {
+    document.addToCartForm.wishListId.value=id;
+    document.addToCartForm.addToWishList.value="true";
+}
+
+//--></script>
+
+<form name="addToCartForm" action="${addToBasket}" method="post">
+
+    <input type="hidden" name="addToWishList" value=""/>
+    <input type="hidden" name="wishListId" value=""/>
 
     <div class="thumbnail">
 
@@ -77,7 +98,13 @@
 
             <p>
                 <br/>
-                <input type="submit" class="btn btn-primary" value="Add to basket"/>
+                <input type="submit" onmouseover="resetAddToWishList()" class="btn btn-primary" value="Add to basket"/>
+
+                <c:if test="${wishListEnabled}">
+                    <input type="submit" onmouseover="setAddToWishList()" class="btn btn-primary" value="Add to wish list"/>
+                </c:if>
+
+
             </p>
         </div>
     </div>
@@ -184,8 +211,7 @@
 
                 <div class="control-group">
                     <div class="controls">
-                        <input class="btn btn-primary" type="submit"
-                               value="<fmt:message key="products.detail.submit.label"/>"/>
+                        <input class="btn btn-primary" type="submit" value="<fmt:message key="products.detail.submit.label"/>"/>
                     </div>
                 </div>
             </fieldset>

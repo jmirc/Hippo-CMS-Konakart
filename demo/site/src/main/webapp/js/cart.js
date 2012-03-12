@@ -15,4 +15,16 @@ $(document).ready(function(){
             function () {
                 $(this).siblings().add(this).removeClass("hover hover-on hover-off");
             });
+
+
+    $('#productDetailForm').submit(function(){ //listen for submit event
+        $.each(params, function(i,param){
+            $('<input />').attr('type', 'hidden')
+                .attr('name', param.name)
+                .attr('value', param.value)
+                .appendTo('#productDetailForm');
+        });
+
+        return true;
+    });
 });
