@@ -65,7 +65,7 @@
 the parent version to 7.7.1 then the property definitions below can be removed -->
 
         <!--***START temporary override of versions*** -->
-        <hippo.repository.version>2.22.02</hippo.repository.version>
+        <hippo.repository.version>2.22.03</hippo.repository.version>
         <hippo.cms.version>2.22.01</hippo.cms.version>
         <hippo.addon-channel-manager.version>2.22.01</hippo.addon-channel-manager.version>
         <hippo.addon-brokenlinks.version>2.22.00</hippo.addon-brokenlinks.version>
