@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jspf/htmlTags.jspf" %>
 
 <hst:headContribution category="jsInternal">
-    <hst:link var="jquery" path="/js/jquery-1.4.2.min.js"/>
+    <hst:link var="jquery" path="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"/>
     <script src="${jquery}" type="text/javascript"></script>
 </hst:headContribution>
 

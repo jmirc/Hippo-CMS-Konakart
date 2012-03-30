@@ -288,6 +288,13 @@ public class KKHstComponent extends BaseHstComponent {
     }
 
     /**
+     * @return the siteMapItemRefId associated with the detail cart.
+     */
+    protected String getDetailCartRefId() {
+        return "detailCartId";
+    }
+
+    /**
      * Redirect the user to the 404 page
      *
      * @param response the Hst response
@@ -330,7 +337,11 @@ public class KKHstComponent extends BaseHstComponent {
             CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
 
             // Login
-            kkAppEng.getCustomerMgr().login(username, password);
+            String result = kkAppEng.getCustomerMgr().login(username, password);
+
+            if (result == null) {
+                return false;
+            }
 
             // Update the custom1 of each product under the basket to set the full path of the product's node
             updateBaskets(request);
@@ -347,6 +358,7 @@ public class KKHstComponent extends BaseHstComponent {
             CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
             updateRecentlyViewedProducts(prodsViewedTagGuest, prodsViewedTagCust);
 
+            return true;
 
         } catch (Exception e) {
             log.warn("Unable to logged-in", e);
@@ -380,6 +392,10 @@ public class KKHstComponent extends BaseHstComponent {
         }
 
         WishListIf[] wishLists = kkAppEng.getCustomerMgr().getCurrentCustomer().getWishLists();
+
+        if (wishLists == null) {
+            return null;
+        }
 
         for (WishListIf wishList : wishLists) {
             if (wishList.getListType() == WishListMgr.WISH_LIST_TYPE) {

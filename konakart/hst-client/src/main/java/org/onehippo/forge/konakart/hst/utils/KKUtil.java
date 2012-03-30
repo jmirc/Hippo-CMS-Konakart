@@ -14,8 +14,6 @@ public class KKUtil {
 
     private static final Logger log = LoggerFactory.getLogger(KKUtil.class);
 
-    private static final String REDIRECTION_ON_WRONG_LANDING_MOUNT_DONE_ATTR = KKUtil.class.getName() + ".redirectionOnWrongLandingMount.done";
-
     private KKUtil() {
     }
 
@@ -70,36 +68,6 @@ public class KKUtil {
     }
 
 
-
-    public static boolean parseAscendingParameter(String name, String value, boolean defaultValue, Logger log) {
-        if ("ascending".equals(value)) {
-            return true;
-        } else if ("descending".equals(value)) {
-            return false;
-        } else if (value != null && value.trim().length() > 0) {
-            log.warn("Illegal value for parameter '" + name + "': " + value);
-        }
-        return defaultValue;
-    }
-
-
-    public static void doRedirectionOnWrongLocale(HstRequest request, HstResponse response) {
-        HstRequestContext requestContext = request.getRequestContext();
-
-
-        if (requestContext.getAttribute(REDIRECTION_ON_WRONG_LANDING_MOUNT_DONE_ATTR) != null) {
-            return;
-        }
-
-        requestContext.setAttribute(REDIRECTION_ON_WRONG_LANDING_MOUNT_DONE_ATTR, Boolean.TRUE);
-
-
-        ResolvedMount resolvedMount = requestContext.getResolvedMount();
-
-        String locale = resolvedMount.getMount().getLocale();
-
-
-    }
 
 
 }

@@ -210,7 +210,70 @@
             <groupId>com.konakart.module</groupId>
             <artifactId>shipping</artifactId>
             <version>6.0.0.0</version>
+            <classifier>fedex</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>shipping</artifactId>
+            <version>6.0.0.0</version>
             <classifier>flat</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>shipping</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>freeproduct</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>shipping</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>item</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>shipping</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>pickupinstore</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>shipping</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>table</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>shipping</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>ups</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>shipping</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>usps</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>shipping</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>uspsint</classifier>
+        </dependency>
+
+        <dependency>
+            <groupId>com.konakart.module</groupId>
+            <artifactId>shipping</artifactId>
+            <version>6.0.0.0</version>
+            <classifier>zones</classifier>
         </dependency>
 
         <!-- database depedencies -->
@@ -275,6 +338,13 @@
             <artifactId>log4j</artifactId>
             <version>1.2.16</version>
         </dependency>
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.1</version>
+        </dependency>
+
 
     </dependencies>
 

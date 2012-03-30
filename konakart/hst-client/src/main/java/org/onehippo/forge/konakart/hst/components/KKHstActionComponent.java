@@ -15,6 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.forms.FormField;
 import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.component.support.forms.FormUtils;
+import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
@@ -26,9 +27,9 @@ public abstract class KKHstActionComponent extends KKHstComponent {
 
     protected static final String ACTION = "action";
 
+
     @Override
     final public void doAction(HstRequest request, HstResponse response) {
-
         String type = KKUtil.getEscapedParameter(request, ACTION);
 
         doAction(type, request, response);

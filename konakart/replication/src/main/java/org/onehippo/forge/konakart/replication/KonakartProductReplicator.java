@@ -312,7 +312,7 @@ public class KonakartProductReplicator {
                                 Date lastUpdatedTimeRepositoryToKonakart = config.getLastUpdatedTimeRepositoryToKonakart();
 
                                 // Update only newer updated products
-                                if (syncProduct.getLastModificationDate().after(lastUpdatedTimeRepositoryToKonakart)) {
+                                if (lastUpdatedTimeRepositoryToKonakart == null || syncProduct.getLastModificationDate().after(lastUpdatedTimeRepositoryToKonakart)) {
                                     String nodeState = nodeHelper.getNodeState(node);
 
                                     if (nodeState != null) {

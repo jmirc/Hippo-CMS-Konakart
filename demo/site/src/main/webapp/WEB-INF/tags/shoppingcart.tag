@@ -11,7 +11,7 @@
 <div class="thumbnail">
     <a href="${cartLink}"><i class="icon-shopping-cart"></i></a> SHOPPING CART <br/><br/>
     <c:choose>
-        <c:when test="${!empty currentCustomer.basketItems}">
+        <c:when test="${not empty currentCustomer.basketItems}">
             <c:forEach var="item" items="${currentCustomer.basketItems}">
                 <c:out value="${item.quantity}"/>&nbsp;x&nbsp; <a href="${item.custom1}"><c:out
                     value="${item.product.name}"/></a>

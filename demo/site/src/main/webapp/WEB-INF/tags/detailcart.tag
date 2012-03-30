@@ -122,7 +122,9 @@
             <!-- Update buton -->
             <div class="inline">
                 <input class="btn" type="submit" value="Update"/>
-                <a class="btn btn-success" href="#"><i class="icon-shopping-cart icon-large icon-white"></i> Checkout</a>
+
+                <hst:link var="checkout" path="checkout"/>
+                <a class="btn btn-success" href="${checkout}"><i class="icon-shopping-cart icon-large icon-white"></i> Checkout</a>
             </div>
 
 
