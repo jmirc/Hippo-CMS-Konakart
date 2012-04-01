@@ -26,7 +26,7 @@ import java.util.List;
  * This overview component offers methods used to retrieve products information
  *
  */
-public abstract class KKProductsOverview<T extends KKProductDocument> extends KKHstComponent {
+public abstract class KKProductsOverview<T extends KKProductDocument> extends KKHstActionComponent {
 
     private static final String PARAM_PAGE_SIZE = "pageSize";
     private static final int DEFAULT_PAGE_SIZE = 5;

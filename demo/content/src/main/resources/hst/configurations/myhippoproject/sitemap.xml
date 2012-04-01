@@ -4,14 +4,14 @@
     <sv:value>hst:sitemap</sv:value>
   </sv:property>
   <sv:property sv:name="jcr:uuid" sv:type="String">
-    <sv:value>f9f2d88c-0318-4fcc-b6c0-137420e1b912</sv:value>
+    <sv:value>6743a2c3-f952-49b2-bf1d-2a9759795b88</sv:value>
   </sv:property>
   <sv:node sv:name="root">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>59b137f6-8325-4e7c-a134-c3dbd412a1ce</sv:value>
+      <sv:value>12b28612-8083-4e13-85da-4b8f6e361cac</sv:value>
     </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/home</sv:value>
@@ -25,7 +25,7 @@
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>7cfb9940-03ca-4623-b910-67583f1a3927</sv:value>
+      <sv:value>1be84f6b-7379-41df-9166-e502b3f68f2e</sv:value>
     </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/textpage</sv:value>
@@ -39,7 +39,7 @@
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>7d76a368-4f26-47b0-9017-bd4a2371faf5</sv:value>
+      <sv:value>5b9c2465-d2d6-4aa8-8e11-451e76f56649</sv:value>
     </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/newsoverview</sv:value>
@@ -52,7 +52,7 @@
         <sv:value>hst:sitemapitem</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>18ebc102-31c9-4b08-acd6-42655caa9325</sv:value>
+        <sv:value>c06718f1-aa7b-404d-b76e-1132dbca2639</sv:value>
       </sv:property>
       <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
         <sv:value>hst:pages/newspage</sv:value>
@@ -66,7 +66,7 @@
         <sv:value>hst:sitemapitem</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>017c4830-4e90-4b22-b92f-1009cd1f8275</sv:value>
+        <sv:value>1a47a05e-f73c-4cdd-babe-d7b3eb3d1b22</sv:value>
       </sv:property>
       <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
         <sv:value>hst:pages/newsoverview</sv:value>
@@ -81,7 +81,7 @@
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>8c80e7e1-29c5-4d99-bcb4-c0f9f2f2c57c</sv:value>
+      <sv:value>bf489566-550a-47e0-99a2-3b811fd1efd7</sv:value>
     </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/search</sv:value>
@@ -92,7 +92,7 @@
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>de18b458-4cd5-4581-b445-20c4862b4347</sv:value>
+      <sv:value>baedbc3c-c2b8-4c1d-9b90-7cfb8e63ac11</sv:value>
     </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/productoverview</sv:value>
@@ -105,7 +105,7 @@
         <sv:value>hst:sitemapitem</sv:value>
       </sv:property>
       <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>5d5a0f29-0a24-4e05-8059-f25e75c1a913</sv:value>
+        <sv:value>b81f4967-7610-413c-8bf2-71022048cce7</sv:value>
       </sv:property>
       <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
         <sv:value>hst:pages/productdetail</sv:value>
@@ -120,7 +120,7 @@
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>1e0cc30e-5a01-4b0a-9377-e94644e855d0</sv:value>
+      <sv:value>0489f7f9-3e65-4cff-ab26-b5029b45043d</sv:value>
     </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/cartdetail</sv:value>
@@ -134,7 +134,7 @@
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>1a4e4e82-3e3f-4fe4-ad6c-5805350f2757</sv:value>
+      <sv:value>637fe69d-de5f-45dc-96e3-94e07f3aea7a</sv:value>
     </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/checkout</sv:value>
@@ -145,10 +145,18 @@
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-      <sv:value>faab5157-3646-4656-ad45-d290dbc93fc7</sv:value>
+      <sv:value>a14b9c2f-6ef2-482f-8473-51699c3d72a9</sv:value>
     </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/pagenotfound</sv:value>
+    </sv:property>
+  </sv:node>
+  <sv:node sv:name="order">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:sitemapitem</sv:value>
+    </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+      <sv:value>9b9b10cd-f024-4f4f-b476-ae983c53122c</sv:value>
     </sv:property>
   </sv:node>
 </sv:node>

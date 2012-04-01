@@ -1050,32 +1050,4 @@
       <sv:value>/hst:hst/hst:configurations/myhippoproject</sv:value>
     </sv:property>
   </sv:node>
-  <sv:node sv:name="hst-hst-hst-configurations-myhippoproject-preview-hst-sitemap">
-    <sv:property sv:name="jcr:primaryType" sv:type="Name">
-      <sv:value>hippo:initializeitem</sv:value>
-    </sv:property>
-    <sv:property sv:name="hippo:sequence" sv:type="Double">
-      <sv:value>30000.3</sv:value>
-    </sv:property>
-    <sv:property sv:name="hippo:contentresource" sv:type="String">
-      <sv:value>hst/configurations/myhippoproject-preview/sitemap.xml</sv:value>
-    </sv:property>
-    <sv:property sv:name="hippo:contentroot" sv:type="String">
-      <sv:value>/hst:hst/hst:configurations/myhippoproject-preview</sv:value>
-    </sv:property>
-  </sv:node>
-  <sv:node sv:name="hst-hst-hst-configurations-myhippoproject-preview-hst-sitemenus">
-    <sv:property sv:name="jcr:primaryType" sv:type="Name">
-      <sv:value>hippo:initializeitem</sv:value>
-    </sv:property>
-    <sv:property sv:name="hippo:sequence" sv:type="Double">
-      <sv:value>30000.3</sv:value>
-    </sv:property>
-    <sv:property sv:name="hippo:contentresource" sv:type="String">
-      <sv:value>hst/configurations/myhippoproject-preview/sitemenus.xml</sv:value>
-    </sv:property>
-    <sv:property sv:name="hippo:contentroot" sv:type="String">
-      <sv:value>/hst:hst/hst:configurations/myhippoproject-preview</sv:value>
-    </sv:property>
-  </sv:node>
 </sv:node>

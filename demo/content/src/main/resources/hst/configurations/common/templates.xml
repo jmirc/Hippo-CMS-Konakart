@@ -24,6 +24,9 @@
     <sv:property sv:name="jcr:uuid" sv:type="String">
       <sv:value>97bc9c36-50f6-4c4b-9d37-b059c5d6165d</sv:value>
     </sv:property>
+    <sv:property sv:name="hst:containers" sv:type="String" sv:multiple="true">
+      <sv:value>header</sv:value>
+    </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/layout/webpage.jsp</sv:value>
     </sv:property>
@@ -89,6 +92,10 @@
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
       <sv:value>314c723d-0d55-4eee-abb5-708f7dae3160</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:containers" sv:type="String" sv:multiple="true">
+      <sv:value>leftmenu</sv:value>
+      <sv:value>right</sv:value>
     </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/standard/main.jsp</sv:value>

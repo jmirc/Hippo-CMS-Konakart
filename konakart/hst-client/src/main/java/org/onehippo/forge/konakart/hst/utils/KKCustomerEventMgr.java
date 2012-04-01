@@ -6,10 +6,14 @@ import com.konakart.app.KKException;
 import com.konakart.appif.CustomerEventIf;
 import com.konakart.appif.CustomerIf;
 import com.konakart.bl.ConfigConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 
 public class KKCustomerEventMgr {
+
+    public static final Logger log = LoggerFactory.getLogger(KKCustomerEventMgr.class);
 
     /*
     * Event actions
@@ -66,10 +70,9 @@ public class KKCustomerEventMgr {
      * @param int2 an integer
      * @param dec1 a decimal
      * @param dec2 a decimal
-     * @throws com.konakart.app.KKException .
      */
     public void insertCustomerEvent(KKAppEng kkAppEng, int action, String str1, String str2,
-                                       int int1, int int2, BigDecimal dec1, BigDecimal dec2) throws KKException {
+                                       int int1, int int2, BigDecimal dec1, BigDecimal dec2) {
         CustomerEventIf event = getCustomerEvent(kkAppEng, action);
         if (event != null) {
             event.setData1Str(str1);
@@ -78,7 +81,12 @@ public class KKCustomerEventMgr {
             event.setData2Int(int2);
             event.setData1Dec(dec1);
             event.setData2Dec(dec2);
-            kkAppEng.getEng().insertCustomerEvent(event);
+            try {
+                kkAppEng.getEng().insertCustomerEvent(event);
+            } catch (KKException e) {
+                // unable to insert the event
+                log.error("Failed to insert the event", e);
+            }
         }
     }
 
@@ -87,9 +95,8 @@ public class KKCustomerEventMgr {
      *
      * @param kkAppEng the konakart engine
      * @param action the action to save
-     * @throws KKException .
      */
-    public void insertCustomerEvent(KKAppEng kkAppEng, int action) throws KKException {
+    public void insertCustomerEvent(KKAppEng kkAppEng, int action) {
         insertCustomerEvent(kkAppEng, action, null, null, 0, 0, null, null);
     }
 
@@ -99,9 +106,8 @@ public class KKCustomerEventMgr {
      * @param kkAppEng the konakart engine
      * @param action the action to save
      * @param int1 an integer
-     * @throws KKException .
      */
-    public void insertCustomerEvent(KKAppEng kkAppEng, int action, int int1) throws KKException {
+    public void insertCustomerEvent(KKAppEng kkAppEng, int action, int int1) {
         insertCustomerEvent(kkAppEng, action, null, null, int1, 0, null, null);
     }
 
@@ -111,10 +117,8 @@ public class KKCustomerEventMgr {
      * @param kkAppEng the konakart engine
      * @param action the action to save
      * @param str1 a string
-     * @throws KKException .
      */
-    public void insertCustomerEvent(KKAppEng kkAppEng, int action, String str1)
-            throws KKException {
+    public void insertCustomerEvent(KKAppEng kkAppEng, int action, String str1) {
         insertCustomerEvent(kkAppEng, action, str1, null, 0, 0, null, null);
     }
 
@@ -124,10 +128,8 @@ public class KKCustomerEventMgr {
      * @param kkAppEng the konakart engine
      * @param action the action to save
      * @param dec1 a decinal
-     * @throws KKException .
      */
-    public void insertCustomerEvent(KKAppEng kkAppEng, int action, BigDecimal dec1)
-            throws KKException {
+    public void insertCustomerEvent(KKAppEng kkAppEng, int action, BigDecimal dec1) {
         insertCustomerEvent(kkAppEng, action, null, null, 0, 0, dec1, null);
     }
 

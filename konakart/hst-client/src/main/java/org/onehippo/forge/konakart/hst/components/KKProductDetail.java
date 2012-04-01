@@ -40,15 +40,6 @@ public abstract class KKProductDetail extends KKHstActionComponent {
      */
     private static final String REVIEW_ACTION = "review";
 
-    /**
-     * This action is used to add a product to the baskket
-     */
-    private static final String ADD_TO_BASKET_ACTION = "addToBasket";
-
-    private static final String PRODUCT_ID = "prodId";
-    private static final String ADD_TO_WISH_LIST = "addToWishList";
-    private static final String WISH_LIST_ID = "wishListId";
-
     private static final String NAME = "name";
     private static final String COMMENT = "comment";
     private static final String EMAIL = "email";
@@ -128,59 +119,15 @@ public abstract class KKProductDetail extends KKHstActionComponent {
     @Override
     public void doAction(String action, HstRequest request, HstResponse response) {
 
+        super.doAction(action, request, response);
+
         KKProductDocument product = getProductDocument(request, response);
 
         if (StringUtils.equals(action, REVIEW_ACTION)) {
             processReview(product, request, response);
         }
-
-        if (StringUtils.equals(action, ADD_TO_BASKET_ACTION)) {
-            String productId = KKUtil.getEscapedParameter(request, PRODUCT_ID);
-            String addToWishList = KKUtil.getEscapedParameter(request, ADD_TO_WISH_LIST);
-
-            // Add this product to the basket
-            if (StringUtils.isNotEmpty(productId)) {
-                // Add this product to the wish list
-                if (StringUtils.isNotEmpty(addToWishList) && Boolean.valueOf(addToWishList)) {
-                    String wishListId = KKUtil.getEscapedParameter(request, WISH_LIST_ID);
-
-                    if (StringUtils.isNotEmpty(wishListId)) {
-                        super.addProductToWishList(request, Integer.valueOf(wishListId), Integer.valueOf(productId));
-
-                        redirectAfterProductAddedToWishList(request, response);
-                    }
-                } else {
-                    super.addProductToBasket(request, Integer.valueOf(productId));
-
-                    redirectAfterProductAddedToBasket(request, response);
-                }
-            }
-
-        }
     }
 
-    /**
-     * Called when the product is added to the cart.
-     * <p/>
-     * By default no redirection is done
-     *
-     * @param request  the Hst Request
-     * @param response the Hst Response
-     */
-    protected void redirectAfterProductAddedToBasket(HstRequest request, HstResponse response) {
-    }
-
-
-    /**
-     * Called when the product is added to the wish list.
-     * <p/>
-     * By default no redirection is done
-     *
-     * @param request  the Hst Request
-     * @param response the Hst Response
-     */
-    protected void redirectAfterProductAddedToWishList(HstRequest request, HstResponse response) {
-    }
 
     /**
      * Process a review

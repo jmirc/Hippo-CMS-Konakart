@@ -2,7 +2,6 @@ package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.al.KKAppException;
 import com.konakart.app.CreateOrderOptions;
-import com.konakart.app.KKException;
 import com.konakart.app.Option;
 import com.konakart.appif.*;
 import com.konakart.bl.ConfigConstants;
@@ -49,6 +48,8 @@ public class KKCartDetail extends KKHstActionComponent {
 
         try {
             if (getCurrentCustomer() != null && currentCustomer.getBasketItems() != null && currentCustomer.getBasketItems().length > 0) {
+
+                kkAppEng.getBasketMgr().getBasketItemsPerCustomer();
 
                 // We update the basket with the quantities in stock
                 BasketIf[] items = kkAppEng.getEng().updateBasketWithStockInfoWithOptions(
@@ -181,7 +182,7 @@ public class KKCartDetail extends KKHstActionComponent {
                     }
                 }
             }
-        } catch (KKException e) {
+        } catch (Exception e) {
             log.warn("Unable to display the cart", e);
         }
 
@@ -199,6 +200,8 @@ public class KKCartDetail extends KKHstActionComponent {
 
     @Override
     public void doAction(String action, HstRequest request, HstResponse response) {
+        super.doAction(action, request, response);
+
 
         // We need to find the Basket object corresponding to the cartItem object and we remove it or
         // update it if required.

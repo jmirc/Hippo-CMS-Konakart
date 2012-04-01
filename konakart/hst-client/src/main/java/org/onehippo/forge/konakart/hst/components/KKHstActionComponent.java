@@ -15,9 +15,9 @@ import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.forms.FormField;
 import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.component.support.forms.FormUtils;
-import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
+import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 
 import java.util.ArrayList;
@@ -26,6 +26,15 @@ import java.util.List;
 public abstract class KKHstActionComponent extends KKHstComponent {
 
     protected static final String ACTION = "action";
+
+    private static final String ADD_TO_BASKET_ACTION = "addToBasket";
+    private static final String REMOVE_FROM_BASKET_ACTION = "removeFromBasket";
+
+    private static final String PRODUCT_ID = "prodId";
+    private static final String BASKET_ID = "basketId";
+    private static final String ADD_TO_WISH_LIST = "addToWishList";
+    private static final String WISH_LIST_ID = "wishListId";
+
 
 
     @Override
@@ -48,7 +57,61 @@ public abstract class KKHstActionComponent extends KKHstComponent {
      * @param request  the Hst Request
      * @param response the Hst Response
      */
-    public abstract void doAction(String action, HstRequest request, HstResponse response);
+    public void doAction(String action, HstRequest request, HstResponse response) {
+        if (StringUtils.equals(action, ADD_TO_BASKET_ACTION)) {
+            String productId = KKUtil.getEscapedParameter(request, PRODUCT_ID);
+            String addToWishList = KKUtil.getEscapedParameter(request, ADD_TO_WISH_LIST);
+
+            // Add this product to the basket
+            if (StringUtils.isNotEmpty(productId)) {
+                // Add this product to the wish list
+                if (StringUtils.isNotEmpty(addToWishList) && Boolean.valueOf(addToWishList)) {
+                    String wishListId = KKUtil.getEscapedParameter(request, WISH_LIST_ID);
+
+                    if (StringUtils.isNotEmpty(wishListId)) {
+                        addProductToWishList(request, Integer.valueOf(wishListId), Integer.valueOf(productId));
+
+                        redirectAfterProductAddedToWishList(request, response);
+                    }
+                } else {
+                    addProductToBasket(request, Integer.valueOf(productId));
+
+                    redirectAfterProductAddedToBasket(request, response);
+                }
+            }
+
+        }
+
+        if (StringUtils.equals(action, REMOVE_FROM_BASKET_ACTION)) {
+            String basketId = KKUtil.getEscapedParameter(request, BASKET_ID);
+
+            // Remove this product fromthe basket
+            if (StringUtils.isNotEmpty(basketId)) {
+
+                int basketIdToRemove = Integer.valueOf(basketId);
+
+                // remove the basket item
+                try {
+                    // basket items
+                    BasketIf[] basketItems = kkAppEng.getCustomerMgr().getCurrentCustomer().getBasketItems();
+
+
+                    for (BasketIf basketItem : basketItems) {
+                        if (basketItem.getId() == basketIdToRemove) {
+                            kkAppEng.getBasketMgr().removeFromBasket(basketItem, /** refresh **/false);
+
+                            // insert an event
+                            eventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_REMOVE_FROM_CART,
+                                    basketItem.getProductId());
+                        }
+                    }
+                } catch (Exception e) {
+                    log.error("Unable to remove the basket with the id - " + basketIdToRemove);
+                }
+            }
+
+        }
+    }
 
 
     /**
@@ -135,6 +198,30 @@ public abstract class KKHstActionComponent extends KKHstComponent {
         }
 
     }
+
+    /**
+     * Called when the product is added to the cart.
+     * <p/>
+     * By default no redirection is done
+     *
+     * @param request  the Hst Request
+     * @param response the Hst Response
+     */
+    protected void redirectAfterProductAddedToBasket(HstRequest request, HstResponse response) {
+    }
+
+
+    /**
+     * Called when the product is added to the wish list.
+     * <p/>
+     * By default no redirection is done
+     *
+     * @param request  the Hst Request
+     * @param response the Hst Response
+     */
+    protected void redirectAfterProductAddedToWishList(HstRequest request, HstResponse response) {
+    }
+
 
 
     /**

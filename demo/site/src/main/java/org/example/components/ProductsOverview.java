@@ -8,6 +8,13 @@ import org.onehippo.forge.konakart.hst.components.KKProductsOverview;
 
 public class ProductsOverview extends KKProductsOverview<ProductDocument> {
 
+
+    @Override
     protected void doBeforeRender(HstRequest request, HstResponse response, HippoBean currentBean) {
+
     }
+
+
+
+
 }

@@ -5,7 +5,6 @@
 <%--@elvariable id="currentCustomer" type="com.konakart.appif.CustomerIf"--%>
 <%--@elvariable id="item" type="org.onehippo.forge.konakart.hst.vo.CartItem"--%>
 
-
 <c:choose>
     <c:when test="${!empty currentCustomer.basketItems}">
         <hst:actionURL var="formAction">
@@ -16,22 +15,19 @@
             <fieldset>
                 <legend><h1>Shopping Cart</h1></legend>
             </fieldset>
-            <table class="table table-striped table-condensed">
+            <table class="table table-condensed">
                 <thead>
                     <tr>
-                        <th align="center" class="productListing-heading">Remove</th>
-                        <th align="center" class="productListing-heading">Product(s)</th>
-                        <th align="center" class="productListing-heading">Qty.</th>
-                        <th align="center" class="productListing-heading">Total</th>
+                        <th></th>
+                        <th>Product(s)</th>
+                        <th>Qty.</th>
+                        <th>Total</th>
                     </tr>
                 </thead>
                 <tbody>
                 <c:forEach var="item" items="${cartitems}" varStatus="rowCounter">
                     <tr class="productListing-even">
-                        <td align="center" class="productListing-data" valign="top">
-                            <input type="checkbox" name="remove_${item.basketItemId}">
-                        </td>
-                        <td class="productListing-data" align="center">
+                        <td>
                             <hst:link var="prdLink" hippobean="${item.productDocument}"/>
                             <hst:link var="prdImgLink"
                                       hippobean="${item.productDocument.mainImage.original}"/>
@@ -40,8 +36,8 @@
                             <a href="${prdLink}"><img src="${prdImgLink}" border="0" alt="${item.prodName}"
                                                       title="${item.prodName}" width="100"
                                                       height="80"></a>
-
-                            <p>
+                        </td>
+                        <td>
                             <a href="${prdLink}"><b><c:out value="${item.prodName}"/></b></a>
                             <c:if test="${!item.inStock}"><span
                                     class="markProductOutOfStock">***</span></c:if>
@@ -51,12 +47,19 @@
                                 <br>
                                 <small><i> - <c:out value="${attribute}"/></i></small>
                             </c:forEach>
+
+                            <br/>
+                            <hst:actionURL var="removeFromBasket">
+                                <hst:param name="action" value="removeFromBasket"/>
+                                <hst:param name="basketId" value="${item.basketItemId}"/>
+                            </hst:actionURL>
+                            <a href="${removeFromBasket}">Remove</a>
                         </td>
-                        <td align="center" class="productListing-data" valign="top">
+                        <td>
                             <input type="text" name="quantity_${item.basketItemId}" class="input-mini" size="4"
                                    value="${item.quantity}"/>
                         </td>
-                        <td align="center" class="productListing-data" valign="top">
+                        <td>
                             <c:out value="${item.totalPrice}"/>
                         </td>
                     </tr>

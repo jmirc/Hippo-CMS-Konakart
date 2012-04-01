@@ -1,6 +1,9 @@
 package org.onehippo.forge.konakart.hst.utils;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
+import org.hippoecm.hst.component.support.forms.FormField;
+import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.content.beans.ObjectBeanPersistenceException;
 import org.hippoecm.hst.content.beans.manager.workflow.WorkflowPersistenceManager;
 import org.hippoecm.hst.core.component.HstRequest;
@@ -65,6 +68,24 @@ public class KKUtil {
                 log.warn("Failed to refresh: " + obpe.getMessage(), obpe);
             }
         }
+    }
+
+    /**
+     * Check if a mandatory field is empty or not.
+     *
+     * @param formMap the formMap
+     * @param fieldName the field name to check
+     * @param errorMessage the error message
+     * @return true if a mandatory is empty, false otherwise.
+     */
+    public static boolean checkMandatoryField(FormMap formMap, String fieldName, String errorMessage) {
+        FormField formField = formMap.getField(fieldName);
+        if ((formField == null) || StringUtils.isBlank(formField.getValue())) {
+            formMap.addMessage(fieldName, errorMessage);
+            return false;
+        }
+
+        return true;
     }
 
 

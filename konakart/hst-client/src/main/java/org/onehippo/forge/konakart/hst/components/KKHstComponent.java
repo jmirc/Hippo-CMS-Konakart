@@ -20,6 +20,7 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
+import org.hippoecm.hst.util.HstResponseUtils;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.channel.KonakartSiteInfo;
@@ -305,6 +306,23 @@ public class KKHstComponent extends BaseHstComponent {
         } catch (IOException e) {
             throw new HstComponentException(e);
         }
+    }
+
+
+    /**
+     * This is an helper class to redirect the customer to another page
+     *
+     * @param request the HstRequest
+     * @param response the HstResponse
+     * @param refId the refId
+     */
+    protected void redirectByRefId(HstRequest request, HstResponse response, String refId) {
+
+        HstLinkCreator linkCreator = request.getRequestContext().getHstLinkCreator();
+
+        HstLink link = linkCreator.createByRefId(refId, request.getRequestContext().getResolvedMount().getMount());
+
+        HstResponseUtils.sendRedirectOrForward(request, response, link.getPath());
     }
 
     /**
