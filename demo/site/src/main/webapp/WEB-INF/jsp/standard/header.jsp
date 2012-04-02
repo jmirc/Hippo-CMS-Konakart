@@ -9,9 +9,8 @@
             <div class="nav-collapse">
                 <fmt:message var="submitText" key="search.submit.text"/>
                 <hst:link var="link" path="/search"/>
-                <form action="${link}" method="POST" class="navbar-search pull-left">
+                <form action="${link}" method="POST" class="navbar-search pull-right">
                     <input type="text" name="query" class="search-query" placeholder="Search"/>
-                    <input type="submit" value="${submitText}"/>
                 </form>
             </div>
         </div>

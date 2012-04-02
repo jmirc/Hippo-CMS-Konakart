@@ -15,8 +15,8 @@
 </div>
 
 <hst:actionURL var="register">
-    <hst:param name="action" value="REGISTER"/>
-    <hst:param name="state" value="${STATE}"/>
+    <hst:param name="action" value="CHECKOUT_METHOD_REGISTER"/>
+    <hst:param name="state" value="${state}"/>
 </hst:actionURL>
 <a href="${register}" class="btn btn-success">Continue</a>
 
@@ -28,14 +28,14 @@
 
 <h3>Registered Users</h3></p>
 
-<hst:actionURL var="loginLink">
-    <hst:param name="action" value="LOGIN"/>
-    <hst:param name="state" value="${STATE}"/>
-</hst:actionURL>
+<hst:actionURL var="loginLink"/>
 
 <p>If you have an account with us, login below.</p>
 
 <form action="${loginLink}" method="post">
+    <input type="hidden" name="action" value="LOGIN"/>
+    <input type="hidden" name="state" value="${state}"/>
+
     <div class="control-group">
         <div class="controls">
             <div class="input-prepend">

@@ -1,6 +1,5 @@
 package org.onehippo.forge.konakart.hst.components;
 
-import com.konakart.al.KKAppException;
 import com.konakart.app.CustomerRegistration;
 import com.konakart.app.KKException;
 import com.konakart.appif.*;
@@ -28,22 +27,24 @@ import static org.onehippo.forge.konakart.hst.utils.KKUtil.checkMandatoryField;
 public abstract class KKCheckout extends KKHstActionComponent {
 
     private static final String ONE_PAGE_CHECKOUT = "onePageCheckout";
+    private static final String CHECKOUT_ORDER = "checkoutOrder";
 
     private static final String COUNTRIES = "countries";
     private static final String PROVINCES = "provinces";
+
     private static final String ADDRESSES = "addresses";
+    protected static final String STATE = "state";
 
-
-    protected static final String STATE = "STATE";
-
-    public static enum STATES {
-        INITIAL, CHECKOUT_METHOD_REGISTER, BILLING_ADDRESS,
-        SHIPPING_ADDRESS, SHIPPING_METHOD, PAYMENT_METHOD, ORDER_REVIEW
+    protected static enum STATES {
+        INITIAL, CHECKOUT_METHOD_REGISTER, BILLING_ADDRESS, BILLING_ADDRESS_REGISTER,
+        SHIPPING_ADDRESS, SHIPPING_ADDRESS_REGISTER, SHIPPING_METHOD, PAYMENT_METHOD, ORDER_REVIEW
     }
 
-    public static enum ACTIONS {
-        LOGIN, REGISTER
+    protected static enum ACTIONS {
+        EDIT, LOGIN, REGISTER, SELECT_ADDRESS
     }
+
+    public static final String SELECT_SAME_SHIPPING_ADDRESS = "same";
 
 
     @Override
@@ -102,14 +103,11 @@ public abstract class KKCheckout extends KKHstActionComponent {
             }
 
             // retrieve the state
-            String currentState = request.getParameter(STATE);
-
-            String nextState = getNextState(currentState);
+            String nextState = initializeNextState(request);
 
             doBeforeRender(nextState, formMap, request, response);
 
-            // Set the current state
-            request.setAttribute(STATE, nextState);
+            request.setAttribute(CHECKOUT_ORDER, kkAppEng.getOrderMgr().getCheckoutOrder());
 
             request.setAttribute(ONE_PAGE_CHECKOUT, isOnePageCheckout());
 
@@ -148,7 +146,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
     protected void doBeforeRender(String nextState, FormMap formMap,
                                   HstRequest request, HstResponse response) {
 
-        if (nextState.equals(STATES.BILLING_ADDRESS.name()) || nextState.equals(STATES.SHIPPING_ADDRESS.name())) {
+        if (nextState.equals(STATES.BILLING_ADDRESS_REGISTER.name())) {
             try {
                 // fill the form.
                 initializeFormMap(nextState, formMap, request, response);
@@ -176,19 +174,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
             }
         }
 
-    }
-
-    /**
-     * Initialize the formap with existing information.
-     *
-     * @param nextState the next state
-     * @param formMap   the formMap
-     * @param request   the Hst Request
-     * @param response  the Hst Response
-     */
-    protected void initializeFormMap(String nextState, FormMap formMap, HstRequest request, HstResponse response) {
-
-        if (nextState.equals(STATES.BILLING_ADDRESS.name())) {
+        if (nextState.equals(STATES.BILLING_ADDRESS.name()) || nextState.equals(STATES.SHIPPING_ADDRESS.name())) {
 
             if (!isGuestCustomer()) {
                 try {
@@ -204,6 +190,20 @@ public abstract class KKCheckout extends KKHstActionComponent {
             }
 
         }
+
+    }
+
+    /**
+     * Initialize the formap with existing information.
+     *
+     * @param nextState the next state
+     * @param formMap   the formMap
+     * @param request   the Hst Request
+     * @param response  the Hst Response
+     */
+    protected void initializeFormMap(String nextState, FormMap formMap, HstRequest request, HstResponse response) {
+
+
     }
 
     /**
@@ -226,10 +226,139 @@ public abstract class KKCheckout extends KKHstActionComponent {
 
             if (!super.loggedIn(request, response, username, password)) {
                 formMap.addMessage("email", bundle.getString("onepagecheckout.invalid.password"));
+            } else {
+                try {
+                    // Create an order object that we will use for the checkout process
+                    kkAppEng.getOrderMgr().createCheckoutOrder();
+
+                    // Get shipping quotes from the engine
+                    kkAppEng.getOrderMgr().createShippingQuotes();
+                } catch (Exception e) {
+                    log.error("A new Order could not be created", e);
+                }
+            }
+
+
+        }
+
+        if (action.equals(ACTIONS.SELECT_ADDRESS.name()) && state.equals(STATES.BILLING_ADDRESS.name())) {
+            Integer addressId = Integer.valueOf(KKUtil.getEscapedParameter(request, "address"));
+            String shippingAddress = KKUtil.getEscapedParameter(request, "shippingAddress");
+
+            // Ask for a new address
+            if (addressId == -1) {
+                state = STATES.BILLING_ADDRESS_REGISTER.name();
+                response.setRenderParameter(ACTION, ACTIONS.REGISTER.name());
+            }
+
+            kkAppEng.getOrderMgr().setCheckoutOrderBillingAddress(addressId);
+
+            if (shippingAddress.equals(SELECT_SAME_SHIPPING_ADDRESS)) {
+                try {
+                    kkAppEng.getOrderMgr().setCheckoutOrderShippingAddress(addressId);
+
+                    // Skip the SHIPPING ADDRESS step because the customer has decided to use the
+                    // same billing address
+                    state = STATES.SHIPPING_ADDRESS.name();
+                } catch (KKException e) {
+                    log.error("Failed to set the shipping address", e);
+                }
             }
         }
+
+        if (action.equals(ACTIONS.SELECT_ADDRESS.name()) && state.equals(STATES.SHIPPING_ADDRESS.name())) {
+            Integer addressId = Integer.valueOf(KKUtil.getEscapedParameter(request, "address"));
+
+            // Ask for a new address
+            if (addressId == -1) {
+                state = STATES.SHIPPING_ADDRESS_REGISTER.name();
+            }
+
+            try {
+                kkAppEng.getOrderMgr().setCheckoutOrderShippingAddress(addressId);
+
+                // Skip the SHIPPING ADDRESS step because the customer has decided to use the
+                // same billing address
+                state = STATES.SHIPPING_ADDRESS.name();
+            } catch (KKException e) {
+                log.error("Failed to set the shipping address", e);
+            }
+        }
+
+        response.setRenderParameter(STATE, state);
     }
 
+
+    /**
+     * This method is used to set the next state based on the current state
+     *
+     * @param request the Hst Request
+     * @return the next state
+     */
+    protected String initializeNextState(HstRequest request) {
+
+        STATES nextState = STATES.INITIAL;
+
+        String currentState = request.getParameter(STATE);
+
+
+        if (StringUtils.isEmpty(currentState)) {
+            // Insert event
+            eventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_ENTER_CHECKOUT);
+
+            nextState = STATES.INITIAL;
+        } else {
+            if (currentState.equals(STATES.INITIAL.name())) {
+                nextState = STATES.BILLING_ADDRESS;
+            }
+
+            if (currentState.equals(STATES.CHECKOUT_METHOD_REGISTER.name())) {
+                nextState = STATES.BILLING_ADDRESS;
+            }
+
+            if (currentState.equals(STATES.BILLING_ADDRESS.name())) {
+                request.setAttribute(STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
+                nextState = STATES.SHIPPING_ADDRESS;
+            }
+
+            if (currentState.equals(STATES.BILLING_ADDRESS_REGISTER.name())) {
+                request.setAttribute(STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
+                nextState = STATES.SHIPPING_ADDRESS;
+            }
+
+            if (currentState.equals(STATES.SHIPPING_ADDRESS.name())) {
+                request.setAttribute(STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
+                request.setAttribute(STATES.SHIPPING_ADDRESS.name().concat("_EDIT"), true);
+                nextState = STATES.SHIPPING_METHOD;
+            }
+
+            if (currentState.equals(STATES.SHIPPING_ADDRESS_REGISTER.name())) {
+                request.setAttribute(STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
+                request.setAttribute(STATES.SHIPPING_ADDRESS.name().concat("_EDIT"), true);
+                nextState = STATES.SHIPPING_METHOD;
+            }
+
+            if (currentState.equals(STATES.SHIPPING_METHOD.name())) {
+                request.setAttribute(STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
+                request.setAttribute(STATES.SHIPPING_ADDRESS.name().concat("_EDIT"), true);
+                request.setAttribute(STATES.SHIPPING_METHOD.name().concat("_EDIT"), true);
+                nextState = STATES.PAYMENT_METHOD;
+            }
+
+            if (currentState.equals(STATES.PAYMENT_METHOD.name())) {
+                request.setAttribute(STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
+                request.setAttribute(STATES.SHIPPING_ADDRESS.name().concat("_EDIT"), true);
+                request.setAttribute(STATES.SHIPPING_METHOD.name().concat("_EDIT"), true);
+                request.setAttribute(STATES.PAYMENT_METHOD.name().concat("_EDIT"), true);
+                nextState = STATES.ORDER_REVIEW;
+            }
+        }
+
+        request.setAttribute(STATE, nextState.name());
+
+        return nextState.name();
+
+    }
 
     /**
      * This method must be overiddes to validate the one checkout form
@@ -251,7 +380,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
 
         String errorMessage = bundle.getString("onepagecheckout.mandatory.field");
 
-        if (currentState.equals(STATES.BILLING_ADDRESS.name()) || currentState.equals(STATES.SHIPPING_ADDRESS.name())) {
+        if (currentState.equals(STATES.BILLING_ADDRESS_REGISTER.name()) || currentState.equals(STATES.SHIPPING_ADDRESS.name())) {
             result = checkMandatoryField(formMap, "gender", errorMessage);
             result = result & checkMandatoryField(formMap, "firstname", errorMessage);
             result = result & checkMandatoryField(formMap, "lastname", errorMessage);
@@ -379,48 +508,6 @@ public abstract class KKCheckout extends KKHstActionComponent {
     }
 
 
-    /**
-     * This method is used to set the next state based on the current state
-     *
-     * @param currentState the current state
-     * @return the next state
-     */
-    protected String getNextState(String currentState) {
-
-        if (!isGuestCustomer()) {
-            return STATES.BILLING_ADDRESS.name();
-        }
-
-        if (StringUtils.isEmpty(currentState)) {
-            // Insert event
-            eventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_ENTER_CHECKOUT);
-
-            return STATES.INITIAL.name();
-        }
-
-        if (currentState.equals(STATES.INITIAL.name())) {
-            return STATES.CHECKOUT_METHOD_REGISTER.name();
-        }
-
-        if (currentState.equals(STATES.BILLING_ADDRESS.name())) {
-            return STATES.SHIPPING_ADDRESS.name();
-        }
-
-        if (currentState.equals(STATES.SHIPPING_ADDRESS.name())) {
-            return STATES.SHIPPING_METHOD.name();
-        }
-
-        if (currentState.equals(STATES.SHIPPING_METHOD.name())) {
-            return STATES.PAYMENT_METHOD.name();
-        }
-
-        if (currentState.equals(STATES.PAYMENT_METHOD.name())) {
-            return STATES.ORDER_REVIEW.name();
-        }
-
-        throw new HstComponentException("State " + currentState + " is not defined.");
-
-    }
 
     /**
      * Returns true if configured for one page checkout
