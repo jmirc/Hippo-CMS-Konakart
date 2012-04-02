@@ -11,47 +11,52 @@
     <hst:param name="state" value="BILLING_ADDRESS"/>
 </hst:actionURL>
 
-<form action="${billing}" method="post" class="form-horizontal">
 
-<input type="hidden" name="state" value="${state}"/>
+<c:if test="${not empty form.message['globalmessage']}">
+<div class="alert alert-error">
+    ${form.message['globalmessage']}
+</div>
+</c:if>
+
+
+<form action="${billing}" method="post" class="form-horizontal">
 
 <div class="alert alert-info">
     Select a billing address from your address book or enter a new address.
 </div>
+
 <select id="select-address" name="address" class="input-xxlarge">
     <c:forEach items="${addresses}" var="address">
-        <option value="${address.id}" <c:if test="${address.isPrimary}">selected="selected"</c:if>>
+        <option value="${address.id}" <c:if test="${address.id == form.value['address'].value}">selected="selected"</c:if>>
                 ${address.firstName} ${address.lastName}, ${address.streetAddress}, ${address.city}, ${address.postcode} ${address.postcode}, ${address.countryName}
         </option>
     </c:forEach>
-    <option value="-1">New address</option>
+    <option value="-1" <c:if test="${-1 == form.value['address'].value}">selected="selected"</c:if>>New address</option>
 </select>
 
 <br/>
 <br/>
 <div class="well" id="new-address-form">
-
-
     <div class="control-group <c:if test="${not empty form.message['gender']}">error</c:if>">
-        <label class="control-label required"><fmt:message key="onepagecheckout.gender"/></label>
+        <label class="control-label required"><fmt:message key="checkout.gender"/></label>
 
         <div class="controls">
             <label class="radio inline" for="gender-male">
-                <input type="radio" name="gender" class="input-mini" id="gender-male" value="male"
+                <input type="radio" name="gender" class="input-mini" id="gender-male" value="m"
                        <c:if test="${form.value['gender'].value == 'male'}">checked="checked"</c:if>>
-                <fmt:message key="onepagecheckout.gender.male"/>
+                <fmt:message key="checkout.gender.male"/>
             </label>
             <label class="radio inline" for="gender-female">
-                <input type="radio" name="gender" class="input-mini" id="gender-female" value="female"
+                <input type="radio" name="gender" class="input-mini" id="gender-female" value="f"
                        <c:if test="${form.value['gender'].value == 'female'}">checked="checked"</c:if>>
-                <fmt:message key="onepagecheckout.gender.female"/>
+                <fmt:message key="checkout.gender.female"/>
             </label>
             <span class="help-inline">${form.message['gender']}</span>
         </div>
     </div>
     <div class="control-group <c:if test="${not empty form.message['firstname']}">error</c:if>">
         <label class="control-label required" for="input01"><fmt:message
-                key="onepagecheckout.firstname"/></label>
+                key="checkout.firstname"/></label>
 
         <div class="controls">
             <input type="text" class="input-xlarge" id="input01" name="firstname"
@@ -61,7 +66,7 @@
     </div>
     <div class="control-group <c:if test="${not empty form.message['lastname']}">error</c:if>">
         <label class="control-label required" for="input02"><fmt:message
-                key="onepagecheckout.lastname"/></label>
+                key="checkout.lastname"/></label>
 
         <div class="controls">
             <input type="text" class="input-xlarge" id="input02" name="lastname"
@@ -70,7 +75,7 @@
         </div>
     </div>
     <div class="control-group <c:if test="${not empty form.message['email']}">error</c:if>">
-        <label class="control-label required" for="input03"><fmt:message key="onepagecheckout.email"/></label>
+        <label class="control-label required" for="input03"><fmt:message key="checkout.email"/></label>
 
         <div class="controls">
             <input type="text" class="input-xlarge" id="input03" name="email"
@@ -79,32 +84,7 @@
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label required" for="input03"><fmt:message
-                key="onepagecheckout.dateofbirth"/></label>
-
-        <div class="controls">
-            <select name="day" class="input-mini">
-                <c:forEach var="i" begin="1" end="31" step="1">
-                    <option value="${i}"
-                            <c:if test="${form.value['day'].value == i}">selected="selected"</c:if>>${i}</option>
-                </c:forEach>
-            </select>
-            <select name="month" class="input-mini">
-                <c:forEach var="i" begin="1" end="12" step="1">
-                    <option value="${i}"
-                            <c:if test="${form.value['month'].value == i}">selected="selected"</c:if>>${i}</option>
-                </c:forEach>
-            </select>
-            <select name="year" class="input-small">
-                <c:forEach var="i" begin="1900" end="2012" step="1">
-                    <option value="${i}"
-                            <c:if test="${form.value['year'].value == i}">selected="selected"</c:if>>${i}</option>
-                </c:forEach>
-            </select>
-        </div>
-    </div>
-    <div class="control-group">
-        <label class="control-label" for="input04"><fmt:message key="onepagecheckout.companyName"/></label>
+        <label class="control-label" for="input04"><fmt:message key="checkout.companyName"/></label>
 
         <div class="controls">
             <input type="text" class="input-xlarge" id="input04" name="companyname"
@@ -113,7 +93,7 @@
     </div>
     <div class="control-group <c:if test="${not empty form.message['streetaddress']}">error</c:if>">
         <label class="control-label required" for="input05"><fmt:message
-                key="onepagecheckout.streetAddress"/></label>
+                key="checkout.streetAddress"/></label>
 
         <div class="controls">
             <input type="text" class="input-xlarge" id="input05" name="streetaddress"
@@ -122,7 +102,7 @@
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="input06"><fmt:message key="onepagecheckout.suburb"/></label>
+        <label class="control-label" for="input06"><fmt:message key="checkout.suburb"/></label>
 
         <div class="controls">
             <input type="text" class="input-xlarge" id="input06" name="suburb"
@@ -131,7 +111,7 @@
     </div>
     <div class="control-group <c:if test="${not empty form.message['postalcode']}">error</c:if>">
         <label class="control-label required" for="input07"><fmt:message
-                key="onepagecheckout.postalCode"/></label>
+                key="checkout.postalCode"/></label>
 
         <div class="controls">
             <input type="text" class="input-xlarge" id="input07" name="postalcode"
@@ -140,7 +120,7 @@
         </div>
     </div>
     <div class="control-group <c:if test="${not empty form.message['city']}">error</c:if>">
-        <label class="control-label required" for="input08"><fmt:message key="onepagecheckout.city"/></label>
+        <label class="control-label required" for="input08"><fmt:message key="checkout.city"/></label>
 
         <div class="controls">
             <input type="text" class="input-xlarge" id="input08" name="city"
@@ -150,7 +130,7 @@
     </div>
     <div class="control-group <c:if test="${not empty form.message['stateprovince']}">error</c:if>">
         <label class="control-label required" for="StateDropDown"><fmt:message
-                key="onepagecheckout.stateProvince"/></label>
+                key="checkout.stateProvince"/></label>
 
         <div class="controls">
             <select name="stateprovince" id="StateDropDown">
@@ -165,7 +145,7 @@
     </div>
     <div class="control-group <c:if test="${not empty form.message['country']}">error</c:if>">
         <label class="control-label required" for="CountryDropDown"><fmt:message
-                key="onepagecheckout.country"/></label>
+                key="checkout.country"/></label>
 
         <div class="controls">
             <select name="country" id="CountryDropDown">
@@ -180,7 +160,7 @@
     </div>
     <div class="control-group <c:if test="${not empty form.message['primarytelephone']}">error</c:if>">
         <label class="control-label required" for="input11"><fmt:message
-                key="onepagecheckout.primaryTelephoneNumber"/></label>
+                key="checkout.primaryTelephoneNumber"/></label>
 
         <div class="controls">
             <input type="text" class="input-xlarge" id="input11" name="primarytelephone"
@@ -190,7 +170,7 @@
     </div>
     <div class="control-group">
         <label class="control-label" for="input12"><fmt:message
-                key="onepagecheckout.otherTelephoneNumber"/></label>
+                key="checkout.otherTelephoneNumber"/></label>
 
         <div class="controls">
             <input type="text" class="input-xlarge" id="input12" name="othertelephone"
@@ -198,18 +178,14 @@
         </div>
     </div>
     <div class="control-group">
-        <label class="control-label" for="input13"><fmt:message key="onepagecheckout.faxNumber"/></label>
+        <label class="control-label" for="input13"><fmt:message key="checkout.faxNumber"/></label>
 
         <div class="controls">
             <input type="text" class="input-xlarge" id="input13" name="faxnumber"
                    value="${form.value['faxnumber'].value}">
         </div>
     </div>
-
-
-
 </div>
-
 
 <div >
     <label class="radio">

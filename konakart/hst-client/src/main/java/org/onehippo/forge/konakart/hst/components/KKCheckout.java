@@ -1,5 +1,7 @@
 package org.onehippo.forge.konakart.hst.components;
 
+import com.konakart.al.KKAppException;
+import com.konakart.app.Address;
 import com.konakart.app.CustomerRegistration;
 import com.konakart.app.KKException;
 import com.konakart.appif.*;
@@ -128,7 +130,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
         FormMap formMap = new FormMap(request, getCheckoutFormMapFields());
 
         // check required fields
-        if (doValidForm(action, formMap, bundle)) {
+        if (doValidForm(action, state, formMap, bundle)) {
             doAction(action, state, formMap, request, response);
         }
 
@@ -146,7 +148,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
     protected void doBeforeRender(String nextState, FormMap formMap,
                                   HstRequest request, HstResponse response) {
 
-        if (nextState.equals(STATES.BILLING_ADDRESS_REGISTER.name())) {
+        if (nextState.equals(STATES.BILLING_ADDRESS.name()) || nextState.equals(STATES.SHIPPING_ADDRESS.name())) {
             try {
                 // fill the form.
                 initializeFormMap(nextState, formMap, request, response);
@@ -218,14 +220,15 @@ public abstract class KKCheckout extends KKHstActionComponent {
     protected void doAction(String action, String state, FormMap formMap,
                             HstRequest request, HstResponse response) {
 
+        ResourceBundle bundle = ResourceBundle.getBundle("messages", request.getLocale());
+
         if (action.equals(ACTIONS.LOGIN.name())) {
-            ResourceBundle bundle = ResourceBundle.getBundle("messages", request.getLocale());
 
             String username = KKUtil.getEscapedParameter(request, "email");
             String password = KKUtil.getEscapedParameter(request, "password");
 
             if (!super.loggedIn(request, response, username, password)) {
-                formMap.addMessage("email", bundle.getString("onepagecheckout.invalid.password"));
+                formMap.addMessage("email", bundle.getString("checkout.invalid.password"));
             } else {
                 try {
                     // Create an order object that we will use for the checkout process
@@ -245,10 +248,16 @@ public abstract class KKCheckout extends KKHstActionComponent {
             Integer addressId = Integer.valueOf(KKUtil.getEscapedParameter(request, "address"));
             String shippingAddress = KKUtil.getEscapedParameter(request, "shippingAddress");
 
-            // Ask for a new address
+            // Create a new address
             if (addressId == -1) {
-                state = STATES.BILLING_ADDRESS_REGISTER.name();
-                response.setRenderParameter(ACTION, ACTIONS.REGISTER.name());
+                try {
+                    addressId = kkAppEng.getCustomerMgr().addAddressToCustomer(createAddressForCustomer(formMap));
+                } catch (Exception e) {
+                    response.setRenderParameter(STATE, STATES.INITIAL.name());
+                    formMap.addMessage("globalmessage", bundle.getString("checkout.failed.create.address"));
+                    log.error("Failed to add the address", e);
+                    return;
+                }
             }
 
             kkAppEng.getOrderMgr().setCheckoutOrderBillingAddress(addressId);
@@ -264,14 +273,18 @@ public abstract class KKCheckout extends KKHstActionComponent {
                     log.error("Failed to set the shipping address", e);
                 }
             }
-        }
-
-        if (action.equals(ACTIONS.SELECT_ADDRESS.name()) && state.equals(STATES.SHIPPING_ADDRESS.name())) {
+        } else if (action.equals(ACTIONS.SELECT_ADDRESS.name()) && state.equals(STATES.SHIPPING_ADDRESS.name())) {
             Integer addressId = Integer.valueOf(KKUtil.getEscapedParameter(request, "address"));
 
             // Ask for a new address
             if (addressId == -1) {
-                state = STATES.SHIPPING_ADDRESS_REGISTER.name();
+                try {
+                    addressId = kkAppEng.getCustomerMgr().addAddressToCustomer(createAddressForCustomer(formMap));
+                } catch (Exception e) {
+                    log.error("Failed to add the address", e);
+                    formMap.addMessage("globalmessage", bundle.getString("checkout.failed.create.address"));
+                    return;
+                }
             }
 
             try {
@@ -303,12 +316,17 @@ public abstract class KKCheckout extends KKHstActionComponent {
 
 
         if (StringUtils.isEmpty(currentState)) {
+
             // Insert event
             eventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_ENTER_CHECKOUT);
 
-            nextState = STATES.INITIAL;
+            if (!isGuestCustomer()) {
+                nextState = STATES.BILLING_ADDRESS;
+            } else {
+                nextState = STATES.INITIAL;
+            }
         } else {
-            if (currentState.equals(STATES.INITIAL.name())) {
+            if (currentState.equals(STATES.INITIAL.name()) && !isGuestCustomer()) {
                 nextState = STATES.BILLING_ADDRESS;
             }
 
@@ -321,18 +339,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
                 nextState = STATES.SHIPPING_ADDRESS;
             }
 
-            if (currentState.equals(STATES.BILLING_ADDRESS_REGISTER.name())) {
-                request.setAttribute(STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
-                nextState = STATES.SHIPPING_ADDRESS;
-            }
-
             if (currentState.equals(STATES.SHIPPING_ADDRESS.name())) {
-                request.setAttribute(STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
-                request.setAttribute(STATES.SHIPPING_ADDRESS.name().concat("_EDIT"), true);
-                nextState = STATES.SHIPPING_METHOD;
-            }
-
-            if (currentState.equals(STATES.SHIPPING_ADDRESS_REGISTER.name())) {
                 request.setAttribute(STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
                 request.setAttribute(STATES.SHIPPING_ADDRESS.name().concat("_EDIT"), true);
                 nextState = STATES.SHIPPING_METHOD;
@@ -371,16 +378,25 @@ public abstract class KKCheckout extends KKHstActionComponent {
     /**
      * This method must be overiddes to validate the one checkout form
      *
+     * @param action current action
+     * @param currentState current state
      * @param formMap the form map
      * @param bundle  the resource bundle
      * @return true if the form is valid, false otherwise
      */
-    protected boolean doValidForm(String currentState, FormMap formMap, ResourceBundle bundle) {
+    protected boolean doValidForm(String action, String currentState, FormMap formMap, ResourceBundle bundle) {
         boolean result = true;
 
-        String errorMessage = bundle.getString("onepagecheckout.mandatory.field");
+        String errorMessage = bundle.getString("checkout.mandatory.field");
 
-        if (currentState.equals(STATES.BILLING_ADDRESS_REGISTER.name()) || currentState.equals(STATES.SHIPPING_ADDRESS.name())) {
+        if (action.equals(ACTIONS.SELECT_ADDRESS.name()) && (currentState.equals(STATES.BILLING_ADDRESS.name()) || currentState.equals(STATES.SHIPPING_ADDRESS.name()))) {
+
+            String addressId = formMap.getField("address").getValue();
+
+            if (!"-1".equals(addressId)) {
+                return result;
+            }
+
             result = checkMandatoryField(formMap, "gender", errorMessage);
             result = result & checkMandatoryField(formMap, "firstname", errorMessage);
             result = result & checkMandatoryField(formMap, "lastname", errorMessage);
@@ -402,97 +418,77 @@ public abstract class KKCheckout extends KKHstActionComponent {
      * @param formMap the form
      * @return a created customer registration
      */
-    protected CustomerRegistrationIf createCustomerRegistration(FormMap formMap) {
+    protected AddressIf createAddressForCustomer(FormMap formMap) {
 
-        CustomerRegistrationIf customerRegistration = new CustomerRegistration();
+        AddressIf address = new Address();
 
 
         FormField formField = formMap.getField("gender");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setGender(formField.getValue());
+            address.setGender(formField.getValue());
         }
 
         formField = formMap.getField("firstname");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setFirstName(formField.getValue());
+            address.setFirstName(formField.getValue());
         }
 
         formField = formMap.getField("lastname");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setLastName(formField.getValue());
+            address.setLastName(formField.getValue());
         }
 
         formField = formMap.getField("email");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setEmailAddr(formField.getValue());
-        }
-
-        try {
-            int day = Integer.parseInt(formMap.getField("day").getValue());
-            int month = Integer.parseInt(formMap.getField("month").getValue()) - 1;
-            int year = Integer.parseInt(formMap.getField("year").getValue()) - 1900;
-            DateTime dateTime = new DateTime(year, month, day, 0, 0);
-            customerRegistration.setBirthDate(dateTime.toGregorianCalendar());
-        } catch (NumberFormatException e) {
-            // No birth date
+            address.setEmailAddr(formField.getValue());
         }
 
         formField = formMap.getField("companyname");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setCompany(formField.getValue());
+            address.setCompany(formField.getValue());
         }
 
         formField = formMap.getField("streetaddress");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setStreetAddress(formField.getValue());
+            address.setStreetAddress(formField.getValue());
         }
 
         formField = formMap.getField("suburb");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setSuburb(formField.getValue());
+            address.setSuburb(formField.getValue());
         }
 
         formField = formMap.getField("postalcode");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setPostcode(formField.getValue());
+            address.setPostcode(formField.getValue());
         }
 
         formField = formMap.getField("city");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setCity(formField.getValue());
+            address.setCity(formField.getValue());
         }
 
         formField = formMap.getField("stateprovince");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setState(formField.getValue());
+            address.setState(formField.getValue());
         }
 
         formField = formMap.getField("country");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setCountryId(Integer.parseInt(formField.getValue()));
+            address.setCountryId(Integer.parseInt(formField.getValue()));
         }
 
         formField = formMap.getField("primarytelephone");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setTelephoneNumber(formField.getValue());
+            address.setTelephoneNumber(formField.getValue());
         }
 
         formField = formMap.getField("othertelephone");
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setTelephoneNumber1(formField.getValue());
+            address.setTelephoneNumber1(formField.getValue());
         }
 
-        formField = formMap.getField("faxnumber");
-        if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
-            customerRegistration.setFaxNumber(formField.getValue());
-        }
-
-        String randomPassword = String.valueOf(System.currentTimeMillis());
-        customerRegistration.setPassword(randomPassword);
-
-        customerRegistration.setLocale(kkAppEng.getLocale());
-
-        return customerRegistration;
+        return address;
     }
 
 
@@ -504,7 +500,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
     protected String[] getCheckoutFormMapFields() {
         return new String[]{"gender", "firstname", "lastname", "email", "day", "month", "year", "companyname"
                 , "streetaddress", "suburb", "postalcode", "city", "stateprovince", "country", "primarytelephone"
-                , "othertelephone", "faxnumber"};
+                , "othertelephone", "faxnumber", "saveinaddressbook", "address"};
     }
 
 

@@ -4,10 +4,30 @@
 <hst:headContribution category="jsInternal">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 </hst:headContribution>
+
 <hst:headContribution category="jsInternal">
     <hst:link path="/js/checkout.js" var="checkoutJs"/>
     <script src="${checkoutJs}" type="text/javascript"></script>
 </hst:headContribution>
+
+
+<hst:link var="countryDropDown" path="/restservices/checkout/states"/>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#CountryDropDown').change(function() {
+            $.getJSON("${countryDropDown}/" + $(this).val(), "", function(data) {
+                var list = $('#StateDropDown');
+                list.empty('option');
+                list.append($('<option />').attr('selected', 'true').text('---').val('-1'));
+                $.each(data, function(index, itemData) {
+                    list.append($('<option />').text(itemData.name).val(itemData.name));
+                });
+            });
+        });
+    });
+</script>
 
 -${state}- <br/>
 -${isLogged}- <br/>
@@ -69,7 +89,7 @@
                         </li>
                     </ul>
                     <c:if test="${state == 'SHIPPING_ADDRESS'}">
-                        <tag:checkoutBillingAddress/>
+                        <tag:checkoutShippingAddress/>
                     </c:if>
 
                     <ul class="breadcrumb">
