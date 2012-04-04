@@ -4,11 +4,13 @@ import com.konakart.al.KKAppEng;
 import com.konakart.al.StoreInfo;
 import com.konakart.app.EngineConfig;
 
-public class KKEngine {
+public final class KKEngine {
 
     private static final String KONAKART_PROPERTIES = "konakart.properties";
     private static final String KONAKART_APP_PROPERTIES = "konakart_app.properties";
 
+    private KKEngine() {
+    }
 
     /**
      * Configure the Engine Config

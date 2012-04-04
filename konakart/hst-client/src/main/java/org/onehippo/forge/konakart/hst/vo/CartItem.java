@@ -1,6 +1,5 @@
 package org.onehippo.forge.konakart.hst.vo;
 
-import org.hippoecm.hst.content.beans.standard.HippoGalleryImageSet;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 
 import java.io.Serializable;
@@ -79,7 +78,12 @@ public class CartItem implements Serializable {
     }
 
     public void setOptNameArray(String[] optNameArray) {
-        this.optNameArray = optNameArray;
+
+        if (optNameArray != null) {
+            this.optNameArray = new String[optNameArray.length];
+            System.arraycopy(optNameArray, 0, this.optNameArray, 0, optNameArray.length );
+        }
+
     }
 
     public int getProdId() {

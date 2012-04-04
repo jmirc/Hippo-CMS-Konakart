@@ -112,8 +112,22 @@ public class KKHstComponent extends BaseHstComponent {
      *
      * @return true if the customer is a guest, false otherwise.
      */
-    protected  boolean isGuestCustomer() {
+    public  boolean isGuestCustomer() {
         return kkAppEng.getCustomerMgr().getCurrentCustomer().getId() < 0;
+    }
+
+    /**
+     * @return the Konakart engine
+     */
+    public KKAppEng getKkAppEng() {
+        return kkAppEng;
+    }
+
+    /**
+     * @return the event manager
+     */
+    public KKCustomerEventMgr getEventMgr() {
+        return eventMgr;
     }
 
     /**
@@ -334,7 +348,7 @@ public class KKHstComponent extends BaseHstComponent {
      * @param password the password
      * @return true if the user is logged-in, false otherwise
      */
-    protected boolean loggedIn(HstRequest request, HstResponse response, String username, String password) {
+    public boolean loggedIn(HstRequest request, HstResponse response, String username, String password) {
 
         try {
             int custId = validKKSession(request, response);

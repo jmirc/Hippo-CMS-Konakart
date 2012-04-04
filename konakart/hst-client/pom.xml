@@ -17,6 +17,13 @@
     <dependencies>
 
         <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.onehippo.forge</groupId>
             <artifactId>hippo-addon-konakart-common</artifactId>
             <version>1.00.00-SNAPSHOT</version>
@@ -81,6 +88,13 @@
                     <include>**/*.html</include>
                     <include>**/*.properties</include>
                     <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**/*.tld</include>
                 </includes>
             </resource>
         </resources>

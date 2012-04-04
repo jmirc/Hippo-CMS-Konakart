@@ -7,13 +7,10 @@ import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.content.beans.ObjectBeanPersistenceException;
 import org.hippoecm.hst.content.beans.manager.workflow.WorkflowPersistenceManager;
 import org.hippoecm.hst.core.component.HstRequest;
-import org.hippoecm.hst.core.component.HstResponse;
-import org.hippoecm.hst.core.request.HstRequestContext;
-import org.hippoecm.hst.core.request.ResolvedMount;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class KKUtil {
+public final class KKUtil {
 
     private static final Logger log = LoggerFactory.getLogger(KKUtil.class);
 

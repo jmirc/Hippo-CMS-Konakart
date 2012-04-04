@@ -25,6 +25,8 @@ public class KKProductDocument extends HippoDocument {
 
     protected Logger log = LoggerFactory.getLogger(KKProductDocument.class);
 
+    public static final String FAILED_TO_RETRIEVE_THE_PRICE = "Failed to retrieve the price - {} ";
+
     private Konakart konakart;
 
     private ProductIf product;
@@ -106,7 +108,7 @@ public class KKProductDocument extends HippoDocument {
                 price = new BigDecimal(konakart.getStandardPrice().gePrice0ExTax());
             }
         } catch (Exception e) {
-            log.warn("Failed to retrieve the price - {} ", e.toString());
+            log.warn(FAILED_TO_RETRIEVE_THE_PRICE, e.toString());
         }
 
         if (price == null) {

@@ -1,0 +1,26 @@
+<?xml version="1.0" ?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/j2ee/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib xmlns="http://java.sun.com/xml/ns/javaee" version="2.1"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
+
+    <tlib-version>1.0</tlib-version>
+    <jsp-version>1.2</jsp-version>
+    <short-name>konakart-tags</short-name>
+    <uri>http://www.onehippo.org/jsp/konakart</uri>
+    <description>Hippo Google Analytics Tag Library</description>
+
+    <tag>
+        <name>formatPrice</name>
+        <tag-class>org.onehippo.forge.konakart.hst.tags.FormatPriceTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>price</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.math.BigDecimal</type>
+            <description>Price to format</description>
+        </attribute>
+    </tag>
+
+</taglib>

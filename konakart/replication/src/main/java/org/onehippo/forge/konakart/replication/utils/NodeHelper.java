@@ -104,7 +104,7 @@ public class NodeHelper {
             String folderNodeName = Codecs.encodeNode(folderName);
 
             if (!"".equals(folderNodeName)) {
-                if (curNode == rootNode) {
+                if (curNode.equals(rootNode)) {
                     folderNodePath = "/" + folderNodeName;
                 } else {
                     folderNodePath = curNode.getPath() + "/" + folderNodeName;
@@ -326,7 +326,7 @@ public class NodeHelper {
         ClassLoader currentClassloader = Thread.currentThread().getContextClassLoader();
 
         try {
-            if (workspaceClassloader != currentClassloader) {
+            if (!workspaceClassloader.equals(currentClassloader)) {
                 Thread.currentThread().setContextClassLoader(workspaceClassloader);
             }
 
@@ -342,7 +342,7 @@ public class NodeHelper {
                 log.warn("Exception in workflow: {}", e.toString());
             }
         } finally {
-            if (workspaceClassloader != currentClassloader) {
+            if (workspaceClassloader.equals(currentClassloader)) {
                 Thread.currentThread().setContextClassLoader(currentClassloader);
             }
         }

@@ -7,7 +7,7 @@
 
 
 <hst:actionURL var="billing">
-    <hst:param name="action" value="SELECT_ADDRESS"/>
+    <hst:param name="action" value="SELECT"/>
     <hst:param name="state" value="BILLING_ADDRESS"/>
 </hst:actionURL>
 

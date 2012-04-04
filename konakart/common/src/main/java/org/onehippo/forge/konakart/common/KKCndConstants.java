@@ -1,6 +1,6 @@
 package org.onehippo.forge.konakart.common;
 
-public class KKCndConstants {
+public interface KKCndConstants {
 
     public static final String BASEDOCUMENT_DOC_TYPE = "konakart:basedocument";
 

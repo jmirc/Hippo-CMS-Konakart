@@ -45,12 +45,12 @@
                             <li class="active">
                                 <div >
                                     <c:set var="count" value="${count + 1}" scope="page"/>
-                                    <h3>${count}. Checkout Method</h3>
+                                    <h3>${count}. <fmt:message key="checkout.step.checkoutmethod"/> </h3>
                                 </div>
                             </li>
                         </ul>
                         <c:if test="${state == 'INITIAL'}">
-                            <tag:checkoutMethod/>
+                            <tag:checkoutShippingMethod/>
                         </c:if>
                     </c:if>
 
@@ -58,7 +58,7 @@
                     <ul class="breadcrumb">
                         <c:set var="count" value="${count + 1}" scope="page"/>
                         <li class="active">
-                            <h3>${count}. Billing Address</h3>
+                            <h3>${count}. <fmt:message key="checkout.step.billingaddress"/></h3>
 
                             <c:if test="${BILLING_ADDRESS_EDIT}">
                                 <hst:actionURL var="link">
@@ -76,12 +76,12 @@
                     <ul class="breadcrumb">
                         <c:set var="count" value="${count + 1}" scope="page"/>
                         <li class="active">
-                            <h3>${count}. Shipping Address</h3>
+                            <h3>${count}. <fmt:message key="checkout.step.shippingaddress"/></h3>
 
                             <c:if test="${SHIPPING_ADDRESS_EDIT}">
                                 <hst:actionURL var="link">
-                                    <hst:param name="action" value="INITIAL"/>
-                                    <hst:param name="state" value="${state}"/>
+                                    <hst:param name="action" value="EDIT"/>
+                                    <hst:param name="state" value="BILLING_ADDRESS"/>
                                 </hst:actionURL>
                                 <a href="${link}" class="pull-right">edit</a>
                             </c:if>
@@ -94,15 +94,29 @@
 
                     <ul class="breadcrumb">
                         <c:set var="count" value="${count + 1}" scope="page"/>
-                        <li class="active"><h3>${count}. Shipping Method</h3></li>
+                        <li class="active">
+                            <h3>${count}. <fmt:message key="checkout.step.shippingmethod"/></h3>
+
+                            <c:if test="${SHIPPING_METHOD_EDIT}">
+                                <hst:actionURL var="link">
+                                    <hst:param name="action" value="EDIT"/>
+                                    <hst:param name="state" value="SHIPPING_ADDRESS"/>
+                                </hst:actionURL>
+                                <a href="${link}" class="pull-right">edit</a>
+                            </c:if>
+                        </li>
+                    </ul>
+                    <c:if test="${state == 'SHIPPING_METHOD'}">
+                        <tag:checkoutShippingMethod/>
+                    </c:if>
+
+                    <ul class="breadcrumb">
+                        <c:set var="count" value="${count + 1}" scope="page"/>
+                        <li class="active"><h3>${count}. <fmt:message key="checkout.step.paymentmethod"/></h3></li>
                     </ul>
                     <ul class="breadcrumb">
                         <c:set var="count" value="${count + 1}" scope="page"/>
-                        <li class="active"><h3>${count}. Payment Method</h3></li>
-                    </ul>
-                    <ul class="breadcrumb">
-                        <c:set var="count" value="${count + 1}" scope="page"/>
-                        <li class="active"><h3>${count}. Order Review</h3></li>
+                        <li class="active"><h3>${count}. <fmt:message key="checkout.step.orderreview"/></h3></li>
                     </ul>
 
                 </div>
@@ -154,7 +168,24 @@
                         </c:if>
                     </a>
                 </li>
-                <li class="active"><a href="#"><b>Shipping Method</b></a></li>
+                <li class="active">
+                    <a href="#">
+                        <b>Shipping Method</b>
+                        <br/><br/>
+                        <c:if test="${SHIPPING_METHOD_EDIT}">
+                            <br/>
+                            <p>
+                                <c:if test="${not empty checkoutOrder}">
+                                    ${checkoutOrder.shippingQuote.title} - ${checkoutOrder.shippingQuote.responseText}
+                                    <c:choose>
+                                        <c:when test="${displayPriceWithTax}">${checkoutOrder.shippingQuote.totalIncTax}</c:when>
+                                        <c:when test="${!displayPriceWithTax}">${checkoutOrder.shippingQuote.totalExTax}</c:when>
+                                    </c:choose>
+                                </c:if>
+                            </p>
+                        </c:if>
+                    </a>
+                </li>
                 <li class="active"><a href="#"><b>Payment Method</b></a></li>
                 <li class="active"><a href="#"><b>Order Review</b></a></li>
             </ul>
