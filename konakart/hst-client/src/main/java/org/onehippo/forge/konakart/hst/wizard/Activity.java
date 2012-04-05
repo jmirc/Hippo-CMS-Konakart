@@ -37,6 +37,7 @@ public interface Activity {
      */
     String computeNextState();
 
+
     /**
      * Executed before the rendering of the Web page
      */
@@ -57,6 +58,13 @@ public interface Activity {
     boolean doValidForm();
 
     /**
+     * Executed when an activity has been previously processed.
+     * This method could be used to add into the request information to inform that
+     * the activity is already past.
+     */
+    void doAdditionalData();
+
+    /**
      * This method must be overrided if you implement a different onepagecheckout
      *
      * @return the onePageCheckout formMapFields
@@ -68,5 +76,6 @@ public interface Activity {
      * @return the created form map for this activity
      */
     FormMap getFormMap();
+
 
 }

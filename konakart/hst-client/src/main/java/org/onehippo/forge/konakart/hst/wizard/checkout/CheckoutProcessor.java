@@ -18,6 +18,13 @@ public class CheckoutProcessor extends BaseProcessor {
 
     @Override
     public void doBeforeRender(SeedData seedObject) throws ActivityException {
+
+        String initialState = getCurrentState(seedObject.getRequest());
+        String nextState = initialState;
+
+        // Set state
+        ((CheckoutSeedData) seedObject).setState(initialState);
+
         if (log.isDebugEnabled()) {
             log.debug("doBeforeRender - " + getBeanName() + " processor is running..");
         }
@@ -29,22 +36,34 @@ public class CheckoutProcessor extends BaseProcessor {
         CheckoutProcessContext context = new CheckoutProcessContext();
         context.setSeedData(seedObject);
 
-        for (Activity activity : activities) {
 
+        for (Activity activity : activities) {
             if (log.isDebugEnabled()) {
                 log.debug("running activity:" + activity.getBeanName() + " using arguments:" + context);
             }
 
-            if (activity.acceptState(context.getSeedData().getState())) {
-                activity.initialize(context);
+            activity.initialize(context);
+
+            if (activity.acceptState(nextState)) {
                 activity.doBeforeRender();
+
+                // If an activity accept the initial state, this is means that this activity has been already
+                // executed so the real activity to execute is the next one.
+                if (activity.acceptState(initialState)) {
+                    nextState = activity.computeNextState();
+                }
             }
         }
+
+        ((CheckoutSeedData) seedObject).setState(nextState);
+        seedObject.getRequest().setAttribute(STATE, nextState);
     }
 
     @Override
     public FormMap doAction(SeedData seedObject) throws ActivityException {
         FormMap formMap = null;
+
+        String currentState = getCurrentState(seedObject.getRequest());
 
         if (log.isDebugEnabled()) {
             log.debug("doAction - " + getBeanName() + " processor is running..");
@@ -56,6 +75,7 @@ public class CheckoutProcessor extends BaseProcessor {
         // Create the processor context
         CheckoutProcessContext context = new CheckoutProcessContext();
         context.setSeedData(seedObject);
+        ((CheckoutSeedData) seedObject).setState(currentState);
 
         for (Activity activity : activities) {
 
@@ -73,16 +93,13 @@ public class CheckoutProcessor extends BaseProcessor {
             }
         }
 
+        seedObject.getResponse().setRenderParameter(STATE, currentState);
+
         return formMap;
     }
 
     @Override
-    public String computeNextState(SeedData seedObject) throws ActivityException {
-        if (log.isDebugEnabled()) {
-            log.debug("doAction - " + getBeanName() + " processor is running..");
-        }
-
-        String nextState = null;
+    public void doAdditionalData(SeedData seedObject) throws ActivityException {
 
         //retrieve injected by Spring
         List<Activity> activities = getActivities();
@@ -97,13 +114,10 @@ public class CheckoutProcessor extends BaseProcessor {
                 log.debug("running activity:" + activity.getBeanName() + " using arguments:" + context);
             }
 
-            if (activity.acceptState(context.getSeedData().getState())) {
-                activity.initialize(context);
-
-                nextState = activity.computeNextState();
-            }
+            activity.initialize(context);
+            activity.doAdditionalData();
         }
 
-        return nextState;
+
     }
 }

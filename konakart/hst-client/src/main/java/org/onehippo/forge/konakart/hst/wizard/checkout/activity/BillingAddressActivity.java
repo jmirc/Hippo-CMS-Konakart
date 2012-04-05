@@ -1,10 +1,14 @@
 package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
 import com.konakart.app.KKException;
+import org.apache.commons.lang.StringUtils;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessContext;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class BillingAddressActivity extends BaseAddressActivity {
 
@@ -41,7 +45,7 @@ public class BillingAddressActivity extends BaseAddressActivity {
 
                     // Skip the SHIPPING ADDRESS step because the customer has decided to use the
                     // same billing address
-                    setNextLoggedState(STATES.SHIPPING_ADDRESS.name());
+                    setNextLoggedState(STATES.SHIPPING_METHOD.name());
                 } catch (KKException e) {
                     log.error("Failed to set the shipping address", e);
                 }
@@ -49,4 +53,21 @@ public class BillingAddressActivity extends BaseAddressActivity {
         }
     }
 
+    @Override
+    public void doAdditionalData() {
+        super.doAdditionalData();
+
+
+        CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
+
+        List<String> acceptedStates = Arrays.asList(STATES.SHIPPING_ADDRESS.name(), STATES.SHIPPING_METHOD.name(),
+                STATES.PAYMENT_METHOD.name(), STATES.ORDER_REVIEW.name());
+
+        String state = seedData.getState();
+
+        if (StringUtils.isNotEmpty(state) && acceptedStates.contains(state)) {
+            processorContext.getSeedData().getRequest().setAttribute(getAcceptState().concat("_EDIT"), true);
+        }
+
+    }
 }

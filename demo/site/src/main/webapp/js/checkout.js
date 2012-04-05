@@ -1,7 +1,5 @@
 $(document).ready(function () {
     function changeDefaultNewAddressForm() {
-
-
         if ($("#select-address option:selected").val() == -1) {
             $("#new-address-form").show();
         } else  {

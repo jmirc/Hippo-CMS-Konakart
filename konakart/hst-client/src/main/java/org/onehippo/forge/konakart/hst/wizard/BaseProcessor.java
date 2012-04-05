@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.hst.wizard;
 
+import org.hippoecm.hst.core.component.HstRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -13,6 +14,9 @@ import java.util.List;
  * {@link Activity Activities}
  */
 public abstract class BaseProcessor implements InitializingBean, BeanNameAware, Processor {
+
+    public static final String STATE = "state";
+
 
     protected Logger log = LoggerFactory.getLogger(getClass());
 
@@ -70,5 +74,14 @@ public abstract class BaseProcessor implements InitializingBean, BeanNameAware, 
 
     public List<Activity> getActivities() {
         return activities;
+    }
+
+
+    /**
+     * @param request the Hst Request
+     * @return the current state
+     */
+    protected String getCurrentState(HstRequest request) {
+        return request.getParameter(STATE);
     }
 }

@@ -3,28 +3,27 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <bean id="initialActivity" class="org.onehippo.forge.konakart.hst.wizard.checkout.activity.InitialActivity">
+    <bean id="checkoutMethodRegisterActivity" class="org.onehippo.forge.konakart.hst.wizard.checkout.activity.CheckoutMethodRegisterActivity">
+        <property name="acceptState" value="INITIAL"/>
         <property name="acceptEmptyState" value="true"/>
         <property name="nextNonLoggedState" value="INITIAL"/>
         <property name="nextLoggedState" value="BILLING_ADDRESS"/>
     </bean>
 
-    <bean id="checkoutMethodRegisterActivity" class="org.onehippo.forge.konakart.hst.wizard.checkout.activity.CheckoutMethodRegisterActivity">
-        <property name="nextNonLoggedState" value="INITIAL"/>
-        <property name="nextLoggedState" value="BILLING_ADDRESS"/>
-    </bean>
-
     <bean id="billingAddressActivity" class="org.onehippo.forge.konakart.hst.wizard.checkout.activity.BillingAddressActivity">
+        <property name="acceptState" value="BILLING_ADDRESS"/>
         <property name="nextNonLoggedState" value="INITIAL"/>
         <property name="nextLoggedState" value="SHIPPING_ADDRESS"/>
     </bean>
 
     <bean id="shippingAddressActivity" class="org.onehippo.forge.konakart.hst.wizard.checkout.activity.ShippingAddressActivity">
+        <property name="acceptState" value="SHIPPING_ADDRESS"/>
         <property name="nextNonLoggedState" value="INITIAL"/>
         <property name="nextLoggedState" value="SHIPPING_METHOD"/>
     </bean>
 
     <bean id="shippingMethodActivity" class="org.onehippo.forge.konakart.hst.wizard.checkout.activity.ShippingMethodActivity">
+        <property name="acceptState" value="SHIPPING_METHOD"/>
         <property name="nextNonLoggedState" value="INITIAL"/>
         <property name="nextLoggedState" value="PAYMENT_METHOD"/>
     </bean>
@@ -32,7 +31,6 @@
     <bean id="checkoutProcessor" class="org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessor">
         <property name="activities">
             <list>
-                <ref bean="initialActivity"/>
                 <ref bean="checkoutMethodRegisterActivity"/>
                 <ref bean="billingAddressActivity"/>
                 <ref bean="shippingAddressActivity"/>

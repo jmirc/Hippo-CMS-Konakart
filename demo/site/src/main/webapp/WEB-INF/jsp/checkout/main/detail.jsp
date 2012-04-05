@@ -50,7 +50,7 @@
                             </li>
                         </ul>
                         <c:if test="${state == 'INITIAL'}">
-                            <tag:checkoutShippingMethod/>
+                            <tag:checkoutMethodRegister/>
                         </c:if>
                     </c:if>
 
@@ -171,15 +171,14 @@
                 <li class="active">
                     <a href="#">
                         <b>Shipping Method</b>
-                        <br/><br/>
                         <c:if test="${SHIPPING_METHOD_EDIT}">
-                            <br/>
+                            <br/><br/>
                             <p>
                                 <c:if test="${not empty checkoutOrder}">
-                                    ${checkoutOrder.shippingQuote.title} - ${checkoutOrder.shippingQuote.responseText}
+                                    ${checkoutOrder.shippingQuote.title} - ${checkoutOrder.shippingQuote.responseText} -
                                     <c:choose>
-                                        <c:when test="${displayPriceWithTax}">${checkoutOrder.shippingQuote.totalIncTax}</c:when>
-                                        <c:when test="${!displayPriceWithTax}">${checkoutOrder.shippingQuote.totalExTax}</c:when>
+                                        <c:when test="${displayPriceWithTax}"><kk:formatPrice price="${checkoutOrder.shippingQuote.totalIncTax}"/> </c:when>
+                                        <c:when test="${!displayPriceWithTax}"><kk:formatPrice price="${checkoutOrder.shippingQuote.totalExTax}"/></c:when>
                                     </c:choose>
                                 </c:if>
                             </p>

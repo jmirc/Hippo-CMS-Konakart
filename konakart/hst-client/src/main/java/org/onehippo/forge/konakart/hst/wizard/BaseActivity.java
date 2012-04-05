@@ -52,7 +52,7 @@ public abstract class BaseActivity implements Activity, BeanNameAware {
 
     @Override
     public boolean acceptState(String state) {
-        return (acceptEmtpyState && state == null) && acceptState.equals(state);
+        return (acceptEmtpyState && (state == null)) || ((state != null) && acceptState.equals(state));
 
     }
 
@@ -62,6 +62,10 @@ public abstract class BaseActivity implements Activity, BeanNameAware {
      */
     public void setAcceptState(String acceptState) {
         this.acceptState = acceptState;
+    }
+
+    public String getAcceptState() {
+        return acceptState;
     }
 
     public void setAcceptEmptyState(boolean acceptEmtpyState) {
@@ -89,6 +93,10 @@ public abstract class BaseActivity implements Activity, BeanNameAware {
     public boolean doValidForm() {
         // By default the form is valid.
         return true;
+    }
+
+    @Override
+    public void doAdditionalData() {
     }
 
     @Override

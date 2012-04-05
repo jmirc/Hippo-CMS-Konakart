@@ -2,6 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="hst" uri="http://www.hippoecm.org/jsp/hst/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="kk" uri="http://www.onehippo.org/jsp/konakart" %>
 <%--@elvariable id="quote" type="com.konakart.appif.ShippingQuoteIf"--%>
 
 
@@ -29,13 +30,13 @@
                     <div class="control-group">
                         <div class="controls">
                             <label class="radio inline" for="input01">
-                                <input type="radio" name="shipping" class="input-mini" id="input01"
+                                <input type="radio" name="shipMethod" class="input-mini" id="input01"
                                        value="${quote.code}"
-                                       <c:if test="${form.value['shipping'].value == quote.code}">checked="checked"</c:if>>
-                                <b>${quote.responseText} -
+                                       <c:if test="${shipMethod == quote.code}">checked="checked"</c:if>>
+                                 <b>${quote.responseText} -
                                     <c:choose>
-                                        <c:when test="${displayPriceWithTax}">${quote.totalIncTax}</c:when>
-                                        <c:when test="${!displayPriceWithTax}">${quote.totalExTax}</c:when>
+                                        <c:when test="${displayPriceWithTax}"><kk:formatPrice price="${quote.totalIncTax}"/> </c:when>
+                                        <c:when test="${!displayPriceWithTax}"><kk:formatPrice price="${quote.totalExTax}"/></c:when>
                                     </c:choose>
                                     </b>
                             </label>

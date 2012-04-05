@@ -188,7 +188,12 @@
     <sv:property sv:name="jcr:uuid" sv:type="String">
       <sv:value>0549dc09-1b91-460c-898d-d42be38a765b</sv:value>
     </sv:property>
-    <sv:property sv:name="hst:containers" sv:type="String" sv:multiple="true"/>
+    <sv:property sv:name="hst:containers" sv:type="String" sv:multiple="true">
+      <sv:value>checkoutMethodRegisterActivity</sv:value>
+      <sv:value>billingAddressActivity</sv:value>
+      <sv:value>shippingAddressActivity</sv:value>
+      <sv:value>shippingMethodActivity</sv:value>
+    </sv:property>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/checkout/main/detail.jsp</sv:value>
     </sv:property>

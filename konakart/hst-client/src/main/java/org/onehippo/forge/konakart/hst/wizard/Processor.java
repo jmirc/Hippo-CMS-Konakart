@@ -33,12 +33,11 @@ public interface Processor {
     FormMap doAction(SeedData seedObject) throws ActivityException;
 
     /**
-     * Compute the next state that will be executed by the processor
-     *
-     * @param seedObject - data necessary for the workflow process to compute the next state
-     * @return the next state.
+     * Executed when an activity has been previously processed.
+     * This method could be used to add into the request information to inform that
+     * the activity is already past.
      */
-    String computeNextState(SeedData seedObject) throws ActivityException;
+    void doAdditionalData(SeedData seedObject) throws ActivityException;
 
     /**
      * Sets the collection of Activities to be executed by the Workflow Process

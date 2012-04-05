@@ -3,7 +3,6 @@ package org.onehippo.forge.konakart.hst.components;
 import com.konakart.appif.BasketIf;
 import com.konakart.appif.CustomerIf;
 import com.konakart.bl.ConfigConstants;
-import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.component.support.forms.FormUtils;
 import org.hippoecm.hst.core.component.HstComponentException;
@@ -11,12 +10,9 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.core.container.ComponentManager;
 import org.hippoecm.hst.site.HstServices;
-import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
-import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.Processor;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
-import org.onehippo.forge.konakart.hst.wizard.checkout.activity.BaseCheckoutActivity;
 
 /**
  * This component is used to manage the checkout process.
@@ -25,9 +21,6 @@ public abstract class KKCheckout extends KKHstActionComponent {
 
     private static final String ONE_PAGE_CHECKOUT = "onePageCheckout";
     private static final String CHECKOUT_ORDER = "checkoutOrder";
-
-    protected static final String STATE = "state";
-
 
 
     @Override
@@ -89,19 +82,20 @@ public abstract class KKCheckout extends KKHstActionComponent {
             seedData.setKkHstComponent(this);
             seedData.setRequest(request);
             seedData.setResponse(response);
-            seedData.setState(getCurrentState(request));
 
             Processor processor = getProcessor();
-            processor.doBeforeRender(seedData);
 
-            request.setAttribute(STATE, processor.computeNextState(seedData));
+            processor.doBeforeRender(seedData);
+            processor.doAdditionalData(seedData);
+
 
             request.setAttribute(CHECKOUT_ORDER, kkAppEng.getOrderMgr().getCheckoutOrder());
 
             request.setAttribute(ONE_PAGE_CHECKOUT, isOnePageCheckout());
 
         } catch (Exception e) {
-            log.warn("Failed to initialize the checkout page - {}", e.toString());
+            log.warn("Failed to initialize the checkout page", e);
+            throw new HstComponentException("Failed to initialize the checkout page ",  e);
         }
     }
 
@@ -113,7 +107,6 @@ public abstract class KKCheckout extends KKHstActionComponent {
         seedData.setRequest(request);
         seedData.setResponse(response);
         seedData.setAction(action);
-        seedData.setState(getCurrentState(request));
 
         Processor processor = getProcessor();
 
@@ -126,73 +119,6 @@ public abstract class KKCheckout extends KKHstActionComponent {
     }
 
 
-
-
-    /**
-     * This method is used to set the next state based on the current state
-     *
-     * @param request the Hst Request
-     * @return the next state
-     */
-    protected String initializeNextState(HstRequest request) {
-
-        BaseCheckoutActivity.STATES nextState = BaseCheckoutActivity.STATES.INITIAL;
-
-        String currentState = request.getParameter(STATE);
-
-
-        if (StringUtils.isEmpty(currentState)) {
-
-            // Insert event
-            eventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_ENTER_CHECKOUT);
-
-            if (!isGuestCustomer()) {
-                nextState = BaseCheckoutActivity.STATES.BILLING_ADDRESS;
-            } else {
-                nextState = BaseCheckoutActivity.STATES.INITIAL;
-            }
-        } else {
-            if (currentState.equals(BaseCheckoutActivity.STATES.INITIAL.name()) && !isGuestCustomer()) {
-                nextState = BaseCheckoutActivity.STATES.BILLING_ADDRESS;
-            }
-
-            if (currentState.equals(BaseCheckoutActivity.STATES.CHECKOUT_METHOD_REGISTER.name())) {
-                nextState = BaseCheckoutActivity.STATES.BILLING_ADDRESS;
-            }
-
-            if (currentState.equals(BaseCheckoutActivity.STATES.BILLING_ADDRESS.name())) {
-                request.setAttribute(BaseCheckoutActivity.STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
-                nextState = BaseCheckoutActivity.STATES.SHIPPING_ADDRESS;
-            }
-
-            if (currentState.equals(BaseCheckoutActivity.STATES.SHIPPING_ADDRESS.name())) {
-                request.setAttribute(BaseCheckoutActivity.STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
-                request.setAttribute(BaseCheckoutActivity.STATES.SHIPPING_ADDRESS.name().concat("_EDIT"), true);
-                nextState = BaseCheckoutActivity.STATES.SHIPPING_METHOD;
-            }
-
-            if (currentState.equals(BaseCheckoutActivity.STATES.SHIPPING_METHOD.name())) {
-                request.setAttribute(BaseCheckoutActivity.STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
-                request.setAttribute(BaseCheckoutActivity.STATES.SHIPPING_ADDRESS.name().concat("_EDIT"), true);
-                request.setAttribute(BaseCheckoutActivity.STATES.SHIPPING_METHOD.name().concat("_EDIT"), true);
-                nextState = BaseCheckoutActivity.STATES.PAYMENT_METHOD;
-            }
-
-            if (currentState.equals(BaseCheckoutActivity.STATES.PAYMENT_METHOD.name())) {
-                request.setAttribute(BaseCheckoutActivity.STATES.BILLING_ADDRESS.name().concat("_EDIT"), true);
-                request.setAttribute(BaseCheckoutActivity.STATES.SHIPPING_ADDRESS.name().concat("_EDIT"), true);
-                request.setAttribute(BaseCheckoutActivity.STATES.SHIPPING_METHOD.name().concat("_EDIT"), true);
-                request.setAttribute(BaseCheckoutActivity.STATES.PAYMENT_METHOD.name().concat("_EDIT"), true);
-                nextState = BaseCheckoutActivity.STATES.ORDER_REVIEW;
-            }
-        }
-
-        request.setAttribute(STATE, nextState.name());
-
-        return nextState.name();
-
-    }
-
     /**
      * Returns true if configured for one page checkout
      *
@@ -203,14 +129,6 @@ public abstract class KKCheckout extends KKHstActionComponent {
         String onePageCheckout = kkAppEng.getConfig(ConfigConstants.ONE_PAGE_CHECKOUT);
 
         return onePageCheckout != null && onePageCheckout.equalsIgnoreCase("true");
-    }
-
-    /**
-     * @param request the Hst Request
-     * @return the current state
-     */
-    private String getCurrentState(HstRequest request) {
-        return KKUtil.getEscapedParameter(request, STATE);
     }
 
     /**

@@ -12,5 +12,4 @@ public abstract class BaseCheckoutActivity extends BaseActivity {
     public static enum ACTIONS {
         LOGIN, SELECT
     }
-
 }

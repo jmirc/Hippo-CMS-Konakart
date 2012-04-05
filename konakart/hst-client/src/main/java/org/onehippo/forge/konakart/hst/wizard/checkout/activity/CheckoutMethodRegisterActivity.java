@@ -1,6 +1,8 @@
 package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
+import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
+import org.onehippo.forge.konakart.hst.wizard.ProcessorContext;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessContext;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
 
@@ -8,6 +10,16 @@ public class CheckoutMethodRegisterActivity extends BaseCheckoutActivity {
 
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
+
+    @Override
+    public void initialize(ProcessorContext processorContext) {
+        super.initialize(processorContext);
+
+        // Insert event
+        processorContext.getSeedData().getKkHstComponent().getEventMgr().
+                insertCustomerEvent(processorContext.getSeedData().getKkHstComponent().getKkAppEng(),
+                        KKCustomerEventMgr.ACTION_ENTER_CHECKOUT);
+    }
 
     @Override
     public void doBeforeRender() {
@@ -41,5 +53,4 @@ public class CheckoutMethodRegisterActivity extends BaseCheckoutActivity {
 
         }
     }
-
 }
