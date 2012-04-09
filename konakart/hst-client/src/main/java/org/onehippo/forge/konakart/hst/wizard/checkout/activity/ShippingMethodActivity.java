@@ -1,6 +1,7 @@
 package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
 import org.apache.commons.lang.StringUtils;
+import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
@@ -26,7 +27,7 @@ public class ShippingMethodActivity extends BaseCheckoutActivity {
     public void doAction() throws ActivityException {
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
-        if (seedData.getAction().equals(BaseCheckoutActivity.ACTIONS.SELECT.name())) {
+        if (seedData.getAction().equals(KKConstants.ACTIONS.SELECT.name())) {
             String shippingMethod = KKUtil.getEscapedParameter(seedData.getRequest(), SHIPPING_METHOD);
 
             if (StringUtils.isEmpty(shippingMethod)) {

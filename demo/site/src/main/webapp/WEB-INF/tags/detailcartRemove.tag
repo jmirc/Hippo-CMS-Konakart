@@ -8,7 +8,7 @@
 <c:choose>
     <c:when test="${!empty currentCustomer.basketItems}">
         <hst:actionURL var="formAction">
-            <hst:param name="action" value="update"/>
+            <hst:param name="action" value="UPDATE"/>
         </hst:actionURL>
 
         <form action="${formAction}" method="post">
@@ -50,7 +50,7 @@
 
                             <br/>
                             <hst:actionURL var="removeFromBasket">
-                                <hst:param name="action" value="removeFromBasket"/>
+                                <hst:param name="action" value="REMOVE_FROM_BASKET"/>
                                 <hst:param name="basketId" value="${item.basketItemId}"/>
                             </hst:actionURL>
                             <a href="${removeFromBasket}">Remove</a>

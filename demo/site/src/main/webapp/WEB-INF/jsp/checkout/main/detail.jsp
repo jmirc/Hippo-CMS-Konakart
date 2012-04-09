@@ -63,7 +63,7 @@
                             <c:if test="${BILLING_ADDRESS_EDIT}">
                                 <hst:actionURL var="link">
                                     <hst:param name="action" value="EDIT"/>
-                                    <hst:param name="state" value="INITIAL"/>
+                                    <hst:param name="state" value="BILLING_ADDRESS"/>
                                 </hst:actionURL>
                                 <a href="${link}" class="pull-right">edit</a>
                             </c:if>
@@ -81,7 +81,7 @@
                             <c:if test="${SHIPPING_ADDRESS_EDIT}">
                                 <hst:actionURL var="link">
                                     <hst:param name="action" value="EDIT"/>
-                                    <hst:param name="state" value="BILLING_ADDRESS"/>
+                                    <hst:param name="state" value="SHIPPING_ADDRESS"/>
                                 </hst:actionURL>
                                 <a href="${link}" class="pull-right">edit</a>
                             </c:if>
@@ -100,7 +100,7 @@
                             <c:if test="${SHIPPING_METHOD_EDIT}">
                                 <hst:actionURL var="link">
                                     <hst:param name="action" value="EDIT"/>
-                                    <hst:param name="state" value="SHIPPING_ADDRESS"/>
+                                    <hst:param name="state" value="SHIPPING_METHOD"/>
                                 </hst:actionURL>
                                 <a href="${link}" class="pull-right">edit</a>
                             </c:if>
@@ -131,6 +131,8 @@
                 <br/>
             </c:if>
 
+            <tag:shoppingcart/>
+            <br/>
 
             <h3>Your Checkout Progress</h3>
             <ul class="nav nav-tabs nav-stacked">

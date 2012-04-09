@@ -1,6 +1,7 @@
 package org.onehippo.forge.konakart.hst.wizard;
 
 import org.hippoecm.hst.core.component.HstRequest;
+import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -84,4 +85,25 @@ public abstract class BaseProcessor implements InitializingBean, BeanNameAware, 
     protected String getCurrentState(HstRequest request) {
         return request.getParameter(STATE);
     }
+
+    /**
+     *
+     * @param request the Hst request
+     * @return the current action
+     */
+    protected String getCurrentAction(HstRequest request) {
+        return request.getParameter(KKConstants.ACTION);
+    }
+
+    /**
+     * Valid if the customer has clicked on edit button
+     * @return true if the customer has clicked on the edit button, false otherwise
+     */
+    protected boolean isEditAction(HstRequest request) {
+        String currentAction = getCurrentAction(request);
+
+        return (currentAction != null) && currentAction.equals(KKConstants.ACTIONS.EDIT.name());
+    }
+
+
 }

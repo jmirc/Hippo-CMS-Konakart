@@ -2,6 +2,7 @@ package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
 import com.konakart.app.KKException;
 import org.apache.commons.lang.StringUtils;
+import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessContext;
@@ -22,7 +23,7 @@ public class BillingAddressActivity extends BaseAddressActivity {
         CheckoutSeedData seedData = checkoutProcessContext.getSeedData();
 
 
-        if (seedData.getAction().equals(ACTIONS.SELECT.name())) {
+        if (seedData.getAction().equals(KKConstants.ACTIONS.SELECT.name())) {
             Integer addressId = Integer.valueOf(KKUtil.getEscapedParameter(seedData.getRequest(), ADDRESS));
             String shippingAddress = KKUtil.getEscapedParameter(seedData.getRequest(), SHIPPING_ADDRESS);
 

@@ -2,6 +2,7 @@ package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
 import com.konakart.app.KKException;
 import org.apache.commons.lang.StringUtils;
+import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessContext;
@@ -18,7 +19,7 @@ public class ShippingAddressActivity extends BaseAddressActivity {
         CheckoutSeedData seedData = checkoutProcessContext.getSeedData();
 
 
-        if (seedData.getAction().equals(ACTIONS.SELECT.name())) {
+        if (seedData.getAction().equals(KKConstants.ACTIONS.SELECT.name())) {
             Integer addressId = Integer.valueOf(KKUtil.getEscapedParameter(seedData.getRequest(), ADDRESS));
 
             // Ask for a new address
@@ -37,7 +38,7 @@ public class ShippingAddressActivity extends BaseAddressActivity {
 
                 // Skip the SHIPPING ADDRESS step because the customer has decided to use the
                 // same billing address
-                setNextLoggedState(STATES.SHIPPING_ADDRESS.name());
+                setNextLoggedState(STATES.SHIPPING_METHOD.name());
             } catch (KKException e) {
                 log.error("Failed to set the shipping address", e);
             }

@@ -12,6 +12,7 @@ import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
+import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
 import org.onehippo.forge.konakart.hst.vo.CartItem;
 import org.onehippo.forge.konakart.hst.vo.OrderItem;
@@ -25,11 +26,6 @@ import java.util.List;
  * You need to define a refid="cartDetailId" on the sitemap associated to the mycart.
  */
 public class KKCartDetail extends KKHstActionComponent {
-
-    /**
-     * This action is used to add a update cart
-     */
-    private static final String UPDATE_ACTION = "update";
 
 
     @Override
@@ -206,7 +202,7 @@ public class KKCartDetail extends KKHstActionComponent {
         // We need to find the Basket object corresponding to the cartItem object and we remove it or
         // update it if required.
 
-        if (StringUtils.equals(action, UPDATE_ACTION)) {
+        if (StringUtils.equals(action, KKConstants.ACTIONS.UPDATE.name())) {
             // basket items
             BasketIf[] basketItems = kkAppEng.getCustomerMgr().getCurrentCustomer().getBasketItems();
 

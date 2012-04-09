@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
+import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.ProcessorContext;
@@ -32,7 +33,7 @@ public class CheckoutMethodRegisterActivity extends BaseCheckoutActivity {
         CheckoutSeedData seedData = checkoutProcessContext.getSeedData();
 
 
-        if (seedData.getAction().equals(ACTIONS.LOGIN.name())) {
+        if (seedData.getAction().equals(KKConstants.ACTIONS.LOGIN.name())) {
 
             String username = KKUtil.getEscapedParameter(seedData.getRequest(), EMAIL);
             String password = KKUtil.getEscapedParameter(seedData.getRequest(), PASSWORD);

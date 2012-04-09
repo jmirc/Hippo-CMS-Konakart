@@ -20,6 +20,7 @@ import org.hippoecm.hst.util.ContentBeanUtils;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.beans.KKReviewDocument;
+import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 
 import javax.jcr.Session;
@@ -34,11 +35,6 @@ import java.util.List;
 public abstract class KKProductDetail extends KKHstActionComponent {
 
     private static final String DATE_PATTERN = "yyyy-MM-dd HH.mm.ss.SSS";
-
-    /**
-     * This action is used to add a review
-     */
-    private static final String REVIEW_ACTION = "review";
 
     private static final String NAME = "name";
     private static final String COMMENT = "comment";
@@ -123,7 +119,7 @@ public abstract class KKProductDetail extends KKHstActionComponent {
 
         KKProductDocument product = getProductDocument(request, response);
 
-        if (StringUtils.equals(action, REVIEW_ACTION)) {
+        if (StringUtils.equals(action, KKConstants.ACTIONS.REVIEW.name())) {
             processReview(product, request, response);
         }
     }

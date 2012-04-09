@@ -44,12 +44,6 @@ public class KKHstComponent extends BaseHstComponent {
     protected Logger log = LoggerFactory.getLogger(KKHstComponent.class);
 
 
-    /*
-    * Customer tags
-    */
-    protected static final String TAG_PRODUCTS_VIEWED = "PRODUCTS_VIEWED";
-
-
     /**
      * Used to manage cookie
      */
@@ -366,7 +360,7 @@ public class KKHstComponent extends BaseHstComponent {
             }
 
             // Get recently viewed products before logging in
-            CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+            CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(KKConstants.TAG_PRODUCTS_VIEWED);
 
             // Login
             String result = kkAppEng.getCustomerMgr().login(username, password);
@@ -387,7 +381,7 @@ public class KKHstComponent extends BaseHstComponent {
             eventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_CUSTOMER_LOGIN);
 
             // Set recently viewed products for the logged in customer if changed as guest
-            CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+            CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(KKConstants.TAG_PRODUCTS_VIEWED);
             updateRecentlyViewedProducts(prodsViewedTagGuest, prodsViewedTagCust);
 
             return true;
@@ -462,7 +456,7 @@ public class KKHstComponent extends BaseHstComponent {
             } catch (KKException e) {
 
                 //Get recently viewed products before logging out
-                CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+                CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(KKConstants.TAG_PRODUCTS_VIEWED);
 
                 kkAppEng.getCustomerMgr().logout();
 
@@ -470,7 +464,7 @@ public class KKHstComponent extends BaseHstComponent {
                 kkCookieMgr.manageCookieLogout(request, response, kkAppEng);
 
                 // Set recently viewed products for the guest customer if changed while logged in
-                CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+                CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(KKConstants.TAG_PRODUCTS_VIEWED);
 
                 updateRecentlyViewedProducts(prodsViewedTagCust, prodsViewedTagGuest);
             }
@@ -561,7 +555,7 @@ public class KKHstComponent extends BaseHstComponent {
                  * If new tag doesn't exist or old tag is newer than new tag, then give newTag the
                  * value of old tag
                  */
-                kkAppEng.getCustomerTagMgr().insertCustomerTag(TAG_PRODUCTS_VIEWED, oldTag.getValue());
+                kkAppEng.getCustomerTagMgr().insertCustomerTag(KKConstants.TAG_PRODUCTS_VIEWED, oldTag.getValue());
             }
         }
     }

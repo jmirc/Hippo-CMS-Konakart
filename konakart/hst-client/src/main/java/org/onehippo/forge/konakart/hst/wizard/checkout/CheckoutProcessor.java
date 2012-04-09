@@ -1,6 +1,7 @@
 package org.onehippo.forge.konakart.hst.wizard.checkout;
 
 import org.hippoecm.hst.component.support.forms.FormMap;
+import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.wizard.Activity;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.BaseProcessor;
@@ -24,6 +25,7 @@ public class CheckoutProcessor extends BaseProcessor {
 
         // Set state
         ((CheckoutSeedData) seedObject).setState(initialState);
+        ((CheckoutSeedData) seedObject).setAction(getCurrentAction(seedObject.getRequest()));
 
         if (log.isDebugEnabled()) {
             log.debug("doBeforeRender - " + getBeanName() + " processor is running..");
@@ -49,7 +51,7 @@ public class CheckoutProcessor extends BaseProcessor {
 
                 // If an activity accept the initial state, this is means that this activity has been already
                 // executed so the real activity to execute is the next one.
-                if (activity.acceptState(initialState)) {
+                if (activity.acceptState(initialState) && !isEditAction(seedObject.getRequest())) {
                     nextState = activity.computeNextState();
                 }
             }
@@ -58,6 +60,8 @@ public class CheckoutProcessor extends BaseProcessor {
         ((CheckoutSeedData) seedObject).setState(nextState);
         seedObject.getRequest().setAttribute(STATE, nextState);
     }
+
+
 
     @Override
     public FormMap doAction(SeedData seedObject) throws ActivityException {
@@ -94,6 +98,7 @@ public class CheckoutProcessor extends BaseProcessor {
         }
 
         seedObject.getResponse().setRenderParameter(STATE, currentState);
+        seedObject.getResponse().setRenderParameter(KKConstants.ACTION, ((CheckoutSeedData) seedObject).getAction());
 
         return formMap;
     }

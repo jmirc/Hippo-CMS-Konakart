@@ -17,6 +17,7 @@ import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.component.support.forms.FormUtils;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
+import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 
@@ -25,21 +26,10 @@ import java.util.List;
 
 public abstract class KKHstActionComponent extends KKHstComponent {
 
-    protected static final String ACTION = "action";
-
-    private static final String ADD_TO_BASKET_ACTION = "addToBasket";
-    private static final String REMOVE_FROM_BASKET_ACTION = "removeFromBasket";
-
-    private static final String PRODUCT_ID = "prodId";
-    private static final String BASKET_ID = "basketId";
-    private static final String ADD_TO_WISH_LIST = "addToWishList";
-    private static final String WISH_LIST_ID = "wishListId";
-
-
 
     @Override
     final public void doAction(HstRequest request, HstResponse response) {
-        String type = KKUtil.getEscapedParameter(request, ACTION);
+        String type = KKUtil.getEscapedParameter(request, KKConstants.ACTION);
 
         doAction(type, request, response);
     }
@@ -58,15 +48,15 @@ public abstract class KKHstActionComponent extends KKHstComponent {
      * @param response the Hst Response
      */
     public void doAction(String action, HstRequest request, HstResponse response) {
-        if (StringUtils.equals(action, ADD_TO_BASKET_ACTION)) {
-            String productId = KKUtil.getEscapedParameter(request, PRODUCT_ID);
-            String addToWishList = KKUtil.getEscapedParameter(request, ADD_TO_WISH_LIST);
+        if (StringUtils.equals(action, KKConstants.ACTIONS.ADD_TO_BASKET.name())) {
+            String productId = KKUtil.getEscapedParameter(request, KKConstants.PRODUCT_ID);
+            String addToWishList = KKUtil.getEscapedParameter(request, KKConstants.ADD_TO_WISH_LIST);
 
             // Add this product to the basket
             if (StringUtils.isNotEmpty(productId)) {
                 // Add this product to the wish list
                 if (StringUtils.isNotEmpty(addToWishList) && Boolean.valueOf(addToWishList)) {
-                    String wishListId = KKUtil.getEscapedParameter(request, WISH_LIST_ID);
+                    String wishListId = KKUtil.getEscapedParameter(request, KKConstants.WISH_LIST_ID);
 
                     if (StringUtils.isNotEmpty(wishListId)) {
                         addProductToWishList(request, Integer.valueOf(wishListId), Integer.valueOf(productId));
@@ -82,8 +72,8 @@ public abstract class KKHstActionComponent extends KKHstComponent {
 
         }
 
-        if (StringUtils.equals(action, REMOVE_FROM_BASKET_ACTION)) {
-            String basketId = KKUtil.getEscapedParameter(request, BASKET_ID);
+        if (StringUtils.equals(action, KKConstants.ACTIONS.REMOVE_FROM_BASKET.name())) {
+            String basketId = KKUtil.getEscapedParameter(request, KKConstants.BASKET_ID);
 
             // Remove this product fromthe basket
             if (StringUtils.isNotEmpty(basketId)) {

@@ -8,8 +8,4 @@ public abstract class BaseCheckoutActivity extends BaseActivity {
         INITIAL, CHECKOUT_METHOD_REGISTER, BILLING_ADDRESS,
         SHIPPING_ADDRESS, SHIPPING_METHOD, PAYMENT_METHOD, ORDER_REVIEW
     }
-
-    public static enum ACTIONS {
-        LOGIN, SELECT
-    }
 }

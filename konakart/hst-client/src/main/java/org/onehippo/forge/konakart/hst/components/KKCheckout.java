@@ -22,7 +22,6 @@ public abstract class KKCheckout extends KKHstActionComponent {
     private static final String ONE_PAGE_CHECKOUT = "onePageCheckout";
     private static final String CHECKOUT_ORDER = "checkoutOrder";
 
-
     @Override
     public final void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
         super.doBeforeRender(request, response);

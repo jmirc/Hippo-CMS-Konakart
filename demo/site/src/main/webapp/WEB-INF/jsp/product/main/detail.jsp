@@ -12,7 +12,7 @@
 
 
 <hst:actionURL var="addToBasket">
-    <hst:param name="action" value="addToBasket"/>
+    <hst:param name="action" value="ADD_TO_BASKET"/>
     <hst:param name="prodId" value="${document.productId}"/>
 </hst:actionURL>
 
@@ -132,7 +132,7 @@ function setWishListId(id) {
 
 <c:if test="${allowComments}">
     <hst:actionURL var="reviewUrl">
-        <hst:param name="action" value="review"/>
+        <hst:param name="action" value="REVIEW"/>
     </hst:actionURL>
 
     <br/>

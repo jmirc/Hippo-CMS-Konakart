@@ -6,6 +6,7 @@ import com.konakart.appif.AddressIf;
 import com.konakart.appif.ZoneIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.forms.FormField;
+import org.onehippo.forge.konakart.hst.utils.KKConstants;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
 
@@ -170,7 +171,7 @@ public abstract class BaseAddressActivity extends BaseCheckoutActivity {
 
         String errorMessage = seedData.getBundle().getString("checkout.mandatory.field");
 
-        if (seedData.getAction().equals(ACTIONS.SELECT.name())) {
+        if (seedData.getAction().equals(KKConstants.ACTIONS.SELECT.name())) {
 
             String addressId = formMap.getField(ADDRESS).getValue();
 
