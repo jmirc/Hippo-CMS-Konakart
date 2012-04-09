@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.hst.wizard;
 
+import com.konakart.al.KKAppEng;
 import org.hippoecm.hst.component.support.forms.FormMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ public abstract class BaseActivity implements Activity, BeanNameAware {
 
     protected ProcessorContext processorContext;
     protected FormMap formMap;
+    protected KKAppEng kkAppEng;
 
 
     protected BaseActivity() {
@@ -43,6 +45,7 @@ public abstract class BaseActivity implements Activity, BeanNameAware {
         this.processorContext = processorContext;
 
         formMap = new FormMap(processorContext.getSeedData().getRequest(), getCheckoutFormMapFields());
+        kkAppEng = processorContext.getSeedData().getKkHstComponent().getKkAppEng();
     }
 
     @Override

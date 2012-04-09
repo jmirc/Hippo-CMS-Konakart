@@ -18,8 +18,7 @@ public class CheckoutMethodRegisterActivity extends BaseCheckoutActivity {
 
         // Insert event
         processorContext.getSeedData().getKkHstComponent().getEventMgr().
-                insertCustomerEvent(processorContext.getSeedData().getKkHstComponent().getKkAppEng(),
-                        KKCustomerEventMgr.ACTION_ENTER_CHECKOUT);
+                insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_ENTER_CHECKOUT);
     }
 
     @Override

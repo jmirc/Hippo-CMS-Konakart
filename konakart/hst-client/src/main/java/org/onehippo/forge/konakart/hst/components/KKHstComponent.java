@@ -299,7 +299,7 @@ public class KKHstComponent extends BaseHstComponent {
     /**
      * @return the siteMapItemRefId associated with the detail cart.
      */
-    protected String getDetailCartRefId() {
+    public String getDetailCartRefId() {
         return "detailCartId";
     }
 
@@ -308,14 +308,13 @@ public class KKHstComponent extends BaseHstComponent {
      *
      * @param response the Hst response
      */
-    protected void redirectToNotFoundPage(HstResponse response) {
+    public void redirectToNotFoundPage(HstResponse response) {
         try {
             response.forward("/404");
         } catch (IOException e) {
             throw new HstComponentException(e);
         }
     }
-
 
     /**
      * This is an helper class to redirect the customer to another page
@@ -324,7 +323,7 @@ public class KKHstComponent extends BaseHstComponent {
      * @param response the HstResponse
      * @param refId the refId
      */
-    protected void redirectByRefId(HstRequest request, HstResponse response, String refId) {
+    public void redirectByRefId(HstRequest request, HstResponse response, String refId) {
 
         HstLinkCreator linkCreator = request.getRequestContext().getHstLinkCreator();
 

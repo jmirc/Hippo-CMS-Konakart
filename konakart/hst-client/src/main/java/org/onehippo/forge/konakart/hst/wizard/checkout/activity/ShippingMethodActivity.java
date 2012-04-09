@@ -17,10 +17,10 @@ public class ShippingMethodActivity extends BaseCheckoutActivity {
     @Override
     public void doBeforeRender() throws ActivityException {
         processorContext.getSeedData().getRequest().setAttribute(SHIPPING_QUOTES,
-                processorContext.getSeedData().getKkHstComponent().getKkAppEng().getOrderMgr().getShippingQuotes());
+                kkAppEng.getOrderMgr().getShippingQuotes());
 
         processorContext.getSeedData().getRequest().setAttribute(SHIPPING_METHOD,
-                processorContext.getSeedData().getKkHstComponent().getKkAppEng().getOrderMgr().getCheckoutOrder().getShippingMethod());
+                kkAppEng.getOrderMgr().getCheckoutOrder().getShippingMethod());
     }
 
     @Override

@@ -188,7 +188,6 @@
                     </a>
                 </li>
                 <li class="active"><a href="#"><b>Payment Method</b></a></li>
-                <li class="active"><a href="#"><b>Order Review</b></a></li>
             </ul>
         </div>
     </div>
