@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.hst.components;
 
+import com.konakart.al.KKAppEng;
 import com.konakart.appif.BasketIf;
 import com.konakart.appif.CustomerIf;
 import com.konakart.bl.ConfigConstants;
@@ -25,6 +26,9 @@ public abstract class KKCheckout extends KKHstActionComponent {
     @Override
     public final void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
         super.doBeforeRender(request, response);
+
+        KKAppEng kkAppEng = getKKAppEng(request);
+
 
         FormMap formMap = new FormMap();
         FormUtils.populate(request, formMap);
@@ -78,7 +82,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
             }
 
             CheckoutSeedData seedData = new CheckoutSeedData();
-            seedData.setKkHstComponent(this);
+            seedData.setKkBaseHstComponent(this);
             seedData.setRequest(request);
             seedData.setResponse(response);
 
@@ -90,7 +94,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
 
             request.setAttribute(CHECKOUT_ORDER, kkAppEng.getOrderMgr().getCheckoutOrder());
 
-            request.setAttribute(ONE_PAGE_CHECKOUT, isOnePageCheckout());
+            request.setAttribute(ONE_PAGE_CHECKOUT, isOnePageCheckout(kkAppEng));
 
         } catch (Exception e) {
             log.warn("Failed to initialize the checkout page", e);
@@ -102,7 +106,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
     public final void doAction(String action, HstRequest request, HstResponse response) {
 
         CheckoutSeedData seedData = new CheckoutSeedData();
-        seedData.setKkHstComponent(this);
+        seedData.setKkBaseHstComponent(this);
         seedData.setRequest(request);
         seedData.setResponse(response);
         seedData.setAction(action);
@@ -123,7 +127,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
      *
      * @return Returns true if configured for one page checkout
      */
-    protected boolean isOnePageCheckout() {
+    protected boolean isOnePageCheckout(KKAppEng kkAppEng) {
         // Check to see whether one page checkout is configured
         String onePageCheckout = kkAppEng.getConfig(ConfigConstants.ONE_PAGE_CHECKOUT);
 

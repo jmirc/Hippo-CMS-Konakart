@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.hst.components;
 
+import com.konakart.al.KKAppEng;
 import com.konakart.al.KKAppException;
 import com.konakart.al.ProdOptionContainer;
 import com.konakart.al.ReviewMgr;
@@ -20,9 +21,12 @@ import org.hippoecm.hst.util.ContentBeanUtils;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.beans.KKReviewDocument;
-import org.onehippo.forge.konakart.hst.utils.KKConstants;
+import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
+import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 
+import javax.annotation.Nonnull;
 import javax.jcr.Session;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,25 +52,28 @@ public abstract class KKProductDetail extends KKHstActionComponent {
     public void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
         super.doBeforeRender(request, response);
 
+        KKAppEng kkAppEng = getKKAppEng(request);
 
-        KKProductDocument document = getProductDocument(request, response);
+        KKProductDocument document = KKComponentUtils.getKKProductDocument(this, request);
 
         request.setAttribute("document", document);
 
         try {
 
             // Fetch the product related data from the database
-            kkAppEng.getProductMgr().fetchSelectedProduct(document.getProductId());
+        //    kkAppEng.getProductMgr().fetchSelectedProduct(document.getProductId());
 
             //We fetch the data for the selected product
-            kkAppEng.getProductMgr().updateProductViewedCount(document.getProductId());
+         //   kkAppEng.getProductMgr().updateProductViewedCount(document.getProductId());
             kkAppEng.getProductMgr().fetchAlsoPurchasedArray();
             kkAppEng.getProductMgr().fetchRelatedProducts();
         } catch (KKException e) {
             log.info("Unable to fetch the data for the selected product {}", e.toString());
-        } catch (KKAppException e) {
-            log.info("Unable to fetch the selected product {}", e.toString());
         }
+//
+//  } catch (KKAppException e) {
+//            log.info("Unable to fetch the selected product {}", e.toString());
+//        }
 
         // Retrieve options
         List<ProdOptionContainer> opts = kkAppEng.getProductMgr().getSelectedProductOptions();
@@ -79,9 +86,9 @@ public abstract class KKProductDetail extends KKHstActionComponent {
         // Set the folder where the reviews will be saved
         String reviewsFolderName = KKCndConstants.DEFAULT_REVIEWS_FOLDER;
 
-        if (!StringUtils.isEmpty(document.getReviewsFolder())) {
-            reviewsFolderName = document.getReviewsFolder();
-        }
+//        if (!StringUtils.isEmpty(document.getReviewsFolder())) {
+//            reviewsFolderName = document.getReviewsFolder();
+//        }
 
         HippoBean siteContentBase = getSiteContentBaseBean(request);
         HippoFolder reviewsFolder = siteContentBase.getBean(reviewsFolderName);
@@ -108,7 +115,7 @@ public abstract class KKProductDetail extends KKHstActionComponent {
             }
         }
 
-        request.setAttribute("allowComments", !isGuestCustomer());
+        request.setAttribute("allowComments", !isGuestCustomer(request));
 
     }
 
@@ -117,9 +124,9 @@ public abstract class KKProductDetail extends KKHstActionComponent {
 
         super.doAction(action, request, response);
 
-        KKProductDocument product = getProductDocument(request, response);
+        KKProductDocument product = KKComponentUtils.getKKProductDocument(this, request);
 
-        if (StringUtils.equals(action, KKConstants.ACTIONS.REVIEW.name())) {
+        if (StringUtils.equals(action, KKCheckoutConstants.ACTIONS.REVIEW.name())) {
             processReview(product, request, response);
         }
     }
@@ -132,16 +139,17 @@ public abstract class KKProductDetail extends KKHstActionComponent {
      * @param request  the HST request
      * @param response the HST response
      */
-    private void processReview(KKProductDocument product, HstRequest request, HstResponse response) {
+    private void processReview(@Nonnull KKProductDocument product, @Nonnull HstRequest request,
+                               @Nonnull HstResponse response) {
 
-        CustomerIf currentCustomer = getCurrentCustomer();
+        CustomerIf currentCustomer = KKServiceHelper.getKKCustomerService().getCurrentCustomer(request);
 
         String name = KKUtil.getEscapedParameter(request, NAME);
         String email = KKUtil.getEscapedParameter(request, EMAIL);
         String comment = KKUtil.getEscapedParameter(request, COMMENT);
 
         // If the customer is not a guest override the name and the email
-        if (!isGuestCustomer()) {
+        if (!isGuestCustomer(request)) {
             name = currentCustomer.getFirstName() + " " + currentCustomer.getLastName();
             email = currentCustomer.getEmailAddr();
         }
@@ -169,7 +177,7 @@ public abstract class KKProductDetail extends KKHstActionComponent {
         }
 
         String productUuid = product.getCanonicalHandleUUID();
-        String reviewName = product.getReviewsFolder();
+        String reviewName = "";//product.getReviewsFolder();
 
         Session persistableSession = null;
         WorkflowPersistenceManager wpm;
@@ -198,7 +206,7 @@ public abstract class KKProductDetail extends KKHstActionComponent {
                 wpm.update(review);
 
                 // Add the review into konakart
-                ReviewMgr reviewMgr = kkAppEng.getReviewMgr();
+                ReviewMgr reviewMgr = KKServiceHelper.getKKEngineService().getKKAppEng(request).getReviewMgr();
                 reviewMgr.writeReview(comment, rating.intValue(), currentCustomer.getId());
 
                 response.setRenderParameter(SUCCESS, SUCCESS);

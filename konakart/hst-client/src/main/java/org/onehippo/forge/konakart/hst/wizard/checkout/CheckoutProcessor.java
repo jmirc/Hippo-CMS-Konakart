@@ -1,7 +1,7 @@
 package org.onehippo.forge.konakart.hst.wizard.checkout;
 
 import org.hippoecm.hst.component.support.forms.FormMap;
-import org.onehippo.forge.konakart.hst.utils.KKConstants;
+import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.hst.wizard.Activity;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.BaseProcessor;
@@ -98,7 +98,7 @@ public class CheckoutProcessor extends BaseProcessor {
         }
 
         seedObject.getResponse().setRenderParameter(STATE, currentState);
-        seedObject.getResponse().setRenderParameter(KKConstants.ACTION, ((CheckoutSeedData) seedObject).getAction());
+        seedObject.getResponse().setRenderParameter(KKCheckoutConstants.ACTION, ((CheckoutSeedData) seedObject).getAction());
 
         return formMap;
     }

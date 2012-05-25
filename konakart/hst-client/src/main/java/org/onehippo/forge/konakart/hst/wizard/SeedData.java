@@ -2,7 +2,7 @@ package org.onehippo.forge.konakart.hst.wizard;
 
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
-import org.onehippo.forge.konakart.hst.components.KKHstComponent;
+import org.onehippo.forge.konakart.hst.components.KKBaseHstComponent;
 
 import java.util.ResourceBundle;
 
@@ -10,7 +10,7 @@ public class SeedData {
 
     private HstRequest request;
     private HstResponse response;
-    private KKHstComponent kkHstComponent;
+    private KKBaseHstComponent kkBaseHstComponent;
     private ResourceBundle bundle;
 
     public HstRequest getRequest() {
@@ -30,12 +30,12 @@ public class SeedData {
         this.response = response;
     }
 
-    public KKHstComponent getKkHstComponent() {
-        return kkHstComponent;
+    public KKBaseHstComponent getKkBaseHstComponent() {
+        return kkBaseHstComponent;
     }
 
-    public void setKkHstComponent(KKHstComponent kkHstComponent) {
-        this.kkHstComponent = kkHstComponent;
+    public void setKkBaseHstComponent(KKBaseHstComponent kkBaseHstComponent) {
+        this.kkBaseHstComponent = kkBaseHstComponent;
     }
 
     public ResourceBundle getBundle() {

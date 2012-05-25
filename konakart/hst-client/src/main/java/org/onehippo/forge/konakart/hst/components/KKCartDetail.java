@@ -1,9 +1,12 @@
 package org.onehippo.forge.konakart.hst.components;
 
+import com.konakart.al.KKAppEng;
 import com.konakart.al.KKAppException;
-import com.konakart.app.CreateOrderOptions;
 import com.konakart.app.Option;
-import com.konakart.appif.*;
+import com.konakart.appif.BasketIf;
+import com.konakart.appif.CustomerIf;
+import com.konakart.appif.OrderIf;
+import com.konakart.appif.OrderTotalIf;
 import com.konakart.bl.ConfigConstants;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.forms.FormField;
@@ -12,10 +15,11 @@ import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
-import org.onehippo.forge.konakart.hst.utils.KKConstants;
-import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
+import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.hst.vo.CartItem;
 import org.onehippo.forge.konakart.hst.vo.OrderItem;
+import org.onehippo.forge.konakart.site.service.KKServiceHelper;
+import org.onehippo.forge.konakart.site.service.impl.KKEventServiceImpl;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,23 +31,33 @@ import java.util.List;
  */
 public class KKCartDetail extends KKHstActionComponent {
 
+    public static final String COUPON_CODE = "couponCode";
+    public static final String GIFT_CERT_CODE = "giftCertCode";
+    public static final String QUANTITY = "quantity_";
+    public static final String REMOVE = "remove_";
+    public static final String REWARD_POINTS = "rewardPoints";
+    public static final String OT_REWARD_POINTS = "ot_reward_points";
+    public static final String OT_FREE_PRODUCT = "ot_free_product";
 
     @Override
     public void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
         super.doBeforeRender(request, response);
 
+        KKAppEng kkAppEng = KKServiceHelper.getKKEngineService().getKKAppEng(request);
         /*
-             * If the current customer has items in his basket, then we have to create a list of
-             * CartItem objects and populate them since these are the objects that we will use to
-             * display the basket items on the screen.
-             */
-        CustomerIf currentCustomer = getCurrentCustomer();
+         * If the current customer has items in his basket, then we have to create a list of
+         * CartItem objects and populate them since these are the objects that we will use to
+         * display the basket items on the screen.
+         */
+        CustomerIf currentCustomer = KKServiceHelper.getKKCustomerService().getCurrentCustomer(request);
 
         // Initialize this variable to true if one of the item is set to out of stock.
         boolean isItemOutOfStock = false;
 
         try {
-            if (getCurrentCustomer() != null && currentCustomer.getBasketItems() != null && currentCustomer.getBasketItems().length > 0) {
+
+
+            if (currentCustomer != null && currentCustomer.getBasketItems() != null && currentCustomer.getBasketItems().length > 0) {
 
                 kkAppEng.getBasketMgr().getBasketItemsPerCustomer();
 
@@ -57,7 +71,7 @@ public class KKCartDetail extends KKHstActionComponent {
                 * screen. Comment this out if you don't want to show extra information such as
                 * shipping and discounts before checkout.
                 */
-                createTempOrder(getCurrentCustomer().getId(), items);
+                KKServiceHelper.getKKOrderService().createTempOrder(request, currentCustomer.getId(), items);
 
                 // Retrieve the checkout order
                 OrderIf order = kkAppEng.getOrderMgr().getCheckoutOrder();
@@ -68,16 +82,16 @@ public class KKCartDetail extends KKHstActionComponent {
 
                 // Set the coupon code from the one saved in the order manager
                 if (coupon != null) {
-                    request.setAttribute("couponCode", coupon);
+                    request.setAttribute(COUPON_CODE, coupon);
                 }
                 // Set the GiftCert code from the one saved in the order manager
                 if (giftCertCode != null) {
-                    request.setAttribute("giftCertCode", giftCertCode);
+                    request.setAttribute(GIFT_CERT_CODE, giftCertCode);
                 }
 
                 // Set the reward points from the ones saved in the order manager
                 if (rewardPoints != 0) {
-                    request.setAttribute("rewardPoints", rewardPoints);
+                    request.setAttribute(REWARD_POINTS, rewardPoints);
                 }
 
                 if (order != null) {
@@ -94,9 +108,9 @@ public class KKCartDetail extends KKHstActionComponent {
                             OrderItem orderItem = new OrderItem();
                             orderItem.setTitle(orderTotalIf.getTitle());
 
-                            if (orderTotalIf.getClassName().equals("ot_reward_points")) {
+                            if (orderTotalIf.getClassName().equals(OT_REWARD_POINTS)) {
                                 orderItem.setValue(orderTotalIf.getValue().toString());
-                            } else if (orderTotalIf.getClassName().equals("ot_free_product")) {
+                            } else if (orderTotalIf.getClassName().equals(OT_FREE_PRODUCT)) {
                                 orderItem.setValue(orderTotalIf.getText());
                             } else {
                                 try {
@@ -202,7 +216,9 @@ public class KKCartDetail extends KKHstActionComponent {
         // We need to find the Basket object corresponding to the cartItem object and we remove it or
         // update it if required.
 
-        if (StringUtils.equals(action, KKConstants.ACTIONS.UPDATE.name())) {
+        if (StringUtils.equals(action, KKCheckoutConstants.ACTIONS.UPDATE.name())) {
+            KKAppEng kkAppEng = getKKAppEng(request);
+
             // basket items
             BasketIf[] basketItems = kkAppEng.getCustomerMgr().getCurrentCustomer().getBasketItems();
 
@@ -210,21 +226,21 @@ public class KKCartDetail extends KKHstActionComponent {
 
             int i = 0;
 
-            definedFormFields[i++] = "couponCode";
-            definedFormFields[i++] = "giftCertCode";
+            definedFormFields[i++] = COUPON_CODE;
+            definedFormFields[i++] = GIFT_CERT_CODE;
 
             for (BasketIf basketItem : basketItems) {
-                definedFormFields[i] = "quantity_" + basketItem.getId();
+                definedFormFields[i] = QUANTITY + basketItem.getId();
                 i++;
-                definedFormFields[i] = "remove_" + basketItem.getId();
+                definedFormFields[i] = REMOVE + basketItem.getId();
                 i++;
             }
 
             FormMap formMap = new FormMap(request, definedFormFields);
 
             for (BasketIf basketItem : basketItems) {
-                FormField removeFormField = formMap.getField("remove_" + basketItem.getId());
-                FormField quantityFormField = formMap.getField("quantity_" + basketItem.getId());
+                FormField removeFormField = formMap.getField(REMOVE + basketItem.getId());
+                FormField quantityFormField = formMap.getField(QUANTITY + basketItem.getId());
 
                 // Remove the basket item
                 if (removeFormField != null && removeFormField.getValues() != null
@@ -234,7 +250,7 @@ public class KKCartDetail extends KKHstActionComponent {
                         kkAppEng.getBasketMgr().removeFromBasket(basketItem, /** refresh **/false);
 
                         // insert an event
-                        eventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_REMOVE_FROM_CART,
+                        KKServiceHelper.getKKEventService().insertCustomerEvent(request, KKEventServiceImpl.ACTION_REMOVE_FROM_CART,
                                 basketItem.getProductId());
                     } catch (Exception e) {
                         log.error("Unable to remove the basket with the id - " + basketItem.getId());
@@ -252,7 +268,7 @@ public class KKCartDetail extends KKHstActionComponent {
                             kkAppEng.getBasketMgr().removeFromBasket(basketItem, /** refresh **/false);
 
                             // insert an event
-                            eventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_REMOVE_FROM_CART,
+                            KKServiceHelper.getKKEventService().insertCustomerEvent(request, KKEventServiceImpl.ACTION_REMOVE_FROM_CART,
                                     basketItem.getProductId());
                         } catch (Exception e) {
                             log.error("Unable to remove the basket with the id - " + basketItem.getId());
@@ -272,7 +288,7 @@ public class KKCartDetail extends KKHstActionComponent {
             }
 
             // Retrieve the coupon information
-            FormField couponField = formMap.getField("couponCode");
+            FormField couponField = formMap.getField(COUPON_CODE);
 
             if (couponField != null) {
                 kkAppEng.getOrderMgr().setCouponCode(couponField.getValue());
@@ -288,83 +304,6 @@ public class KKCartDetail extends KKHstActionComponent {
                 log.error("Unable to update the basket - {}", e.toString());
             }
         }
-
-
     }
 
-    /*
-    * Populate checkout order with a temporary order created before the checkout process really
-    * begins. If the customer hasn't registered or logged in yet, we use the default customer to
-    * create the order.
-    *
-    * With this temporary order we can give the customer useful information on shipping costs and
-    * discounts without him having to login.
-    */
-    private OrderIf createTempOrder(int custId, BasketIf[] items) {
-        try {
-            String sessionId = null;
-
-            // Reset the checkout order
-            kkAppEng.getOrderMgr().setCheckoutOrder(null);
-
-            CreateOrderOptionsIf options = new CreateOrderOptions();
-            if (custId < 0) {
-                options.setUseDefaultCustomer(true);
-            } else {
-                sessionId = kkAppEng.getSessionId();
-                options.setUseDefaultCustomer(false);
-            }
-
-            // Add extra info to the options
-            if (kkAppEng.getFetchProdOptions() != null) {
-                options.setPriceDate(kkAppEng.getFetchProdOptions().getPriceDate());
-                options.setCatalogId(kkAppEng.getFetchProdOptions().getCatalogId());
-                options.setUseExternalPrice(kkAppEng.getFetchProdOptions().isUseExternalPrice());
-                options.setUseExternalQuantity(kkAppEng.getFetchProdOptions().isUseExternalQuantity());
-            }
-
-            // Create the order
-            OrderIf order = kkAppEng.getEng().createOrderWithOptions(sessionId, items, options,
-                    kkAppEng.getLangId());
-
-            if (order == null) {
-                return null;
-            }
-
-            /*
-             * We set the customer id to that of the guest customer so that promotions with
-             * expressions are calculated correctly
-             */
-            if (custId < 0) {
-                order.setCustomerId(kkAppEng.getCustomerMgr().getCurrentCustomer().getId());
-            }
-
-            // Populate the order with the coupon code if it exists
-            order.setCouponCode(kkAppEng.getOrderMgr().getCouponCode());
-
-            // Set the checkout order to be the new order
-            kkAppEng.getOrderMgr().setCheckoutOrder(order);
-
-            // Get shipping quotes and select the first one
-            kkAppEng.getOrderMgr().createShippingQuotes();
-            if (kkAppEng.getOrderMgr().getShippingQuotes() != null
-                    && kkAppEng.getOrderMgr().getShippingQuotes().length > 0) {
-
-                kkAppEng.getOrderMgr().getCheckoutOrder().setShippingQuote(kkAppEng.getOrderMgr().getShippingQuotes()[0]);
-            }
-
-            // Populate the checkout order with order totals
-            kkAppEng.getOrderMgr().populateCheckoutOrderWithOrderTotals();
-
-            return order;
-
-        } catch (Exception e) {
-            // If the order can't be created we don't report back an exception
-            if (log.isWarnEnabled()) {
-                log.warn("A temporary order could not be created", e);
-            }
-        }
-
-        return null;
-    }
 }

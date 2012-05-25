@@ -15,7 +15,6 @@ public final class KKEngine {
     /**
      * Configure the Engine Config
      * @param mode the engine mode
-     * @param storeId the storeId
      * @param isCustomersShared set to true if the customers are shared
      * @param isProductsShared set to true if the products are shared
      * @throws Exception .

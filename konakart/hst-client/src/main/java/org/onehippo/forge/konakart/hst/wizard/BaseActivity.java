@@ -2,6 +2,7 @@ package org.onehippo.forge.konakart.hst.wizard;
 
 import com.konakart.al.KKAppEng;
 import org.hippoecm.hst.component.support.forms.FormMap;
+import org.hippoecm.hst.core.component.HstRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanNameAware;
@@ -22,6 +23,7 @@ public abstract class BaseActivity implements Activity, BeanNameAware {
     protected ProcessorContext processorContext;
     protected FormMap formMap;
     protected KKAppEng kkAppEng;
+    protected HstRequest hstRequest;
 
 
     protected BaseActivity() {
@@ -43,9 +45,11 @@ public abstract class BaseActivity implements Activity, BeanNameAware {
     @Override
     public void initialize(ProcessorContext processorContext) {
         this.processorContext = processorContext;
+        this.hstRequest = processorContext.getSeedData().getRequest();
 
-        formMap = new FormMap(processorContext.getSeedData().getRequest(), getCheckoutFormMapFields());
-        kkAppEng = processorContext.getSeedData().getKkHstComponent().getKkAppEng();
+        formMap = new FormMap(hstRequest, getCheckoutFormMapFields());
+        kkAppEng = processorContext.getSeedData().getKkBaseHstComponent().
+                getKKAppEng(processorContext.getSeedData().getRequest());
     }
 
     @Override
@@ -77,7 +81,7 @@ public abstract class BaseActivity implements Activity, BeanNameAware {
 
     @Override
     public String computeNextState() {
-        if (processorContext.getSeedData().getKkHstComponent().isGuestCustomer()) {
+        if (processorContext.getSeedData().getKkBaseHstComponent().isGuestCustomer(hstRequest)) {
             return nextNonLoggedState;
         }
 

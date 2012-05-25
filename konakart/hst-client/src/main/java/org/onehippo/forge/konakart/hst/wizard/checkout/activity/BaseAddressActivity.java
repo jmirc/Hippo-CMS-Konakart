@@ -6,9 +6,10 @@ import com.konakart.appif.AddressIf;
 import com.konakart.appif.ZoneIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.forms.FormField;
-import org.onehippo.forge.konakart.hst.utils.KKConstants;
+import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
+import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,10 +52,11 @@ public abstract class BaseAddressActivity extends BaseCheckoutActivity {
 
         try {
             if (countryField != null) {
-                seedData.getRequest().setAttribute(COUNTRIES, seedData.getKkHstComponent().getKkAppEng().getAllCountries());
+                seedData.getRequest().setAttribute(COUNTRIES,
+                        KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getAllCountries());
 
                 int country = StringUtils.isNotBlank(countryField.getValue()) ? Integer.valueOf(countryField.getValue()) : -1;
-                ZoneIf[] zones = seedData.getKkHstComponent().getKkAppEng().getEng().getZonesPerCountry(country);
+                ZoneIf[] zones = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getEng().getZonesPerCountry(country);
 
                 List<String> stateProvinces = new ArrayList<String>();
 
@@ -69,11 +71,11 @@ public abstract class BaseAddressActivity extends BaseCheckoutActivity {
         }
 
         // Initialize the list of addresses already created.
-        if (!seedData.getKkHstComponent().isGuestCustomer()) {
+        if (!seedData.getKkBaseHstComponent().isGuestCustomer(hstRequest)) {
             try {
-                seedData.getKkHstComponent().getKkAppEng().getCustomerMgr().populateCurrentCustomerAddresses(/* force */ false);
+                KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getCustomerMgr().populateCurrentCustomerAddresses(/* force */ false);
 
-                AddressIf[] addresses = seedData.getKkHstComponent().getKkAppEng().getCustomerMgr().getCurrentCustomer().getAddresses();
+                AddressIf[] addresses = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getCustomerMgr().getCurrentCustomer().getAddresses();
 
                 seedData.getRequest().setAttribute(ADDRESSES, addresses);
 
@@ -171,7 +173,7 @@ public abstract class BaseAddressActivity extends BaseCheckoutActivity {
 
         String errorMessage = seedData.getBundle().getString("checkout.mandatory.field");
 
-        if (seedData.getAction().equals(KKConstants.ACTIONS.SELECT.name())) {
+        if (seedData.getAction().equals(KKCheckoutConstants.ACTIONS.SELECT.name())) {
 
             String addressId = formMap.getField(ADDRESS).getValue();
 

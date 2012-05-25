@@ -24,31 +24,10 @@ public interface ProductFactory {
      */
     void setGalleryRoot(String galleryRoot);
 
-
     /**
      * @param productFolder set the name of the folder where the product will be created
      */
     void setProductFolder(String productFolder);
-
-    /**
-     * @param productDocType the product document type
-     */
-    void setProductDocType(String productDocType);
-
-    /**
-     * Set the konakart product name.
-     *
-     * @see org.onehippo.forge.konakart.common.KKCndConstants.PRODUCT_TYPE enum
-     *
-     * @param productTypeName the konakart product name
-     */
-    void setKKProductTypeName(String productTypeName);
-
-    /**
-     *
-     * @param konakartProductPropertyName .
-     */
-    void setKonakartProductPropertyName(String konakartProductPropertyName);
 
     /**
      * Create a review's folder

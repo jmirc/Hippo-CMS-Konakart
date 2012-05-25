@@ -1,0 +1,27 @@
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean name="org.onehippo.forge.konakart.site.service.KKBasketService"
+          class="org.onehippo.forge.konakart.site.service.impl.KKBasketServiceImpl"/>
+
+    <bean name="org.onehippo.forge.konakart.site.service.KKCartService"
+          class="org.onehippo.forge.konakart.site.service.impl.KKCartServiceImpl"/>
+
+    <bean name="org.onehippo.forge.konakart.site.service.KKCookieService"
+          class="org.onehippo.forge.konakart.site.service.impl.KKCookieServiceImpl"/>
+
+    <bean name="org.onehippo.forge.konakart.site.service.KKCustomerService"
+          class="org.onehippo.forge.konakart.site.service.impl.KKCustomerServiceImpl"/>
+
+    <bean name="org.onehippo.forge.konakart.site.service.KKEngineService"
+          class="org.onehippo.forge.konakart.site.service.impl.KKEngineServiceImpl"/>
+
+    <bean name="org.onehippo.forge.konakart.site.service.KKEventService"
+          class="org.onehippo.forge.konakart.site.service.impl.KKEventServiceImpl"/>
+
+    <bean name="org.onehippo.forge.konakart.site.service.KKOrderService"
+          class="org.onehippo.forge.konakart.site.service.impl.KKOrderServiceImpl"/>
+
+</beans>

@@ -1,7 +1,7 @@
 package org.onehippo.forge.konakart.hst.wizard;
 
 import org.hippoecm.hst.core.component.HstRequest;
-import org.onehippo.forge.konakart.hst.utils.KKConstants;
+import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -92,7 +92,7 @@ public abstract class BaseProcessor implements InitializingBean, BeanNameAware, 
      * @return the current action
      */
     protected String getCurrentAction(HstRequest request) {
-        return request.getParameter(KKConstants.ACTION);
+        return request.getParameter(KKCheckoutConstants.ACTION);
     }
 
     /**
@@ -102,7 +102,7 @@ public abstract class BaseProcessor implements InitializingBean, BeanNameAware, 
     protected boolean isEditAction(HstRequest request) {
         String currentAction = getCurrentAction(request);
 
-        return (currentAction != null) && currentAction.equals(KKConstants.ACTIONS.EDIT.name());
+        return (currentAction != null) && currentAction.equals(KKCheckoutConstants.ACTIONS.EDIT.name());
     }
 
 

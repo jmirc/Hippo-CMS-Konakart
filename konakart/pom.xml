@@ -17,17 +17,25 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <hippo.repository.version>2.22.02</hippo.repository.version>
-        <hippo.cms.version>2.22.01</hippo.cms.version>
 
-        <forge.selection.version>2.05.04</forge.selection.version>
-        <hippo.hst.version>2.24.02</hippo.hst.version>
+        <!-- 7.7.2 versioning -->
+        <hippo.repository.version>2.22.05</hippo.repository.version>
+        <hippo.hst.version>2.24.04</hippo.hst.version>
+        <hippo.cms.version>2.22.04</hippo.cms.version>
+        <hippo.packages.version>2.22.03</hippo.packages.version>
+
+        <hippo.jcr.version>2.2.10-h1</hippo.jcr.version>
+
+        <forge.selection.version>2.05.05</forge.selection.version>
+        <forge.taxonomy.version>1.08.03</forge.taxonomy.version>
     </properties>
 
 
     <modules>
         <module>dependencies</module>
         <module>common</module>
+        <module>cms</module>
+        <!--<module>reports</module>-->
         <module>plugins</module>
         <module>repository</module>
         <module>replication</module>
@@ -37,19 +45,63 @@
 
     <repositories>
         <repository>
-            <id>hippo</id>
+            <id>hippo-maven2</id>
             <name>Hippo Maven 2</name>
             <url>http://maven.onehippo.com/maven2/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </repository>
+        <!-- DISABLED repositories which are often "transitively" pulled in
+            and/or were used in the past
+        -->
+        <repository>
+            <id>codehaus</id>
+            <url>https://nexus.codehaus.org/content/repositories/releases/org/codehaus/mojo</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
         <repository>
-            <id>selectionplugin</id>
-            <name>Selection plugins Maven 2</name>
-            <url>https://forge.onehippo.org/svn/selection/maven2/</url>
+            <id>glassfish</id>
+            <name>Glassfish maven repository</name>
+            <url>http://download.java.net/maven/glassfish</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
         <repository>
-            <id>repo1</id>
-            <name>Repo1 Maven 2</name>
-            <url>http://repo1.maven.org/maven2/</url>
+            <id>openqa</id>
+            <name>OpenQA Repository</name>
+            <url>http://nexus.openqa.org/content/repositories/releases</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>m2snapshots</id>
+            <name>Maven 2 snapshots repository</name>
+            <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
         </repository>
         <repository>
             <id>Alogient Public Nexus</id>

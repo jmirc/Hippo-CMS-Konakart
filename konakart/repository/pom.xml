@@ -14,30 +14,5 @@
     <artifactId>hippo-addon-konakart-repository</artifactId>
     <packaging>jar</packaging>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>org.onehippo.forge</groupId>
-            <artifactId>hippo-addon-konakart-common</artifactId>
-            <version>1.00.00-SNAPSHOT</version>
-        </dependency>
-
-        <!-- Hippo dependencies -->
-        <dependency>
-            <groupId>org.onehippo.cms7</groupId>
-            <artifactId>hippo-package-cms-dependencies</artifactId>
-            <version>${hippo.cms.version}</version>
-            <type>pom</type>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.onehippo.cms7</groupId>
-            <artifactId>hippo-repository-api</artifactId>
-            <version>${hippo.repository.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-    </dependencies>
 
 </project>

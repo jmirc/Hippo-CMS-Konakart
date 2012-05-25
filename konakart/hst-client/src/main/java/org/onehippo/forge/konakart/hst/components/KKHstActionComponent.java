@@ -1,35 +1,32 @@
 package org.onehippo.forge.konakart.hst.components;
 
-import com.konakart.al.KKAppException;
+import com.konakart.al.KKAppEng;
 import com.konakart.al.ProdOption;
 import com.konakart.al.ProdOptionContainer;
-import com.konakart.app.Basket;
-import com.konakart.app.KKException;
 import com.konakart.app.Option;
-import com.konakart.app.WishListItem;
 import com.konakart.appif.BasketIf;
 import com.konakart.appif.OptionIf;
-import com.konakart.appif.ProductIf;
-import com.konakart.appif.WishListItemIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.forms.FormField;
 import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.component.support.forms.FormUtils;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
-import org.onehippo.forge.konakart.hst.utils.KKConstants;
-import org.onehippo.forge.konakart.hst.utils.KKCustomerEventMgr;
+import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
+import org.onehippo.forge.konakart.site.service.KKServiceHelper;
+import org.onehippo.forge.konakart.site.service.impl.KKEventServiceImpl;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class KKHstActionComponent extends KKHstComponent {
+public abstract class KKHstActionComponent extends KKBaseHstComponent {
 
 
     @Override
     final public void doAction(HstRequest request, HstResponse response) {
-        String type = KKUtil.getEscapedParameter(request, KKConstants.ACTION);
+        String type = KKUtil.getEscapedParameter(request, KKCheckoutConstants.ACTION);
 
         doAction(type, request, response);
     }
@@ -48,32 +45,41 @@ public abstract class KKHstActionComponent extends KKHstComponent {
      * @param response the Hst Response
      */
     public void doAction(String action, HstRequest request, HstResponse response) {
-        if (StringUtils.equals(action, KKConstants.ACTIONS.ADD_TO_BASKET.name())) {
-            String productId = KKUtil.getEscapedParameter(request, KKConstants.PRODUCT_ID);
-            String addToWishList = KKUtil.getEscapedParameter(request, KKConstants.ADD_TO_WISH_LIST);
+
+        KKAppEng kkAppEng = getKKAppEng(request);
+
+
+        if (StringUtils.equals(action, KKCheckoutConstants.ACTIONS.ADD_TO_BASKET.name())) {
+            String productId = KKUtil.getEscapedParameter(request, KKCheckoutConstants.PRODUCT_ID);
+            String addToWishList = KKUtil.getEscapedParameter(request, KKCheckoutConstants.ADD_TO_WISH_LIST);
 
             // Add this product to the basket
             if (StringUtils.isNotEmpty(productId)) {
+                // Get the selected options if exists
+                OptionIf[] optionIfs = retrieveSelectedProductOptions(kkAppEng, request);
+
                 // Add this product to the wish list
                 if (StringUtils.isNotEmpty(addToWishList) && Boolean.valueOf(addToWishList)) {
-                    String wishListId = KKUtil.getEscapedParameter(request, KKConstants.WISH_LIST_ID);
+                    String wishListId = KKUtil.getEscapedParameter(request, KKCheckoutConstants.WISH_LIST_ID);
 
                     if (StringUtils.isNotEmpty(wishListId)) {
-                        addProductToWishList(request, Integer.valueOf(wishListId), Integer.valueOf(productId));
+                        boolean added = KKServiceHelper.getKKBasketService().addProductToWishList(kkAppEng, request,
+                                Integer.valueOf(wishListId), Integer.valueOf(productId), optionIfs);
 
-                        redirectAfterProductAddedToWishList(request, response);
+                        redirectAfterProductAddedToWishList(added, request, response);
                     }
                 } else {
-                    addProductToBasket(request, Integer.valueOf(productId));
+                    boolean added =  KKServiceHelper.getKKBasketService().addProductToBasket(kkAppEng, request,
+                            Integer.valueOf(productId), optionIfs);
 
-                    redirectAfterProductAddedToBasket(request, response);
+                    redirectAfterProductAddedToBasket(added, request, response);
                 }
             }
 
         }
 
-        if (StringUtils.equals(action, KKConstants.ACTIONS.REMOVE_FROM_BASKET.name())) {
-            String basketId = KKUtil.getEscapedParameter(request, KKConstants.BASKET_ID);
+        if (StringUtils.equals(action, KKCheckoutConstants.ACTIONS.REMOVE_FROM_BASKET.name())) {
+            String basketId = KKUtil.getEscapedParameter(request, KKCheckoutConstants.BASKET_ID);
 
             // Remove this product fromthe basket
             if (StringUtils.isNotEmpty(basketId)) {
@@ -91,7 +97,7 @@ public abstract class KKHstActionComponent extends KKHstComponent {
                             kkAppEng.getBasketMgr().removeFromBasket(basketItem, /** refresh **/false);
 
                             // insert an event
-                            eventMgr.insertCustomerEvent(kkAppEng, KKCustomerEventMgr.ACTION_REMOVE_FROM_CART,
+                            KKServiceHelper.getKKEventService().insertCustomerEvent(request, KKEventServiceImpl.ACTION_REMOVE_FROM_CART,
                                     basketItem.getProductId());
                         }
                     }
@@ -105,99 +111,16 @@ public abstract class KKHstActionComponent extends KKHstComponent {
 
 
     /**
-     * Add the product to the basket
-     *
-     * @param request the hst request
-     * @param prodId  id of the product to add
-     * @return true if the product has been added, false otherwise
-     */
-    protected boolean addProductToBasket(HstRequest request, int prodId) {
-
-        // Get the product from its Id
-        try {
-            kkAppEng.getProductMgr().fetchSelectedProduct(prodId);
-            ProductIf selectedProd = kkAppEng.getProductMgr().getSelectedProduct();
-
-            if (selectedProd == null) {
-                return false;
-            }
-
-            // Get the selected options if exists
-            OptionIf[] optionIfs = retrieveSelectedProductOptions(request);
-
-            /*
-            * Create a basket item. Only the product id is required to save the basket item. Note
-            * that the array of options may be null.
-            */
-            BasketIf b = new Basket();
-            b.setQuantity(1);
-            b.setOpts(optionIfs);
-            b.setProductId(selectedProd.getId());
-
-            // Set the product
-            b.setCustom1(generateHstLink(request, selectedProd.getId()));
-
-            kkAppEng.getBasketMgr().addToBasket(b, /* refresh */true);
-
-            return true;
-
-        } catch (KKException e) {
-            log.warn("Failed to add the product with the id {} to the basket - {} ", prodId, e.toString());
-        } catch (KKAppException e) {
-            log.warn("Failed to add the product with the id {} to the basket - {} ", prodId, e.toString());
-        }
-
-        return false;
-    }
-
-
-    /**
-     * Add a product to a wish list
-     *
-     * @param request    Hst Request
-     * @param wishListId id of the wishlist to use
-     * @param productId  id of the product
-     */
-    public void addProductToWishList(HstRequest request, Integer wishListId, Integer productId) {
-
-        // Get the selected options if exists
-        OptionIf[] optionIfs = retrieveSelectedProductOptions(request);
-
-        try {
-            // Add an item to the customer's wish list
-            if (wishListEnabled()) {
-                WishListItemIf wli = new WishListItem();
-                wli.setOpts(optionIfs);
-                wli.setProductId(productId);
-
-                // WishListId defaults to -1 to pick up default wish list or create a new one
-                wli.setWishListId(wishListId);
-                // Medium priority
-                wli.setPriority(3);
-                // Quantity = 1
-                wli.setQuantityDesired(1);
-                // Add the item
-                kkAppEng.getWishListMgr().addToWishList(wli);
-                // Refresh the customer's wish list
-                kkAppEng.getWishListMgr().fetchCustomersWishLists();
-            }
-        } catch (KKException e) {
-            log.warn("Failed to add the product with the id {} to the wishlist - {} ", productId, e.toString());
-        } catch (KKAppException e) {
-            log.warn("Failed to add the product with the id {} to the wishlist - {} ", productId, e.toString());
-        }
-
-    }
-
-    /**
      * Called when the product is added to the cart.
      * <p/>
      * By default no redirection is done
      *
+     * @param added    true if the product has been added, false otherwise
      * @param request  the Hst Request
      * @param response the Hst Response
      */
-    protected void redirectAfterProductAddedToBasket(HstRequest request, HstResponse response) {
+    protected void redirectAfterProductAddedToBasket(boolean added, @Nonnull HstRequest request,
+                                                     @Nonnull HstResponse response) {
     }
 
 
@@ -206,21 +129,23 @@ public abstract class KKHstActionComponent extends KKHstComponent {
      * <p/>
      * By default no redirection is done
      *
+     * @param added    true if the product has been added, false otherwise
      * @param request  the Hst Request
      * @param response the Hst Response
      */
-    protected void redirectAfterProductAddedToWishList(HstRequest request, HstResponse response) {
+    protected void redirectAfterProductAddedToWishList(boolean added, @Nonnull HstRequest request,
+                                                       @Nonnull HstResponse response) {
     }
-
 
 
     /**
      * Used to retrieve for a product the option that has been selected by the customer.
      *
-     * @param request the Hst Request
+     * @param kkAppEng the Konakart client
+     * @param request  the Hst Request
      * @return a list of options.
      */
-    protected OptionIf[] retrieveSelectedProductOptions(HstRequest request) {
+    protected OptionIf[] retrieveSelectedProductOptions(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request) {
 
         List<String> fieldsName = new ArrayList<String>();
 

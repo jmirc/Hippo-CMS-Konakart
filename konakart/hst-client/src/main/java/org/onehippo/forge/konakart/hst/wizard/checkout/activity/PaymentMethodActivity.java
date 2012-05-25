@@ -10,6 +10,7 @@ import com.konakart.appif.EmailOptionsIf;
 import com.konakart.appif.OrderIf;
 import com.konakart.appif.PaymentDetailsIf;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
+import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 
 import java.math.BigDecimal;
 
@@ -22,14 +23,13 @@ public class PaymentMethodActivity extends BaseCheckoutActivity {
         // Ensure that the user hasn't submitted the order and then got back to here using the
         // back button. We check to see whether the basket is null
         // Check to see whether there is something in the cart
-        CustomerIf cust = processorContext.getSeedData().getKkHstComponent().
-                getKkAppEng().getCustomerMgr().getCurrentCustomer();
+        CustomerIf cust = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getCustomerMgr().getCurrentCustomer();
 
         if (cust.getBasketItems() == null || cust.getBasketItems().length == 0) {
-            processorContext.getSeedData().getKkHstComponent().redirectByRefId(
+            processorContext.getSeedData().getKkBaseHstComponent().redirectByRefId(
                     processorContext.getSeedData().getRequest(),
                     processorContext.getSeedData().getResponse(),
-                    processorContext.getSeedData().getKkHstComponent().getDetailCartRefId());
+                    processorContext.getSeedData().getKkBaseHstComponent().getDetailCartRefId());
 
             return;
         }
@@ -171,7 +171,7 @@ public class PaymentMethodActivity extends BaseCheckoutActivity {
     public void doAction() throws ActivityException {
 //        CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 //
-//        if (seedData.getAction().equals(KKConstants.ACTIONS.SELECT.name())) {
+//        if (seedData.getAction().equals(KKCheckoutConstants.ACTIONS.SELECT.name())) {
 //            String shippingMethod = KKUtil.getEscapedParameter(seedData.getRequest(), SHIPPING_METHOD);
 //
 //            if (StringUtils.isEmpty(shippingMethod)) {
@@ -181,7 +181,7 @@ public class PaymentMethodActivity extends BaseCheckoutActivity {
 //            }
 //
 //            // Attach the shipping quote to the order
-//            seedData.getKkHstComponent().getKkAppEng().getOrderMgr().getCheckoutOrder().setShippingMethod(shippingMethod);
+//            seedData.getKkBaseHstComponent().getKkAppEng().getOrderMgr().getCheckoutOrder().setShippingMethod(shippingMethod);
 //        }
 
     }

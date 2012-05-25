@@ -19,7 +19,6 @@ public class HippoRepoConfig {
      *
      *    <bean id="englishUsStore" class="org.onehippo.forge.konakart.replication.config.HippoKonakartMapping">
      *       <property name="hippoContentRoot" value="/content/documents/myhippoproject/Products"/>
-     *       <property name="hippoContentRoot" value="/content/documents/myhippoproject/Products"/>
      *    </bean>
      */
     private Map<String, HippoKonakartMapping> localeContentRootAssociation = new HashMap<String, HippoKonakartMapping>();

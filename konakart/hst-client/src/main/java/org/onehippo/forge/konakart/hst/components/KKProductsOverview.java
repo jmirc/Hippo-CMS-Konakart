@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.hst.components;
 
+import com.konakart.al.KKAppEng;
 import com.konakart.app.KKException;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -40,6 +41,7 @@ public abstract class KKProductsOverview<T extends KKProductDocument> extends KK
     final public void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
         super.doBeforeRender(request, response);
 
+        KKAppEng kkAppEng = getKKAppEng(request);
 
         // TODO this reset could be move in other place if the selected product should be reset outside
         // the overview page

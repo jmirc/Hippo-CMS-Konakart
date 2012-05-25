@@ -3,11 +3,11 @@ package org.onehippo.forge.konakart.replication.factory;
 import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
 import org.apache.commons.lang.StringUtils;
-import org.apache.jackrabbit.value.DoubleValue;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingGalleryProcessor;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingParameters;
 import org.joda.time.DateTime;
 import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.replication.jcr.GalleryProcesssorConfig;
 import org.onehippo.forge.konakart.replication.utils.Codecs;
 import org.onehippo.forge.konakart.replication.utils.NodeHelper;
@@ -27,7 +27,7 @@ import java.io.InputStream;
 import java.util.Calendar;
 
 /**
- * To use the replication plugin, you need to add a class that will extend this class to define
+ * To use the replication synchronization, you need to add a class that will extend this class to define
  * the following information :
  * - ProductDocType : Define the name of the document type which defines a product.
  * - KonakartProductPropertyName : Define the name of the node which contains the konakart product
@@ -48,9 +48,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
     private String contentRoot;
     private String galleryRoot;
     private String productFolder;
-    private String productDocType;
-    private String kkProductTypeName;
-    private String konakartProductPropertyName;
 
     /**
      * This is an helper method that could be used to set others information defined into Konakart but not
@@ -108,23 +105,22 @@ public abstract class AbstractProductFactory implements ProductFactory {
         return Codecs.encodeNode(reviewFolder);
     }
 
-    @Override
-    public void setKonakartProductPropertyName(String konakartProductPropertyName) {
-        this.konakartProductPropertyName = konakartProductPropertyName;
-    }
-
-    @Override
-    public void setProductDocType(String productDocType) {
-        this.productDocType = productDocType;
-    }
-
-    @Override
-    public void setKKProductTypeName(String productTypeName) {
-        this.kkProductTypeName = productTypeName;
-    }
 
     @Override
     public void add(Product product, LanguageIf language, String baseImagePath) throws Exception {
+
+        KKCndConstants.PRODUCT_TYPE product_type = KKCndConstants.PRODUCT_TYPE.findByType(product.getType());
+
+        String kkProductTypeName = product_type.getName();
+        String productDocType = HippoModuleConfig.getConfig().getEngineConfig().getProductNodeTypeMapping().get(product_type.getNamespace());
+
+
+        if (StringUtils.isEmpty(productDocType)) {
+            log.error("No product namespace has been associated for the product namespace : "
+                    + product_type.getNamespace() + ". Please set the it within the pluginconfig located " +
+                    "at /hippo:configuration/hippo:frontend/cms/cms-services/KonakartSynchronizationService/producttypenamespaces");
+            return;
+        }
 
         String absPath = contentRoot + Codecs.encodeNode(productFolder) + "/" + Codecs.encodeNode(kkProductTypeName)
                 + "/" + createProductNodeRoot(product);
@@ -142,8 +138,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         Node productNode = nodeHelper.createOrRetrieveDocument(rootFolder, product, productDocType,
                         session.getUserID(), language.getCode());
 
-        boolean addNewProduct = !productNode.hasNode(konakartProductPropertyName);
-
+        boolean addNewProduct = !productNode.hasNode(KKCndConstants.PRODUCT_DESCRIPTION);
         boolean hasCheckout = false;
 
         // Check if the node is check-in
@@ -160,12 +155,12 @@ public abstract class AbstractProductFactory implements ProductFactory {
         updateProperties(product, productNode);
 
         // Create the konakart ref product
-        createOrUpdateKonakartProduct(product, productNode, language.getId());
+        createOrUpdateKonakartProduct(product, productNode);
 
         // Upload images
         // Synchronize the image only during the creation of the product
         if (addNewProduct) {
-            uploadImages(productNode.getNode(konakartProductPropertyName), baseImagePath, product);
+            uploadImages(productNode, baseImagePath, kkProductTypeName, product);
         }
 
         // Save the session
@@ -210,70 +205,49 @@ public abstract class AbstractProductFactory implements ProductFactory {
      *
      * @param product     the konakart product
      * @param productNode the hippo product's node
-     * @param languageId  language's id within konakart
      * @throws RepositoryException if any exception occurs
      */
-    private void createOrUpdateKonakartProduct(Product product, Node productNode, int languageId) throws RepositoryException {
+    private void createOrUpdateKonakartProduct(Product product, Node productNode) throws RepositoryException {
 
-        Node konakartNode;
-        Node descriptionNode;
-        Node standardPriceNode;
-
-        boolean creationMode = false;
-
-        // Create the node
-        if (!productNode.hasNode(konakartProductPropertyName)) {
-            creationMode = true;
-
-            konakartNode = productNode.addNode(konakartProductPropertyName, KKCndConstants.PRODUCT_DOC_TYPE);
-            konakartNode.setProperty(KKCndConstants.PRODUCT_ID, (long) product.getId());
-            descriptionNode = konakartNode.addNode(KKCndConstants.PRODUCT_DESCRIPTION, "hippostd:html");
-            standardPriceNode = konakartNode.addNode(KKCndConstants.PRODUCT_STANDARD_PRICE, KKCndConstants.CP_PRICE_TYPE);
-        } else {
-            konakartNode = productNode.getNode(konakartProductPropertyName);
-            descriptionNode = konakartNode.getNode(KKCndConstants.PRODUCT_DESCRIPTION);
-            standardPriceNode = konakartNode.getNode(KKCndConstants.PRODUCT_STANDARD_PRICE);
-        }
-
-        konakartNode.setProperty(KKCndConstants.PRODUCT_NAME, product.getName());
-        konakartNode.setProperty(KKCndConstants.PRODUCT_SKU, product.getSku());
-        konakartNode.setProperty(KKCndConstants.PRODUCT_LANGUAGE_ID, languageId);
-        konakartNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER, product.getManufacturerName());
-        konakartNode.setProperty(KKCndConstants.PRODUCT_PRODUCT_TYPE, KKCndConstants.PRODUCT_TYPE.findByType(product.getType()).getName());
-        konakartNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER_ID, product.getManufacturerId());
-        konakartNode.setProperty(KKCndConstants.PRODUCT_STORE_ID, product.getStoreId());
+        productNode.setProperty(KKCndConstants.PRODUCT_ID, product.getId());
+        productNode.setProperty(KKCndConstants.PRODUCT_NAME, product.getName());
+        productNode.setProperty(KKCndConstants.PRODUCT_SKU, product.getSku());
+        productNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER, String.valueOf(product.getManufacturerId()));
+        productNode.setProperty(KKCndConstants.PRODUCT_TAX_CLASS, String.valueOf(product.getTaxClassId()));
+        productNode.setProperty(KKCndConstants.PRODUCT_STORE_ID, product.getStoreId());
 
         if (product.getPrice0() != null) {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_0, new DoubleValue(product.getPrice0().doubleValue()));
-        } else {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_0, new DoubleValue(0));
+            productNode.setProperty(KKCndConstants.PRODUCT_PRICE_0, product.getPrice0().doubleValue());
         }
 
         if (product.getPrice1() != null) {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_1, new DoubleValue(product.getPrice1().doubleValue()));
-        } else {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_1, new DoubleValue(0));
+            productNode.setProperty(KKCndConstants.PRODUCT_PRICE_1, product.getPrice1().doubleValue());
         }
 
         if (product.getPrice2() != null) {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_2, new DoubleValue(product.getPrice2().doubleValue()));
-        } else {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_2, new DoubleValue(0));
+            productNode.setProperty(KKCndConstants.PRODUCT_PRICE_2, product.getPrice2().doubleValue());
         }
 
         if (product.getPrice3() != null) {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_3, new DoubleValue(product.getPrice3().doubleValue()));
-        } else {
-            standardPriceNode.setProperty(KKCndConstants.CP_PRICE_3, new DoubleValue(0));
+            productNode.setProperty(KKCndConstants.PRODUCT_PRICE_3, product.getPrice3().doubleValue());
         }
 
-        if (product.getSpecialPriceExTax() != null) {
-            konakartNode.setProperty(KKCndConstants.PRODUCT_SPECIAL_PRICE, product.getSpecialPriceExTax().doubleValue());
+        productNode.setProperty(KKCndConstants.PRODUCT_QUANTITY, product.getQuantity());
+
+        if (product.getWeight() != null) {
+            productNode.setProperty(KKCndConstants.PRODUCT_WEIGHT, product.getWeight().doubleValue());
         }
 
+        productNode.setProperty(KKCndConstants.PRODUCT_STORE_ID, product.getStoreId());
+
+        if (product.getCanOrderWhenNotInStock() != null) {
+            productNode.setProperty(KKCndConstants.PRODUCT_ORDER_NOT_IN_STOCK, product.getCanOrderWhenNotInStock());
+        }
 
         // Only synchronize the content from Konakart to Hippo during the creation of the product.
-        if (creationMode) {
+        if (!productNode.hasNode(KKCndConstants.PRODUCT_DESCRIPTION)) {
+            Node descriptionNode = productNode.addNode(KKCndConstants.PRODUCT_DESCRIPTION, "hippostd:html");
+
             // Set the description property
             String description = "<html><body>";
 
@@ -294,7 +268,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
      * @param baseImagePath path where the konakart's images are located
      * @param product the konakart product
      */
-    private void uploadImages(Node productNode, String baseImagePath, Product product) {
+    private void uploadImages(Node productNode, String baseImagePath, String kkProductTypeName, Product product) {
         try {
             // Retrieve the gallery root node
             // add the product node root

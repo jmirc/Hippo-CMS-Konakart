@@ -1,6 +1,7 @@
 <'hippo'='http://www.onehippo.org/jcr/hippo/nt/2.0.4'>
 <'hippostd'='http://www.onehippo.org/jcr/hippostd/nt/2.0'>
 <'hippostdpubwf'='http://www.onehippo.org/jcr/hippostdpubwf/nt/1.0'>
+<'hippotaxonomy'='http://www.hippoecm.org/hippotaxonomy/nt/1.2'>
 <'konakart'='http://www.onehippo.org/jcr/konakart/nt/1.0'>
 <'nt'='http://www.jcp.org/jcr/nt/1.0'>
 
@@ -12,17 +13,10 @@
 [konakart:compoundprice] > hippo:compound, hippostd:relaxed
   orderable
 
-[konakart:config] > nt:base
-  - konakart:enabled (boolean)
-  - konakart:enginemode (long)
-  - konakart:isCustomersShared (boolean)
-  - konakart:isProductsShared (boolean)
-  - konakart:lastUpdatedTimeKonakartToRepository (date)
-  - konakart:lastUpdatedTimeRepositoryToKonnakart (date)
-  - konakart:updateKonakartProductsToRepository (boolean)
-  - konakart:updateRepositoryToKonakartProducts (boolean)
+[konakart:producttype] mixin
 
-
-[konakart:konakart] > hippo:compound, hippostd:relaxed
+[konakart:physicalproduct] > konakart:basedocument, hippostd:relaxed , hippotaxonomy:classifiable
 
 [konakart:review] > konakart:basedocument, hippostd:relaxed
+
+[konakart:taxonomycategories] mixin

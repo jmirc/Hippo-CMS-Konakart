@@ -10,7 +10,7 @@
     </parent>
 
     <name>Hippo Konakart Addon Common</name>
-    <groupId>org.onehippo.forge</groupId>
+    <groupId>org.onehippo.forge.konakart</groupId>
     <artifactId>hippo-addon-konakart-common</artifactId>
     <packaging>jar</packaging>
 

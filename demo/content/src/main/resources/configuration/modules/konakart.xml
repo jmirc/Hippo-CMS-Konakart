@@ -20,10 +20,10 @@
       <sv:value>false</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:lastUpdatedTimeKonakartToRepository" sv:type="Date">
-      <sv:value>2012-04-08T20:28:04.034-04:00</sv:value>
+      <sv:value>2012-04-09T08:20:24.277-04:00</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:lastUpdatedTimeRepositoryToKonnakart" sv:type="Date">
-      <sv:value>2012-04-08T20:28:03.987-04:00</sv:value>
+      <sv:value>2012-04-09T08:20:24.246-04:00</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:updateKonakartProductsToRepository" sv:type="Boolean">
       <sv:value>true</sv:value>

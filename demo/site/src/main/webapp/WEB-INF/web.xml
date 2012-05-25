@@ -59,6 +59,7 @@
     <param-value>
         classpath*:org/example/beans/**/*.class,
         classpath*:org/onehippo/forge/konakart/hst/beans/**/*.class
+        classpath*:org/onehippo/forge/selection/hst/contentbean/**/*.class
     </param-value>
   </context-param>
 

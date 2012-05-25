@@ -54,7 +54,7 @@ public class PageableCollection<T extends KKProductDocument> extends Pageable {
             Object bean = beans.next();
             if (bean != null) {
                 T t = (T) bean;
-                t.setKkEngine(kkEngineIf);
+                //t.setKkEngine(kkEngineIf);
                 items.add(t);
                 count++;
 
@@ -76,7 +76,7 @@ public class PageableCollection<T extends KKProductDocument> extends Pageable {
             Object bean = beans.next();
             if (bean != null) {
                 T t = (T) bean;
-                t.setKkEngine(kkEngineIf);
+                //t.setKkEngine(kkEngineIf);
                 items.add(t);
                 count++;
 

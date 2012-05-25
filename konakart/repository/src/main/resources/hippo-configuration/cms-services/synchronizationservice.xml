@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node sv:name="KonakartSynchronizationService" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>frontend:plugin</sv:value>
+    </sv:property>
+    <sv:property sv:name="default.product.factory.class" sv:type="String">
+        <sv:value>org.onehippo.forge.konakart.replication.factory.DefaultProductFactory</sv:value>
+    </sv:property>
+    <sv:property sv:name="default.product.folder" sv:type="String">
+        <sv:value>Products</sv:value>
+    </sv:property>
+    <sv:property sv:name="default.review.folder" sv:type="String">
+        <sv:value>Products Review</sv:value>
+    </sv:property>
+    <sv:property sv:name="plugin.class" sv:type="String">
+        <sv:value>org.onehippo.forge.konakart.replication.service.KonakartSynchronizationService</sv:value>
+    </sv:property>
+    <sv:property sv:multiple="true" sv:name="stores" sv:type="String">
+        <sv:value>store1</sv:value>
+    </sv:property>
+    <sv:node sv:name="producttypenamespaces">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>frontend:pluginconfig</sv:value>
+        </sv:property>
+        <sv:property sv:name="bookableproduct" sv:type="String">
+            <sv:value/>
+        </sv:property>
+        <sv:property sv:name="bundle" sv:type="String">
+            <sv:value/>
+        </sv:property>
+        <sv:property sv:name="bundlefreeshipping" sv:type="String">
+            <sv:value/>
+        </sv:property>
+        <sv:property sv:name="digitaldownload" sv:type="String">
+            <sv:value/>
+        </sv:property>
+        <sv:property sv:name="giftcertificate" sv:type="String">
+            <sv:value/>
+        </sv:property>
+        <sv:property sv:name="physicalproduct" sv:type="String">
+            <sv:value>konakart:physicalproduct</sv:value>
+        </sv:property>
+        <sv:property sv:name="physicalproductfreeshipping" sv:type="String">
+            <sv:value/>
+        </sv:property>
+    </sv:node>
+    <sv:node sv:name="store1">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>frontend:pluginconfig</sv:value>
+        </sv:property>
+        <sv:property sv:name="catalog.id" sv:type="String">
+            <sv:value/>
+        </sv:property>
+        <sv:property sv:name="contentRoot" sv:type="String">
+            <sv:value>/content/documents/kkdemo</sv:value>
+        </sv:property>
+        <sv:property sv:name="galleryRoot" sv:type="String">
+            <sv:value>/content/gallery/kkdemo</sv:value>
+        </sv:property>
+        <sv:property sv:name="job.class" sv:type="String">
+            <sv:value>org.onehippo.forge.konakart.replication.synchronization.job.KonakartSyncProductJob</sv:value>
+        </sv:property>
+        <sv:property sv:name="locale" sv:type="String">
+            <sv:value>en_US</sv:value>
+        </sv:property>
+        <sv:property sv:name="store.id" sv:type="String">
+            <sv:value>store1</sv:value>
+        </sv:property>
+        <sv:property sv:name="synchronization.cronexpression" sv:type="String">
+            <sv:value>0 0/1 * 1/1 * ? *</sv:value>
+        </sv:property>
+        <sv:property sv:name="synchronization.enabled" sv:type="Boolean">
+            <sv:value>true</sv:value>
+        </sv:property>
+    </sv:node>
+</sv:node>

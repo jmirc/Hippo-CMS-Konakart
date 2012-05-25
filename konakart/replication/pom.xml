@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -13,24 +14,11 @@
     <artifactId>hippo-addon-konakart-replication</artifactId>
     <packaging>jar</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.javaVersion>1.6</project.build.javaVersion>
-
-        <jcr.version>2.0</jcr.version>
-        <hippo.repository.version>2.22.02</hippo.repository.version>
-
-        <lib.slf4j.version>1.6.1</lib.slf4j.version>
-
-        <plugin.compiler.version>2.3.2</plugin.compiler.version>
-    </properties>
-
-
 
     <dependencies>
 
         <dependency>
-            <groupId>org.onehippo.forge</groupId>
+            <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-common</artifactId>
             <version>1.00.00-SNAPSHOT</version>
         </dependency>
@@ -38,9 +26,36 @@
         <!-- Hippo dependencies -->
         <dependency>
             <groupId>org.onehippo.cms7</groupId>
-            <artifactId>hippo-package-cms-dependencies</artifactId>
+            <artifactId>hippo-cms-api</artifactId>
             <version>${hippo.cms.version}</version>
-            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.cms7</groupId>
+            <artifactId>hippo-cms-gallery-frontend</artifactId>
+            <version>${hippo.cms.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.cms7</groupId>
+            <artifactId>hippo-repository-builtin</artifactId>
+            <version>${hippo.repository.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.cms7</groupId>
+            <artifactId>hippo-repository-engine</artifactId>
+            <version>${hippo.repository.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.jackrabbit</groupId>
+            <artifactId>jackrabbit-jcr-commons</artifactId>
+            <version>${hippo.jcr.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -63,29 +78,9 @@
             <version>${forge.selection.version}</version>
         </dependency>
 
-
-        <dependency>
-            <groupId>javax.jcr</groupId>
-            <artifactId>jcr</artifactId>
-            <version>${jcr.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${plugin.compiler.version}</version>
-                <configuration>
-                    <source>${project.build.javaVersion}</source>
-                    <target>${project.build.javaVersion}</target>
-                </configuration>
-            </plugin>
-        </plugins>
 
         <resources>
             <resource>
@@ -97,5 +92,21 @@
                 </includes>
             </resource>
         </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Hippo-Modules>org.onehippo.forge.konakart.replication.synchronization.HippoKonakartDaemonModule</Hippo-Modules>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+
     </build>
+
 </project>

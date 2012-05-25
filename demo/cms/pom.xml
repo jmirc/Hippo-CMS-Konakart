@@ -18,6 +18,12 @@
 
         <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
+            <artifactId>hippo-addon-konakart-cms</artifactId>
+            <version>1.00.00-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-repository</artifactId>
             <version>1.00.00-SNAPSHOT</version>
         </dependency>
@@ -37,15 +43,39 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.18</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.onehippo.forge.selectionplugins</groupId>
+            <artifactId>selectionplugins-addon-repository</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.forge.selectionplugins</groupId>
+            <artifactId>selectionplugins-addon-cms</artifactId>
+        </dependency>
 
 
         <dependency>
             <groupId>org.onehippo.forge.springdaemon</groupId>
             <artifactId>springdaemon</artifactId>
             <version>${forge.springdaemon.version}</version>
+        </dependency>
+
+        <!-- Taxonomy -->
+        <dependency>
+            <groupId>org.onehippo</groupId>
+            <artifactId>taxonomy-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo</groupId>
+            <artifactId>taxonomy-addon-frontend</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo</groupId>
+            <artifactId>taxonomy-addon-repository</artifactId>
         </dependency>
 
         <dependency>

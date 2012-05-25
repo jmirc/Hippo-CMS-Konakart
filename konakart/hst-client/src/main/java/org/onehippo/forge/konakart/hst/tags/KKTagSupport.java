@@ -1,6 +1,7 @@
 package org.onehippo.forge.konakart.hst.tags;
 
 import com.konakart.al.KKAppEng;
+import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;

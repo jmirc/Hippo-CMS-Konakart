@@ -1,12 +1,15 @@
 package org.onehippo.forge.konakart.common.engine;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class KKEngineConfig {
 
     private int engineMode;
     private boolean isCustomersShared;
     private boolean isProductsShared;
-    private boolean updateKonakartProductsToRepository;
-    private boolean updateRepositoryToKonakartProducts;
+    private Map<String, String> productNodeTypeMapping = new HashMap<String, String>();
+
 
     public int getEngineMode() {
         return engineMode;
@@ -32,19 +35,12 @@ public class KKEngineConfig {
         isProductsShared = productsShared;
     }
 
-    public boolean isUpdateKonakartToRepository() {
-        return updateKonakartProductsToRepository;
+    public Map<String, String> getProductNodeTypeMapping() {
+        return productNodeTypeMapping;
     }
 
-    public void setUpdateKonakartProductsToRepository(boolean updateKonakartProductsToRepository) {
-        this.updateKonakartProductsToRepository = updateKonakartProductsToRepository;
-    }
+    public void addProductNodeTypeMapping(String namespace, String nodeType) {
+        productNodeTypeMapping.put(namespace, nodeType);
 
-    public boolean isUpdateRepositoryToKonakart() {
-        return updateRepositoryToKonakartProducts;
-    }
-
-    public void setUpdateRepositoryToKonakartProducts(boolean updateRepositoryToKonakartProducts) {
-        this.updateRepositoryToKonakartProducts = updateRepositoryToKonakartProducts;
     }
 }

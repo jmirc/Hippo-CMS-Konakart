@@ -2,11 +2,12 @@ package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
 import com.konakart.app.KKException;
 import org.apache.commons.lang.StringUtils;
-import org.onehippo.forge.konakart.hst.utils.KKConstants;
+import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessContext;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
+import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,13 +20,13 @@ public class ShippingAddressActivity extends BaseAddressActivity {
         CheckoutSeedData seedData = checkoutProcessContext.getSeedData();
 
 
-        if (seedData.getAction().equals(KKConstants.ACTIONS.SELECT.name())) {
+        if (seedData.getAction().equals(KKCheckoutConstants.ACTIONS.SELECT.name())) {
             Integer addressId = Integer.valueOf(KKUtil.getEscapedParameter(seedData.getRequest(), ADDRESS));
 
             // Ask for a new address
             if (addressId == -1) {
                 try {
-                    addressId = seedData.getKkHstComponent().getKkAppEng().getCustomerMgr().addAddressToCustomer(createAddressForCustomer());
+                    addressId = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getCustomerMgr().addAddressToCustomer(createAddressForCustomer());
                 } catch (Exception e) {
                     setNextLoggedState(STATES.INITIAL.name());
                     addMessage("globalmessage", seedData.getBundle().getString("checkout.failed.create.address"));
@@ -34,7 +35,7 @@ public class ShippingAddressActivity extends BaseAddressActivity {
             }
 
             try {
-                seedData.getKkHstComponent().getKkAppEng().getOrderMgr().setCheckoutOrderShippingAddress(addressId);
+                KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().setCheckoutOrderShippingAddress(addressId);
 
                 // Skip the SHIPPING ADDRESS step because the customer has decided to use the
                 // same billing address
