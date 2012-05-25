@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.onehippo.cms7:hippo-addon-automatic-export-frontend:2.02.03">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hippo-addon-automatic-export-frontend/2.02.03/hippo-addon-automatic-export-frontend-2.02.03.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hippo-addon-automatic-export-frontend/2.02.03/hippo-addon-automatic-export-frontend-2.02.03-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hippo-addon-automatic-export-frontend/2.02.03/hippo-addon-automatic-export-frontend-2.02.03-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

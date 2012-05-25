@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.onehippo.forge.konakart:hippo-addon-konakart-plugins:1.00.00-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/forge/konakart/hippo-addon-konakart-plugins/1.00.00-SNAPSHOT/hippo-addon-konakart-plugins-1.00.00-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/forge/konakart/hippo-addon-konakart-plugins/1.00.00-SNAPSHOT/hippo-addon-konakart-plugins-1.00.00-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/forge/konakart/hippo-addon-konakart-plugins/1.00.00-SNAPSHOT/hippo-addon-konakart-plugins-1.00.00-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

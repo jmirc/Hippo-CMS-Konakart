@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.onehippo.cms7.hst.toolkit-resources.addon:hst-addon-repository:2.24.04">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hst/toolkit-resources/addon/hst-addon-repository/2.24.04/hst-addon-repository-2.24.04.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hst/toolkit-resources/addon/hst-addon-repository/2.24.04/hst-addon-repository-2.24.04-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hst/toolkit-resources/addon/hst-addon-repository/2.24.04/hst-addon-repository-2.24.04-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.onehippo.cms7:hippo-package-cms-resources:war:2.22.03">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hippo-package-cms-resources/2.22.03/hippo-package-cms-resources-2.22.03.war!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hippo-package-cms-resources/2.22.03/hippo-package-cms-resources-2.22.03-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hippo-package-cms-resources/2.22.03/hippo-package-cms-resources-2.22.03-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
