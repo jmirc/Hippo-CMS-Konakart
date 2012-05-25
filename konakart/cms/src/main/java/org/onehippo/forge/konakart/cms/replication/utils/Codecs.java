@@ -1,4 +1,4 @@
-package org.onehippo.forge.konakart.replication.utils;
+package org.onehippo.forge.konakart.cms.replication.utils;
 
 import org.hippoecm.repository.api.StringCodec;
 import org.hippoecm.repository.api.StringCodecFactory;

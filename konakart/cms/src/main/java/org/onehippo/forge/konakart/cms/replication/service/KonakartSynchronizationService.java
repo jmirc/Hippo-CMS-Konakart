@@ -1,4 +1,4 @@
-package org.onehippo.forge.konakart.replication.service;
+package org.onehippo.forge.konakart.cms.replication.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.frontend.plugin.IPluginContext;
@@ -6,7 +6,7 @@ import org.hippoecm.frontend.plugin.Plugin;
 import org.hippoecm.frontend.plugin.config.IPluginConfig;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
-import org.onehippo.forge.konakart.replication.synchronization.HippoKonakartDaemonModule;
+import org.onehippo.forge.konakart.cms.replication.synchronization.HippoKonakartDaemonModule;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

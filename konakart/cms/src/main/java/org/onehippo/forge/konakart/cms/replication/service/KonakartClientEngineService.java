@@ -1,4 +1,4 @@
-package org.onehippo.forge.konakart.replication.service;
+package org.onehippo.forge.konakart.cms.replication.service;
 
 import org.hippoecm.frontend.plugin.IPluginContext;
 import org.hippoecm.frontend.plugin.Plugin;

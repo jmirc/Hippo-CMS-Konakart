@@ -1,4 +1,4 @@
-package org.onehippo.forge.konakart.replication.synchronization.job;
+package org.onehippo.forge.konakart.cms.replication.synchronization.job;
 
 
 import com.konakart.al.KKAppEng;
@@ -20,13 +20,13 @@ import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngineConfig;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
-import org.onehippo.forge.konakart.replication.factory.DefaultProductFactory;
-import org.onehippo.forge.konakart.replication.factory.ProductFactory;
-import org.onehippo.forge.konakart.replication.jcr.GalleryProcesssorConfig;
-import org.onehippo.forge.konakart.replication.service.KonakartSynchronizationService;
-import org.onehippo.forge.konakart.replication.synchronization.KonakartResourceScheduler;
-import org.onehippo.forge.konakart.replication.utils.Codecs;
-import org.onehippo.forge.konakart.replication.utils.NodeHelper;
+import org.onehippo.forge.konakart.cms.replication.factory.DefaultProductFactory;
+import org.onehippo.forge.konakart.cms.replication.factory.ProductFactory;
+import org.onehippo.forge.konakart.cms.replication.jcr.GalleryProcesssorConfig;
+import org.onehippo.forge.konakart.cms.replication.service.KonakartSynchronizationService;
+import org.onehippo.forge.konakart.cms.replication.synchronization.KonakartResourceScheduler;
+import org.onehippo.forge.konakart.cms.replication.utils.Codecs;
+import org.onehippo.forge.konakart.cms.replication.utils.NodeHelper;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

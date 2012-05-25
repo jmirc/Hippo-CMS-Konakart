@@ -1,4 +1,4 @@
-package org.onehippo.forge.konakart.replication.synchronization;
+package org.onehippo.forge.konakart.cms.replication.synchronization;
 
 import org.hippoecm.repository.ext.DaemonModule;
 import org.hippoecm.repository.quartz.JCRSchedulingContext;

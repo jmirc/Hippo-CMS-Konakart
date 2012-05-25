@@ -36,9 +36,8 @@
         <module>common</module>
         <module>cms</module>
         <!--<module>reports</module>-->
-        <module>plugins</module>
+        <!--<module>plugins</module>-->
         <module>repository</module>
-        <module>replication</module>
         <module>hst-client</module>
         <module>modules</module>
     </modules>

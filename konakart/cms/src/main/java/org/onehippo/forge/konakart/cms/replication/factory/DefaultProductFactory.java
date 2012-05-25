@@ -1,4 +1,4 @@
-package org.onehippo.forge.konakart.replication.factory;
+package org.onehippo.forge.konakart.cms.replication.factory;
 
 import com.konakart.app.Product;
 
