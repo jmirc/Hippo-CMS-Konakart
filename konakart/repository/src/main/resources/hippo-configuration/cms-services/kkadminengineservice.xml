@@ -19,7 +19,7 @@
         <sv:value>false</sv:value>
     </sv:property>
     <sv:property sv:name="plugin.class" sv:type="String">
-        <sv:value>org.onehippo.forge.konakart.replication.service.KonakartAdminEngineService</sv:value>
+        <sv:value>org.onehippo.forge.konakart.cms.replication.service.KonakartAdminEngineService</sv:value>
     </sv:property>
     <sv:property sv:multiple="true" sv:name="stores" sv:type="String">
         <sv:value>store1</sv:value>

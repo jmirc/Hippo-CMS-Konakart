@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="store1">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>konakart:store</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:storeid" sv:type="String">
+        <sv:value>store1</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:catalogid" sv:type="String">
+        <sv:value/>
+    </sv:property>
+    <sv:property sv:name="konakart:contentroot" sv:type="String">
+        <sv:value>TBD</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:galleryroot" sv:type="String">
+        <sv:value>TBD</sv:value>
+    </sv:property>
+</sv:node>

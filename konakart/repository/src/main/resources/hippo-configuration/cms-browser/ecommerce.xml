@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node sv:name="cms-browser" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+    <sv:node sv:name="ecommerceTreeLoader">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>frontend:plugin</sv:value>
+        </sv:property>
+        <sv:property sv:name="cluster.name" sv:type="String">
+            <sv:value>cms-tree-views/ecommerce</sv:value>
+        </sv:property>
+        <sv:property sv:name="plugin.class" sv:type="String">
+            <sv:value>org.hippoecm.frontend.plugin.loader.PluginClusterLoader</sv:value>
+        </sv:property>
+        <sv:node sv:name="cluster.config">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>frontend:pluginconfig</sv:value>
+            </sv:property>
+            <sv:property sv:name="browser.id" sv:type="String">
+                <sv:value>service.browse</sv:value>
+            </sv:property>
+            <sv:property sv:name="editor.id" sv:type="String">
+                <sv:value>service.edit</sv:value>
+            </sv:property>
+            <sv:property sv:name="wicket.id" sv:type="String">
+                <sv:value>service.browse.tree.ecommerce</sv:value>
+            </sv:property>
+        </sv:node>
+    </sv:node>
+
+</sv:node>

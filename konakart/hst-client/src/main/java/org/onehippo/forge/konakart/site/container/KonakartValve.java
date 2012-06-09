@@ -1,17 +1,20 @@
 package org.onehippo.forge.konakart.site.container;
 
 import com.konakart.al.KKAppEng;
+import org.apache.cxf.common.util.StringUtils;
 import org.hippoecm.hst.configuration.hosting.Mount;
-import org.hippoecm.hst.core.component.HstRequest;
-import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.core.container.ContainerException;
 import org.hippoecm.hst.core.container.Valve;
 import org.hippoecm.hst.core.container.ValveContext;
-import org.hippoecm.hst.core.request.HstRequestContext;
+import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
-import org.onehippo.forge.konakart.hst.channel.KonakartSiteInfo;
+import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
+import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
+import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -32,30 +35,44 @@ public class KonakartValve implements Valve {
     public void invoke(ValveContext context) throws ContainerException {
         HttpServletRequest servletRequest = context.getServletRequest();
         HttpServletResponse servletResponse = context.getServletResponse();
-        HstRequestContext requestContext = context.getRequestContext();
 
-        if (KKAppEng.getEngConf() == null) {
-            // Initialize the Engine Conf
-            Mount mount = requestContext.getResolvedMount().getMount();
-            KonakartSiteInfo siteInfo = mount.getChannelInfo();
+        Session jcsSession;
 
-            if (siteInfo != null) {
-                try {
-                    KKEngine.init(KKServiceHelper.getEngineMode(), KKServiceHelper.getCustomersShared(),
-                            KKServiceHelper.getProductsShared());
-                } catch (Exception e) {
-                    throw new ContainerException("Failed to initialize the Konakart Engine.", e);
-                }
-            }
+        try {
+            jcsSession = context.getRequestContext().getSession();
+        } catch (RepositoryException e) {
+            throw new IllegalStateException("Failed to retrieve the Jcr Session", e);
         }
+
+        // Initialize internal Konakart Engine configuration
+        KKEngine.init(jcsSession);
 
         // Retrieve the Konakart client
         KKAppEng kkAppEng = KKServiceHelper.getKKEngineService().getKKAppEng(servletRequest);
 
         // Initialize the konakart client if it has not been created
+        // TODO: how to handle multiple stores??????
         if (kkAppEng == null) {
+            // Set the current store config
+            Mount resolvedMount = context.getRequestContext().getResolvedMount().getMount();
+            String storeName = resolvedMount.getProperty(KKCndConstants.KONAKART_CONFIG_STORE_NAME);
+
+            //  Set the default one
+            if (StringUtils.isEmpty(storeName)) {
+                storeName = KKCheckoutConstants.DEF_STORE_ID;
+            }
+
+
+            // Check if the store config has been created under /hippo-configuration/cms-services/KonakartSynchronizationService
+            if (!HippoModuleConfig.getConfig().getStoresConfig(jcsSession).containsKey(storeName)) {
+                throw new IllegalStateException("Please create a new storeConfig named " + storeName +
+                        " within /hippo-configuration/cms-services/KonakartSynchronizationService");
+            }
+
+            KKStoreConfig kkStoreConfig = HippoModuleConfig.getConfig().getStoresConfig().get(storeName);
+
             // Initialize Konakart Engine
-            kkAppEng = KKServiceHelper.getKKEngineService().initKKEngine(servletRequest, servletResponse);
+            kkAppEng = KKServiceHelper.getKKEngineService().initKKEngine(servletRequest, servletResponse, kkStoreConfig);
         }
 
         // Validate the current konakart session

@@ -6,7 +6,6 @@ import org.apache.commons.lang.StringUtils;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingGalleryProcessor;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingParameters;
 import org.joda.time.DateTime;
-import org.onehippo.forge.konakart.cms.replication.factory.ProductFactory;
 import org.onehippo.forge.konakart.cms.replication.jcr.GalleryProcesssorConfig;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
@@ -113,7 +112,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         KKCndConstants.PRODUCT_TYPE product_type = KKCndConstants.PRODUCT_TYPE.findByType(product.getType());
 
         String kkProductTypeName = product_type.getName();
-        String productDocType = HippoModuleConfig.getConfig().getEngineConfig().getProductNodeTypeMapping().get(product_type.getNamespace());
+        String productDocType = HippoModuleConfig.getConfig().getClientEngineConfig().getProductNodeTypeMapping().get(product_type.getNamespace());
 
 
         if (StringUtils.isEmpty(productDocType)) {

@@ -3,9 +3,10 @@
 <'hippostdpubwf'='http://www.onehippo.org/jcr/hippostdpubwf/nt/1.0'>
 <'hippotaxonomy'='http://www.hippoecm.org/hippotaxonomy/nt/1.2'>
 <'konakart'='http://www.onehippo.org/jcr/konakart/nt/1.0'>
+<'mix'='http://www.jcp.org/jcr/mix/1.0'>
 <'nt'='http://www.jcp.org/jcr/nt/1.0'>
 
-[konakart:Price] > hippo:compound, hippostd:relaxed
+[konakart:ecommerce] > hippostd:folder
   orderable
 
 [konakart:basedocument] > hippo:document, hippostd:publishableSummary, hippostdpubwf:document
@@ -13,10 +14,34 @@
 [konakart:compoundprice] > hippo:compound, hippostd:relaxed
   orderable
 
-[konakart:producttype] mixin
-
 [konakart:physicalproduct] > konakart:basedocument, hippostd:relaxed , hippotaxonomy:classifiable
 
 [konakart:review] > konakart:basedocument, hippostd:relaxed
 
-[konakart:taxonomycategories] mixin
+[konakart:clientengine] > mix:referenceable, mix:versionable, nt:base
+  - konakart:enginemode (long) mandatory
+  - konakart:iscustomershared (boolean) mandatory
+  - konakart:isproductshared (boolean) mandatory
+
+[konakart:sync] > mix:referenceable, mix:versionable, nt:base
+  - konakart:jobclass (string)
+  - konakart:synchronizationcronexpression (string)
+  - konakart:productfolder (string)
+  - konakart:reviewfolder (string)
+  - konakart:lastupdatedtimerepositorytokonnakart (date)
+  - konakart:lastupdatedtimekonakarttorepository (date)
+
+[konakart:store] > mix:referenceable, mix:versionable, nt:base
+  - konakart:contentroot (string) mandatory
+  - konakart:galleryroot (string) mandatory
+  - konakart:storeid (string) mandatory
+  - konakart:catalogid (string)
+  + konakart:sync (konakart:sync) = konakart:sync version
+
+[konakart:stores] > mix:referenceable, mix:versionable, nt:base
+  + * (konakart:store) = konakart:store version
+
+[konakart:konakart] > mix:referenceable, mix:versionable, nt:base
+  + konakart:clientengine (konakart:clientengine) = konakart:clientengine version
+  + konakart:stores (konakart:stores) = konakart:stores version
+

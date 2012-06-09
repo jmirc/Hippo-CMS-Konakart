@@ -3,6 +3,9 @@ package org.onehippo.forge.konakart.common.engine;
 import com.konakart.al.KKAppEng;
 import com.konakart.al.StoreInfo;
 import com.konakart.app.EngineConfig;
+import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
+
+import javax.jcr.Session;
 
 public final class KKEngine {
 
@@ -14,25 +17,28 @@ public final class KKEngine {
 
     /**
      * Configure the Engine Config
-     * @param mode the engine mode
-     * @param isCustomersShared set to true if the customers are shared
-     * @param isProductsShared set to true if the products are shared
-     * @throws Exception .
+     * @throws IllegalStateException thrown if the KonakartEngine is not able to start.
+     * @param session the Jcr Session
      */
-    static public void init(int mode, boolean isCustomersShared, boolean isProductsShared)
-            throws Exception {
+    static public void init(Session session) {
 
         // Initialize the Engine conf if not exits
         if (KKAppEng.getEngConf() == null) {
+            KKEngineConfig engineConfig = HippoModuleConfig.getConfig().getClientEngineConfig(session);
+
             // Initialize the engine conf
             EngineConfig engConf = new EngineConfig();
-            engConf.setMode(mode);
-            engConf.setCustomersShared(isCustomersShared);
-            engConf.setProductsShared(isProductsShared);
+            engConf.setMode(engineConfig.getEngineMode());
+            engConf.setCustomersShared(engineConfig.isCustomersShared());
+            engConf.setProductsShared(engineConfig.isProductsShared());
             engConf.setPropertiesFileName(KONAKART_PROPERTIES);
             engConf.setAppPropertiesFileName(KONAKART_APP_PROPERTIES);
 
-            new KKAppEng(engConf);
+            try {
+                new KKAppEng(engConf);
+            } catch (Exception e) {
+                throw new IllegalStateException("Failed to start the Konakart engine", e);
+            }
         }
     }
     

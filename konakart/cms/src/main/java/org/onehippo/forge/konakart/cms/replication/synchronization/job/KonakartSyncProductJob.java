@@ -13,13 +13,6 @@ import com.konakartadmin.app.KKAdminException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.hippoecm.repository.quartz.JCRSchedulingContext;
-import org.onehippo.forge.konakart.common.KKCndConstants;
-import org.onehippo.forge.konakart.common.bl.CustomProductMgr;
-import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
-import org.onehippo.forge.konakart.common.engine.KKEngine;
-import org.onehippo.forge.konakart.common.engine.KKEngineConfig;
-import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
-import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.cms.replication.factory.DefaultProductFactory;
 import org.onehippo.forge.konakart.cms.replication.factory.ProductFactory;
 import org.onehippo.forge.konakart.cms.replication.jcr.GalleryProcesssorConfig;
@@ -27,6 +20,12 @@ import org.onehippo.forge.konakart.cms.replication.service.KonakartSynchronizati
 import org.onehippo.forge.konakart.cms.replication.synchronization.KonakartResourceScheduler;
 import org.onehippo.forge.konakart.cms.replication.utils.Codecs;
 import org.onehippo.forge.konakart.cms.replication.utils.NodeHelper;
+import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.onehippo.forge.konakart.common.bl.CustomProductMgr;
+import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
+import org.onehippo.forge.konakart.common.engine.KKEngine;
+import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
+import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -60,17 +59,9 @@ public class KonakartSyncProductJob implements Job {
         jcrSession = ((JCRSchedulingContext) scheduler.getCtx()).getSession();
         String contentRoot =  context.getJobDetail().getJobDataMap().getString(KonakartSynchronizationService.KK_CONTENT_ROOT);
         KKStoreConfig kkStoreConfig = HippoModuleConfig.getConfig().getStoresConfig().get(contentRoot );
-        KKEngineConfig engineConfig = HippoModuleConfig.getConfig().getEngineConfig();
-
 
         if (!kkStoreConfig.isInitialized()) {
             log.error("The Konakart synchronization service has not well be initialized. Please check the log.");
-            return;
-        }
-
-
-        if (!kkStoreConfig.isEnabled()) {
-            log.info("The Konakart replicator is disabled. No replication will be operated.");
             return;
         }
 
@@ -79,8 +70,7 @@ public class KonakartSyncProductJob implements Job {
 
         try {
             // Initialize the Konakart engine
-            KKEngine.init(engineConfig.getEngineMode(), engineConfig.isCustomersShared(),
-                    engineConfig.isProductsShared());
+            KKEngine.init(jcrSession);
 
             // Update konakart information
             try {

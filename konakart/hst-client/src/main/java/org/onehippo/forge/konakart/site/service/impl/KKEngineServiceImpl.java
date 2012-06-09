@@ -6,12 +6,11 @@ import com.konakart.app.FetchProductOptions;
 import com.konakart.app.KKException;
 import com.konakart.appif.CustomerTagIf;
 import com.konakart.appif.FetchProductOptionsIf;
-import org.hippoecm.hst.configuration.hosting.Mount;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
-import org.onehippo.forge.konakart.hst.channel.KonakartSiteInfo;
+import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.site.service.KKEngineService;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
@@ -48,24 +47,13 @@ public class KKEngineServiceImpl implements KKEngineService {
         return (KKAppEng) request.getAttribute(KKAppEng.KONAKART_KEY);
     }
 
-    /**
-     * Sets the variable KKEngine to the KKEngine instance saved in the session. If cannot be found,
-     * then it is instantiated and attached.
-     *
-     * @param servletRequest  http servlet request
-     * @param servletResponse http servlet response
-     * @return Returns a KonaKart client engine instance
-     * @throws HstComponentException thrown if the konakart client could not be created.
-     */
-    public KKAppEng initKKEngine(@Nonnull HttpServletRequest servletRequest, @Nonnull HttpServletResponse servletResponse) throws HstComponentException {
-
-        HstRequest request = (HstRequest) servletRequest;
-        HstResponse response = (HstResponse) servletResponse;
-
+    @Override
+    public KKAppEng initKKEngine(@Nonnull HttpServletRequest servletRequest, @Nonnull HttpServletResponse servletResponse,
+                                 @Nonnull KKStoreConfig kkStoreConfig) throws HstComponentException {
 
         KKCookieServiceImpl kkCookieServiceImpl = new KKCookieServiceImpl();
 
-        KKAppEng kkAppEng = getKKAppEng(request);
+        KKAppEng kkAppEng = getKKAppEng(servletRequest);
 
         if (kkAppEng == null) {
 
@@ -74,14 +62,14 @@ public class KKEngineServiceImpl implements KKEngineService {
             }
 
             try {
-                String storeId = getStoreIdFromChannel(request);
+                String storeId = kkStoreConfig.getStoreId();
 
                 // Create the Konakart engine
                 kkAppEng = KKEngine.get(storeId);
 
                 // initialize the Fetch production options
                 FetchProductOptionsIf productOptions = new FetchProductOptions();
-                productOptions.setCatalogId(getCatalogIdFromChannel(request));
+                productOptions.setCatalogId(kkStoreConfig.getCatalogId());
                 productOptions.setUseExternalPrice(KKServiceHelper.getUseExternalPrice());
                 productOptions.setUseExternalQuantity(KKServiceHelper.getUseExternalQuantity());
 
@@ -92,10 +80,10 @@ public class KKEngineServiceImpl implements KKEngineService {
                 }
 
                 // Store the engine under the session
-                request.getSession().setAttribute(KKAppEng.KONAKART_KEY, kkAppEng);
+                servletRequest.getSession().setAttribute(KKAppEng.KONAKART_KEY, kkAppEng);
 
                 // Create or retrieve the customer's cookie
-                kkCookieServiceImpl.manageCookies(request, response, kkAppEng);
+                kkCookieServiceImpl.manageCookies(servletRequest, servletResponse, kkAppEng);
 
                 // Retrieve the config.
                 kkAppEng.refreshAllClientConfigs();
@@ -190,7 +178,7 @@ public class KKEngineServiceImpl implements KKEngineService {
             }
 
             // Update the custom1 of each product under the basket to set the full path of the product's node
-            // TODO check how to handle that - perhaps we need to create a custom taglin
+            // TODO check how to handle that - perhaps we need to create a custom taglib
             //updateBaskets(request);
 
             /*
@@ -213,68 +201,6 @@ public class KKEngineServiceImpl implements KKEngineService {
 
         return false;
 
-    }
-
-
-    /**
-     * The store Id. By default this method return "store1" value or the value associated to the defaultStoreId's
-     * context-param defined within the web.xml
-     * <p/>
-     * You can override this method to retrieve the store id from the channel info for example.
-     *
-     * @param request the hst request
-     * @return the store id associated to this channel.
-     * @see org.hippoecm.hst.configuration.channel.ChannelInfo
-     */
-    @Nonnull
-    private String getStoreIdFromChannel(@Nonnull HstRequest request) {
-        KonakartSiteInfo siteInfo = getKonakartSiteInfo(request);
-
-        if (siteInfo == null) {
-            return KKCheckoutConstants.DEF_STORE_ID;
-
-        }
-
-        return siteInfo.getStoreId();
-    }
-
-    /**
-     * The catalog Id (@see catalog feature. Available with the Konakart enterprise version.
-     * By default this method return null.
-     *
-     * @param request the hst request
-     * @return the catalog id associated with this channel.
-     */
-    @Nullable
-    private String getCatalogIdFromChannel(@Nonnull HstRequest request) {
-        KonakartSiteInfo siteInfo = getKonakartSiteInfo(request);
-
-        if (siteInfo == null) {
-            return null;
-        }
-
-        return siteInfo.getCatalogId();
-    }
-
-    /**
-     * @param request the hst request
-     * @return the Channel Info
-     */
-    @Nullable
-    private KonakartSiteInfo getKonakartSiteInfo(@Nonnull HstRequest request) {
-        Mount mount = request.getRequestContext().getResolvedMount().getMount();
-
-        Object o = mount.getChannelInfo();
-
-        if (!(o instanceof KonakartSiteInfo)) {
-            log.error("//////////////////////////////////////");
-            log.error("The ChannelInfo must extends org.onehippo.forge.konakart.hst.channel.KonakartSiteInfo");
-            log.error("//////////////////////////////////////");
-
-            return null;
-        }
-
-        return (KonakartSiteInfo) o;
     }
 
 

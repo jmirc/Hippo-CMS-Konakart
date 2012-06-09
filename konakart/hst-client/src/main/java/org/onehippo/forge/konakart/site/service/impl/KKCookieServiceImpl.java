@@ -7,8 +7,6 @@ import com.konakart.app.KKException;
 import com.konakart.appif.CustomerIf;
 import com.konakart.appif.KKCookieIf;
 import org.hippoecm.hst.core.component.HstComponentException;
-import org.hippoecm.hst.core.component.HstRequest;
-import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.site.service.KKCookieService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 public class KKCookieServiceImpl extends KKBaseServiceImpl implements KKCookieService {
@@ -62,7 +62,7 @@ public class KKCookieServiceImpl extends KKBaseServiceImpl implements KKCookieSe
 
     @Override
     @Nullable
-    public String manageCookies(@Nonnull HstRequest request, @Nonnull HstResponse response, @Nonnull KKAppEng kkAppEng) throws HstComponentException {
+    public String manageCookies(@Nonnull HttpServletRequest request, @Nonnull HttpServletResponse response, @Nonnull KKAppEng kkAppEng) throws HstComponentException {
         if (!kkAppEng.isKkCookieEnabled()) {
             return null;
         }
@@ -179,7 +179,7 @@ public class KKCookieServiceImpl extends KKBaseServiceImpl implements KKCookieSe
 
     @Override
     @Nullable
-    public String manageCookies(@Nonnull HstRequest request, @Nonnull HstResponse response)
+    public String manageCookies(@Nonnull HttpServletRequest  request, @Nonnull HttpServletResponse response)
             throws HstComponentException {
 
         KKAppEng kkAppEng = getKKAppEng(request);
@@ -189,7 +189,7 @@ public class KKCookieServiceImpl extends KKBaseServiceImpl implements KKCookieSe
     }
 
     @Override
-    public void manageCookiesLogin(@Nonnull HstRequest request, @Nonnull HstResponse response, @Nonnull KKAppEng kkAppEng) throws HstComponentException {
+    public void manageCookiesLogin(@Nonnull HttpServletRequest  request, @Nonnull HttpServletResponse response, @Nonnull KKAppEng kkAppEng) throws HstComponentException {
         if (!kkAppEng.isKkCookieEnabled()) {
             return;
         }
@@ -233,7 +233,7 @@ public class KKCookieServiceImpl extends KKBaseServiceImpl implements KKCookieSe
     }
 
     @Override
-    public void manageCookiesLogin(@Nonnull HstRequest request, @Nonnull HstResponse response)
+    public void manageCookiesLogin(@Nonnull HttpServletRequest  request, @Nonnull HttpServletResponse response)
             throws HstComponentException {
 
         KKAppEng kkAppEng = getKKAppEng(request);
@@ -243,7 +243,7 @@ public class KKCookieServiceImpl extends KKBaseServiceImpl implements KKCookieSe
 
 
     @Override
-    public void manageCookieLogout(@Nonnull HstRequest request, @Nonnull HstResponse response)
+    public void manageCookieLogout(@Nonnull HttpServletRequest  request, @Nonnull HttpServletResponse response)
             throws HstComponentException {
 
         KKAppEng kkAppEng = getKKAppEng(request);
@@ -252,7 +252,7 @@ public class KKCookieServiceImpl extends KKBaseServiceImpl implements KKCookieSe
     }
 
     @Override
-    public void manageCookieLogout(@Nonnull HstRequest request, @Nonnull HstResponse response, @Nonnull KKAppEng kkAppEng) throws HstComponentException {
+    public void manageCookieLogout(@Nonnull HttpServletRequest  request, @Nonnull HttpServletResponse response, @Nonnull KKAppEng kkAppEng) throws HstComponentException {
 
         if (!kkAppEng.isKkCookieEnabled()) {
             return;
@@ -289,8 +289,8 @@ public class KKCookieServiceImpl extends KKBaseServiceImpl implements KKCookieSe
      * @param kkAppEng  the konakart engine
      * @throws HstComponentException .
      */
-    private void setKKCookie(String attrId, String attrValue, HstRequest request,
-                               HstResponse response, KKAppEng kkAppEng) throws HstComponentException {
+    private void setKKCookie(String attrId, String attrValue, HttpServletRequest  request,
+                               HttpServletResponse response, KKAppEng kkAppEng) throws HstComponentException {
         /*
          * Get the CustomerUuid from the browser cookie and create the cookie if it doesn't exist.
          */
@@ -336,8 +336,8 @@ public class KKCookieServiceImpl extends KKBaseServiceImpl implements KKCookieSe
      * @return the value of the cookie
      * @throws HstComponentException .
      */
-    private String getKKCookie(String attrId, HstRequest request,
-                                 HstResponse response, KKAppEng kkAppEng) throws HstComponentException {
+    private String getKKCookie(String attrId, HttpServletRequest  request,
+                                 HttpServletResponse response, KKAppEng kkAppEng) throws HstComponentException {
         /*
          * Get the CustomerUuid from the browser cookie and create the cookie if it doesn't exist.
          */
@@ -381,8 +381,8 @@ public class KKCookieServiceImpl extends KKBaseServiceImpl implements KKCookieSe
      * @param response the hst response
      * @return Returns the CustomerUuid
      */
-    private String getCustomerUuidFromBrowserCookie(HstRequest request,
-                                                    HstResponse response) {
+    private String getCustomerUuidFromBrowserCookie(HttpServletRequest  request,
+                                                    HttpServletResponse response) {
         /*
          * Try to find the cookie we are looking for
          */

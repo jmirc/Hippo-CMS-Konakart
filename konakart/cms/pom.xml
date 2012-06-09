@@ -109,6 +109,20 @@
             </resource>
         </resources>
 
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Hippo-Modules>org.onehippo.forge.konakart.cms.replication.synchronization.HippoKonakartDaemonModule</Hippo-Modules>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+
 
     </build>
 </project>

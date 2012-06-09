@@ -19,7 +19,6 @@ public class KKStoreConfig {
     private String galleryRoot;
     private String productFolder;
     private String reviewFolder;
-    private String language;
     private Date lastUpdatedTimeKonakartToRepository = null;
     private Date lastUpdatedTimeRepositoryToKonakart = null;
     private String catalogId;
@@ -28,7 +27,6 @@ public class KKStoreConfig {
     private Boolean enabled;
     private boolean initialized;
     private String jobClass;
-    private String locale;
     private String productFactoryClassName;
 
     public String getNodePath() {
@@ -71,15 +69,6 @@ public class KKStoreConfig {
         this.reviewFolder = reviewFolder;
     }
 
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
     public Date getLastUpdatedTimeKonakartToRepository() {
         return lastUpdatedTimeKonakartToRepository;
     }
@@ -96,7 +85,7 @@ public class KKStoreConfig {
 
             lastUpdatedTimeKonakartToRepository = currentTime.getTime();
 
-            node.setProperty(HippoModuleConfig.LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY, currentTime);
+            node.setProperty(HippoModuleConfig.SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY, currentTime);
 
             node.getSession().save();
         } catch (RepositoryException e) {
@@ -120,7 +109,7 @@ public class KKStoreConfig {
 
             lastUpdatedTimeRepositoryToKonakart = currentTime.getTime();
 
-            node.setProperty(HippoModuleConfig.LAST_UPDATED_TIME_REPOSITORY_TO_KONNAKART, currentTime);
+            node.setProperty(HippoModuleConfig.SYNC_LAST_UPDATED_TIME_REPOSITORY_TO_KONNAKART, currentTime);
 
             node.getSession().save();
         } catch (RepositoryException e) {
@@ -152,14 +141,6 @@ public class KKStoreConfig {
         this.cronExpression = cronExpression;
     }
 
-    public Boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public boolean isInitialized() {
         return initialized;
     }
@@ -174,14 +155,6 @@ public class KKStoreConfig {
 
     public void setJobClass(String jobClass) {
         this.jobClass = jobClass;
-    }
-
-    public String getLocale() {
-        return locale;
-    }
-
-    public void setLocale(String locale) {
-        this.locale = locale;
     }
 
     public String getProductFactoryClassName() {
