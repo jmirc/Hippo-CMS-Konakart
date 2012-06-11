@@ -56,9 +56,18 @@ public class NodeHelper {
         this.session = session;
         versionManager = session.getWorkspace().getVersionManager();
     }
-    
-    
 
+    public void setFolderNodeTypeName(String folderNodeTypeName) {
+        this.folderNodeTypeName = folderNodeTypeName;
+    }
+
+    public void setDocumentAdditionWorkflowCategory(String documentAdditionWorkflowCategory) {
+        this.documentAdditionWorkflowCategory = documentAdditionWorkflowCategory;
+    }
+
+    public void setFolderAdditionWorkflowCategory(String folderAdditionWorkflowCategory) {
+        this.folderAdditionWorkflowCategory = folderAdditionWorkflowCategory;
+    }
 
     /**
      * Creates content node(s) with the specified node type at the specified absolute path.

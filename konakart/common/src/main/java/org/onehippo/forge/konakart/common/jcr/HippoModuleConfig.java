@@ -38,8 +38,8 @@ public class HippoModuleConfig {
     public static final String SYNC_REVIEW_FOLDER_PROPERTY = "konakart:reviewfolder";
     public static final String SYNC_JOB_CLASS = "konakart:jobclass";
     public static final String SYNC_CRON_EXPRESSION = "konakart:synchronizationcronexpression";
-    public static final String SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY = "konakart:lastUpdatedTimeKonakartToRepository";
-    public static final String SYNC_LAST_UPDATED_TIME_REPOSITORY_TO_KONNAKART = "konakart:lastUpdatedTimeRepositoryToKonnakart";
+    public static final String SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY = "konakart:lastupdatedtimekonakarttorepository";
+    public static final String SYNC_LAST_UPDATED_TIME_REPOSITORY_TO_KONNAKART = "konakart:lastupdatedtimerepositorytokonnakart";
 
     public static final String CLIENT_ENGINE_CONFIG_NODE_PATH = KONAKART_KONAKART_PATH + "/konakart:clientengine";
 
@@ -92,6 +92,8 @@ public class HippoModuleConfig {
     public KKEngineConfig getClientEngineConfig() {
         return clientEngineConfig;
     }
+
+
 
     /**
      * @param session a JCR session
@@ -238,15 +240,20 @@ public class HippoModuleConfig {
 
                             if (syncNode.hasProperty(SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY)) {
                                 kkStoreConfig.setLastUpdatedTimeKonakartToRepository(syncNode.getProperty(SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY).getDate().getTime());
+                            } else {
+                                kkStoreConfig.setLastUpdatedTimeKonakartToRepository(null);
                             }
 
                             if (syncNode.hasProperty(SYNC_LAST_UPDATED_TIME_REPOSITORY_TO_KONNAKART)) {
                                 kkStoreConfig.setLastUpdatedTimeRepositoryToKonakart(syncNode.getProperty(SYNC_LAST_UPDATED_TIME_REPOSITORY_TO_KONNAKART).getDate().getTime());
+                            } else {
+                                kkStoreConfig.setLastUpdatedTimeRepositoryToKonakart(null);
                             }
                         }
 
 
                         kkStoreConfig.setInitialized(true);
+                        storesConfig.put(kkStoreConfig.getStoreId(), kkStoreConfig);
                     } else {
                         log.warn("Failed to find a valid node for the store named " + storeName.getString() + ". " +
                                 "Please create the node " + KONAKART_STORES_PATH + "/" + storeName.getString());

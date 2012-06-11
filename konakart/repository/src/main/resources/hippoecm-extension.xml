@@ -141,6 +141,21 @@
         </sv:property>
     </sv:node>
 
+    <sv:node sv:name="konakart-type-translatedproduct">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>hippo:initializeitem</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:sequence" sv:type="Double">
+            <sv:value>10107.3</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:contentresource" sv:type="String">
+            <sv:value>hippo-namespaces/konakart/translatedproduct.xml</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:contentroot" sv:type="String">
+            <sv:value>/hippo:namespaces/konakart</sv:value>
+        </sv:property>
+    </sv:node>
+
     <!-- Add new hippo-template -->
     <sv:node sv:name="new-products-folder-template">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
@@ -245,6 +260,21 @@
         </sv:property>
         <sv:property sv:name="hippo:contentresource" sv:type="String">
             <sv:value>hippo-configuration/cms-services/taxclassprovider.xml</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:contentroot" sv:type="String">
+            <sv:value>/hippo:configuration/hippo:frontend/cms/cms-services</sv:value>
+        </sv:property>
+    </sv:node>
+
+    <sv:node sv:name="cms-services-storeidprovider-provider">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>hippo:initializeitem</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:sequence" sv:type="Double">
+            <sv:value>10109.3</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:contentresource" sv:type="String">
+            <sv:value>hippo-configuration/cms-services/storeidprovider.xml</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:contentroot" sv:type="String">
             <sv:value>/hippo:configuration/hippo:frontend/cms/cms-services</sv:value>

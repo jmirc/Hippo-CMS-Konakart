@@ -19,7 +19,7 @@ public class KonakartSynchronizationService extends Plugin {
 
     private static Logger log = LoggerFactory.getLogger(KonakartSynchronizationService.class);
 
-    public static final String KK_CONTENT_ROOT = "kkContentRoot";
+    public static final String KK_STORE_ID = "kkStoreId";
     private static final String MASS_SYNC_JOB = "KonkartMassSyncJob";
     private static final String MASS_SYNC_JOB_TRIGGER = MASS_SYNC_JOB + "Trigger";
     private static final String MASS_SYNC_JOB_TRIGGER_GROUP = MASS_SYNC_JOB_TRIGGER + "Group";
@@ -49,7 +49,7 @@ public class KonakartSynchronizationService extends Plugin {
                 JobDetail jobDetail = new JobDetail(MASS_SYNC_JOB, MASS_SYNC_JOB_GROUP, Class.forName(kkStoreConfig.getJobClass()));
 
                 JobDataMap dataMap = new JobDataMap();
-                dataMap.put(KK_CONTENT_ROOT, kkStoreConfig.getContentRoot());
+                dataMap.put(KK_STORE_ID, kkStoreConfig.getStoreId());
                 jobDetail.setJobDataMap(dataMap);
 
                 if (StringUtils.isNotEmpty(kkStoreConfig.getCronExpression())) {

@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.cms.replication.factory;
 
+import com.google.common.collect.Lists;
 import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
 import org.apache.commons.lang.StringUtils;
@@ -7,62 +8,42 @@ import org.hippoecm.frontend.plugins.gallery.processor.ScalingGalleryProcessor;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingParameters;
 import org.joda.time.DateTime;
 import org.onehippo.forge.konakart.cms.replication.jcr.GalleryProcesssorConfig;
-import org.onehippo.forge.konakart.common.KKCndConstants;
-import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.cms.replication.utils.Codecs;
 import org.onehippo.forge.konakart.cms.replication.utils.NodeHelper;
 import org.onehippo.forge.konakart.cms.replication.utils.NodeImagesHelper;
+import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.activation.MimetypesFileTypeMap;
-import javax.jcr.Node;
-import javax.jcr.NodeIterator;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
+import javax.jcr.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Calendar;
+import java.util.List;
 
 /**
- * To use the replication synchronization, you need to add a class that will extend this class to define
- * the following information :
- * - ProductDocType : Define the name of the document type which defines a product.
- * - KonakartProductPropertyName : Define the name of the node which contains the konakart product
- * <p/>
- * See the class org.onehippo.forge.konakart.demo.MyProductFactory within the demo project
- * - ProductDocType: myhippoproject:productdocument
- * - KonakartProductPropertyName : myhippoproject:konakart
+ * This factory is used by the replicator to synchronize Konakart products with Hippo.
+ *
+ * The products will be created under the PRODUCT_FOLDER_PATH and the related images under the PRODUCTS_IMAGES_FOLDER_PATH
+ *
  */
-public abstract class AbstractProductFactory implements ProductFactory {
+public class KonakartProductFactory {
 
-    private static Logger log = LoggerFactory.getLogger(AbstractProductFactory.class);
+    private static Logger log = LoggerFactory.getLogger(KonakartProductFactory.class);
 
-    public static final String PRODUCTS_FOLDER_PATH = "/content/ecommerce/products/";
-    public static final String PRODUCTS_IMAGES_FOLDER_PATH = "/content/gallery/ecommerce/products/";
+    public static final String PRODUCTS_FOLDER_PATH = "/content/konakart/ecommerce/products";
+    public static final String PRODUCTS_IMAGES_FOLDER_PATH = "/content/gallery/ecommerce/products";
 
-    protected javax.jcr.Session session;
+    protected Session session;
     private NodeHelper nodeHelper;
     private NodeImagesHelper nodeImagesHelper;
 
 
-    private String contentRoot;
-    private String galleryRoot;
-    private String productFolder;
 
-    /**
-     * This is an helper method that could be used to set others information defined into Konakart but not
-     * already integrated within the konakart:konakart document.
-     *
-     * @param product the konakart's product
-     * @param node    the product's node
-     */
-    protected abstract void updateProperties(Product product, Node node);
-
-
-    @Override
     public void setSession(Session session) throws RepositoryException {
         this.session = session;
         nodeHelper = new NodeHelper(session);
@@ -74,47 +55,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
     }
 
 
-    @Override
-    public void setContentRoot(String contentRoot) {
-        if (!contentRoot.endsWith("/")) {
-            contentRoot = contentRoot + "/";
-        }
-
-        this.contentRoot = contentRoot;
-
-    }
-
-    @Override
-    public void setGalleryRoot(String galleryRoot) {
-
-        if (!galleryRoot.endsWith("/")) {
-            galleryRoot = galleryRoot + "/";
-        }
-
-        this.galleryRoot = galleryRoot;
-
-    }
-
-    @Override
-    public void setProductFolder(String productFolder) {
-        this.productFolder = productFolder;
-    }
-
-    @Override
-    public String createReviewFolder(String reviewFolder) throws Exception {
-
-        if (StringUtils.isEmpty(reviewFolder)) {
-            reviewFolder = KKCndConstants.DEFAULT_REVIEWS_FOLDER;
-        }
-
-        nodeHelper.createMissingFolders(contentRoot + reviewFolder);
-
-        return Codecs.encodeNode(reviewFolder);
-    }
-
-
-    @Override
-    public void add(Product product, LanguageIf language, String baseImagePath) throws Exception {
+    public void add(String storeId, Product product, LanguageIf language, String baseImagePath) throws Exception {
 
         KKCndConstants.PRODUCT_TYPE product_type = KKCndConstants.PRODUCT_TYPE.findByType(product.getType());
 
@@ -129,7 +70,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
             return;
         }
 
-        String absPath = PRODUCTS_FOLDER_PATH + Codecs.encodeNode(productFolder) + "/" + Codecs.encodeNode(kkProductTypeName)
+        String absPath = PRODUCTS_FOLDER_PATH + "/" + Codecs.encodeNode(kkProductTypeName)
                 + "/" + createProductNodeRoot(product);
 
         // Create or retrieve the root folder
@@ -158,11 +99,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
         String state = (product.getStatus() == 0) ? NodeHelper.UNPUBLISHED_STATE : NodeHelper.PUBLISHED_STATE;
         nodeHelper.updateState(productNode, state);
 
-        // Update the node
-        updateProperties(product, productNode);
-
         // Create the konakart ref product
-        createOrUpdateKonakartProduct(product, productNode);
+        createOrUpdateKonakartProduct(storeId, product, productNode);
 
         // Upload images
         // Synchronize the image only during the creation of the product
@@ -210,18 +148,46 @@ public abstract class AbstractProductFactory implements ProductFactory {
     /**
      * Create or update the konakart node.
      *
+     *
+     * @param storeId     the store id
      * @param product     the konakart product
      * @param productNode the hippo product's node
-     * @throws RepositoryException if any exception occurs
+     * @throws javax.jcr.RepositoryException if any exception occurs
      */
-    private void createOrUpdateKonakartProduct(Product product, Node productNode) throws RepositoryException {
+    private void createOrUpdateKonakartProduct(String storeId, Product product, Node productNode) throws RepositoryException {
 
         productNode.setProperty(KKCndConstants.PRODUCT_ID, product.getId());
         productNode.setProperty(KKCndConstants.PRODUCT_NAME, product.getName());
         productNode.setProperty(KKCndConstants.PRODUCT_SKU, product.getSku());
         productNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER, String.valueOf(product.getManufacturerId()));
         productNode.setProperty(KKCndConstants.PRODUCT_TAX_CLASS, String.valueOf(product.getTaxClassId()));
-        productNode.setProperty(KKCndConstants.PRODUCT_STORE_ID, product.getStoreId());
+
+
+        List<Value> valueList = Lists.newArrayList();
+
+        if (productNode.hasProperty(KKCndConstants.PRODUCT_STORE_ID)) {
+            Value[] values = productNode.getProperty(KKCndConstants.PRODUCT_STORE_ID).getValues();
+
+            boolean added = false;
+            for (Value value : values) {
+                if (StringUtils.equalsIgnoreCase(value.getString(), storeId)) {
+                    added = true;
+                }
+            }
+
+            valueList = Lists.newArrayList(values);
+
+            if (!added) {
+                valueList.add(session.getValueFactory().createValue(storeId));
+            }
+        } else {
+            Value storeIdValue = session.getValueFactory().createValue(storeId);
+            valueList.add(storeIdValue);
+
+
+        }
+
+        productNode.setProperty(KKCndConstants.PRODUCT_STORE_ID, valueList.toArray(new Value[valueList.size()]));
 
         if (product.getPrice0() != null) {
             productNode.setProperty(KKCndConstants.PRODUCT_PRICE_0, product.getPrice0().doubleValue());
@@ -245,10 +211,10 @@ public abstract class AbstractProductFactory implements ProductFactory {
             productNode.setProperty(KKCndConstants.PRODUCT_WEIGHT, product.getWeight().doubleValue());
         }
 
-        productNode.setProperty(KKCndConstants.PRODUCT_STORE_ID, product.getStoreId());
-
         if (product.getCanOrderWhenNotInStock() != null) {
             productNode.setProperty(KKCndConstants.PRODUCT_ORDER_NOT_IN_STOCK, product.getCanOrderWhenNotInStock());
+        } else {
+            productNode.setProperty(KKCndConstants.PRODUCT_ORDER_NOT_IN_STOCK, Boolean.FALSE);
         }
 
         // Only synchronize the content from Konakart to Hippo during the creation of the product.
@@ -279,7 +245,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         try {
             // Retrieve the gallery root node
             // add the product node root
-            String galleryRootNode = galleryRoot + productFolder + "/" + kkProductTypeName + "/" + createProductNodeRoot(product);
+            String galleryRootNode = PRODUCTS_IMAGES_FOLDER_PATH + "/" + kkProductTypeName + "/" + createProductNodeRoot(product);
 
             // Get the root folder
             Node productGalleryNode = nodeImagesHelper.createMissingFolders(galleryRootNode);
@@ -299,7 +265,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
      * @param productGalleryNode the product gallery node
      * @param baseImagePath      the Konakart images' folder where the images are localed.
      * @param productImage       the name of the product
-     * @throws RepositoryException .
+     * @throws javax.jcr.RepositoryException .
      */
     private void uploadImage(Node productNode, Node productGalleryNode, String baseImagePath, String productImage) throws RepositoryException {
 

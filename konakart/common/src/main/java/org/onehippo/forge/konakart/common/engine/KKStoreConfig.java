@@ -13,6 +13,7 @@ import java.util.GregorianCalendar;
 public class KKStoreConfig {
 
     public static final Logger log = LoggerFactory.getLogger(KKStoreConfig.class);
+    public static final String KONAKART_SYNC_DOC_TYPE = "konakart:sync";
 
     private String nodePath;
     private String contentRoot;
@@ -24,7 +25,6 @@ public class KKStoreConfig {
     private String catalogId;
     private String storeId;
     private String cronExpression;
-    private Boolean enabled;
     private boolean initialized;
     private String jobClass;
     private String productFactoryClassName;
@@ -79,7 +79,7 @@ public class KKStoreConfig {
 
     public void updateLastUpdatedTimeKonakartToRepository(Session session) {
         try {
-            Node node = session.getNode(getNodePath());
+            Node node = getSyncNode(session);
 
             GregorianCalendar currentTime = new GregorianCalendar();
 
@@ -93,6 +93,7 @@ public class KKStoreConfig {
         }
     }
 
+
     public Date getLastUpdatedTimeRepositoryToKonakart() {
         return lastUpdatedTimeRepositoryToKonakart;
     }
@@ -103,7 +104,7 @@ public class KKStoreConfig {
 
     public void updateLastUpdatedTimeRepositoryToKonakart(Session session) {
         try {
-            Node node = session.getNode(getNodePath());
+            Node node = getSyncNode(session);
 
             GregorianCalendar currentTime = new GregorianCalendar();
 
@@ -164,4 +165,18 @@ public class KKStoreConfig {
     public void setProductFactoryClassName(String productFactoryClassName) {
         this.productFactoryClassName = productFactoryClassName;
     }
+
+    private Node getSyncNode(Session session) throws RepositoryException {
+        Node node = session.getNode(getNodePath());
+
+        Node syncNode = null;
+        // Create it
+        if (!node.hasNode(KONAKART_SYNC_DOC_TYPE)) {
+            syncNode = node.addNode(KONAKART_SYNC_DOC_TYPE, KONAKART_SYNC_DOC_TYPE);
+        } else {
+            syncNode = node.getNode(KONAKART_SYNC_DOC_TYPE);
+        }
+        return syncNode;
+    }
+
 }

@@ -14,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.hippoecm.repository.quartz.JCRSchedulingContext;
 import org.onehippo.forge.konakart.cms.replication.factory.DefaultProductFactory;
+import org.onehippo.forge.konakart.cms.replication.factory.KonakartProductFactory;
 import org.onehippo.forge.konakart.cms.replication.factory.ProductFactory;
 import org.onehippo.forge.konakart.cms.replication.jcr.GalleryProcesssorConfig;
 import org.onehippo.forge.konakart.cms.replication.service.KonakartSynchronizationService;
@@ -57,10 +58,10 @@ public class KonakartSyncProductJob implements Job {
         // Set the JcrSession
         KonakartResourceScheduler scheduler = (KonakartResourceScheduler) context.getScheduler();
         jcrSession = ((JCRSchedulingContext) scheduler.getCtx()).getSession();
-        String contentRoot =  context.getJobDetail().getJobDataMap().getString(KonakartSynchronizationService.KK_CONTENT_ROOT);
-        KKStoreConfig kkStoreConfig = HippoModuleConfig.getConfig().getStoresConfig().get(contentRoot );
+        String storeId =  context.getJobDetail().getJobDataMap().getString(KonakartSynchronizationService.KK_STORE_ID);
+        KKStoreConfig kkStoreConfig = HippoModuleConfig.getConfig().getStoresConfig().get(storeId);
 
-        if (!kkStoreConfig.isInitialized()) {
+        if ((kkStoreConfig == null) || !kkStoreConfig.isInitialized()) {
             log.error("The Konakart synchronization service has not well be initialized. Please check the log.");
             return;
         }
@@ -148,26 +149,11 @@ public class KonakartSyncProductJob implements Job {
 
             // Insert products into konakart
             for (Product product : products.getProductArray()) {
-                ProductFactory productFactory = createProductFactory(kkStoreConfig.getProductFactoryClassName());
 
-                if (productFactory == null) {
-                    continue;
-                }
-
+                // Sync the konakart product
+                KonakartProductFactory productFactory = new KonakartProductFactory();
                 productFactory.setSession(jcrSession);
-                productFactory.setContentRoot(kkStoreConfig.getContentRoot());
-                productFactory.setGalleryRoot(kkStoreConfig.getGalleryRoot());
-                productFactory.setProductFolder(productFolder);
-
-                // Create the reviews' folder if not exists
-                String reviewName = productFactory.createReviewFolder(kkStoreConfig.getReviewFolder());
-
-                // Create the product
-                product.setStoreId(storeId);
-                productFactory.add(product, language, baseImagePath);
-
-                // Set the Review folder
-                productMgr.synchronizeHippoKK(product.getId(), reviewName);
+                productFactory.add(storeId, product, language, baseImagePath);
             }
         }
     }

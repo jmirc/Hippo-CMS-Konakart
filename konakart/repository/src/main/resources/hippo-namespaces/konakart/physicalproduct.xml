@@ -52,7 +52,7 @@
                 <sv:value>hippo:harddocument</sv:value>
             </sv:property>
             <sv:property sv:name="jcr:uuid" sv:type="String">
-                <sv:value>7f222048-8d57-4616-a25e-b4707f57385f</sv:value>
+                <sv:value>7503c3ac-eacf-4a07-9410-dbb5271cf2eb</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
             <sv:property sv:name="hipposysedit:node" sv:type="Boolean">
@@ -416,7 +416,7 @@
                     <sv:value>false</sv:value>
                 </sv:property>
                 <sv:property sv:name="hipposysedit:multiple" sv:type="Boolean">
-                    <sv:value>false</sv:value>
+                    <sv:value>true</sv:value>
                 </sv:property>
                 <sv:property sv:name="hipposysedit:ordered" sv:type="Boolean">
                     <sv:value>false</sv:value>
@@ -443,10 +443,9 @@
             </sv:property>
             <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
                 <sv:value>hippo:harddocument</sv:value>
-                <sv:value>hippotranslation:translated</sv:value>
             </sv:property>
             <sv:property sv:name="jcr:uuid" sv:type="String">
-                <sv:value>437b5414-ea4c-47b9-9071-f0c1aa72bf86</sv:value>
+                <sv:value>bbff28b6-12a2-4470-b0c5-4a52fe0d1b29</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
             <sv:property sv:name="hippostd:holder" sv:type="String">
@@ -506,20 +505,13 @@
             <sv:property sv:name="konakart:ppsku" sv:type="String">
                 <sv:value/>
             </sv:property>
-            <sv:property sv:name="konakart:ppstoreid" sv:type="String">
-                <sv:value>0</sv:value>
-            </sv:property>
+            <sv:property sv:multiple="true" sv:name="konakart:ppstoreid" sv:type="String"/>
             <sv:property sv:name="konakart:pptaxclass" sv:type="String">
                 <sv:value/>
             </sv:property>
             <sv:property sv:name="konakart:ppweight" sv:type="Double">
                 <sv:value>0.0</sv:value>
             </sv:property>
-            <sv:node sv:name="hippotranslation:translations">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>hippotranslation:translations</sv:value>
-                </sv:property>
-            </sv:node>
             <sv:node sv:name="konakart:ppdescription">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>hippostd:html</sv:value>

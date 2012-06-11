@@ -54,6 +54,17 @@
                 <updatePolicy>never</updatePolicy>
             </releases>
         </repository>
+        <repository>
+            <id>hippo-selection-forge</id>
+            <name>Hippo Selection 2</name>
+            <url>https://forge.onehippo.org/svn/selection/maven2/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </repository>
         <!-- DISABLED repositories which are often "transitively" pulled in
             and/or were used in the past
         -->

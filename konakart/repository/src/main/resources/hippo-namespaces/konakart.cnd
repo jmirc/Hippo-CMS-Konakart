@@ -9,6 +9,8 @@
 [konakart:ecommerce] > hippostd:folder
   orderable
 
+[konakart:isproduct] > mixin
+
 [konakart:basedocument] > hippo:document, hippostd:publishableSummary, hippostdpubwf:document
 
 [konakart:compoundprice] > hippo:compound, hippostd:relaxed

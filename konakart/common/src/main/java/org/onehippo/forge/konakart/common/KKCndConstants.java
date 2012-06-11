@@ -3,11 +3,17 @@ package org.onehippo.forge.konakart.common;
 public interface KKCndConstants {
 
 
+    String NEW_PRODUCT_FOLDER_TEMPLATE = "new-products-folder";
+    String NEW_PRODUCT_DOCUMENT_TEMPLATE = "new-konakartproduct-document";
+
     String KONAKART_CONFIG_STORE_NAME = "konakart:storeName";
 
+    String ECOMMERCE_DOC_TYPE = "konakart:ecommerce";
     String BASEDOCUMENT_DOC_TYPE = "konakart:basedocument";
 
     String KONAKART_PRODUCT_TYPE_MIXIN = "konakart:producttype";
+
+
 
     String PRODUCT_DOC_TYPE = "konakart:physicalproduct";
     String PRODUCT_NAME = "konakart:ppname";
