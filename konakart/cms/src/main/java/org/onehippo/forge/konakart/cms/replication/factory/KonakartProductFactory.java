@@ -35,8 +35,8 @@ public class KonakartProductFactory {
 
     private static Logger log = LoggerFactory.getLogger(KonakartProductFactory.class);
 
-    public static final String PRODUCTS_FOLDER_PATH = "/content/konakart/ecommerce/products";
-    public static final String PRODUCTS_IMAGES_FOLDER_PATH = "/content/gallery/ecommerce/products";
+    public static final String PRODUCTS_FOLDER_PATH = "/content/konakart/ecommerce/catalogs";
+    public static final String PRODUCTS_IMAGES_FOLDER_PATH = "/content/gallery/ecommerce/catalogs";
 
     protected Session session;
     private NodeHelper nodeHelper;

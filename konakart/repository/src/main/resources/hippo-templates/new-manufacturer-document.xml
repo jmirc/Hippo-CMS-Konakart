@@ -32,7 +32,7 @@
         <sv:value>xpath</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:statement" sv:type="String">
-        <sv:value>//element(*,hipposysedit:namespacefolder)/element(*,mix:referenceable)/element(*,hipposysedit:templatetype)/hipposysedit:prototypes/hipposysedit:prototype[@jcr:primaryType='konakart:manufacterdocument']</sv:value>
+        <sv:value>//element(*,hipposysedit:namespacefolder)/element(*,mix:referenceable)/element(*,hipposysedit:templatetype)/hipposysedit:prototypes/hipposysedit:prototype[@jcr:primaryType='konakart:manufacturerdocument']</sv:value>
     </sv:property>
     <sv:node sv:name="hippo:translation">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">

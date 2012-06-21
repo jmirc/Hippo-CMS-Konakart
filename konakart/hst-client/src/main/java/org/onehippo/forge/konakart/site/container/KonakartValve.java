@@ -81,5 +81,7 @@ public class KonakartValve implements Valve {
         // Set the konakart client
         servletRequest.setAttribute(KKAppEng.KONAKART_KEY, kkAppEng);
 
+        // Instantiate the next context
+        context.invokeNext();
     }
 }

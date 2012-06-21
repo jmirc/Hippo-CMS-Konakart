@@ -1,7 +1,6 @@
 package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.al.KKAppEng;
-import com.konakart.al.KKAppException;
 import com.konakart.al.ProdOptionContainer;
 import com.konakart.al.ReviewMgr;
 import com.konakart.app.KKException;

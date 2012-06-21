@@ -15,3 +15,8 @@
 /demo/site/target
 /demo/content/target
 *.iml
+/konakart-dependency/.idea
+/konakart-dependency/atlassian-ide-plugin.xml
+/konakart/cms/.idea
+/konakart-dependency/.idea
+/konakart-dependency/.idea/inspectionProfiles

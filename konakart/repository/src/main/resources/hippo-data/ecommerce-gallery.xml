@@ -28,7 +28,7 @@
             <sv:value>eCommerce</sv:value>
         </sv:property>
     </sv:node>
-    <sv:node sv:name="products">
+    <sv:node sv:name="catalogs">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hippogallery:stdImageGallery</sv:value>
         </sv:property>
@@ -51,10 +51,21 @@
                 <sv:value>hippo:translation</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:language" sv:type="String">
-                <sv:value/>
+                <sv:value>en</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:message" sv:type="String">
-                <sv:value>Products</sv:value>
+                <sv:value>Catalogs</sv:value>
+            </sv:property>
+        </sv:node>
+        <sv:node sv:name="hippo:translation">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>hippo:translation</sv:value>
+            </sv:property>
+            <sv:property sv:name="hippo:language" sv:type="String">
+                <sv:value>fr</sv:value>
+            </sv:property>
+            <sv:property sv:name="hippo:message" sv:type="String">
+                <sv:value>Catalogues</sv:value>
             </sv:property>
         </sv:node>
     </sv:node>

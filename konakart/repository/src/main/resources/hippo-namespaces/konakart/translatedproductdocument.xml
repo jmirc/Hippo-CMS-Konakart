@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sv:node sv:name="translationproduct" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+<sv:node sv:name="translatedproductdocument" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hipposysedit:templatetype</sv:value>
     </sv:property>
@@ -9,7 +9,7 @@
         <sv:value>hippo:translated</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>50f7659a-560b-4edf-8579-0ff36c0077f5</sv:value>
+        <sv:value>c0f21f98-70bc-46d5-b75b-1817131f9a55</sv:value>
     </sv:property>
     <sv:node sv:name="hipposysedit:nodetype">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
@@ -19,7 +19,7 @@
             <sv:value>hippo:hardhandle</sv:value>
         </sv:property>
         <sv:property sv:name="jcr:uuid" sv:type="String">
-            <sv:value>fb350736-ab84-4bac-80a8-1d21f44b12f7</sv:value>
+            <sv:value>7c70c87e-15b5-4da6-a4d6-d85f24054b9c</sv:value>
         </sv:property>
         <sv:node sv:name="hipposysedit:nodetype">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
@@ -30,7 +30,7 @@
                 <sv:value>hippo:harddocument</sv:value>
             </sv:property>
             <sv:property sv:name="jcr:uuid" sv:type="String">
-                <sv:value>cc9a4298-d7a0-4211-bfc0-1bb873ef4e01</sv:value>
+                <sv:value>26e6c370-7d01-41ef-bc18-7fa366af6266</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
             <sv:property sv:name="hipposysedit:node" sv:type="Boolean">
@@ -65,10 +65,6 @@
                 </sv:property>
                 <sv:property sv:name="hipposysedit:type" sv:type="String">
                     <sv:value>String</sv:value>
-                </sv:property>
-                <sv:property sv:multiple="true" sv:name="hipposysedit:validators" sv:type="String">
-                    <sv:value>non-empty</sv:value>
-                    <sv:value>required</sv:value>
                 </sv:property>
             </sv:node>
             <sv:node sv:name="tprelatedproduct">
@@ -151,13 +147,13 @@
         </sv:property>
         <sv:node sv:name="hipposysedit:prototype">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>konakart:translationproduct</sv:value>
+                <sv:value>konakart:translatedproductdocument</sv:value>
             </sv:property>
             <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
                 <sv:value>hippo:harddocument</sv:value>
             </sv:property>
             <sv:property sv:name="jcr:uuid" sv:type="String">
-                <sv:value>d3b079b0-6b3b-4fb2-a14f-2e901232481d</sv:value>
+                <sv:value>d8b15e52-37ca-43e1-af79-f3c0e583fcea</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
             <sv:property sv:name="hippostd:holder" sv:type="String">
@@ -173,10 +169,10 @@
                 <sv:value/>
             </sv:property>
             <sv:property sv:name="hippostdpubwf:creationDate" sv:type="Date">
-                <sv:value>2012-06-09T07:58:53.844-04:00</sv:value>
+                <sv:value>2012-06-21T00:12:31.363-04:00</sv:value>
             </sv:property>
             <sv:property sv:name="hippostdpubwf:lastModificationDate" sv:type="Date">
-                <sv:value>2012-06-09T07:58:53.843-04:00</sv:value>
+                <sv:value>2012-06-21T00:12:31.362-04:00</sv:value>
             </sv:property>
             <sv:property sv:name="hippostdpubwf:lastModifiedBy" sv:type="String">
                 <sv:value/>
@@ -193,6 +189,14 @@
             <sv:node sv:name="hippotranslation:translations">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>hippotranslation:translations</sv:value>
+                </sv:property>
+            </sv:node>
+            <sv:node sv:name="konakart:tprelatedproduct">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>hippo:mirror</sv:value>
+                </sv:property>
+                <sv:property sv:name="hippo:docbase" sv:type="String">
+                    <sv:value>cafebabe-cafe-babe-cafe-babecafebabe</sv:value>
                 </sv:property>
             </sv:node>
             <sv:node sv:name="konakart:tpabstract">
@@ -235,52 +239,17 @@
                 <sv:value>validator.id</sv:value>
             </sv:property>
             <sv:property sv:name="type" sv:type="String">
-                <sv:value>konakart:translationproduct</sv:value>
+                <sv:value>konakart:translatedproductdocument</sv:value>
             </sv:property>
             <sv:node sv:name="root">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>frontend:plugin</sv:value>
                 </sv:property>
-                <sv:property sv:name="extension.left" sv:type="String">
-                    <sv:value>${cluster.id}.left</sv:value>
-                </sv:property>
-                <sv:property sv:name="extension.right" sv:type="String">
-                    <sv:value>${cluster.id}.right</sv:value>
-                </sv:property>
-                <sv:property sv:name="plugin.class" sv:type="String">
-                    <sv:value>org.hippoecm.frontend.editor.layout.TwoColumn</sv:value>
-                </sv:property>
-                <sv:property sv:multiple="true" sv:name="wicket.extensions" sv:type="String">
-                    <sv:value>extension.left</sv:value>
-                    <sv:value>extension.right</sv:value>
-                </sv:property>
-            </sv:node>
-            <sv:node sv:name="left">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>frontend:plugin</sv:value>
-                </sv:property>
                 <sv:property sv:name="item" sv:type="String">
-                    <sv:value>${cluster.id}.left.item</sv:value>
+                    <sv:value>${cluster.id}.field</sv:value>
                 </sv:property>
                 <sv:property sv:name="plugin.class" sv:type="String">
                     <sv:value>org.hippoecm.frontend.service.render.ListViewPlugin</sv:value>
-                </sv:property>
-                <sv:property sv:name="wicket.id" sv:type="String">
-                    <sv:value>${cluster.id}.left</sv:value>
-                </sv:property>
-            </sv:node>
-            <sv:node sv:name="right">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>frontend:plugin</sv:value>
-                </sv:property>
-                <sv:property sv:name="item" sv:type="String">
-                    <sv:value>${cluster.id}.right.item</sv:value>
-                </sv:property>
-                <sv:property sv:name="plugin.class" sv:type="String">
-                    <sv:value>org.hippoecm.frontend.service.render.ListViewPlugin</sv:value>
-                </sv:property>
-                <sv:property sv:name="wicket.id" sv:type="String">
-                    <sv:value>${cluster.id}.right</sv:value>
                 </sv:property>
             </sv:node>
             <sv:node sv:name="tpname">
@@ -297,51 +266,7 @@
                     <sv:value>org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin</sv:value>
                 </sv:property>
                 <sv:property sv:name="wicket.id" sv:type="String">
-                    <sv:value>${cluster.id}.left.item</sv:value>
-                </sv:property>
-                <sv:node sv:name="cluster.options">
-                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                        <sv:value>frontend:pluginconfig</sv:value>
-                    </sv:property>
-                </sv:node>
-            </sv:node>
-            <sv:node sv:name="tpabstract">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>frontend:plugin</sv:value>
-                </sv:property>
-                <sv:property sv:name="caption" sv:type="String">
-                    <sv:value>Abstract</sv:value>
-                </sv:property>
-                <sv:property sv:name="field" sv:type="String">
-                    <sv:value>tpabstract</sv:value>
-                </sv:property>
-                <sv:property sv:name="plugin.class" sv:type="String">
-                    <sv:value>org.hippoecm.frontend.editor.plugins.field.NodeFieldPlugin</sv:value>
-                </sv:property>
-                <sv:property sv:name="wicket.id" sv:type="String">
-                    <sv:value>${cluster.id}.left.item</sv:value>
-                </sv:property>
-                <sv:node sv:name="cluster.options">
-                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                        <sv:value>frontend:pluginconfig</sv:value>
-                    </sv:property>
-                </sv:node>
-            </sv:node>
-            <sv:node sv:name="tpdescription">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>frontend:plugin</sv:value>
-                </sv:property>
-                <sv:property sv:name="caption" sv:type="String">
-                    <sv:value>Description</sv:value>
-                </sv:property>
-                <sv:property sv:name="field" sv:type="String">
-                    <sv:value>tpdescription</sv:value>
-                </sv:property>
-                <sv:property sv:name="plugin.class" sv:type="String">
-                    <sv:value>org.hippoecm.frontend.editor.plugins.field.NodeFieldPlugin</sv:value>
-                </sv:property>
-                <sv:property sv:name="wicket.id" sv:type="String">
-                    <sv:value>${cluster.id}.left.item</sv:value>
+                    <sv:value>${cluster.id}.field</sv:value>
                 </sv:property>
                 <sv:node sv:name="cluster.options">
                     <sv:property sv:name="jcr:primaryType" sv:type="Name">
@@ -363,7 +288,51 @@
                     <sv:value>org.hippoecm.frontend.editor.plugins.field.NodeFieldPlugin</sv:value>
                 </sv:property>
                 <sv:property sv:name="wicket.id" sv:type="String">
-                    <sv:value>${cluster.id}.right.item</sv:value>
+                    <sv:value>${cluster.id}.field</sv:value>
+                </sv:property>
+                <sv:node sv:name="cluster.options">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>frontend:pluginconfig</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
+            <sv:node sv:name="tpabstract">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>frontend:plugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="caption" sv:type="String">
+                    <sv:value>Abstract</sv:value>
+                </sv:property>
+                <sv:property sv:name="field" sv:type="String">
+                    <sv:value>tpabstract</sv:value>
+                </sv:property>
+                <sv:property sv:name="plugin.class" sv:type="String">
+                    <sv:value>org.hippoecm.frontend.editor.plugins.field.NodeFieldPlugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.id" sv:type="String">
+                    <sv:value>${cluster.id}.field</sv:value>
+                </sv:property>
+                <sv:node sv:name="cluster.options">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>frontend:pluginconfig</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
+            <sv:node sv:name="tpdescription">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>frontend:plugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="caption" sv:type="String">
+                    <sv:value>Description</sv:value>
+                </sv:property>
+                <sv:property sv:name="field" sv:type="String">
+                    <sv:value>tpdescription</sv:value>
+                </sv:property>
+                <sv:property sv:name="plugin.class" sv:type="String">
+                    <sv:value>org.hippoecm.frontend.editor.plugins.field.NodeFieldPlugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.id" sv:type="String">
+                    <sv:value>${cluster.id}.field</sv:value>
                 </sv:property>
                 <sv:node sv:name="cluster.options">
                     <sv:property sv:name="jcr:primaryType" sv:type="Name">
@@ -378,10 +347,10 @@
             <sv:value>hippo:translation</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:language" sv:type="String">
-            <sv:value>fr</sv:value>
+            <sv:value>en</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:message" sv:type="String">
-            <sv:value>Produit</sv:value>
+            <sv:value>Translated Product</sv:value>
         </sv:property>
     </sv:node>
     <sv:node sv:name="hippo:translation">
@@ -389,10 +358,10 @@
             <sv:value>hippo:translation</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:language" sv:type="String">
-            <sv:value>en</sv:value>
+            <sv:value>fr</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:message" sv:type="String">
-            <sv:value>Product</sv:value>
+            <sv:value>Produit Traduit</sv:value>
         </sv:property>
     </sv:node>
 </sv:node>

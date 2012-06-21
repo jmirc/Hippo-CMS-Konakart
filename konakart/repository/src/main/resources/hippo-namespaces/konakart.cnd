@@ -9,14 +9,14 @@
 [konakart:ecommerce] > hippostd:folder
   orderable
 
-[konakart:isproduct] > mixin
-
 [konakart:basedocument] > hippo:document, hippostd:publishableSummary, hippostdpubwf:document
 
-[konakart:compoundprice] > hippo:compound, hippostd:relaxed
-  orderable
-
 [konakart:physicalproduct] > konakart:basedocument, hippostd:relaxed , hippotaxonomy:classifiable
+
+[konakart:manufacturerdocument] > konakart:basedocument, hippostd:relaxed , hippotaxonomy:classifiable
+
+[konakart:translatedproductdocument] > hippostd:relaxed, konakart:basedocument
+    orderable
 
 [konakart:review] > konakart:basedocument, hippostd:relaxed
 

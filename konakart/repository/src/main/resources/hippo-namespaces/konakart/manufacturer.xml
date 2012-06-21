@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sv:node sv:name="manufacterdocument" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+<sv:node sv:name="manufacturerdocument" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hipposysedit:templatetype</sv:value>
     </sv:property>
@@ -151,7 +151,7 @@
         </sv:property>
         <sv:node sv:name="hipposysedit:prototype">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>konakart:manufacterdocument</sv:value>
+                <sv:value>konakart:manufacturerdocument</sv:value>
             </sv:property>
             <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
                 <sv:value>hippo:harddocument</sv:value>
@@ -196,11 +196,6 @@
             <sv:property sv:name="konakart:manufacturerurl" sv:type="String">
                 <sv:value/>
             </sv:property>
-            <sv:node sv:name="hippotranslation:translations">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>hippotranslation:translations</sv:value>
-                </sv:property>
-            </sv:node>
             <sv:node sv:name="konakart:manufacturerimage">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>hippo:resource</sv:value>
@@ -242,7 +237,7 @@
                 <sv:value>validator.id</sv:value>
             </sv:property>
             <sv:property sv:name="type" sv:type="String">
-                <sv:value>konakart:manufacterdocument</sv:value>
+                <sv:value>konakart:manufacturerdocument</sv:value>
             </sv:property>
             <sv:node sv:name="root">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">

@@ -44,7 +44,6 @@ import java.util.List;
 public class KonakartSyncProductJob implements Job {
 
     private static Logger log = LoggerFactory.getLogger(KonakartSyncProductJob.class);
-    public static final String KONAKART_IS_PRODUCT_MIXIN = "konakart:isProduct";
 
     private javax.jcr.Session jcrSession;
 
@@ -291,7 +290,7 @@ public class KonakartSyncProductJob implements Job {
 
             syncProducts.add(syncProduct);
 
-        } else if (seed.isNodeType("hippostd:folder") || seed.isNodeType(KONAKART_IS_PRODUCT_MIXIN)) {
+        } else if (seed.isNodeType("hippostd:folder")) {
             for (NodeIterator nodeIt = seed.getNodes(); nodeIt.hasNext(); ) {
                 Node child = nodeIt.nextNode();
 

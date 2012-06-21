@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sv:node sv:name="konakart" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+<sv:node sv:name="ecommerce" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
-        <sv:value>konakart:ecommerce</sv:value>
+        <sv:value>hippostd:folder</sv:value>
     </sv:property>
     <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
         <sv:value>hippo:harddocument</sv:value>
     </sv:property>
     <sv:property sv:name="jcr:uuid" sv:type="String">
-        <sv:value>08bd4c23-1921-4962-ae5e-7a738bd04d68</sv:value>
+        <sv:value>e02be4eb-e97e-4408-b430-eb41c5747c7d</sv:value>
     </sv:property>
     <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
-    <sv:node sv:name="ecommerce">
+    <sv:property sv:multiple="true" sv:name="hippostd:foldertype" sv:type="String">
+        <sv:value>new-manufacturers-folder</sv:value>
+        <sv:value>new-products-folder</sv:value>
+    </sv:property>
+    <sv:node sv:name="manufacturers">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>konakart:ecommerce</sv:value>
         </sv:property>
@@ -19,22 +23,71 @@
             <sv:value>hippo:translated</sv:value>
         </sv:property>
         <sv:property sv:name="jcr:uuid" sv:type="String">
-            <sv:value>d4f2f54e-1007-498c-8cd5-5db1b3a593f7</sv:value>
+            <sv:value>07bf47a4-19e2-4d6b-8673-5119f4760485</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
         <sv:property sv:multiple="true" sv:name="hippostd:foldertype" sv:type="String">
-            <sv:value>new-products-folder</sv:value>
-            <sv:value>new-manufacturers-folder</sv:value>
+            <sv:value>new-manufacturer-document</sv:value>
         </sv:property>
         <sv:node sv:name="hippo:translation">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
                 <sv:value>hippo:translation</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:language" sv:type="String">
-                <sv:value/>
+                <sv:value>fr</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:message" sv:type="String">
-                <sv:value>eCommerce</sv:value>
+                <sv:value>Manufacturiers</sv:value>
+            </sv:property>
+        </sv:node>
+        <sv:node sv:name="hippo:translation">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>hippo:translation</sv:value>
+            </sv:property>
+            <sv:property sv:name="hippo:language" sv:type="String">
+                <sv:value>en</sv:value>
+            </sv:property>
+            <sv:property sv:name="hippo:message" sv:type="String">
+                <sv:value>Manufacturers</sv:value>
+            </sv:property>
+        </sv:node>
+    </sv:node>
+    <sv:node sv:name="catalogs">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>konakart:ecommerce</sv:value>
+        </sv:property>
+        <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
+            <sv:value>hippo:harddocument</sv:value>
+            <sv:value>hippo:translated</sv:value>
+        </sv:property>
+        <sv:property sv:name="jcr:uuid" sv:type="String">
+            <sv:value>87a0af48-6737-4102-8a3b-670e4b67edce</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
+        <sv:property sv:multiple="true" sv:name="hippostd:foldertype" sv:type="String">
+            <sv:value>new-physicalproduct-document</sv:value>
+            <sv:value>new-products-folder</sv:value>
+        </sv:property>
+        <sv:node sv:name="hippo:translation">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>hippo:translation</sv:value>
+            </sv:property>
+            <sv:property sv:name="hippo:language" sv:type="String">
+                <sv:value>en</sv:value>
+            </sv:property>
+            <sv:property sv:name="hippo:message" sv:type="String">
+                <sv:value>Catalogs</sv:value>
+            </sv:property>
+        </sv:node>
+        <sv:node sv:name="hippo:translation">
+            <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                <sv:value>hippo:translation</sv:value>
+            </sv:property>
+            <sv:property sv:name="hippo:language" sv:type="String">
+                <sv:value>fr</sv:value>
+            </sv:property>
+            <sv:property sv:name="hippo:message" sv:type="String">
+                <sv:value>Catalogues</sv:value>
             </sv:property>
         </sv:node>
     </sv:node>
