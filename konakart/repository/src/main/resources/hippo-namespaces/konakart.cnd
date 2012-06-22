@@ -6,6 +6,9 @@
 <'mix'='http://www.jcp.org/jcr/mix/1.0'>
 <'nt'='http://www.jcp.org/jcr/nt/1.0'>
 
+
+[konakart:isproduct] mixin
+
 [konakart:ecommerce] > hippostd:folder
   orderable
 
@@ -14,9 +17,6 @@
 [konakart:physicalproduct] > konakart:basedocument, hippostd:relaxed , hippotaxonomy:classifiable
 
 [konakart:manufacturerdocument] > konakart:basedocument, hippostd:relaxed , hippotaxonomy:classifiable
-
-[konakart:translatedproductdocument] > hippostd:relaxed, konakart:basedocument
-    orderable
 
 [konakart:review] > konakart:basedocument, hippostd:relaxed
 

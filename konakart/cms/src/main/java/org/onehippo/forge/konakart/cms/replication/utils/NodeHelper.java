@@ -1,9 +1,12 @@
 package org.onehippo.forge.konakart.cms.replication.utils;
 
+import com.konakart.app.Manufacturer;
 import com.konakart.app.Product;
+import com.konakart.appif.ManufacturerIf;
 import org.hippoecm.repository.api.*;
 import org.hippoecm.repository.standardworkflow.DefaultWorkflow;
 import org.hippoecm.repository.standardworkflow.FolderWorkflow;
+import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -225,6 +228,54 @@ public class NodeHelper {
         Node translation = handle.addNode("hippo:translation", "hippo:translation");
         translation.setProperty("hippo:language", "");
         translation.setProperty("hippo:message", product.getName());
+
+        // Create the user
+        Node childNode = handle.addNode(encodingName, docType);
+
+        // Add mixin
+        childNode.addMixin("hippo:harddocument");
+        childNode.addMixin("hippotranslation:translated");
+        childNode.addMixin(KKCndConstants.KONAKART_IS_PRODUCT_MIXIN);
+
+        // Add extra definitions
+        childNode.setProperty("hippo:availability", new String[]{"live", "preview"});
+        childNode.setProperty("hippotranslation:id", UUID.randomUUID().toString());
+        childNode.setProperty("hippotranslation:locale", locale);
+        childNode.setProperty("hippostdpubwf:lastModifiedBy", "admin");
+        childNode.setProperty("hippostd:holder", "admin");
+        childNode.setProperty("hippostdpubwf:lastModificationDate", new GregorianCalendar());
+        childNode.setProperty("hippostdpubwf:creationDate", new GregorianCalendar());
+        childNode.setProperty("hippostdpubwf:publicationDate", new GregorianCalendar());
+        childNode.setProperty("hippostdpubwf:createdBy", ownerId);
+
+        return childNode;
+
+    }
+
+    public Node createOrRetrieveDocument(Node parentNode, ManufacturerIf manufacturer, String docType, String ownerId, String locale) throws RepositoryException {
+
+        // Encode the name to be able to add name with special characters
+        String encodingName = Codecs.encodeNode(manufacturer.getName());
+
+        if (parentNode.hasNode(encodingName)) {
+            Node handleNode = parentNode.getNode(encodingName);
+
+            if (handleNode.hasNode(encodingName)) {
+                return handleNode.getNode(encodingName);
+            }
+
+            return null;
+        }
+
+        // Create the handle
+        Node handle = parentNode.addNode(encodingName, "hippo:handle");
+        handle.addMixin("hippo:hardhandle");
+        handle.addMixin("hippo:translated");
+
+        // Add translation node. This node is used to manager special name
+        Node translation = handle.addNode("hippo:translation", "hippo:translation");
+        translation.setProperty("hippo:language", "");
+        translation.setProperty("hippo:message", manufacturer.getName());
 
         // Create the user
         Node childNode = handle.addNode(encodingName, docType);

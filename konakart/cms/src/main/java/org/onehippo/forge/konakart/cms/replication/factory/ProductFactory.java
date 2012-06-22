@@ -2,6 +2,9 @@ package org.onehippo.forge.konakart.cms.replication.factory;
 
 import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
+import org.onehippo.forge.konakart.cms.replication.utils.NodeHelper;
+import org.onehippo.forge.konakart.cms.replication.utils.NodeImagesHelper;
+import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -15,37 +18,20 @@ public interface ProductFactory {
     void setSession(Session jcrSession) throws RepositoryException;
 
     /**
-     * @param contentRoot set the content root where the document will be created.
+     * Set the Konakart config class. Contains the related information used to add a new product
      */
-    void setContentRoot(String contentRoot);
-
-    /**
-     * @param galleryRoot set the gallery root where the images will be saved
-     */
-    void setGalleryRoot(String galleryRoot);
-
-    /**
-     * @param productFolder set the name of the folder where the product will be created
-     */
-    void setProductFolder(String productFolder);
-
-    /**
-     * Create a review's folder
-     * @param reviewFolder the review's folder to create
-     * @return the encoded review folder name
-     * @throws Exception if the folder has not been created
-     */
-    String createReviewFolder(String reviewFolder) throws Exception;
+    void setKKStoreConfig(final KKStoreConfig kkStoreConfig);
 
     /**
      * Add a product to hippo
      *
+     * @param storeId the store id associated with this product
      * @param product the product to add
      * @param language the language associated to this product
      * @param baseImagePath the path where the konakart images are located
      * @throws Exception if any exceptions occurs
      */
-    void add(Product product, LanguageIf language, String baseImagePath) throws Exception;
+    void add(final String storeId, final Product product, final LanguageIf language, final String baseImagePath) throws Exception;
 
 
 }

@@ -3,25 +3,27 @@ package org.onehippo.forge.konakart.common;
 public interface KKCndConstants {
 
 
-    String NEW_PRODUCT_FOLDER_TEMPLATE = "new-products-folder";
+    String KONAKART_IS_PRODUCT_MIXIN = "konakart:isproduct";
+
+    String NEW_PRODUCTS_FOLDER_TEMPLATE = "new-products-folder";
     String NEW_PRODUCT_DOCUMENT_TEMPLATE = "new-konakartproduct-document";
+
+    String NEW_MANUFACTURERS_FOLDER_TEMPLATE = "new-manufacturers-folder";
+    String NEW_MANUFACTURER_DOCUMENT_TEMPLATE = "new-manufacturer-document";
 
     String KONAKART_CONFIG_STORE_NAME = "konakart:storeName";
 
-    String ECOMMERCE_DOC_TYPE = "konakart:ecommerce";
     String BASEDOCUMENT_DOC_TYPE = "konakart:basedocument";
-
-    String KONAKART_PRODUCT_TYPE_MIXIN = "konakart:producttype";
-
-
+    String ECOMMERCE_DOC_TYPE = "konakart:ecommerce";
 
     String PRODUCT_DOC_TYPE = "konakart:physicalproduct";
+
     String PRODUCT_NAME = "konakart:ppname";
     String PRODUCT_ID = "konakart:ppid";
+    String PRODUCT_ABSTRACT = "konakart:ppabstract";
     String PRODUCT_DESCRIPTION = "konakart:ppdescription";
     String PRODUCT_SKU = "konakart:ppsku";
     String PRODUCT_STORE_ID = "konakart:ppstoreid";
-    String PRODUCT_LANGUAGE_ID = "konakart:pplanguageid";
 
     String PRODUCT_PRICE_0 = "konakart:pppriceextax";
     String PRODUCT_PRICE_1 = "konakart:pppriceextax1";
@@ -40,6 +42,12 @@ public interface KKCndConstants {
     String PRODUCT_CATEGORIES = "konakart:ppcategories";
 
 
+    String MANUFACTURER_DOC_TYPE = "konakart:manufacturerdocument";
+    String MANUFACTURER_ID = "konakart:manufacturerid";
+    String MANUFACTURER_NAME = "konakart:manufacturername";
+    String MANUFACTURER_IMAGE = "konakart:manufacturerimage";
+    String MANUFACTURER_URL = "konakart:manufacturerurl";
+    String MANUFACTURER_CUSTOM = "konakart:manufacturercustom";
 
     String REVIEW_DOC_TYPE = "konakart:review";
     String REVIEW_NAME = "konakart:reviewname";

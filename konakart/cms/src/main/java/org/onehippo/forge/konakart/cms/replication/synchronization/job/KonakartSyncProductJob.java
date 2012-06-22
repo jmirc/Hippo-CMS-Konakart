@@ -12,9 +12,12 @@ import com.konakartadmin.app.AdminProduct;
 import com.konakartadmin.app.KKAdminException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
+import org.hippoecm.frontend.translation.ILocaleProvider;
+import org.hippoecm.repository.api.HippoNodeType;
 import org.hippoecm.repository.quartz.JCRSchedulingContext;
+import org.hippoecm.repository.translation.HippoTranslationNodeType;
 import org.onehippo.forge.konakart.cms.replication.factory.DefaultProductFactory;
-import org.onehippo.forge.konakart.cms.replication.factory.KonakartProductFactory;
+import org.onehippo.forge.konakart.cms.replication.factory.ManufacturerFactory;
 import org.onehippo.forge.konakart.cms.replication.factory.ProductFactory;
 import org.onehippo.forge.konakart.cms.replication.jcr.GalleryProcesssorConfig;
 import org.onehippo.forge.konakart.cms.replication.service.KonakartSynchronizationService;
@@ -40,10 +43,14 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+
+import static org.hippoecm.frontend.translation.ILocaleProvider.*;
 
 public class KonakartSyncProductJob implements Job {
 
     private static Logger log = LoggerFactory.getLogger(KonakartSyncProductJob.class);
+
 
     private javax.jcr.Session jcrSession;
 
@@ -57,8 +64,14 @@ public class KonakartSyncProductJob implements Job {
         // Set the JcrSession
         KonakartResourceScheduler scheduler = (KonakartResourceScheduler) context.getScheduler();
         jcrSession = ((JCRSchedulingContext) scheduler.getCtx()).getSession();
-        String storeId =  context.getJobDetail().getJobDataMap().getString(KonakartSynchronizationService.KK_STORE_ID);
+        String storeId = context.getJobDetail().getJobDataMap().getString(KonakartSynchronizationService.KK_STORE_ID);
+
+        @SuppressWarnings("unchecked")
+        List<? extends ILocaleProvider.HippoLocale> locales =
+                (List<? extends ILocaleProvider.HippoLocale>) context.getJobDetail().getJobDataMap().get(KonakartSynchronizationService.LOCALES);
+
         KKStoreConfig kkStoreConfig = HippoModuleConfig.getConfig().getStoresConfig().get(storeId);
+
 
         if ((kkStoreConfig == null) || !kkStoreConfig.isInitialized()) {
             log.error("The Konakart synchronization service has not well be initialized. Please check the log.");
@@ -72,15 +85,16 @@ public class KonakartSyncProductJob implements Job {
             // Initialize the Konakart engine
             KKEngine.init(jcrSession);
 
-            // Update konakart information
+
             try {
-                updateRepositoryToKonakart(kkStoreConfig);
+                // Synchronize konakart information
+                syncRepositoryToKonakart(kkStoreConfig, locales);
                 kkStoreConfig.updateLastUpdatedTimeRepositoryToKonakart(jcrSession);
             } catch (Exception e) {
                 log.warn("Failed to update Repository to Konakart. ", e);
             }
 
-            // Update hippo product
+            // Synchronize hippo product
             try {
                 updateKonakartToRepository(kkStoreConfig);
                 kkStoreConfig.updateLastUpdatedTimeKonakartToRepository(jcrSession);
@@ -94,22 +108,46 @@ public class KonakartSyncProductJob implements Job {
     }
 
     /**
-     * Copy products from Konakart to Hippo
+     * Synchronize Konakart information to Hippo
      *
      * @param kkStoreConfig the store config
+     * @param locales list of available locales
      * @throws Exception an exception
      */
-    private void updateKonakartToRepository(KKStoreConfig kkStoreConfig) throws Exception {
+    private void syncRepositoryToKonakart(KKStoreConfig kkStoreConfig,
+                                          List<? extends ILocaleProvider.HippoLocale> locales) throws Exception {
 
+        // Synchronize products
+        syncProducts(kkStoreConfig, locales);
+    }
+
+    /**
+     * Copy products from Konakart to Hippo
+     *
+     *
+     * @param kkStoreConfig the store config
+     * @param locales list of available locales
+     * @throws Exception an exception
+     */
+    private void syncProducts(KKStoreConfig kkStoreConfig, List<? extends HippoLocale> locales) throws Exception {
         KKAppEng kkengine = KKEngine.get(KKConstants.KONAKART_DEFAULT_STORE_ID);
 
         // Retrieve the list of languages defined into konakart.
         LanguageIf[] languages = kkengine.getEng().getAllLanguages();
 
+        // Retrieve the content root
+        Node contentRoot = getProductRoot(kkStoreConfig);
+        Locale currentLocale = getLocale(contentRoot, locales);
+
         // For each language defined into Konakart we need to add the product under Hippo
         for (LanguageIf language : languages) {
 
             String storeId = kkStoreConfig.getStoreId();
+
+            if (!StringUtils.equals(currentLocale.toString(), language.getLocale())) {
+                log.error("Unable to map the Konakart locale <" + language.getLocale() +"> with any available hippo locale");
+                continue;
+            }
 
             // Initialize the KKEngine
             kkengine = KKEngine.get(storeId);
@@ -149,9 +187,11 @@ public class KonakartSyncProductJob implements Job {
             // Insert products into konakart
             for (Product product : products.getProductArray()) {
 
+                ProductFactory productFactory = createProductFactory(kkStoreConfig.getProductFactoryClassName());
+
                 // Sync the konakart product
-                KonakartProductFactory productFactory = new KonakartProductFactory();
                 productFactory.setSession(jcrSession);
+                productFactory.setKKStoreConfig(kkStoreConfig);
                 productFactory.add(storeId, product, language, baseImagePath);
             }
         }
@@ -161,10 +201,10 @@ public class KonakartSyncProductJob implements Job {
     /**
      * Synchronize produts status updates and multi-store update
      *
-     * @throws Exception .
      * @param kkStoreConfig the store config
+     * @throws Exception .
      */
-    private void updateRepositoryToKonakart(KKStoreConfig kkStoreConfig) throws Exception {
+    private void updateKonakartToRepository(KKStoreConfig kkStoreConfig) throws Exception {
 
         NodeHelper nodeHelper = new NodeHelper(jcrSession);
 
@@ -173,13 +213,7 @@ public class KonakartSyncProductJob implements Job {
         // Try to retrieve the product by id
         CustomProductMgr productMgr = new CustomProductMgr(kkengine.getEng());
 
-        Node seed = null;
-
-        String productRoot = kkStoreConfig.getContentRoot() + "/" + Codecs.encodeNode(kkStoreConfig.getProductFolder());
-
-        if (jcrSession.itemExists(productRoot)) {
-            seed = jcrSession.getNode(productRoot);
-        }
+        Node seed = getProductRoot(kkStoreConfig);
 
         if (seed != null) {
             List<SyncProduct> syncProducts = new LinkedList<SyncProduct>();
@@ -230,6 +264,84 @@ public class KonakartSyncProductJob implements Job {
                 }
             }
         }
+    }
+
+    private Node getProductRoot(KKStoreConfig kkStoreConfig) throws Exception {
+        Node seed = null;
+
+        String productRoot = kkStoreConfig.getContentRoot() + "/" + Codecs.encodeNode(kkStoreConfig.getProductFolder());
+
+        if (jcrSession.itemExists(productRoot)) {
+            seed = jcrSession.getNode(productRoot);
+        }
+
+        if (seed == null) {
+            String absPath = kkStoreConfig.getContentRoot() + "/" + kkStoreConfig.getProductFolder();
+
+            NodeHelper nodeHelper = new NodeHelper(jcrSession);
+            seed = nodeHelper.createMissingFolders(absPath);
+        }
+
+        return seed;
+    }
+
+    /**
+     * Get the locale of a node representing a translated document, or a compound therein
+     *
+     * @param node Node
+     * @param locales list of available locales
+     * @return Locale (nullable)
+     */
+    public Locale getLocale(Node node, List<? extends ILocaleProvider.HippoLocale> locales) {
+        if (node == null) {
+            return null;
+        }
+
+        Locale locale = null;
+        try {
+
+            // in case of compounds (that should not be translated), move up the tree
+            Node docNode = node;
+            while (!docNode.isNodeType(HippoTranslationNodeType.NT_TRANSLATED)) {
+
+                docNode = docNode.getParent();
+
+                // stop at handle level
+                if (docNode.isNodeType(HippoNodeType.NT_HANDLE)) {
+                    break;
+                }
+            }
+
+            if (!docNode.isNodeType(HippoTranslationNodeType.NT_TRANSLATED)) {
+                log.debug("No translated nodes found for node '{}' and below", HippoTranslationNodeType.LOCALE, docNode.getPath());
+                return null;
+            }
+
+            final String property = docNode.getProperty(HippoTranslationNodeType.LOCALE).getString();
+            if (property.isEmpty()) {
+                log.debug("Property '{}' is empty for node '{}'", HippoTranslationNodeType.LOCALE, docNode.getPath());
+                return null;
+            }
+
+            // create locale
+            final String[] parts = property.split("_");
+
+            if (parts.length >= 1) {
+                String name = parts[0];
+
+                for (HippoLocale hippoLocale : locales) {
+                    if (StringUtils.equals(hippoLocale.getName(), name)) {
+                        locale = hippoLocale.getLocale();
+                        break;
+                    }
+                }
+            }
+
+        } catch (RepositoryException e) {
+            log.warn(e.getMessage(), e);
+        }
+
+        return locale;
     }
 
     private void insertProduct(SyncProduct syncProduct) throws KKAdminException, RepositoryException {
@@ -290,7 +402,7 @@ public class KonakartSyncProductJob implements Job {
 
             syncProducts.add(syncProduct);
 
-        } else if (seed.isNodeType("hippostd:folder")) {
+        } else if (seed.isNodeType("hippostd:folder") || seed.isNodeType(KKCndConstants.KONAKART_IS_PRODUCT_MIXIN)) {
             for (NodeIterator nodeIt = seed.getNodes(); nodeIt.hasNext(); ) {
                 Node child = nodeIt.nextNode();
 
@@ -320,33 +432,33 @@ public class KonakartSyncProductJob implements Job {
     }
 
 
-public static class SyncProduct {
-    private int kProductId;
-    private String hippoUuid;
-    private Date lastModificationDate;
+    public static class SyncProduct {
+        private int kProductId;
+        private String hippoUuid;
+        private Date lastModificationDate;
 
-    public int getkProductId() {
-        return kProductId;
-    }
+        public int getkProductId() {
+            return kProductId;
+        }
 
-    public void setkProductId(int kProductId) {
-        this.kProductId = kProductId;
-    }
+        public void setkProductId(int kProductId) {
+            this.kProductId = kProductId;
+        }
 
-    public String getHippoUuid() {
-        return hippoUuid;
-    }
+        public String getHippoUuid() {
+            return hippoUuid;
+        }
 
-    public void setHippoUuid(String hippoUuid) {
-        this.hippoUuid = hippoUuid;
-    }
+        public void setHippoUuid(String hippoUuid) {
+            this.hippoUuid = hippoUuid;
+        }
 
-    public Date getLastModificationDate() {
-        return lastModificationDate;
-    }
+        public Date getLastModificationDate() {
+            return lastModificationDate;
+        }
 
-    public void setLastModificationDate(Date lastModificationDate) {
-        this.lastModificationDate = lastModificationDate;
+        public void setLastModificationDate(Date lastModificationDate) {
+            this.lastModificationDate = lastModificationDate;
+        }
     }
-}
 }

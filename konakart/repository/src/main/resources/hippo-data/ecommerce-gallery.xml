@@ -28,7 +28,7 @@
             <sv:value>eCommerce</sv:value>
         </sv:property>
     </sv:node>
-    <sv:node sv:name="catalogs">
+    <sv:node sv:name="manufacturers">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hippogallery:stdImageGallery</sv:value>
         </sv:property>
@@ -37,7 +37,7 @@
             <sv:value>hippo:translated</sv:value>
         </sv:property>
         <sv:property sv:name="jcr:uuid" sv:type="String">
-            <sv:value>a94ce0c2-50eb-41db-a211-d806b82ede20</sv:value>
+            <sv:value>9dac880e-d132-4a44-94ac-28472f6b4ad9</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
         <sv:property sv:multiple="true" sv:name="hippostd:foldertype" sv:type="String">
@@ -54,7 +54,7 @@
                 <sv:value>en</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:message" sv:type="String">
-                <sv:value>Catalogs</sv:value>
+                <sv:value>Manufacturers</sv:value>
             </sv:property>
         </sv:node>
         <sv:node sv:name="hippo:translation">
@@ -65,7 +65,7 @@
                 <sv:value>fr</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:message" sv:type="String">
-                <sv:value>Catalogues</sv:value>
+                <sv:value>Manufacturiers</sv:value>
             </sv:property>
         </sv:node>
     </sv:node>
