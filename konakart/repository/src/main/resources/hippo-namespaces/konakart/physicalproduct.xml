@@ -52,7 +52,7 @@
                 <sv:value>hippo:harddocument</sv:value>
             </sv:property>
             <sv:property sv:name="jcr:uuid" sv:type="String">
-                <sv:value>7503c3ac-eacf-4a07-9410-dbb5271cf2eb</sv:value>
+                <sv:value>f0a42447-643a-4b45-925f-c418398a94ad</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
             <sv:property sv:name="hipposysedit:node" sv:type="Boolean">
@@ -61,6 +61,7 @@
             <sv:property sv:multiple="true" sv:name="hipposysedit:supertype" sv:type="String">
                 <sv:value>konakart:basedocument</sv:value>
                 <sv:value>hippostd:relaxed</sv:value>
+                <sv:value>hippotaxonomy:classifiable</sv:value>
             </sv:property>
             <sv:property sv:name="hipposysedit:uri" sv:type="String">
                 <sv:value>http://www.onehippo.org/jcr/konakart/nt/1.0</sv:value>
@@ -431,6 +432,52 @@
                     <sv:value>String</sv:value>
                 </sv:property>
             </sv:node>
+            <sv:node sv:name="ppabstract">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>hipposysedit:field</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:mandatory" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:multiple" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:ordered" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:path" sv:type="String">
+                    <sv:value>konakart:ppabstract</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:primary" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:type" sv:type="String">
+                    <sv:value>hippostd:html</sv:value>
+                </sv:property>
+            </sv:node>
+            <sv:node sv:name="ppspecialpriceextax">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>hipposysedit:field</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:mandatory" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:multiple" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:ordered" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:path" sv:type="String">
+                    <sv:value>konakart:ppspecialpriceextax</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:primary" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:type" sv:type="String">
+                    <sv:value>Double</sv:value>
+                </sv:property>
+            </sv:node>
         </sv:node>
     </sv:node>
     <sv:node sv:name="hipposysedit:prototypes">
@@ -445,7 +492,7 @@
                 <sv:value>hippo:harddocument</sv:value>
             </sv:property>
             <sv:property sv:name="jcr:uuid" sv:type="String">
-                <sv:value>bbff28b6-12a2-4470-b0c5-4a52fe0d1b29</sv:value>
+                <sv:value>18286316-2182-41e5-9243-232c1d55529c</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
             <sv:property sv:name="hippostd:holder" sv:type="String">
@@ -470,7 +517,7 @@
                 <sv:value/>
             </sv:property>
             <sv:property sv:name="hippotranslation:id" sv:type="String">
-                <sv:value>document-type-locale-id</sv:value>
+                <sv:value>physical-product-translation-id</sv:value>
             </sv:property>
             <sv:property sv:name="hippotranslation:locale" sv:type="String">
                 <sv:value>document-type-locale</sv:value>
@@ -505,7 +552,7 @@
             <sv:property sv:name="konakart:ppsku" sv:type="String">
                 <sv:value/>
             </sv:property>
-            <sv:property sv:multiple="true" sv:name="konakart:ppstoreid" sv:type="String"/>
+            <sv:property sv:multiple="true" sv:name="konakart:ppstoreid" sv:type="Double"/>
             <sv:property sv:name="konakart:pptaxclass" sv:type="String">
                 <sv:value/>
             </sv:property>
@@ -513,6 +560,14 @@
                 <sv:value>0.0</sv:value>
             </sv:property>
             <sv:node sv:name="konakart:ppdescription">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>hippostd:html</sv:value>
+                </sv:property>
+                <sv:property sv:name="hippostd:content" sv:type="String">
+                    <sv:value>&lt;html&gt;&lt;body&gt;&lt;/body&gt;&lt;/html&gt;</sv:value>
+                </sv:property>
+            </sv:node>
+            <sv:node sv:name="konakart:ppabstract">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>hippostd:html</sv:value>
                 </sv:property>
@@ -609,7 +664,7 @@
                     <sv:value>ppsku</sv:value>
                 </sv:property>
                 <sv:property sv:name="mode" sv:type="String">
-                    <sv:value>${mode}</sv:value>
+                    <sv:value>view</sv:value>
                 </sv:property>
                 <sv:property sv:name="model.compareTo" sv:type="String">
                     <sv:value>${model.compareTo}</sv:value>
@@ -706,46 +761,28 @@
                     </sv:property>
                 </sv:node>
             </sv:node>
-            <sv:node sv:name="pptaxclass">
+            <sv:node sv:name="ppspecialpriceextax">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>frontend:plugin</sv:value>
                 </sv:property>
                 <sv:property sv:name="caption" sv:type="String">
-                    <sv:value>Tax Class</sv:value>
-                </sv:property>
-                <sv:property sv:name="engine" sv:type="String">
-                    <sv:value>${engine}</sv:value>
+                    <sv:value>Special Price</sv:value>
                 </sv:property>
                 <sv:property sv:name="field" sv:type="String">
-                    <sv:value>pptaxclass</sv:value>
+                    <sv:value>ppspecialpriceextax</sv:value>
                 </sv:property>
                 <sv:property sv:name="mode" sv:type="String">
-                    <sv:value>${mode}</sv:value>
-                </sv:property>
-                <sv:property sv:name="model.compareTo" sv:type="String">
-                    <sv:value>${model.compareTo}</sv:value>
+                    <sv:value>view</sv:value>
                 </sv:property>
                 <sv:property sv:name="plugin.class" sv:type="String">
                     <sv:value>org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin</sv:value>
                 </sv:property>
-                <sv:property sv:name="validator.id" sv:type="String">
-                    <sv:value>${validator.id}</sv:value>
-                </sv:property>
                 <sv:property sv:name="wicket.id" sv:type="String">
                     <sv:value>${cluster.id}.right.item</sv:value>
-                </sv:property>
-                <sv:property sv:name="wicket.model" sv:type="String">
-                    <sv:value>${wicket.model}</sv:value>
                 </sv:property>
                 <sv:node sv:name="cluster.options">
                     <sv:property sv:name="jcr:primaryType" sv:type="Name">
                         <sv:value>frontend:pluginconfig</sv:value>
-                    </sv:property>
-                    <sv:property sv:name="source" sv:type="String">
-                        <sv:value>values</sv:value>
-                    </sv:property>
-                    <sv:property sv:name="valuelist.provider" sv:type="String">
-                        <sv:value>service.valuelist.taxclass</sv:value>
                     </sv:property>
                 </sv:node>
             </sv:node>
@@ -897,6 +934,28 @@
                     </sv:property>
                 </sv:node>
             </sv:node>
+            <sv:node sv:name="ppabstract">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>frontend:plugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="caption" sv:type="String">
+                    <sv:value>Abstract</sv:value>
+                </sv:property>
+                <sv:property sv:name="field" sv:type="String">
+                    <sv:value>ppabstract</sv:value>
+                </sv:property>
+                <sv:property sv:name="plugin.class" sv:type="String">
+                    <sv:value>org.hippoecm.frontend.editor.plugins.field.NodeFieldPlugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.id" sv:type="String">
+                    <sv:value>${cluster.id}.left.item</sv:value>
+                </sv:property>
+                <sv:node sv:name="cluster.options">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>frontend:pluginconfig</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
             <sv:node sv:name="ppdescription">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>frontend:plugin</sv:value>
@@ -934,21 +993,21 @@
                     </sv:property>
                 </sv:node>
             </sv:node>
-            <sv:node sv:name="ppmanufacturer">
+            <sv:node sv:name="pptaxclass">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>frontend:plugin</sv:value>
                 </sv:property>
                 <sv:property sv:name="caption" sv:type="String">
-                    <sv:value>Manufacturer</sv:value>
+                    <sv:value>Tax Class</sv:value>
                 </sv:property>
                 <sv:property sv:name="engine" sv:type="String">
                     <sv:value>${engine}</sv:value>
                 </sv:property>
                 <sv:property sv:name="field" sv:type="String">
-                    <sv:value>ppmanufacturer</sv:value>
+                    <sv:value>pptaxclass</sv:value>
                 </sv:property>
                 <sv:property sv:name="mode" sv:type="String">
-                    <sv:value>${mode}</sv:value>
+                    <sv:value>view</sv:value>
                 </sv:property>
                 <sv:property sv:name="model.compareTo" sv:type="String">
                     <sv:value>${model.compareTo}</sv:value>
@@ -960,7 +1019,7 @@
                     <sv:value>${validator.id}</sv:value>
                 </sv:property>
                 <sv:property sv:name="wicket.id" sv:type="String">
-                    <sv:value>${cluster.id}.left.item</sv:value>
+                    <sv:value>${cluster.id}.right.item</sv:value>
                 </sv:property>
                 <sv:property sv:name="wicket.model" sv:type="String">
                     <sv:value>${wicket.model}</sv:value>
@@ -973,7 +1032,7 @@
                         <sv:value>values</sv:value>
                     </sv:property>
                     <sv:property sv:name="valuelist.provider" sv:type="String">
-                        <sv:value>service.valuelist.manufacturer</sv:value>
+                        <sv:value>service.valuelist.taxclass</sv:value>
                     </sv:property>
                 </sv:node>
             </sv:node>
@@ -1014,21 +1073,21 @@
                     </sv:property>
                 </sv:node>
             </sv:node>
-            <sv:node sv:name="ppweight">
+            <sv:node sv:name="ppmanufacturer">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>frontend:plugin</sv:value>
                 </sv:property>
                 <sv:property sv:name="caption" sv:type="String">
-                    <sv:value>Weight</sv:value>
+                    <sv:value>Manufacturer</sv:value>
                 </sv:property>
                 <sv:property sv:name="engine" sv:type="String">
                     <sv:value>${engine}</sv:value>
                 </sv:property>
                 <sv:property sv:name="field" sv:type="String">
-                    <sv:value>ppweight</sv:value>
+                    <sv:value>ppmanufacturer</sv:value>
                 </sv:property>
                 <sv:property sv:name="mode" sv:type="String">
-                    <sv:value>${mode}</sv:value>
+                    <sv:value>view</sv:value>
                 </sv:property>
                 <sv:property sv:name="model.compareTo" sv:type="String">
                     <sv:value>${model.compareTo}</sv:value>
@@ -1040,7 +1099,7 @@
                     <sv:value>${validator.id}</sv:value>
                 </sv:property>
                 <sv:property sv:name="wicket.id" sv:type="String">
-                    <sv:value>${cluster.id}.right.item</sv:value>
+                    <sv:value>${cluster.id}.left.item</sv:value>
                 </sv:property>
                 <sv:property sv:name="wicket.model" sv:type="String">
                     <sv:value>${wicket.model}</sv:value>
@@ -1048,6 +1107,12 @@
                 <sv:node sv:name="cluster.options">
                     <sv:property sv:name="jcr:primaryType" sv:type="Name">
                         <sv:value>frontend:pluginconfig</sv:value>
+                    </sv:property>
+                    <sv:property sv:name="source" sv:type="String">
+                        <sv:value>values</sv:value>
+                    </sv:property>
+                    <sv:property sv:name="valuelist.provider" sv:type="String">
+                        <sv:value>service.valuelist.manufacturer</sv:value>
                     </sv:property>
                 </sv:node>
             </sv:node>
@@ -1131,6 +1196,43 @@
                     </sv:property>
                 </sv:node>
             </sv:node>
+            <sv:node sv:name="ppweight">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>frontend:plugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="caption" sv:type="String">
+                    <sv:value>Weight</sv:value>
+                </sv:property>
+                <sv:property sv:name="engine" sv:type="String">
+                    <sv:value>${engine}</sv:value>
+                </sv:property>
+                <sv:property sv:name="field" sv:type="String">
+                    <sv:value>ppweight</sv:value>
+                </sv:property>
+                <sv:property sv:name="mode" sv:type="String">
+                    <sv:value>${mode}</sv:value>
+                </sv:property>
+                <sv:property sv:name="model.compareTo" sv:type="String">
+                    <sv:value>${model.compareTo}</sv:value>
+                </sv:property>
+                <sv:property sv:name="plugin.class" sv:type="String">
+                    <sv:value>org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="validator.id" sv:type="String">
+                    <sv:value>${validator.id}</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.id" sv:type="String">
+                    <sv:value>${cluster.id}.right.item</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.model" sv:type="String">
+                    <sv:value>${wicket.model}</sv:value>
+                </sv:property>
+                <sv:node sv:name="cluster.options">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>frontend:pluginconfig</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
             <sv:node sv:name="ppcategories">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>frontend:plugin</sv:value>
@@ -1182,16 +1284,25 @@
                     <sv:value>ppstoreid</sv:value>
                 </sv:property>
                 <sv:property sv:name="mode" sv:type="String">
-                    <sv:value>${mode}</sv:value>
+                    <sv:value>view</sv:value>
                 </sv:property>
                 <sv:property sv:name="model.compareTo" sv:type="String">
                     <sv:value>${model.compareTo}</sv:value>
                 </sv:property>
+                <sv:property sv:name="multiselect.type" sv:type="String">
+                    <sv:value>checkboxes</sv:value>
+                </sv:property>
                 <sv:property sv:name="plugin.class" sv:type="String">
-                    <sv:value>org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin</sv:value>
+                    <sv:value>org.onehippo.forge.selection.frontend.plugin.DynamicMultiSelectPlugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="selectlist.maxrows" sv:type="String">
+                    <sv:value>4</sv:value>
                 </sv:property>
                 <sv:property sv:name="validator.id" sv:type="String">
                     <sv:value>${validator.id}</sv:value>
+                </sv:property>
+                <sv:property sv:name="valuelist.provider" sv:type="String">
+                    <sv:value>service.valuelist.storeid</sv:value>
                 </sv:property>
                 <sv:property sv:name="wicket.id" sv:type="String">
                     <sv:value>${cluster.id}.right.item</sv:value>
@@ -1200,6 +1311,11 @@
                     <sv:value>${wicket.model}</sv:value>
                 </sv:property>
                 <sv:node sv:name="cluster.options">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>frontend:pluginconfig</sv:value>
+                    </sv:property>
+                </sv:node>
+                <sv:node sv:name="valuelist.options">
                     <sv:property sv:name="jcr:primaryType" sv:type="Name">
                         <sv:value>frontend:pluginconfig</sv:value>
                     </sv:property>

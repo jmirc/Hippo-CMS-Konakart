@@ -2,6 +2,7 @@ package org.onehippo.forge.konakart.cms.deriveddatafunction;
 
 import com.konakartadmin.app.AdminProduct;
 import org.hippoecm.repository.ext.DerivedDataFunction;
+import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 
 import javax.jcr.RepositoryException;
@@ -24,7 +25,7 @@ public class SpecialPriceExTaxDerivedDataFunction extends DerivedDataFunction {
 
             AdminProduct adminProduct = kkAdminEngine.getEngine().getProduct(kkAdminEngine.getSession(), ppid);
 
-            parameters.put("specialPriceExTax", new Value[] {getValueFactory().createValue(adminProduct.getSpecialPriceExTax())});
+            parameters.put("specialprice", new Value[] {getValueFactory().createValue(adminProduct.getSpecialPriceExTax())});
         } catch (RepositoryException e) {
             parameters.clear();
         } catch (Exception e) {

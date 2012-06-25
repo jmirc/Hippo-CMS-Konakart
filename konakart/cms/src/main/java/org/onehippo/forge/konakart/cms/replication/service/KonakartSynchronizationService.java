@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.hippoecm.frontend.plugin.IPluginContext;
 import org.hippoecm.frontend.plugin.Plugin;
 import org.hippoecm.frontend.plugin.config.IPluginConfig;
+import org.hippoecm.frontend.service.ServiceTracker;
+import org.hippoecm.frontend.translation.ILocaleProvider;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.cms.replication.synchronization.HippoKonakartDaemonModule;
@@ -14,12 +16,14 @@ import org.slf4j.LoggerFactory;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 public class KonakartSynchronizationService extends Plugin {
 
     private static Logger log = LoggerFactory.getLogger(KonakartSynchronizationService.class);
 
     public static final String KK_STORE_ID = "kkStoreId";
+    public static final String LOCALES = "locales";
     private static final String MASS_SYNC_JOB = "KonkartMassSyncJob";
     private static final String MASS_SYNC_JOB_TRIGGER = MASS_SYNC_JOB + "Trigger";
     private static final String MASS_SYNC_JOB_TRIGGER_GROUP = MASS_SYNC_JOB_TRIGGER + "Group";
@@ -30,8 +34,26 @@ public class KonakartSynchronizationService extends Plugin {
     public KonakartSynchronizationService(IPluginContext context, IPluginConfig config) {
         super(context, config);
 
-        initScheduler();
-        initializeJobs();
+
+        // Retrieve the locale provider
+        context.registerTracker(new ServiceTracker<ILocaleProvider>(ILocaleProvider.class) {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            protected void onServiceAdded(ILocaleProvider service, String name) {
+                initScheduler();
+                initializeJobs(service.getLocales());
+
+                super.onServiceAdded(service, name);
+            }
+
+            @Override
+            protected void onRemoveService(ILocaleProvider service, String name) {
+                super.onRemoveService(service, name);
+            }
+        }, config.getString("locale.id", ILocaleProvider.class.getName()));
+
+
     }
 
     private void initScheduler() {
@@ -40,8 +62,9 @@ public class KonakartSynchronizationService extends Plugin {
 
     /**
      * Initialize each job.
+     * @param locales list of availables locales
      */
-    private void initializeJobs() {
+    private void initializeJobs(List<? extends ILocaleProvider.HippoLocale> locales) {
         Collection<KKStoreConfig> kkStoreConfigs = HippoModuleConfig.load(HippoKonakartDaemonModule.getSession()).getStoresConfig().values();
 
         for (KKStoreConfig kkStoreConfig : kkStoreConfigs) {
@@ -50,6 +73,7 @@ public class KonakartSynchronizationService extends Plugin {
 
                 JobDataMap dataMap = new JobDataMap();
                 dataMap.put(KK_STORE_ID, kkStoreConfig.getStoreId());
+                dataMap.put(LOCALES, locales);
                 jobDetail.setJobDataMap(dataMap);
 
                 if (StringUtils.isNotEmpty(kkStoreConfig.getCronExpression())) {

@@ -44,9 +44,16 @@
         </dependency>
 
         <dependency>
+            <groupId>org.onehippo.forge.utilities</groupId>
+            <artifactId>hippo-utilities-hst</artifactId>
+            <version>${forge.utilities.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.onehippo.cms7.hst.components</groupId>
             <artifactId>hst-jaxrs</artifactId>
             <version>${hippo.hst.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

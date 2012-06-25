@@ -56,7 +56,10 @@
   -->
   <context-param>
     <param-name>hst-beans-annotated-classes</param-name>
-    <param-value>classpath*:org/onehippo/cms7/hst/beans/**/*.class</param-value>
+    <param-value>
+        classpath*:org/onehippo/cms7/hst/beans/**/*.class,
+        classpath*:org/onehippo/forge/konakart/hst/beans/**/*.class
+    </param-value>
   </context-param>
 
   <filter>

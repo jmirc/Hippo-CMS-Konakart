@@ -12,6 +12,8 @@ import java.util.GregorianCalendar;
 
 public class KKStoreConfig {
 
+    public static final String KK_STORE_CONFIG = "KK_STORE_CONFIG";
+
     public static final Logger log = LoggerFactory.getLogger(KKStoreConfig.class);
     public static final String KONAKART_SYNC_DOC_TYPE = "konakart:sync";
 
@@ -169,7 +171,7 @@ public class KKStoreConfig {
     private Node getSyncNode(Session session) throws RepositoryException {
         Node node = session.getNode(getNodePath());
 
-        Node syncNode = null;
+        Node syncNode;
         // Create it
         if (!node.hasNode(KONAKART_SYNC_DOC_TYPE)) {
             syncNode = node.addNode(KONAKART_SYNC_DOC_TYPE, KONAKART_SYNC_DOC_TYPE);

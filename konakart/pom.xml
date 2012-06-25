@@ -21,13 +21,14 @@
         <!-- 7.7.2 versioning -->
         <hippo.repository.version>2.22.05</hippo.repository.version>
         <hippo.hst.version>2.24.04</hippo.hst.version>
-        <hippo.cms.version>2.22.04</hippo.cms.version>
+        <hippo.cms.version>2.22.06</hippo.cms.version>
         <hippo.packages.version>2.22.03</hippo.packages.version>
 
         <hippo.jcr.version>2.2.10-h1</hippo.jcr.version>
 
         <forge.selection.version>2.05.05</forge.selection.version>
-        <forge.taxonomy.version>1.08.03</forge.taxonomy.version>
+        <forge.taxonomy.version>1.08.04-SNAPSHOT</forge.taxonomy.version>
+        <forge.utilities.version>1.01.01</forge.utilities.version>
     </properties>
 
 
@@ -53,6 +54,22 @@
             <releases>
                 <updatePolicy>never</updatePolicy>
             </releases>
+        </repository>
+        <repository>
+            <id>hippo-maven2-snapshots</id>
+            <name>Hippo Maven 2 Snapshots</name>
+            <url>http://maven.onehippo.com/maven2-snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>hippo-maven2-forge</id>
+            <name>Hippo Maven 2 Forge</name>
+            <url>http://maven.onehippo.com/maven2-forge/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
         <repository>
             <id>hippo-selection-forge</id>
@@ -113,11 +130,7 @@
                 <enabled>false</enabled>
             </releases>
         </repository>
-        <repository>
-            <id>Alogient Public Nexus</id>
-            <name>Alogient Maven 2</name>
-            <url>http://www.cameleoncms.com/nexus/content/groups/public/</url>
-        </repository>
+
     </repositories>
 
 </project>

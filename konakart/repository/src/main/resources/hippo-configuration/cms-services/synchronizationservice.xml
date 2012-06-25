@@ -24,30 +24,4 @@
     <sv:property sv:multiple="true" sv:name="stores" sv:type="String">
         <sv:value>store1</sv:value>
     </sv:property>
-    <sv:node sv:name="producttypenamespaces">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>frontend:pluginconfig</sv:value>
-        </sv:property>
-        <sv:property sv:name="bookableproduct" sv:type="String">
-            <sv:value/>
-        </sv:property>
-        <sv:property sv:name="bundle" sv:type="String">
-            <sv:value/>
-        </sv:property>
-        <sv:property sv:name="bundlefreeshipping" sv:type="String">
-            <sv:value/>
-        </sv:property>
-        <sv:property sv:name="digitaldownload" sv:type="String">
-            <sv:value/>
-        </sv:property>
-        <sv:property sv:name="giftcertificate" sv:type="String">
-            <sv:value/>
-        </sv:property>
-        <sv:property sv:name="physicalproduct" sv:type="String">
-            <sv:value>konakart:physicalproduct</sv:value>
-        </sv:property>
-        <sv:property sv:name="physicalproductfreeshipping" sv:type="String">
-            <sv:value/>
-        </sv:property>
-    </sv:node>
 </sv:node>

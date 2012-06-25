@@ -99,8 +99,6 @@ public class KKEngineServiceImpl implements KKEngineService {
 
     @Override
     public int validKKSession(@Nonnull HttpServletRequest servletRequest, @Nonnull HttpServletResponse servletResponse) throws HstComponentException {
-        HstRequest request = (HstRequest) servletRequest;
-        HstResponse response = (HstResponse) servletResponse;
 
         HttpSession session = servletRequest.getSession();
         KKAppEng kkAppEng = (KKAppEng) session.getAttribute(KKAppEng.KONAKART_KEY);
@@ -129,7 +127,7 @@ public class KKEngineServiceImpl implements KKEngineService {
                 kkAppEng.getCustomerMgr().logout();
 
                 // Ensure that the guest customer is the one in the cookie
-                kkCookieServiceImpl.manageCookieLogout(request, response, kkAppEng);
+                kkCookieServiceImpl.manageCookieLogout(servletRequest, servletResponse, kkAppEng);
 
                 // Set recently viewed products for the guest customer if changed while logged in
                 CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(KKCheckoutConstants.TAG_PRODUCTS_VIEWED);

@@ -11,6 +11,7 @@
     <description>Konakart Tag Library</description>
 
     <tag>
+        <description>This param tag is used to format a price.</description>
         <name>formatPrice</name>
         <tag-class>org.onehippo.forge.konakart.hst.tags.FormatPriceTag</tag-class>
         <body-content>empty</body-content>
@@ -20,6 +21,47 @@
             <rtexprvalue>true</rtexprvalue>
             <type>java.math.BigDecimal</type>
             <description>Price to format</description>
+        </attribute>
+    </tag>
+    <tag>
+        <description>This param tag is used to calculate the rating value for a konakart product</description>
+        <name>rating</name>
+        <tag-class>org.onehippo.forge.konakart.hst.tags.RatingTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>The variable name of the rating tag</description>
+            <name>var</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>product</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>org.onehippo.forge.konakart.hst.beans.KKProductDocument</type>
+            <description>Konakart Product</description>
+        </attribute>
+    </tag>
+    <tag>
+        <description>This tag is used to add a product to the cart</description>
+        <name>addToBasketActionURL</name>
+        <tag-class>org.onehippo.forge.konakart.hst.tags.KKAddToBasketActionURLTag</tag-class>
+        <tei-class>org.onehippo.forge.konakart.hst.tags.KKAddToBasketActionURLTag$TEI</tei-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>The variable name of the actionURL</description>
+            <name>var</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>product</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>org.onehippo.forge.konakart.hst.beans.KKProductDocument</type>
+            <description>Konakart Product</description>
         </attribute>
     </tag>
 

@@ -64,12 +64,15 @@ public class KonakartValve implements Valve {
 
 
             // Check if the store config has been created under /hippo-configuration/cms-services/KonakartSynchronizationService
-            if (!HippoModuleConfig.getConfig().getStoresConfig(jcsSession).containsKey(storeName)) {
-                throw new IllegalStateException("Please create a new storeConfig named " + storeName +
-                        " within /hippo-configuration/cms-services/KonakartSynchronizationService");
-            }
+            KKStoreConfig kkStoreConfig;
+            try {
+                kkStoreConfig = HippoModuleConfig.getConfig().getStoreConfigByName(jcsSession, storeName);
 
-            KKStoreConfig kkStoreConfig = HippoModuleConfig.getConfig().getStoresConfig().get(storeName);
+                servletRequest.setAttribute(KKStoreConfig.KK_STORE_CONFIG, kkStoreConfig);
+            } catch (RepositoryException e) {
+                throw new IllegalStateException("Failed to load the storeConfig. Please verify if a new storeConfig named "
+                        + storeName + " within /hippo-configuration/cms-services/KonakartSynchronizationService");
+            }
 
             // Initialize Konakart Engine
             kkAppEng = KKServiceHelper.getKKEngineService().initKKEngine(servletRequest, servletResponse, kkStoreConfig);
@@ -81,5 +84,9 @@ public class KonakartValve implements Valve {
         // Set the konakart client
         servletRequest.setAttribute(KKAppEng.KONAKART_KEY, kkAppEng);
 
+
+
+        // Instantiate the next context
+        context.invokeNext();
     }
 }
