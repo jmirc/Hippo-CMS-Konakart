@@ -14,7 +14,7 @@ public class KKAddToBasketActionURLTag extends HstActionURLTag {
 
     private KKProductDocument kkProductDocument;
 
-    public void setKkProductDocument(KKProductDocument kkProductDocument) {
+    public void setProduct(KKProductDocument kkProductDocument) {
         this.kkProductDocument = kkProductDocument;
     }
 
@@ -22,8 +22,8 @@ public class KKAddToBasketActionURLTag extends HstActionURLTag {
     protected void setUrlParameters(HstURL url) {
         super.setUrlParameters(url);
 
-        super.addParameter("action", KKCheckoutConstants.ACTIONS.ADD_TO_BASKET.name());
-        super.addParameter("prodId", String.valueOf(kkProductDocument.getProductId()));
+        url.setParameter("action", KKCheckoutConstants.ACTIONS.ADD_TO_BASKET.name());
+        url.setParameter("prodId", String.valueOf(kkProductDocument.getProductId()));
     }
 
     /**
