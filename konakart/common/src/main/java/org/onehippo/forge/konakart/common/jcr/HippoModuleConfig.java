@@ -15,7 +15,6 @@ public class HippoModuleConfig {
     public static final Logger log = LoggerFactory.getLogger(HippoModuleConfig.class);
 
     public static final String SYNC_CONFIG_NODE_PATH = "/hippo:configuration/hippo:frontend/cms/cms-services/KonakartSynchronizationService";
-    public static final String PRODUCT_TYPE_NAMESPACES_PATH = SYNC_CONFIG_NODE_PATH + "/producttypenamespaces";
 
     public static final String DEFAULT_PRODUCT_FOLDER_PROPERTY = "default.product.folder";
     public static final String DEFAULT_REVIEW_FOLDER_PROPERTY = "default.review.folder";
@@ -26,6 +25,7 @@ public class HippoModuleConfig {
 
     public static final String KONAKART_KONAKART_PATH = "/konakart:konakart";
     public static final String KONAKART_STORES_PATH = KONAKART_KONAKART_PATH + "/konakart:stores";
+    public static final String KONAKART_PRODUCT_TYPE_NAMESPACES_PATH = KONAKART_KONAKART_PATH + "/konakart:producttypenamespaces";
 
     public static final String STORE_CONTENT_ROOT_PROPERTY = "konakart:contentroot";
     public static final String STORE_GALLERY_ROOT_PROPERTY = "konakart:galleryroot";
@@ -150,7 +150,7 @@ public class HippoModuleConfig {
      */
     private void loadProductTypeNamespaces(Session session) {
         try {
-            Node node = session.getNode(PRODUCT_TYPE_NAMESPACES_PATH);
+            Node node = session.getNode(KONAKART_PRODUCT_TYPE_NAMESPACES_PATH);
 
             KKCndConstants.PRODUCT_TYPE[] product_types = KKCndConstants.PRODUCT_TYPE.values();
 

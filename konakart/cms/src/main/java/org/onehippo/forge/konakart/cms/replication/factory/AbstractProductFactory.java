@@ -93,7 +93,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         if (StringUtils.isEmpty(productDocType)) {
             log.error("No product namespace has been associated for the product namespace : "
                     + product_type.getNamespace() + ". Please set the it within the pluginconfig located " +
-                    "at /hippo:configuration/hippo:frontend/cms/cms-services/KonakartSynchronizationService/producttypenamespaces");
+                    "at " + HippoModuleConfig.KONAKART_PRODUCT_TYPE_NAMESPACES_PATH);
             return;
         }
 

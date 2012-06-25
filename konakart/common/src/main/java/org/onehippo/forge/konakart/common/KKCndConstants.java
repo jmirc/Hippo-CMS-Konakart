@@ -3,7 +3,7 @@ package org.onehippo.forge.konakart.common;
 public interface KKCndConstants {
 
 
-    String KONAKART_IS_PRODUCT_MIXIN = "konakart:isproduct";
+    String PRODUCT_TYPE_MIXIN = "konakart:isproduct";
 
     String NEW_PRODUCTS_FOLDER_TEMPLATE = "new-products-folder";
     String NEW_PRODUCT_DOCUMENT_TEMPLATE = "new-konakartproduct-document";
@@ -16,6 +16,10 @@ public interface KKCndConstants {
     String BASEDOCUMENT_DOC_TYPE = "konakart:basedocument";
     String ECOMMERCE_DOC_TYPE = "konakart:ecommerce";
 
+    //############################################
+    //    PRODUCT DEFINITIONS
+    //############################################
+
     String PRODUCT_DOC_TYPE = "konakart:physicalproduct";
 
     String PRODUCT_NAME = "konakart:ppname";
@@ -25,6 +29,7 @@ public interface KKCndConstants {
     String PRODUCT_SKU = "konakart:ppsku";
     String PRODUCT_STORE_ID = "konakart:ppstoreid";
 
+    String PRODUCT_SPECIAL_PRICE = "konakart:ppspecialpriceextax";
     String PRODUCT_PRICE_0 = "konakart:pppriceextax";
     String PRODUCT_PRICE_1 = "konakart:pppriceextax1";
     String PRODUCT_PRICE_2 = "konakart:pppriceextax2";
@@ -41,6 +46,10 @@ public interface KKCndConstants {
     String PRODUCT_IMAGES = "konakart:ppimages";
     String PRODUCT_CATEGORIES = "konakart:ppcategories";
 
+
+    //############################################
+    //    MANUFACTURER DEFINITIONS
+    //############################################
 
     String MANUFACTURER_DOC_TYPE = "konakart:manufacturerdocument";
     String MANUFACTURER_ID = "konakart:manufacturerid";
@@ -65,13 +74,13 @@ public interface KKCndConstants {
     // Product Type constants
     static enum PRODUCT_TYPE {
         ALL(-1, "All", "All"),
-        PHYSICAL_PRODUCT(0, "Physical Product", "physicalproduct"),
-        DIGITAL_DOWNLOAD(1, "Digital Download", "digitaldownload"),
-        PHYSICAL_PROD_FREE_SHIPPING(2, "Physical Prod-Free Shipping", "physicalproductfreeshipping"),
-        BUNDLE(3, "Bundle", "bundle"),
-        BUNDLE_FREE_SHIPPING(4, "Bundle Free Shipping", "bundlefreeshipping"),
-        GIFT_CERTIFICATE(5, "Gift Certificate", "giftcertificate"),
-        BOOKABLE_PRODUCT(6, "Bookable Product", "bookableproduct");
+        PHYSICAL_PRODUCT(0, "Physical Product", "konakart:physicalproduct"),
+        DIGITAL_DOWNLOAD(1, "Digital Download", "konakart:digitaldownload"),
+        PHYSICAL_PROD_FREE_SHIPPING(2, "Physical Prod-Free Shipping", "konakart:physicalproductfreeshipping"),
+        BUNDLE(3, "Bundle", "konakart:bundle"),
+        BUNDLE_FREE_SHIPPING(4, "Bundle Free Shipping", "konakart:bundlefreeshipping"),
+        GIFT_CERTIFICATE(5, "Gift Certificate", "konakart:giftcertificate"),
+        BOOKABLE_PRODUCT(6, "Bookable Product", "konakart:bookableproduct");
 
         private int type;
         private String name;

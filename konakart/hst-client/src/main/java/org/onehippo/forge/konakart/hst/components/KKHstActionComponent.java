@@ -120,7 +120,8 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
      * @param response the Hst Response
      */
     protected void redirectAfterProductAddedToBasket(boolean added, @Nonnull HstRequest request,
-                                                     @Nonnull HstResponse response) {
+                                                              @Nonnull HstResponse response) {
+
     }
 
 
@@ -134,7 +135,8 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
      * @param response the Hst Response
      */
     protected void redirectAfterProductAddedToWishList(boolean added, @Nonnull HstRequest request,
-                                                       @Nonnull HstResponse response) {
+                                                                @Nonnull HstResponse response) {
+
     }
 
 

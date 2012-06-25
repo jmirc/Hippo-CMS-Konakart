@@ -33,17 +33,31 @@
   - konakart:lastupdatedtimerepositorytokonnakart (date)
   - konakart:lastupdatedtimekonakarttorepository (date)
 
+
+[konakart:producttypenamespaces] > mix:referenceable, mix:versionable, nt:base
+  - konakart:bookableproduct (string)
+  - konakart:bundle (string)
+  - konakart:bundlefreeshipping (string)
+  - konakart:digitaldownload (string)
+  - konakart:giftcertificate (string)
+  - konakart:physicalproduct (string)
+  - konakart:physicalproductfreeshipping (string)
+
+
 [konakart:store] > mix:referenceable, mix:versionable, nt:base
   - konakart:contentroot (string) mandatory
   - konakart:galleryroot (string) mandatory
   - konakart:storeid (string) mandatory
   - konakart:catalogid (string)
   + konakart:sync (konakart:sync) = konakart:sync version
+  + konakart:producttypenamespaces (konakart:producttypenamespaces) = konakart:producttypenamespaces version
 
 [konakart:stores] > mix:referenceable, mix:versionable, nt:base
   + * (konakart:store) = konakart:store version
 
+
 [konakart:konakart] > mix:referenceable, mix:versionable, nt:base
   + konakart:clientengine (konakart:clientengine) = konakart:clientengine version
   + konakart:stores (konakart:stores) = konakart:stores version
+  + konakart:producttypenamespaces (konakart:producttypenamespaces) = konakart:producttypenamespaces version
 

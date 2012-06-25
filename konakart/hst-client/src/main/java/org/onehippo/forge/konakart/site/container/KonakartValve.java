@@ -67,6 +67,8 @@ public class KonakartValve implements Valve {
             KKStoreConfig kkStoreConfig;
             try {
                 kkStoreConfig = HippoModuleConfig.getConfig().getStoreConfigByName(jcsSession, storeName);
+
+                servletRequest.setAttribute(KKStoreConfig.KK_STORE_CONFIG, kkStoreConfig);
             } catch (RepositoryException e) {
                 throw new IllegalStateException("Failed to load the storeConfig. Please verify if a new storeConfig named "
                         + storeName + " within /hippo-configuration/cms-services/KonakartSynchronizationService");
@@ -81,6 +83,8 @@ public class KonakartValve implements Valve {
 
         // Set the konakart client
         servletRequest.setAttribute(KKAppEng.KONAKART_KEY, kkAppEng);
+
+
 
         // Instantiate the next context
         context.invokeNext();

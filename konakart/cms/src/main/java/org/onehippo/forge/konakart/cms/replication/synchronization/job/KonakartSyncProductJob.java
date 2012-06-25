@@ -17,7 +17,6 @@ import org.hippoecm.repository.api.HippoNodeType;
 import org.hippoecm.repository.quartz.JCRSchedulingContext;
 import org.hippoecm.repository.translation.HippoTranslationNodeType;
 import org.onehippo.forge.konakart.cms.replication.factory.DefaultProductFactory;
-import org.onehippo.forge.konakart.cms.replication.factory.ManufacturerFactory;
 import org.onehippo.forge.konakart.cms.replication.factory.ProductFactory;
 import org.onehippo.forge.konakart.cms.replication.jcr.GalleryProcesssorConfig;
 import org.onehippo.forge.konakart.cms.replication.service.KonakartSynchronizationService;
@@ -145,7 +144,7 @@ public class KonakartSyncProductJob implements Job {
             String storeId = kkStoreConfig.getStoreId();
 
             if (!StringUtils.equals(currentLocale.toString(), language.getLocale())) {
-                log.error("Unable to map the Konakart locale <" + language.getLocale() +"> with any available hippo locale");
+                log.info("Unable to map the Konakart locale <" + language.getLocale() +"> with any available hippo locale");
                 continue;
             }
 
@@ -402,7 +401,7 @@ public class KonakartSyncProductJob implements Job {
 
             syncProducts.add(syncProduct);
 
-        } else if (seed.isNodeType("hippostd:folder") || seed.isNodeType(KKCndConstants.KONAKART_IS_PRODUCT_MIXIN)) {
+        } else if (seed.isNodeType("hippostd:folder") || seed.isNodeType(KKCndConstants.PRODUCT_TYPE_MIXIN)) {
             for (NodeIterator nodeIt = seed.getNodes(); nodeIt.hasNext(); ) {
                 Node child = nodeIt.nextNode();
 

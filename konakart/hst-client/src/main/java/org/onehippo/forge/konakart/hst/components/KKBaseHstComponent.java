@@ -1,7 +1,6 @@
 package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.al.KKAppEng;
-import com.konakart.appif.BasketIf;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
 import org.hippoecm.hst.content.beans.query.HstQuery;
 import org.hippoecm.hst.content.beans.query.HstQueryManager;
@@ -15,6 +14,7 @@ import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
 import org.hippoecm.hst.util.HstResponseUtils;
+import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
@@ -57,6 +57,21 @@ public class KKBaseHstComponent extends BaseHstComponent {
         return checkNotNull(kkAppEng);
     }
 
+
+    /**
+     * Retrieve the current StoreConfig from the HstRequest
+     * The config has been set by the Konakart Valve
+     *
+     * @param request the hst request
+     * @return the Konakart store config.
+     */
+    @Nonnull
+    public KKStoreConfig getKKStoreConfig(@Nonnull HstRequest request) {
+        KKStoreConfig kkStoreConfig = (KKStoreConfig) request.getAttribute(KKStoreConfig.KK_STORE_CONFIG);
+
+        return checkNotNull(kkStoreConfig);
+    }
+
     /**
      * Check if the current customer is a guest or a registered customer
      *
@@ -66,64 +81,6 @@ public class KKBaseHstComponent extends BaseHstComponent {
     public boolean isGuestCustomer(@Nonnull HstRequest request) {
         return KKServiceHelper.getKKCustomerService().isGuestCustomer(request);
     }
-
-    /**
-     * Find and retrieve the associated KKProductDoucment from a product id.
-     *
-     * @param request   the Hst Request
-     * @param productId id of the Konakart product to find
-     * @return the Hippo Bean
-     */
-    protected KKProductDocument getProductDocumentById(HstRequest request, int productId) {
-
-        HippoBean scope = super.getSiteContentBaseBean(request);
-
-        HstQueryManager queryManager = getQueryManager(request);
-
-        try {
-            HstQuery hstQuery = queryManager.createQuery(scope, "myhippoproject:productdocument");
-            Filter filter = hstQuery.createFilter();
-            filter.addEqualTo("myhippoproject:konakart/konakart:id", (long) productId);
-
-            hstQuery.setFilter(filter);
-
-            HstQueryResult queryResult = hstQuery.execute();
-
-            // No result
-            if (queryResult.getTotalSize() == 0) {
-                return null;
-            }
-
-            return (KKProductDocument) queryResult.getHippoBeans().nextHippoBean();
-
-        } catch (QueryException e) {
-            log.error("Failed to find the Hippo product document for the productId {} - {}", productId, e.toString());
-        }
-
-        return null;
-    }
-
-    /**
-     * Generate the HstLink for the product defined by his id
-     *
-     * @param request   Hst Request
-     * @param productId id of the product
-     * @return the generated HstLink or empty if the product id doesn't not exist.
-     */
-    protected String generateHstLink(HstRequest request, int productId) {
-        // getting hold of the link creator
-        HstLinkCreator linkCreator = request.getRequestContext().getHstLinkCreator();
-
-        // The associated Hippo Bean
-        KKProductDocument document = getProductDocumentById(request, productId);
-
-        // create HstLink
-        HstLink link = linkCreator.create(document, request.getRequestContext());
-
-        // create the url String
-        return link.toUrlForm(request.getRequestContext(), false);
-    }
-
 
     /**
      * @return the siteMapItemRefId associated with the detail cart.
@@ -161,21 +118,40 @@ public class KKBaseHstComponent extends BaseHstComponent {
         HstResponseUtils.sendRedirectOrForward(request, response, link.getPath());
     }
 
-
     /**
-     * Set for each products into the cart, the path of the associated Hippo Bean
+     * Find and retrieve the associated KKProductDoucment from a product id.
      *
-     * @param request the hst request
+     * @param request   the Hst Request
+     * @param productId id of the Konakart product to find
+     * @return the Hippo Bean
      */
-    private void updateBaskets(HstRequest request) {
-        // Retrieve the list of products into the basket
-        BasketIf[] basketIfs = KKServiceHelper.getKKCustomerService().getCurrentCustomer(request).getBasketItems();
+    protected KKProductDocument getProductDocumentById(HstRequest request, int productId) {
 
-        for (BasketIf basketIf : basketIfs) {
-            // Set the path of a product
-            basketIf.setCustom1(generateHstLink(request, basketIf.getProduct().getId()));
+        HippoBean scope = super.getSiteContentBaseBean(request);
+
+        HstQueryManager queryManager = getQueryManager(request);
+
+        try {
+            HstQuery hstQuery = queryManager.createQuery(scope, "myhippoproject:productdocument");
+            Filter filter = hstQuery.createFilter();
+            filter.addEqualTo("myhippoproject:konakart/konakart:id", (long) productId);
+
+            hstQuery.setFilter(filter);
+
+            HstQueryResult queryResult = hstQuery.execute();
+
+            // No result
+            if (queryResult.getTotalSize() == 0) {
+                return null;
+            }
+
+            return (KKProductDocument) queryResult.getHippoBeans().nextHippoBean();
+
+        } catch (QueryException e) {
+            log.error("Failed to find the Hippo product document for the productId {} - {}", productId, e.toString());
         }
-    }
 
+        return null;
+    }
 
 }

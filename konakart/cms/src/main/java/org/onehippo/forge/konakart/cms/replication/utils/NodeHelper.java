@@ -1,6 +1,5 @@
 package org.onehippo.forge.konakart.cms.replication.utils;
 
-import com.konakart.app.Manufacturer;
 import com.konakart.app.Product;
 import com.konakart.appif.ManufacturerIf;
 import org.hippoecm.repository.api.*;
@@ -235,7 +234,7 @@ public class NodeHelper {
         // Add mixin
         childNode.addMixin("hippo:harddocument");
         childNode.addMixin("hippotranslation:translated");
-        childNode.addMixin(KKCndConstants.KONAKART_IS_PRODUCT_MIXIN);
+        childNode.addMixin(KKCndConstants.PRODUCT_TYPE_MIXIN);
 
         // Add extra definitions
         childNode.setProperty("hippo:availability", new String[]{"live", "preview"});

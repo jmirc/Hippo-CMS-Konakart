@@ -25,11 +25,11 @@
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hst:containercomponent</sv:value>
       </sv:property>
-      <sv:property sv:name="hst:xtype" sv:type="String">
-        <sv:value>HST.UnorderedList</sv:value>
-      </sv:property>
       <sv:property sv:name="hst:componentclassname" sv:type="String">
         <sv:value>org.hippoecm.hst.pagecomposer.builtin.components.StandardContainerComponent</sv:value>
+      </sv:property>
+      <sv:property sv:name="hst:xtype" sv:type="String">
+        <sv:value>HST.UnorderedList</sv:value>
       </sv:property>
     </sv:node>
   </sv:node>
