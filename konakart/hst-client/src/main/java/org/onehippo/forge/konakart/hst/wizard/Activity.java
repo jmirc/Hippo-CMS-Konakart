@@ -10,9 +10,18 @@ public interface Activity {
     static final String GLOBALMESSAGE = "globalmessage";
 
     /**
-     * @return the spring bean name
+     * Set to true if the activity accepts an empty state, otherwise set to false
+     *
+     * @param acceptEmtpyState the state to set
      */
-    String getBeanName();
+    void setAcceptEmptyState(boolean acceptEmtpyState);
+
+    /**
+     * Set the step accepted by this activity
+     *
+     * @param acceptState the step to set
+     */
+    void setAcceptState(String acceptState);
 
     /**
      * Check if the activity accepts this state.
@@ -24,13 +33,28 @@ public interface Activity {
 
     /**
      * Initialize the activity with the processor context object
+     *
      * @param processorContext the processor context
      */
     void initialize(ProcessorContext processorContext);
 
     /**
-     * Compute the next state that will be executed by the processor
+     * Set the next state when the customer is logged
      *
+     * @param nextLoggedState the next state to set.
+     */
+    void setNextLoggedState(String nextLoggedState);
+
+    /**
+     * Set the next state when the customer is not logged
+     *
+     * @param nextNonLoggedState the next state to set.
+     */
+    void setNextNonLoggedState(String nextNonLoggedState);
+
+    /**
+     * Compute the next state that will be executed by the processor
+     * <p/>
      * This method is only called if the activity has accepted the state
      *
      * @return the next state.

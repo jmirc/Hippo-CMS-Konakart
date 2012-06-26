@@ -36,16 +36,23 @@ public class KonakartValve implements Valve {
         HttpServletRequest servletRequest = context.getServletRequest();
         HttpServletResponse servletResponse = context.getServletResponse();
 
-        Session jcsSession;
+        Session jcrSession;
 
         try {
-            jcsSession = context.getRequestContext().getSession();
+            jcrSession = context.getRequestContext().getSession();
         } catch (RepositoryException e) {
             throw new IllegalStateException("Failed to retrieve the Jcr Session", e);
         }
 
+        // Pre-load the checkout activities
+        try {
+            HippoModuleConfig.getConfig().preLoadActivityList(jcrSession);
+        } catch (RepositoryException e) {
+            throw new IllegalStateException("Failed to load the list of activities. ", e);
+        }
+
         // Initialize internal Konakart Engine configuration
-        KKEngine.init(jcsSession);
+        KKEngine.init(jcrSession);
 
         // Retrieve the Konakart client
         KKAppEng kkAppEng = KKServiceHelper.getKKEngineService().getKKAppEng(servletRequest);
@@ -66,7 +73,7 @@ public class KonakartValve implements Valve {
             // Check if the store config has been created under /hippo-configuration/cms-services/KonakartSynchronizationService
             KKStoreConfig kkStoreConfig;
             try {
-                kkStoreConfig = HippoModuleConfig.getConfig().getStoreConfigByName(jcsSession, storeName);
+                kkStoreConfig = HippoModuleConfig.getConfig().getStoreConfigByName(jcrSession, storeName);
 
                 servletRequest.setAttribute(KKStoreConfig.KK_STORE_CONFIG, kkStoreConfig);
             } catch (RepositoryException e) {

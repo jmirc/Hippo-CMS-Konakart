@@ -1,8 +1,7 @@
 <%@ include file="/WEB-INF/jspf/htmlTags.jspf" %>
 
 <hst:headContribution category="jsInternal">
-    <hst:link var="jquery" path="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"/>
-    <script src="${jquery}" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 </hst:headContribution>
 
 <hst:headContribution category="jsInternal">
@@ -10,29 +9,29 @@
     <script src="${cartJs}" type="text/javascript"></script>
 </hst:headContribution>
 
+<hst:headContribution category="jsInternal">
+    <hst:link var="rateJs" path="/js/rate.js"/>
+    <script src="${rateJs}" type="text/javascript"></script>
+</hst:headContribution>
 
-<hst:actionURL var="addToBasket">
-    <hst:param name="action" value="ADD_TO_BASKET"/>
-    <hst:param name="prodId" value="${document.productId}"/>
-</hst:actionURL>
-
+<kk:addToBasketActionURL product="${document}" var="addToBasket"/>
 
 <hst:link var="prdImgLink" hippobean="${document.mainImage.original}"/>
 <hst:link var="prdlink" hippobean="${document}"/>
 
 <script type="text/javascript"><!--
 function setAddToWishList() {
-    document.addToCartForm.addToWishList.value="true";
-    document.addToCartForm.wishListId.value="-1";
+    document.addToCartForm.addToWishList.value = "true";
+    document.addToCartForm.wishListId.value = "-1";
 }
 
 function resetAddToWishList() {
-    document.addToCartForm.addToWishList.value="false";
+    document.addToCartForm.addToWishList.value = "false";
 }
 
 function setWishListId(id) {
-    document.addToCartForm.wishListId.value=id;
-    document.addToCartForm.addToWishList.value="true";
+    document.addToCartForm.wishListId.value = id;
+    document.addToCartForm.addToWishList.value = "true";
 }
 
 //--></script>
@@ -45,10 +44,19 @@ function setWishListId(id) {
     <article class="well well-large">
 
         <div class="row">
-            <div class="span10">
-                <hst:cmseditlink hippobean="${document}"/>
-                <img src="${prdImgLink}" alt=""/><br/>
+            <div class="span8">
                 <h4><c:out value="${document.name}"/></h4>
+                <c:if test="${not empty document.model}">
+                    <h6>[${document.model}]
+                    <c:if test="${empty prodOptContainer}">
+                        &nbsp;-&nbsp;<span class="label label-info">${document.quantity} items in stock</span>
+                    </c:if>
+                    </h6>
+                </c:if>
+                <br/>
+                <hst:cmseditlink hippobean="${document}"/>
+                <img src="${prdImgLink}" alt=""/>
+                <br/>
 
                 <kk:rating product="${document}" var="rating"/>
                 <fmt:formatNumber value="${rating * 10}" var="ratingStyle" pattern="#0"/>
@@ -59,27 +67,45 @@ function setWishListId(id) {
                 </p>
 
                 <p>
-
                     <br/>
-                    <c:if test="${not empty prodOptContainer}">
-                <h5>Available options :</h5><br/>
+                    <hst:html hippohtml="${document.description}"/>
+                </p>
+            </div>
+            <div class="span2 right">
+                <p>
+                    <b>
+                        <c:if test="${not empty document.specialPrice}"><s></c:if>
+                        <kk:formatPrice price="${document.price0}"/>
+                        <c:if test="${not empty document.specialPrice}"></s></c:if>
+                        <c:if test="${not empty document.specialPrice}">&nbsp;|&nbsp;
+                            <kk:formatPrice price="${document.specialPrice}"/>
+                        </c:if>
+                    </b>
+                </p>
 
+                <p>
+                    <c:if test="${not empty prodOptContainer}">
+                    <br/>
+                <h5>Available options :</h5><br/>
 
                 <c:forEach var="opt" items="${prodOptContainer}" varStatus="rowCounter">
 
                     <div class="control-group">
                         <label class="control-label"><c:out value="${opt.name}"/>&nbsp;:&nbsp;</label>
+
                         <div class="controls">
                             <select name="${opt.id}" id="${opt.name}">
                                 <c:forEach var="optValue" items="${opt.optValues}">
                                     <c:choose>
                                         <c:when test="${opt.type == 0}">
                                             <c:if test="${displayPriceWithTax}">
-                                                <option value="${optValue.id}"><c:out value="${optValue.formattedValueIncTax}"/></option>
+                                                <option value="${optValue.id}"><c:out
+                                                        value="${optValue.formattedValueIncTax}"/></option>
                                             </c:if>
 
                                             <c:if test="${not displayPriceWithTax}">
-                                                <option value="${optValue.id}"><c:out value="${optValue.formattedValueExTax}"/></option>
+                                                <option value="${optValue.id}"><c:out
+                                                        value="${optValue.formattedValueExTax}"/></option>
                                             </c:if>
                                         </c:when>
                                     </c:choose>
@@ -91,26 +117,13 @@ function setWishListId(id) {
                 </c:if>
                 </p>
                 <p>
-                   <hst:html hippohtml="${document.description}"/>
-
-                </p>
-            </div>
-            <div class="span1 right">
-                <p>
-                    <b><c:if test="${not empty document.specialPrice}"><s></c:if>
-                    <kk:formatPrice price="${document.price0}"/>
-                    <c:if test="${not empty document.specialPrice}"></s></c:if>
-                    <c:if test="${not empty document.specialPrice}">&nbsp;|&nbsp;
-                       <kk:formatPrice price="${document.specialPrice}"/>
-                    </c:if>
-                    </b>
-                </p>
-                <p>
                     <br/>
-                    <input type="submit" onmouseover="resetAddToWishList()" class="btn btn-primary" value="Add to basket"/>
+                    <input type="submit" onmouseover="resetAddToWishList()" class="btn btn-primary"
+                           value="Add to basket"/>
 
                     <c:if test="${wishListEnabled}">
-                        <input type="submit" onmouseover="setAddToWishList()" class="btn btn-primary" value="Add to wish list"/>
+                        <input type="submit" onmouseover="setAddToWishList()" class="btn btn-primary"
+                               value="Add to wish list"/>
                     </c:if>
 
 
@@ -141,7 +154,7 @@ function setWishListId(id) {
     </c:forEach>
 </div>
 
-<c:if test="${allowComments}">
+<c:if test="${isLogged}">
     <hst:actionURL var="reviewUrl">
         <hst:param name="action" value="REVIEW"/>
     </hst:actionURL>
@@ -222,7 +235,8 @@ function setWishListId(id) {
 
                 <div class="control-group">
                     <div class="controls">
-                        <input class="btn btn-primary" type="submit" value="<fmt:message key="products.detail.submit.label"/>"/>
+                        <input class="btn btn-primary" type="submit"
+                               value="<fmt:message key="products.detail.submit.label"/>"/>
                     </div>
                 </div>
             </fieldset>

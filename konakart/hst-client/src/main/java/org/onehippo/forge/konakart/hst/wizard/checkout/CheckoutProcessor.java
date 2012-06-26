@@ -28,7 +28,7 @@ public class CheckoutProcessor extends BaseProcessor {
         ((CheckoutSeedData) seedObject).setAction(getCurrentAction(seedObject.getRequest()));
 
         if (log.isDebugEnabled()) {
-            log.debug("doBeforeRender - " + getBeanName() + " processor is running..");
+            log.debug("doBeforeRender - " + getClass().getSimpleName() + " processor is running..");
         }
 
         //retrieve injected by Spring
@@ -41,7 +41,7 @@ public class CheckoutProcessor extends BaseProcessor {
 
         for (Activity activity : activities) {
             if (log.isDebugEnabled()) {
-                log.debug("running activity:" + activity.getBeanName() + " using arguments:" + context);
+                log.debug("running activity:" + activity.getClass().getSimpleName() + " using arguments:" + context);
             }
 
             activity.initialize(context);
@@ -70,7 +70,7 @@ public class CheckoutProcessor extends BaseProcessor {
         String currentState = getCurrentState(seedObject.getRequest());
 
         if (log.isDebugEnabled()) {
-            log.debug("doAction - " + getBeanName() + " processor is running..");
+            log.debug("doAction - " + getClass().getSimpleName() + " processor is running..");
         }
 
         //retrieve injected by Spring
@@ -84,7 +84,7 @@ public class CheckoutProcessor extends BaseProcessor {
         for (Activity activity : activities) {
 
             if (log.isDebugEnabled()) {
-                log.debug("running activity:" + activity.getBeanName() + " using arguments:" + context);
+                log.debug("running activity:" + activity.getClass().getSimpleName() + " using arguments:" + context);
             }
 
             if (activity.acceptState(context.getSeedData().getState())) {
@@ -116,7 +116,7 @@ public class CheckoutProcessor extends BaseProcessor {
         for (Activity activity : activities) {
 
             if (log.isDebugEnabled()) {
-                log.debug("running activity:" + activity.getBeanName() + " using arguments:" + context);
+                log.debug("running activity:" + activity.getClass().getSimpleName() + " using arguments:" + context);
             }
 
             activity.initialize(context);

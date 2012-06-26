@@ -33,6 +33,10 @@ public class KKProductDocument extends HippoDocument {
         return getProperty(KKCndConstants.PRODUCT_SKU);
     }
 
+    public String getModel() {
+        return getProperty(KKCndConstants.PRODUCT_MODEL);
+    }
+
     public String getStoreId() {
         return getProperty(KKCndConstants.PRODUCT_STORE_ID);
     }

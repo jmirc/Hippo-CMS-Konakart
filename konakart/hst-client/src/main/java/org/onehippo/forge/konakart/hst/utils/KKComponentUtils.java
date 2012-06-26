@@ -1,16 +1,23 @@
 package org.onehippo.forge.konakart.hst.utils;
 
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
+import org.hippoecm.hst.content.beans.query.HstQuery;
+import org.hippoecm.hst.content.beans.query.HstQueryManager;
+import org.hippoecm.hst.content.beans.query.HstQueryResult;
+import org.hippoecm.hst.content.beans.query.exceptions.QueryException;
+import org.hippoecm.hst.content.beans.query.filter.Filter;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
+import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import javax.jcr.RepositoryException;
 
 /**
  * This class is used to offer methods used to interact with Konakart
@@ -73,12 +80,43 @@ public class KKComponentUtils {
                     KKProductDocument.class.getName());
         }
 
-        KKProductDocument document = (KKProductDocument) currentBean;
-        //document.setKkEngine(KKServiceHelper.getKKEngineService().getKKAppEng(request));
-
-        return document;
+        return (KKProductDocument) currentBean;
     }
 
+    /**
+     * Find and retrieve the associated KKProductDoucment from a product id.
+     *
+     * @param request   the Hst Request
+     * @param productId id of the Konakart product to find
+     * @return the Hippo Bean
+     */
+    public static KKProductDocument getProductDocumentById(HstRequest request, int productId) {
+
+        HippoBean scope = KKUtil.getSiteContentBaseBean(request);
 
 
+        try {
+            HstQueryManager queryManager = KKUtil.getQueryManager(request.getRequestContext());
+
+            HstQuery hstQuery = queryManager.createQuery(scope, KKProductDocument.class);
+            Filter filter = hstQuery.createFilter();
+            filter.addEqualTo(KKCndConstants.PRODUCT_ID, (long) productId);
+
+            hstQuery.setFilter(filter);
+
+            HstQueryResult queryResult = hstQuery.execute();
+
+            // No result
+            if (queryResult.getTotalSize() == 0) {
+                return null;
+            }
+
+            return (KKProductDocument) queryResult.getHippoBeans().nextHippoBean();
+
+        } catch (QueryException e) {
+            log.error("Failed to find the Hippo product document for the productId {} - {}", productId, e.toString());
+        }
+
+        return null;
+    }
 }

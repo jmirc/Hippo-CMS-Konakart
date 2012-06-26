@@ -32,9 +32,6 @@ import java.util.List;
  * - ProductDocType : Define the name of the document type which defines a product.
  * - KonakartProductPropertyName : Define the name of the node which contains the konakart product
  * <p/>
- * See the class org.onehippo.forge.konakart.demo.MyProductFactory within the demo project
- * - ProductDocType: myhippoproject:productdocument
- * - KonakartProductPropertyName : myhippoproject:konakart
  */
 public abstract class AbstractProductFactory implements ProductFactory {
 
@@ -191,6 +188,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         productNode.setProperty(KKCndConstants.PRODUCT_ID, product.getId());
         productNode.setProperty(KKCndConstants.PRODUCT_NAME, product.getName());
+        productNode.setProperty(KKCndConstants.PRODUCT_MODEL, product.getModel());
         productNode.setProperty(KKCndConstants.PRODUCT_SKU, product.getSku());
         productNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER, String.valueOf(product.getManufacturerId()));
         productNode.setProperty(KKCndConstants.PRODUCT_TAX_CLASS, String.valueOf(product.getTaxClassId()));
@@ -287,7 +285,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         try {
             // Retrieve the gallery root node
             // add the product node root
-            String galleryRootNode = galleryRoot + "/" + kkProductTypeName + "/" + createProductNodeRoot(product);
+            String galleryRootNode = galleryRoot + "/" + kkProductTypeName + "/" + createProductNodeRoot(product) + "/" + product.getId();
 
             // Get the root folder
             Node productGalleryNode = nodeImagesHelper.createMissingFolders(galleryRootNode);

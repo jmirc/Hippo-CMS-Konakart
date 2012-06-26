@@ -27,6 +27,7 @@ public interface KKCndConstants {
     String PRODUCT_ABSTRACT = "konakart:ppabstract";
     String PRODUCT_DESCRIPTION = "konakart:ppdescription";
     String PRODUCT_SKU = "konakart:ppsku";
+    String PRODUCT_MODEL = "konakart:ppmodel";
     String PRODUCT_STORE_ID = "konakart:ppstoreid";
 
     String PRODUCT_SPECIAL_PRICE = "konakart:ppspecialpriceextax";

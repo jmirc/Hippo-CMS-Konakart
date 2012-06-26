@@ -2,7 +2,7 @@
 <!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/j2ee/dtd/web-jsptaglibrary_1_2.dtd">
 <taglib xmlns="http://java.sun.com/xml/ns/javaee" version="2.1"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
+        >
 
     <tlib-version>1.0</tlib-version>
     <jsp-version>1.2</jsp-version>
@@ -46,8 +46,8 @@
     <tag>
         <description>This tag is used to add a product to the cart</description>
         <name>addToBasketActionURL</name>
-        <tag-class>org.onehippo.forge.konakart.hst.tags.KKAddToBasketActionURLTag</tag-class>
-        <tei-class>org.onehippo.forge.konakart.hst.tags.KKAddToBasketActionURLTag$TEI</tei-class>
+        <tag-class>org.onehippo.forge.konakart.hst.tags.AddToBasketActionURLTag</tag-class>
+        <tei-class>org.onehippo.forge.konakart.hst.tags.AddToBasketActionURLTag$TEI</tei-class>
         <body-content>JSP</body-content>
         <attribute>
             <description>The variable name of the actionURL</description>
@@ -62,6 +62,48 @@
             <rtexprvalue>true</rtexprvalue>
             <type>org.onehippo.forge.konakart.hst.beans.KKProductDocument</type>
             <description>Konakart Product</description>
+        </attribute>
+    </tag>
+    <tag>
+        <description>This tag is used to remove a product from the cart</description>
+        <name>removeFromBasketActionURL</name>
+        <tag-class>org.onehippo.forge.konakart.hst.tags.RemoveFromBasketActionURLTag</tag-class>
+        <tei-class>org.onehippo.forge.konakart.hst.tags.RemoveFromBasketActionURLTag$TEI</tei-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>The variable name of the actionURL</description>
+            <name>var</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>cartItem</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>org.onehippo.forge.konakart.hst.vo.CartItem</type>
+            <description>Cart Item</description>
+        </attribute>
+    </tag>
+    <tag>
+        <description>This tag is used to create a link to the product</description>
+        <name>productLink</name>
+        <tag-class>org.onehippo.forge.konakart.hst.tags.ProductLinkTag</tag-class>
+        <tei-class>org.onehippo.forge.konakart.hst.tags.ProductLinkTag$TEI</tei-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>The variable name of the product link</description>
+            <name>var</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>The Id of the product</description>
+            <name>productId</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Integer</type>
         </attribute>
     </tag>
 
