@@ -29,7 +29,7 @@ public class PaymentMethodActivity extends BaseCheckoutActivity {
             processorContext.getSeedData().getKkBaseHstComponent().redirectByRefId(
                     processorContext.getSeedData().getRequest(),
                     processorContext.getSeedData().getResponse(),
-                    processorContext.getSeedData().getKkBaseHstComponent().getDetailCartRefId());
+                    processorContext.getSeedData().getKkBaseHstComponent().getCartDetailRefId());
 
             return;
         }

@@ -1,13 +1,14 @@
 package org.onehippo.forge.konakart.hst.tags;
 
 import com.konakart.al.KKAppEng;
+import org.hippoecm.hst.tag.HstTagSupport;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
-public class KKTagSupport extends TagSupport {
+public class KKTagSupport extends HstTagSupport {
 
     /**
      * Retrieve the Konakart App Engine.

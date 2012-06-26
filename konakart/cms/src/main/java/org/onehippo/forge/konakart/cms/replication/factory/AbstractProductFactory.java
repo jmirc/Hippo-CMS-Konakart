@@ -32,9 +32,6 @@ import java.util.List;
  * - ProductDocType : Define the name of the document type which defines a product.
  * - KonakartProductPropertyName : Define the name of the node which contains the konakart product
  * <p/>
- * See the class org.onehippo.forge.konakart.demo.MyProductFactory within the demo project
- * - ProductDocType: myhippoproject:productdocument
- * - KonakartProductPropertyName : myhippoproject:konakart
  */
 public abstract class AbstractProductFactory implements ProductFactory {
 

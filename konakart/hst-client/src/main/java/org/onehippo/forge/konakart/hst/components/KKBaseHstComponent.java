@@ -14,6 +14,7 @@ import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
 import org.hippoecm.hst.util.HstResponseUtils;
+import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
@@ -85,8 +86,8 @@ public class KKBaseHstComponent extends BaseHstComponent {
     /**
      * @return the siteMapItemRefId associated with the detail cart.
      */
-    public String getDetailCartRefId() {
-        return "detailCartId";
+    public String getCartDetailRefId() {
+        return "cartDetailId";
     }
 
     /**
@@ -118,40 +119,6 @@ public class KKBaseHstComponent extends BaseHstComponent {
         HstResponseUtils.sendRedirectOrForward(request, response, link.getPath());
     }
 
-    /**
-     * Find and retrieve the associated KKProductDoucment from a product id.
-     *
-     * @param request   the Hst Request
-     * @param productId id of the Konakart product to find
-     * @return the Hippo Bean
-     */
-    protected KKProductDocument getProductDocumentById(HstRequest request, int productId) {
 
-        HippoBean scope = super.getSiteContentBaseBean(request);
-
-        HstQueryManager queryManager = getQueryManager(request);
-
-        try {
-            HstQuery hstQuery = queryManager.createQuery(scope, "myhippoproject:productdocument");
-            Filter filter = hstQuery.createFilter();
-            filter.addEqualTo("myhippoproject:konakart/konakart:id", (long) productId);
-
-            hstQuery.setFilter(filter);
-
-            HstQueryResult queryResult = hstQuery.execute();
-
-            // No result
-            if (queryResult.getTotalSize() == 0) {
-                return null;
-            }
-
-            return (KKProductDocument) queryResult.getHippoBeans().nextHippoBean();
-
-        } catch (QueryException e) {
-            log.error("Failed to find the Hippo product document for the productId {} - {}", productId, e.toString());
-        }
-
-        return null;
-    }
 
 }

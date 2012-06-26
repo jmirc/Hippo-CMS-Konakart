@@ -2,28 +2,28 @@ package org.onehippo.forge.konakart.hst.tags;
 
 import org.hippoecm.hst.core.component.HstURL;
 import org.hippoecm.hst.tag.HstActionURLTag;
-import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.vo.CartItem;
 
 import javax.servlet.jsp.tagext.TagData;
 import javax.servlet.jsp.tagext.TagExtraInfo;
 import javax.servlet.jsp.tagext.VariableInfo;
 
-public class KKAddToBasketActionURLTag extends HstActionURLTag {
+public class RemoveFromBasketActionURLTag extends HstActionURLTag {
 
 
-    private KKProductDocument kkProductDocument;
+    private CartItem cartItem;
 
-    public void setProduct(KKProductDocument kkProductDocument) {
-        this.kkProductDocument = kkProductDocument;
+    public void setCartItem(CartItem cartItem) {
+        this.cartItem = cartItem;
     }
 
     @Override
     protected void setUrlParameters(HstURL url) {
         super.setUrlParameters(url);
 
-        url.setParameter("action", KKCheckoutConstants.ACTIONS.ADD_TO_BASKET.name());
-        url.setParameter("prodId", String.valueOf(kkProductDocument.getProductId()));
+        url.setParameter("action", KKCheckoutConstants.ACTIONS.REMOVE_FROM_BASKET.name());
+        url.setParameter("basketId", String.valueOf(cartItem.getBasketItemId()));
     }
 
     /**

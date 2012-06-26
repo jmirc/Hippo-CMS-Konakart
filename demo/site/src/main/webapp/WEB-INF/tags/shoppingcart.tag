@@ -2,10 +2,11 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="hst" uri="http://www.hippoecm.org/jsp/hst/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="kk" uri="http://www.onehippo.org/jsp/konakart" %>
 <%--@elvariable id="currentCustomer" type="com.konakart.appif.CustomerIf"--%>
 
 
-<hst:link var="cartLink" siteMapItemRefId="detailCartId"/>
+<hst:link var="cartLink" siteMapItemRefId="cartDetailId"/>
 <hst:link var="cartImage" path="/images/cart_16x16.png"/>
 
 <div class="thumbnail">
@@ -13,8 +14,9 @@
     <c:choose>
         <c:when test="${not empty currentCustomer.basketItems}">
             <c:forEach var="item" items="${currentCustomer.basketItems}">
-                <c:out value="${item.quantity}"/>&nbsp;x&nbsp; <a href="${item.custom1}"><c:out
-                    value="${item.product.name}"/></a>
+                <c:out value="${item.quantity}"/>&nbsp;x&nbsp;
+                    <kk:productLink productId="${item.productId}" var="productLink"/>
+                    <a href="${productLink}"><c:out value="${item.product.name}"/></a>
                 <br/>
             </c:forEach>
             <br/>

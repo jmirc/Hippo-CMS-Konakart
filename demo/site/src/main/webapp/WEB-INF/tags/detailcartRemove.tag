@@ -2,6 +2,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="hst" uri="http://www.hippoecm.org/jsp/hst/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="kk" uri="http://www.onehippo.org/jsp/konakart" %>
 <%--@elvariable id="currentCustomer" type="com.konakart.appif.CustomerIf"--%>
 <%--@elvariable id="item" type="org.onehippo.forge.konakart.hst.vo.CartItem"--%>
 
@@ -49,10 +50,7 @@
                             </c:forEach>
 
                             <br/>
-                            <hst:actionURL var="removeFromBasket">
-                                <hst:param name="action" value="REMOVE_FROM_BASKET"/>
-                                <hst:param name="basketId" value="${item.basketItemId}"/>
-                            </hst:actionURL>
+                            <kk:removeFromBasketActionURL cartItem="${item}" var="removeFromBasket"/>
                             <a href="${removeFromBasket}">Remove</a>
                         </td>
                         <td>

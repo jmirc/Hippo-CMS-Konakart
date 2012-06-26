@@ -41,7 +41,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
             // Check to see whether there is something in the cart
             CustomerIf cust = kkAppEng.getCustomerMgr().getCurrentCustomer();
             if (cust.getBasketItems() == null || cust.getBasketItems().length == 0) {
-                redirectByRefId(request, response, getDetailCartRefId());
+                redirectByRefId(request, response, getCartDetailRefId());
                 return;
             }
 
@@ -61,7 +61,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
 
                 // Check to see whether there is something in the cart
                 if (cust.getBasketItems() == null || cust.getBasketItems().length == 0) {
-                    redirectByRefId(request, response, getDetailCartRefId());
+                    redirectByRefId(request, response, getCartDetailRefId());
                     return;
                 }
             }
@@ -75,7 +75,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
 
                 for (BasketIf basket : items) {
                     if (basket.getQuantity() > basket.getQuantityInStock()) {
-                        redirectByRefId(request, response, getDetailCartRefId());
+                        redirectByRefId(request, response, getCartDetailRefId());
                         return;
                     }
                 }

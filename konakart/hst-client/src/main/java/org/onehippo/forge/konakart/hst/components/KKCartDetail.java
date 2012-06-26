@@ -16,6 +16,8 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
+import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.vo.CartItem;
 import org.onehippo.forge.konakart.hst.vo.OrderItem;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
@@ -144,10 +146,9 @@ public class KKCartDetail extends KKHstActionComponent {
                                 b.getQuantityInStock());
 
                         // Generate the image link
-                        KKProductDocument productDocument = getProductDocumentById(request, b.getProductId());
+                        KKProductDocument productDocument = KKComponentUtils.getProductDocumentById(request, b.getProductId());
 
                         item.setProductDocument(productDocument);
-
 
                         if (!item.getInStock()) {
                             isItemOutOfStock = true;
