@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node sv:name="konakart:checkout" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+        <sv:value>konakart:checkout</sv:value>
+    </sv:property>
+    <sv:property sv:multiple="true" sv:name="konakart:activities" sv:type="String">
+        <sv:value>checkoutMethodRegisterActivity</sv:value>
+        <sv:value>billingAddressActivity</sv:value>
+        <sv:value>shippingAddressActivity</sv:value>
+        <sv:value>shippingMethodActivity</sv:value>
+    </sv:property>
+    <sv:node sv:name="checkoutMethodRegisterActivity">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>konakart:activity</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:acceptEmptyState" sv:type="Boolean">
+            <sv:value>true</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:acceptState" sv:type="String">
+            <sv:value>INITIAL</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:class" sv:type="String">
+            <sv:value>org.onehippo.forge.konakart.hst.wizard.checkout.activity.CheckoutMethodRegisterActivity</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:nextLoggedState" sv:type="String">
+            <sv:value>BILLING_ADDRESS</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:nextNonLoggedState" sv:type="String">
+            <sv:value>INITIAL</sv:value>
+        </sv:property>
+    </sv:node>
+    <sv:node sv:name="billingAddressActivity">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>konakart:activity</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:acceptState" sv:type="String">
+            <sv:value>BILLING_ADDRESS</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:class" sv:type="String">
+            <sv:value>org.onehippo.forge.konakart.hst.wizard.checkout.activity.BillingAddressActivity</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:nextLoggedState" sv:type="String">
+            <sv:value>SHIPPING_ADDRESS</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:nextNonLoggedState" sv:type="String">
+            <sv:value>INITIAL</sv:value>
+        </sv:property>
+    </sv:node>
+    <sv:node sv:name="shippingAddressActivity">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>konakart:activity</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:acceptState" sv:type="String">
+            <sv:value>SHIPPING_ADDRESS</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:class" sv:type="String">
+            <sv:value>org.onehippo.forge.konakart.hst.wizard.checkout.activity.ShippingAddressActivity</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:nextLoggedState" sv:type="String">
+            <sv:value>SHIPPING_METHOD</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:nextNonLoggedState" sv:type="String">
+            <sv:value>INITIAL</sv:value>
+        </sv:property>
+    </sv:node>
+    <sv:node sv:name="shippingMethodActivity">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>konakart:activity</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:acceptState" sv:type="String">
+            <sv:value>SHIPPING_METHOD</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:class" sv:type="String">
+            <sv:value>org.onehippo.forge.konakart.hst.wizard.checkout.activity.ShippingMethodActivity</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:nextLoggedState" sv:type="String">
+            <sv:value>PAYMENT_METHOD</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:nextNonLoggedState" sv:type="String">
+            <sv:value>INITIAL</sv:value>
+        </sv:property>
+    </sv:node>
+</sv:node>

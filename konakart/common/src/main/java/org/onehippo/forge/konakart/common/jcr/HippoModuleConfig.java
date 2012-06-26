@@ -1,13 +1,17 @@
 package org.onehippo.forge.konakart.common.jcr;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.onehippo.forge.konakart.common.engine.KKActivityConfig;
 import org.onehippo.forge.konakart.common.engine.KKEngineConfig;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.*;
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class HippoModuleConfig {
@@ -47,6 +51,16 @@ public class HippoModuleConfig {
     public static final String CLIENT_IS_CUSTOMERS_SHARED_PROPERTY = "konakart:isCustomersShared";
     public static final String CLIENT_IS_PRODUCTS_SHARED_PROPERTY = "konakart:isProductsShared";
 
+    public static final String KONAKART_CHECKOUT_PATH = KONAKART_KONAKART_PATH + "/konakart:checkout";
+
+    public static final String KONAKART_ACTIVITIES = "konakart:activities";
+
+    public static final String KONAKART_ACTIVITY_CLASS = "konakart:class";
+    public static final String KONAKART_ACTIVITY_ACCEPT_EMPTY_STATE = "konakart:acceptEmptyState";
+    public static final String KONAKART_ACTIVITY_ACCEPT_STATE = "konakart:acceptState";
+    public static final String KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE = "konakart:nextNonLoggedState";
+    public static final String KONAKART_ACTIVITY_NEXT_LOGGED_STATE = "konakart:nextLoggedState";
+
     private static HippoModuleConfig config = new HippoModuleConfig();
 
     private KKEngineConfig clientEngineConfig = new KKEngineConfig();
@@ -54,7 +68,12 @@ public class HippoModuleConfig {
     /**
      * Mapping between a contentRoot and a storeConfig
      */
-    private Map<String, KKStoreConfig> storesConfig = new HashMap<String, KKStoreConfig>();
+    private Map<String, KKStoreConfig> storesConfig = Maps.newHashMap();
+
+    /**
+     * List of activities used by the checkout process
+     */
+    private LinkedList<KKActivityConfig> activityConfigList = Lists.newLinkedList();
 
     /**
      * @return the config class
@@ -100,6 +119,13 @@ public class HippoModuleConfig {
         return clientEngineConfig;
     }
 
+    /**
+     *
+     * @return the list of activity
+     */
+    public List<KKActivityConfig> getActivityConfigList() {
+        return activityConfigList;
+    }
 
 
     /**
@@ -275,4 +301,56 @@ public class HippoModuleConfig {
                     "Please create the node " + KONAKART_STORES_PATH + "/" + storeName);
         }
     }
+
+    /**
+     * Load the list of activity
+     * @param session the JCR session
+     */
+    public void preLoadActivityList(Session session) throws RepositoryException {
+        Node rootNode = session.getNode(KONAKART_CHECKOUT_PATH);
+
+        if (rootNode.hasProperty(KONAKART_ACTIVITIES)) {
+
+            Value[] activities = rootNode.getProperty(KONAKART_ACTIVITIES).getValues();
+
+            for (Value activity : activities) {
+                String activityName = activity.getString();
+
+                if (rootNode.hasNode(activityName)) {
+                    Node activityNode = rootNode.getNode(activityName);
+
+                    KKActivityConfig activityConfig = new KKActivityConfig();
+
+                    if (activityNode.hasProperty(KONAKART_ACTIVITY_ACCEPT_EMPTY_STATE)) {
+                        activityConfig.setAcceptEmptyState(activityNode.getProperty(KONAKART_ACTIVITY_ACCEPT_EMPTY_STATE).getBoolean());
+                    }
+
+                    if (activityNode.hasProperty(KONAKART_ACTIVITY_ACCEPT_STATE)) {
+                        activityConfig.setAcceptState(activityNode.getProperty(KONAKART_ACTIVITY_ACCEPT_STATE).getString());
+                    }
+
+                    if (activityNode.hasProperty(KONAKART_ACTIVITY_CLASS)) {
+                        activityConfig.setActivityClass(activityNode.getProperty(KONAKART_ACTIVITY_CLASS).getString());
+                    }
+
+                    if (activityNode.hasProperty(KONAKART_ACTIVITY_NEXT_LOGGED_STATE)) {
+                        activityConfig.setNextLoggedState(activityNode.getProperty(KONAKART_ACTIVITY_NEXT_LOGGED_STATE).getString());
+                    }
+
+                    if (activityNode.hasProperty(KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE)) {
+                        activityConfig.setNextNonLoggedState(activityNode.getProperty(KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE).getString());
+                    }
+
+                    activityConfigList.addLast(activityConfig);
+
+                } else {
+                    log.error("The activity <" + activityName + "> has been added into the list of konakart:activities " +
+                            "but no konakart:activity node has been found. Please check the node " + KONAKART_CHECKOUT_PATH);
+                }
+            }
+        } else {
+            log.warn("Failed to find at least one activity node. Please check the node " + KONAKART_CHECKOUT_PATH);
+        }
+    }
+
 }

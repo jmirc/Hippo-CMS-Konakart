@@ -55,9 +55,20 @@
 [konakart:stores] > mix:referenceable, mix:versionable, nt:base
   + * (konakart:store) = konakart:store version
 
+[konakart:activity] > mix:referenceable, mix:versionable, nt:base
+  - konakart:class (string) mandatory
+  - konakart:acceptEmptyState (boolean)
+  - konakart:acceptState (string) mandatory
+  - konakart:nextNonLoggedState (string) mandatory
+  - konakart:nextLoggedState (string) mandatory
+
+[konakart:checkout] > mix:referenceable, mix:versionable, nt:base
+  + * (konakart:activity) = konakart:activity version
+  - konakart:activities (string) mandatory multiple
 
 [konakart:konakart] > mix:referenceable, mix:versionable, nt:base
   + konakart:clientengine (konakart:clientengine) = konakart:clientengine version
   + konakart:stores (konakart:stores) = konakart:stores version
   + konakart:producttypenamespaces (konakart:producttypenamespaces) = konakart:producttypenamespaces version
+  + konakart:checkout (konakart:checkout) = konakart:checkout version
 

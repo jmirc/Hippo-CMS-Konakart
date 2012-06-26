@@ -5,16 +5,14 @@ import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanNameAware;
 
 /**
  * Base class for all activities.
  */
-public abstract class BaseActivity implements Activity, BeanNameAware {
+public abstract class BaseActivity implements Activity{
 
     protected Logger log = LoggerFactory.getLogger(getClass());
 
-    private String beanName;
     private String acceptState;
     private boolean acceptEmtpyState = false;
     private String nextLoggedState;
@@ -28,19 +26,6 @@ public abstract class BaseActivity implements Activity, BeanNameAware {
 
     protected BaseActivity() {
     }
-
-    @Override
-    public String getBeanName() {
-        return beanName;
-    }
-
-    /**
-     * @param beanName the spring bean name to set
-     */
-    public void setBeanName(String beanName) {
-        this.beanName = beanName;
-    }
-
 
     @Override
     public void initialize(ProcessorContext processorContext) {
