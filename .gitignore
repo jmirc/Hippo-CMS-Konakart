@@ -3,6 +3,8 @@
 /demo/target
 /demo/myrepo
 /konakart/target
+/konakart/cms/target
+/konakart/modules/target
 /konakart/common/target
 /konakart/dependencies/target
 /konakart/hst-client/target
@@ -20,3 +22,7 @@
 /konakart/cms/.idea
 /konakart-dependency/.idea
 /konakart-dependency/.idea/inspectionProfiles
+/demo/bootstrap/target
+/demo/bootstrap/configuration/target
+/demo/bootstrap/content/target
+atlassian*
