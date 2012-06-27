@@ -65,6 +65,7 @@
 [konakart:checkout] > mix:referenceable, mix:versionable, nt:base
   + * (konakart:activity) = konakart:activity version
   - konakart:activities (string) mandatory multiple
+  - konakart:processor (string) mandatory
 
 [konakart:konakart] > mix:referenceable, mix:versionable, nt:base
   + konakart:clientengine (konakart:clientengine) = konakart:clientengine version

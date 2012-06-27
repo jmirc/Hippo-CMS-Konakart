@@ -59,7 +59,8 @@ public class ShippingAddressActivity extends BaseAddressActivity {
         String state = seedData.getState();
 
         if (StringUtils.isNotEmpty(state) && acceptedStates.contains(state)) {
-            processorContext.getSeedData().getRequest().setAttribute(getAcceptState().concat("_EDIT"), true);
+            hstRequest.getRequestContext().setAttribute(getAcceptState().concat("_EDIT"), true);
+            hstRequest.setAttribute(getAcceptState().concat("_EDIT"), true);
         }
 
     }

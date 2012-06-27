@@ -31,7 +31,7 @@ import java.lang.reflect.ParameterizedType;
 public abstract class AbstractKKProductsOverview<T extends KKProductDocument> extends KKHstActionComponent {
 
     private static final String PARAM_PAGE_SIZE = "pageSize";
-    private static final int DEFAULT_PAGE_SIZE = 5;
+    private static final int DEFAULT_PAGE_SIZE = 6;
     private static final String PARAM_CURRENT_PAGE = "pageNumber";
     private static final int DEFAULT_CURRENT_PAGE = 1;
     private static final String PARAM_ORDER_BY = "orderBy";

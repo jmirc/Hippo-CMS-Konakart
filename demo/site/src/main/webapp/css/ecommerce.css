@@ -59,3 +59,8 @@
 .rate li.hover-off { background-position: 0 0; }
 .rate li.hover-on { background-position: 0 -200px; opacity: 0.75; filter: alpha(opacity=75); }
 .rate li span { position: absolute; left: -9999px; }
+
+
+.row-fluid .product [class*="span"]:nth-child(4n + 4) {
+    margin-left: 0;
+}

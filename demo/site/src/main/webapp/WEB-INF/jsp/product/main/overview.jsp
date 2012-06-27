@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jspf/htmlTags.jspf" %>
 
 
-<ul class="thumbnails">
+<ul class="thumbnails product">
 
     <c:forEach var="product" items="${products.items}">
         <hst:link var="prdImgLink" hippobean="${product.mainImage.original}"/>

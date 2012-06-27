@@ -34,8 +34,15 @@
     </c:choose>
 <br/>
 <br/>
+
 <!-- Add the shopping Cart -->
-<tag:shoppingcart/>
+<c:if test="${empty checkoutOrder}">
+    <tag:shoppingcart/>
+</c:if>
+
+<c:if test="${not empty checkoutOrder}">
+    <tag:checkoutprocess/>
+</c:if>
 
 <!-- Add the wish list -->
 <c:if test="${wishListEnabled}">

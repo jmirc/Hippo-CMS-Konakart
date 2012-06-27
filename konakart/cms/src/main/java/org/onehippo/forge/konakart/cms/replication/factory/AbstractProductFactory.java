@@ -189,7 +189,11 @@ public abstract class AbstractProductFactory implements ProductFactory {
         productNode.setProperty(KKCndConstants.PRODUCT_ID, product.getId());
         productNode.setProperty(KKCndConstants.PRODUCT_NAME, product.getName());
         productNode.setProperty(KKCndConstants.PRODUCT_MODEL, product.getModel());
-        productNode.setProperty(KKCndConstants.PRODUCT_SKU, product.getSku());
+
+        if (StringUtils.isNotBlank(product.getSku())) {
+            productNode.setProperty(KKCndConstants.PRODUCT_SKU, product.getSku());
+        }
+
         productNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER, String.valueOf(product.getManufacturerId()));
         productNode.setProperty(KKCndConstants.PRODUCT_TAX_CLASS, String.valueOf(product.getTaxClassId()));
 

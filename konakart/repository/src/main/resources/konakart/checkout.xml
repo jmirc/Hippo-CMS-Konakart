@@ -9,6 +9,9 @@
         <sv:value>shippingAddressActivity</sv:value>
         <sv:value>shippingMethodActivity</sv:value>
     </sv:property>
+    <sv:property sv:name="konakart:processor" sv:type="String">
+        <sv:value>org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessor</sv:value>
+    </sv:property>
     <sv:node sv:name="checkoutMethodRegisterActivity">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>konakart:activity</sv:value>

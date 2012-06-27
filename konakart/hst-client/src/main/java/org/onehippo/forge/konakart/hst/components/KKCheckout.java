@@ -4,13 +4,13 @@ import com.konakart.al.KKAppEng;
 import com.konakart.appif.BasketIf;
 import com.konakart.appif.CustomerIf;
 import com.konakart.bl.ConfigConstants;
+import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.component.support.forms.FormUtils;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
-import org.hippoecm.hst.core.container.ComponentManager;
-import org.hippoecm.hst.site.HstServices;
+import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.Processor;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
@@ -18,10 +18,10 @@ import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
 /**
  * This component is used to manage the checkout process.
  */
-public abstract class KKCheckout extends KKHstActionComponent {
+public class KKCheckout extends KKHstActionComponent {
 
-    private static final String ONE_PAGE_CHECKOUT = "onePageCheckout";
-    private static final String CHECKOUT_ORDER = "checkoutOrder";
+    public static final String ONE_PAGE_CHECKOUT = "onePageCheckout";
+    public static final String CHECKOUT_ORDER = "checkoutOrder";
 
     @Override
     public final void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
@@ -92,6 +92,7 @@ public abstract class KKCheckout extends KKHstActionComponent {
             processor.doAdditionalData(seedData);
 
 
+            request.getRequestContext().setAttribute(CHECKOUT_ORDER, kkAppEng.getOrderMgr().getCheckoutOrder());
             request.setAttribute(CHECKOUT_ORDER, kkAppEng.getOrderMgr().getCheckoutOrder());
 
             request.setAttribute(ONE_PAGE_CHECKOUT, isOnePageCheckout(kkAppEng));
@@ -135,26 +136,27 @@ public abstract class KKCheckout extends KKHstActionComponent {
     }
 
     /**
-     * @return the checkout processor name
-     */
-    protected abstract String getProcessorName();
-
-    /**
      * Retrieve the processor associated with the checkout
      * @return the processor
      */
     private Processor getProcessor() {
 
-        // Check if the user can access to this host
-        ComponentManager componentManager = HstServices.getComponentManager();
+        String processorClass = HippoModuleConfig.getConfig().getCheckoutConfig().getProcessorClass();
 
-        if (componentManager == null) {
-            log.error("Component Manager is null!!!!!! WE HAVE A BIG ISSUE");
+        if (StringUtils.isNotBlank(processorClass)) {
+            try {
+                return (Processor) Class.forName(processorClass).newInstance();
 
-            return null;
+            } catch (InstantiationException e) {
+                log.error("Unable to find the extension class: " + e.toString());
+            } catch (IllegalAccessException e) {
+                log.error("Unable to find the extension class: " + e.toString());
+            } catch (ClassNotFoundException e) {
+                log.error("Unable to find the extension class: " + e.toString());
+            }
         }
 
-        return componentManager.getComponent(getProcessorName());
+        throw new InstantiationError("Unable to create an instance of the class : " + processorClass);
     }
 
 

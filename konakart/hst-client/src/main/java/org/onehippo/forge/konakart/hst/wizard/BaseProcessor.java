@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.hst.wizard;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.onehippo.forge.konakart.common.engine.KKActivityConfig;
@@ -22,7 +23,7 @@ public abstract class BaseProcessor implements Processor {
 
     protected Logger log = LoggerFactory.getLogger(getClass());
 
-    private List<Activity> activities;
+    private List<Activity> activities = Lists.newLinkedList();
 
 
     /**
@@ -39,7 +40,7 @@ public abstract class BaseProcessor implements Processor {
     */
     public void loadActivities() {
 
-        List<KKActivityConfig> kkActivityConfigs = HippoModuleConfig.getConfig().getActivityConfigList();
+        List<KKActivityConfig> kkActivityConfigs = HippoModuleConfig.getConfig().getCheckoutConfig().getActivityConfigList();
 
         if (kkActivityConfigs == null || kkActivityConfigs.isEmpty()) {
             throw new IllegalStateException("No activities were wired for this workflow");

@@ -1,17 +1,15 @@
 package org.onehippo.forge.konakart.common.jcr;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.engine.KKActivityConfig;
+import org.onehippo.forge.konakart.common.engine.KKCheckoutConfig;
 import org.onehippo.forge.konakart.common.engine.KKEngineConfig;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.*;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public class HippoModuleConfig {
@@ -53,6 +51,8 @@ public class HippoModuleConfig {
 
     public static final String KONAKART_CHECKOUT_PATH = KONAKART_KONAKART_PATH + "/konakart:checkout";
 
+    public static final String KONAKART_PROCESSOR = "konakart:processor";
+
     public static final String KONAKART_ACTIVITIES = "konakart:activities";
 
     public static final String KONAKART_ACTIVITY_CLASS = "konakart:class";
@@ -71,9 +71,9 @@ public class HippoModuleConfig {
     private Map<String, KKStoreConfig> storesConfig = Maps.newHashMap();
 
     /**
-     * List of activities used by the checkout process
+     * Contains the checkout process.
      */
-    private LinkedList<KKActivityConfig> activityConfigList = Lists.newLinkedList();
+    private KKCheckoutConfig checkoutConfig = new KKCheckoutConfig();
 
     /**
      * @return the config class
@@ -120,13 +120,11 @@ public class HippoModuleConfig {
     }
 
     /**
-     *
-     * @return the list of activity
+     * @return the checkout process config
      */
-    public List<KKActivityConfig> getActivityConfigList() {
-        return activityConfigList;
+    public KKCheckoutConfig getCheckoutConfig() {
+        return checkoutConfig;
     }
-
 
     /**
      * @param session a JCR session
@@ -309,6 +307,12 @@ public class HippoModuleConfig {
     public void preLoadActivityList(Session session) throws RepositoryException {
         Node rootNode = session.getNode(KONAKART_CHECKOUT_PATH);
 
+        checkoutConfig.getActivityConfigList().clear();
+
+        if (rootNode.hasProperty(KONAKART_PROCESSOR)) {
+            checkoutConfig.setProcessorClass(rootNode.getProperty(KONAKART_PROCESSOR).getString());
+        }
+
         if (rootNode.hasProperty(KONAKART_ACTIVITIES)) {
 
             Value[] activities = rootNode.getProperty(KONAKART_ACTIVITIES).getValues();
@@ -341,7 +345,7 @@ public class HippoModuleConfig {
                         activityConfig.setNextNonLoggedState(activityNode.getProperty(KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE).getString());
                     }
 
-                    activityConfigList.addLast(activityConfig);
+                    checkoutConfig.addActivityConfigList(activityConfig);
 
                 } else {
                     log.error("The activity <" + activityName + "> has been added into the list of konakart:activities " +

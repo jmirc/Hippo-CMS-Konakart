@@ -17,11 +17,8 @@ public class ShippingMethodActivity extends BaseCheckoutActivity {
 
     @Override
     public void doBeforeRender() throws ActivityException {
-        processorContext.getSeedData().getRequest().setAttribute(SHIPPING_QUOTES,
-                kkAppEng.getOrderMgr().getShippingQuotes());
-
-        processorContext.getSeedData().getRequest().setAttribute(SHIPPING_METHOD,
-                kkAppEng.getOrderMgr().getCheckoutOrder().getShippingMethod());
+        hstRequest.setAttribute(SHIPPING_QUOTES, kkAppEng.getOrderMgr().getShippingQuotes());
+        hstRequest.setAttribute(SHIPPING_METHOD, kkAppEng.getOrderMgr().getCheckoutOrder().getShippingMethod());
     }
 
     @Override
@@ -38,7 +35,7 @@ public class ShippingMethodActivity extends BaseCheckoutActivity {
             }
 
             // Attach the shipping quote to the order
-            KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().getCheckoutOrder().setShippingMethod(shippingMethod);
+            KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().addShippingQuoteToOrder(shippingMethod);
         }
 
     }
@@ -54,7 +51,8 @@ public class ShippingMethodActivity extends BaseCheckoutActivity {
         String state = seedData.getState();
 
         if (StringUtils.isNotEmpty(state) && acceptedStates.contains(state)) {
-            processorContext.getSeedData().getRequest().setAttribute(getAcceptState().concat("_EDIT"), true);
+            hstRequest.getRequestContext().setAttribute(getAcceptState().concat("_EDIT"), true);
+            hstRequest.setAttribute(getAcceptState().concat("_EDIT"), true);
         }
     }
 }

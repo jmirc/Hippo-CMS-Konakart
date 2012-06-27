@@ -32,7 +32,9 @@
                             <label class="radio inline" for="input01">
                                 <input type="radio" name="shipMethod" class="input-mini" id="input01"
                                        value="${quote.code}"
-                                       <c:if test="${shipMethod == quote.code}">checked="checked"</c:if>>
+                                       <c:if test="${shipMethod == quote.code}">checked="checked"</c:if>
+                                       <c:if test="${fn:length(shippingQuotes) == 1}">checked="checked"</c:if>
+                                 >
                                  <b>${quote.responseText} -
                                     <c:choose>
                                         <c:when test="${displayPriceWithTax}"><kk:formatPrice price="${quote.totalIncTax}"/> </c:when>

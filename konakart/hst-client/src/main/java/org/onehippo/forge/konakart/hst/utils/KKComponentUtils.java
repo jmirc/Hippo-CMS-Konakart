@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.hst.utils;
 
+import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
 import org.hippoecm.hst.content.beans.query.HstQuery;
 import org.hippoecm.hst.content.beans.query.HstQueryManager;
@@ -9,15 +10,15 @@ import org.hippoecm.hst.content.beans.query.filter.Filter;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
-import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
+import org.onehippo.forge.konakart.hst.components.KKCheckout;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
-import javax.jcr.RepositoryException;
+import java.util.Enumeration;
 
 /**
  * This class is used to offer methods used to interact with Konakart
@@ -50,6 +51,27 @@ public class KKComponentUtils {
             request.setAttribute("basketTotal", KKServiceHelper.getKKBasketService().getBasketTotal(request));
         } catch (Exception e) {
             log.warn("Failed to render the HST component {}", e.toString());
+        }
+    }
+
+    /**
+     * Set the checkout attributes to the Hst request
+     * @param request the hst request to set
+     */
+    public static void setCheckoutAttributes(@Nonnull HstRequest request) {
+
+        // Set the checkout order
+        request.setAttribute(KKCheckout.CHECKOUT_ORDER, request.getRequestContext().getAttribute(KKCheckout.CHECKOUT_ORDER));
+
+        // Set the
+        Enumeration<String> attributes = request.getRequestContext().getAttributeNames();
+
+        while (attributes.hasMoreElements()) {
+            String attributeName = attributes.nextElement();
+
+            if (StringUtils.contains(attributeName, "_EDIT")) {
+                request.setAttribute(attributeName, request.getRequestContext().getAttribute(attributeName));
+            }
         }
     }
 

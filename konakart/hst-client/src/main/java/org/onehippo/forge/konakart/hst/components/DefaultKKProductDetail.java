@@ -171,7 +171,7 @@ public class DefaultKKProductDetail extends KKHstActionComponent {
         }
 
         String productUuid = product.getCanonicalHandleUUID();
-        String reviewName = "";//product.getReviewsFolder();
+        String reviewName = super.getKKStoreConfig(request).getReviewFolder();
 
         Session persistableSession = null;
         WorkflowPersistenceManager wpm;

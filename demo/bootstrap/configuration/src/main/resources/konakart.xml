@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" xmlns:h="http://www.onehippo.org/jcr/xmlimport" sv:name="konakart:konakart" h:merge="combine">
+  <sv:node sv:name="konakart:checkout" h:merge="combine">
+    <sv:property sv:name="konakart:activities" sv:type="String" h:merge="override" sv:multiple="true">
+      <sv:value>checkoutMethodRegisterActivity</sv:value>
+      <sv:value>billingAddressActivity</sv:value>
+      <sv:value>shippingAddressActivity</sv:value>
+      <sv:value>shippingMethodActivity</sv:value>
+      <sv:value>paymentMethodActivity</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:processor" sv:type="String" h:merge="override">
+      <sv:value>org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessor</sv:value>
+    </sv:property>
+  </sv:node>
+</sv:node>
