@@ -26,7 +26,8 @@ public abstract class BaseProcessor implements Processor {
     private List<Activity> activities = Lists.newLinkedList();
 
 
-    /**
+
+     /**
      * Default constructor.
      *
      * Load the list of activities
@@ -59,6 +60,7 @@ public abstract class BaseProcessor implements Processor {
             activity.setAcceptState(kkActivityConfig.getAcceptState());
             activity.setNextLoggedState(kkActivityConfig.getNextLoggedState());
             activity.setNextNonLoggedState(kkActivityConfig.getNextNonLoggedState());
+            activity.setTemplateRenderPath(kkActivityConfig.getTemplateRenderPath());
 
             activities.add(activity);
         }

@@ -3,6 +3,7 @@ package org.onehippo.forge.konakart.hst.wizard;
 import com.konakart.al.KKAppEng;
 import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.core.component.HstRequest;
+import org.hippoecm.hst.core.component.HstResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,11 +18,13 @@ public abstract class BaseActivity implements Activity{
     private boolean acceptEmtpyState = false;
     private String nextLoggedState;
     private String nextNonLoggedState;
+    private String templateRenderPath;
 
     protected ProcessorContext processorContext;
     protected FormMap formMap;
     protected KKAppEng kkAppEng;
     protected HstRequest hstRequest;
+    protected HstResponse hstResponse;
 
 
     protected BaseActivity() {
@@ -31,6 +34,7 @@ public abstract class BaseActivity implements Activity{
     public void initialize(ProcessorContext processorContext) {
         this.processorContext = processorContext;
         this.hstRequest = processorContext.getSeedData().getRequest();
+        this.hstResponse = processorContext.getSeedData().getResponse();
 
         formMap = new FormMap(hstRequest, getCheckoutFormMapFields());
         kkAppEng = processorContext.getSeedData().getKkBaseHstComponent().
@@ -60,6 +64,7 @@ public abstract class BaseActivity implements Activity{
         return acceptState;
     }
 
+    @Override
     public void setAcceptEmptyState(boolean acceptEmtpyState) {
         this.acceptEmtpyState = acceptEmtpyState;
     }
@@ -73,12 +78,26 @@ public abstract class BaseActivity implements Activity{
         return nextLoggedState;
     }
 
+    @Override
     public void setNextLoggedState(String nextLoggedState) {
         this.nextLoggedState = nextLoggedState;
     }
 
+    @Override
     public void setNextNonLoggedState(String nextNonLoggedState) {
         this.nextNonLoggedState = nextNonLoggedState;
+    }
+
+    @Override
+    public void setTemplateRenderPath(String templateRenderPath) {
+        this.templateRenderPath = templateRenderPath;
+    }
+
+    /**
+     * @return the template that will be rendered.
+     */
+    public String getTemplateRenderPath() {
+        return templateRenderPath;
     }
 
     @Override
@@ -88,8 +107,20 @@ public abstract class BaseActivity implements Activity{
     }
 
     @Override
-    public void doAdditionalData() {
+    public void doAction() throws ActivityException {
+        doApplyTemplateRenderPath();
     }
+
+    public void doApplyTemplateRenderPath() {
+        hstResponse.setRenderPath(getTemplateRenderPath());
+    }
+
+    @Override
+    public void doAdditionalData() {
+        // do nothing.
+    }
+
+
 
     @Override
     public String[] getCheckoutFormMapFields() {
@@ -104,5 +135,7 @@ public abstract class BaseActivity implements Activity{
     protected void addMessage(String name, String message) {
         formMap.addMessage(name, message);
     }
+
+
 
 }

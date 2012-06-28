@@ -25,6 +25,10 @@
         <konakart.version>6.3.0.0</konakart.version>
         <torque.version>3.3</torque.version>
         <torque.village.version>3.3.1</torque.village.version>
+        <velocity.version>1.6.4</velocity.version>
+        <velocity-tools.version>2.0</velocity-tools.version>
+        <!--<velocity.version>1.6.2</velocity.version>-->
+        <!--<velocity-tools.version>1.3</velocity-tools.version>-->
     </properties>
 
     <dependencies>
@@ -386,6 +390,19 @@
             <groupId>org.apache.torque</groupId>
             <artifactId>village</artifactId>
             <version>${torque.village.version}</version>
+        </dependency>
+
+        <!-- velocity depedencies -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity</artifactId>
+            <version>${velocity.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-tools</artifactId>
+            <version>${velocity-tools.version}</version>
         </dependency>
 
         <!-- Guava dependencies -->

@@ -61,6 +61,7 @@
   - konakart:acceptState (string) mandatory
   - konakart:nextNonLoggedState (string) mandatory
   - konakart:nextLoggedState (string) mandatory
+  - konakart:templateRenderpath (string) mandatory
 
 [konakart:checkout] > mix:referenceable, mix:versionable, nt:base
   + * (konakart:activity) = konakart:activity version

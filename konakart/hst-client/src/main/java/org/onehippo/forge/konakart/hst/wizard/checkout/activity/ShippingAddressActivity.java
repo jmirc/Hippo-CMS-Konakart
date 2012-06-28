@@ -16,6 +16,8 @@ public class ShippingAddressActivity extends BaseAddressActivity {
 
     @Override
     public void doAction() throws ActivityException {
+        super.doAction();
+
         CheckoutProcessContext checkoutProcessContext = (CheckoutProcessContext) processorContext;
         CheckoutSeedData seedData = checkoutProcessContext.getSeedData();
 
@@ -48,7 +50,6 @@ public class ShippingAddressActivity extends BaseAddressActivity {
 
     @Override
     public void doAdditionalData() {
-        super.doAdditionalData();
 
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 

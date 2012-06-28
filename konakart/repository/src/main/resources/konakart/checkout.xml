@@ -3,11 +3,16 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>konakart:checkout</sv:value>
     </sv:property>
+    <sv:property sv:name="jcr:uuid" sv:type="String">
+        <sv:value>d8f6fc49-a892-4468-a838-412df22a2e78</sv:value>
+    </sv:property>
     <sv:property sv:multiple="true" sv:name="konakart:activities" sv:type="String">
         <sv:value>checkoutMethodRegisterActivity</sv:value>
         <sv:value>billingAddressActivity</sv:value>
         <sv:value>shippingAddressActivity</sv:value>
         <sv:value>shippingMethodActivity</sv:value>
+        <sv:value>paymentMethodActivity</sv:value>
+        <sv:value>orderReviewActivity</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:processor" sv:type="String">
         <sv:value>org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessor</sv:value>
@@ -31,6 +36,9 @@
         <sv:property sv:name="konakart:nextNonLoggedState" sv:type="String">
             <sv:value>INITIAL</sv:value>
         </sv:property>
+        <sv:property sv:name="konakart:templateRenderpath" sv:type="String">
+            <sv:value>jsp/checkout/main/detail.jsp</sv:value>
+        </sv:property>
     </sv:node>
     <sv:node sv:name="billingAddressActivity">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
@@ -47,6 +55,9 @@
         </sv:property>
         <sv:property sv:name="konakart:nextNonLoggedState" sv:type="String">
             <sv:value>INITIAL</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:templateRenderpath" sv:type="String">
+            <sv:value>jsp/checkout/main/detail.jsp</sv:value>
         </sv:property>
     </sv:node>
     <sv:node sv:name="shippingAddressActivity">
@@ -65,6 +76,9 @@
         <sv:property sv:name="konakart:nextNonLoggedState" sv:type="String">
             <sv:value>INITIAL</sv:value>
         </sv:property>
+        <sv:property sv:name="konakart:templateRenderpath" sv:type="String">
+            <sv:value>jsp/checkout/main/detail.jsp</sv:value>
+        </sv:property>
     </sv:node>
     <sv:node sv:name="shippingMethodActivity">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
@@ -81,6 +95,49 @@
         </sv:property>
         <sv:property sv:name="konakart:nextNonLoggedState" sv:type="String">
             <sv:value>INITIAL</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:templateRenderpath" sv:type="String">
+            <sv:value>jsp/checkout/main/detail.jsp</sv:value>
+        </sv:property>
+    </sv:node>
+    <sv:node sv:name="orderReviewActivity">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>konakart:activity</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:acceptState" sv:type="String">
+            <sv:value>ORDER_REVIEW</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:class" sv:type="String">
+            <sv:value>org.onehippo.forge.konakart.hst.wizard.checkout.activity.OrderReviewActivity</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:nextLoggedState" sv:type="String">
+            <sv:value/>
+        </sv:property>
+        <sv:property sv:name="konakart:nextNonLoggedState" sv:type="String">
+            <sv:value>INITIAL</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:templateRenderpath" sv:type="String">
+            <sv:value>jsp/checkout/main/detail.jsp</sv:value>
+        </sv:property>
+    </sv:node>
+    <sv:node sv:name="paymentMethodActivity">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>konakart:activity</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:acceptState" sv:type="String">
+            <sv:value>PAYMENT_METHOD</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:class" sv:type="String">
+            <sv:value>org.onehippo.forge.konakart.hst.wizard.checkout.activity.PaymentMethodActivity</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:nextLoggedState" sv:type="String">
+            <sv:value>ORDER_REVIEW</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:nextNonLoggedState" sv:type="String">
+            <sv:value>INITIAL</sv:value>
+        </sv:property>
+        <sv:property sv:name="konakart:templateRenderpath" sv:type="String">
+            <sv:value>jsp/checkout/main/success.jsp</sv:value>
         </sv:property>
     </sv:node>
 </sv:node>

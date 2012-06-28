@@ -45,6 +45,11 @@ public abstract class BaseAddressActivity extends BaseCheckoutActivity {
 
     @Override
     public void doBeforeRender() throws ActivityException {
+
+        if (!validateCurrentCart()) {
+            return;
+        }
+
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
         // Set the province if has been selected
@@ -205,5 +210,4 @@ public abstract class BaseAddressActivity extends BaseCheckoutActivity {
                 , STREETADDRESS, SUBURB, POSTALCODE, CITY, STATEPROVINCE, COUNTRY, PRIMARYTELEPHONE
                 , OTHERTELEPHONE, FAXNUMBER, SAVEINADDRESSBOOK, ADDRESS};
     }
-
 }

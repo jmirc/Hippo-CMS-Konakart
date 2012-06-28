@@ -18,9 +18,13 @@
 </c:if>
 
 <form action="${paymentMethodLink}" method="post">
+
+    <div class="alert alert-info">
+        Please select the preferred payment method to use on this order.
+    </div>
+
     <c:forEach items="${paymentDetails}" var="paymentGateway">
         <fieldset>
-            <legend>Please select the preferred payment method to use on this order.</legend>
             <div class="control-group">
                 <div class="controls">
                     <label class="radio inline" for="input01">

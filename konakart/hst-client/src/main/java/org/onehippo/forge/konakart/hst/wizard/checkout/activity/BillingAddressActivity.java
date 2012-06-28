@@ -1,6 +1,9 @@
 package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
 import com.konakart.app.KKException;
+import com.konakart.app.OrderStatusHistory;
+import com.konakart.appif.OrderIf;
+import com.konakart.appif.OrderStatusHistoryIf;
 import org.apache.commons.lang.StringUtils;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
@@ -20,6 +23,8 @@ public class BillingAddressActivity extends BaseAddressActivity {
 
     @Override
     public void doAction() throws ActivityException {
+        super.doAction();
+
         CheckoutProcessContext checkoutProcessContext = (CheckoutProcessContext) processorContext;
         CheckoutSeedData seedData = checkoutProcessContext.getSeedData();
 
@@ -52,13 +57,22 @@ public class BillingAddressActivity extends BaseAddressActivity {
                     log.error("Failed to set the shipping address", e);
                 }
             }
+
+            OrderIf checkoutOrder = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().getCheckoutOrder();
+
+            // Set the comment
+            OrderStatusHistoryIf osh = new OrderStatusHistory();
+            // TODO CAN SET COMMENTS
+            osh.setComments("");
+            OrderStatusHistoryIf[] oshArray = new OrderStatusHistoryIf[1];
+            oshArray[0] = osh;
+            osh.setUpdatedById(kkAppEng.getOrderMgr().getIdForUserUpdatingOrder(checkoutOrder));
+            checkoutOrder.setStatusTrail(oshArray);
         }
     }
 
     @Override
     public void doAdditionalData() {
-        super.doAdditionalData();
-
 
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 

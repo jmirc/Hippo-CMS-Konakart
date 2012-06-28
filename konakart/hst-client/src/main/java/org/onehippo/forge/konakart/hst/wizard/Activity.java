@@ -53,6 +53,13 @@ public interface Activity {
     void setNextNonLoggedState(String nextNonLoggedState);
 
     /**
+     * Set the template that will be rendered after the execution of the activity
+     *
+     * @param templateRenderPath the template to set
+     */
+    void setTemplateRenderPath(String templateRenderPath);
+
+    /**
      * Compute the next state that will be executed by the processor
      * <p/>
      * This method is only called if the activity has accepted the state
@@ -87,6 +94,11 @@ public interface Activity {
      * the activity is already past.
      */
     void doAdditionalData();
+
+    /**
+     * Executed to set the template render path to the HstResponse
+     */
+    void doApplyTemplateRenderPath();
 
     /**
      * This method must be overrided if you implement a different onepagecheckout

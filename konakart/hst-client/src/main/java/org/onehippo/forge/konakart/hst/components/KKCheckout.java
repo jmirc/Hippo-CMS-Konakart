@@ -10,6 +10,7 @@ import org.hippoecm.hst.component.support.forms.FormUtils;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
+import org.hippoecm.hst.util.HstResponseUtils;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.Processor;
@@ -35,52 +36,6 @@ public class KKCheckout extends KKHstActionComponent {
         request.setAttribute("form", formMap);
 
         try {
-            // Update the basket data from the database
-            kkAppEng.getBasketMgr().getBasketItemsPerCustomer();
-
-            // Check to see whether there is something in the cart
-            CustomerIf cust = kkAppEng.getCustomerMgr().getCurrentCustomer();
-            if (cust.getBasketItems() == null || cust.getBasketItems().length == 0) {
-                redirectByRefId(request, response, getCartDetailRefId());
-                return;
-            }
-
-            // Check that all cart items have a quantity of at least one
-            boolean removed = false;
-            for (int i = 0; i < cust.getBasketItems().length; i++) {
-                BasketIf b = cust.getBasketItems()[i];
-                if (b.getQuantity() == 0) {
-                    kkAppEng.getBasketMgr().removeFromBasket(b, /* refresh */false);
-                    removed = true;
-                }
-            }
-
-            if (removed) {
-                // Update the basket data from the database
-                kkAppEng.getBasketMgr().getBasketItemsPerCustomer();
-
-                // Check to see whether there is something in the cart
-                if (cust.getBasketItems() == null || cust.getBasketItems().length == 0) {
-                    redirectByRefId(request, response, getCartDetailRefId());
-                    return;
-                }
-            }
-
-            // Check to see whether we are trying to checkout an item that isn't in stock
-            String stockAllowCheckout = kkAppEng.getConfig(ConfigConstants.STOCK_ALLOW_CHECKOUT);
-            if (stockAllowCheckout != null && stockAllowCheckout.equalsIgnoreCase("false")) {
-                // If required, we check to see whether the products are in stock
-                BasketIf[] items = kkAppEng.getEng().updateBasketWithStockInfoWithOptions(
-                        cust.getBasketItems(), kkAppEng.getBasketMgr().getAddToBasketOptions());
-
-                for (BasketIf basket : items) {
-                    if (basket.getQuantity() > basket.getQuantityInStock()) {
-                        redirectByRefId(request, response, getCartDetailRefId());
-                        return;
-                    }
-                }
-            }
-
             CheckoutSeedData seedData = new CheckoutSeedData();
             seedData.setKkBaseHstComponent(this);
             seedData.setRequest(request);
@@ -96,7 +51,6 @@ public class KKCheckout extends KKHstActionComponent {
             request.setAttribute(CHECKOUT_ORDER, kkAppEng.getOrderMgr().getCheckoutOrder());
 
             request.setAttribute(ONE_PAGE_CHECKOUT, isOnePageCheckout(kkAppEng));
-
         } catch (Exception e) {
             log.warn("Failed to initialize the checkout page", e);
             throw new HstComponentException("Failed to initialize the checkout page ",  e);

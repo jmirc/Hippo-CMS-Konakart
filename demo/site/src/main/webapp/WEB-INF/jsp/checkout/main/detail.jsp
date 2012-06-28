@@ -15,13 +15,13 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#CountryDropDown').change(function() {
-            $.getJSON("${countryDropDown}/" + $(this).val(), "", function(data) {
+    $(document).ready(function () {
+        $('#CountryDropDown').change(function () {
+            $.getJSON("${countryDropDown}/" + $(this).val(), "", function (data) {
                 var list = $('#StateDropDown');
                 list.empty('option');
                 list.append($('<option />').attr('selected', 'true').text('---').val('-1'));
-                $.each(data, function(index, itemData) {
+                $.each(data, function (index, itemData) {
                     list.append($('<option />').text(itemData.name).val(itemData.name));
                 });
             });
@@ -33,13 +33,13 @@
 -${isLogged}- <br/>
 
 
-        <c:set var="count" value="0" scope="page" />
+<c:set var="count" value="0" scope="page"/>
 <c:if test="${not isLogged}">
     <ul class="breadcrumb">
         <li class="active">
-            <div >
+            <div>
                 <c:set var="count" value="${count + 1}" scope="page"/>
-                <h3>${count}. <fmt:message key="checkout.step.checkoutmethod"/> </h3>
+                <h3>${count}. <fmt:message key="checkout.step.checkoutmethod"/></h3>
             </div>
         </li>
     </ul>
@@ -52,8 +52,6 @@
 <ul class="breadcrumb">
     <c:set var="count" value="${count + 1}" scope="page"/>
     <li class="active">
-        <h3>${count}. <fmt:message key="checkout.step.billingaddress"/></h3>
-
         <c:if test="${BILLING_ADDRESS_EDIT}">
             <hst:actionURL var="link">
                 <hst:param name="action" value="EDIT"/>
@@ -61,6 +59,8 @@
             </hst:actionURL>
             <a href="${link}" class="pull-right">edit</a>
         </c:if>
+        <h3>${count}. <fmt:message key="checkout.step.billingaddress"/></h3>
+
     </li>
 </ul>
 <c:if test="${state == 'BILLING_ADDRESS'}">
@@ -70,8 +70,6 @@
 <ul class="breadcrumb">
     <c:set var="count" value="${count + 1}" scope="page"/>
     <li class="active">
-        <h3>${count}. <fmt:message key="checkout.step.shippingaddress"/></h3>
-
         <c:if test="${SHIPPING_ADDRESS_EDIT}">
             <hst:actionURL var="link">
                 <hst:param name="action" value="EDIT"/>
@@ -79,7 +77,7 @@
             </hst:actionURL>
             <a href="${link}" class="pull-right">edit</a>
         </c:if>
-
+        <h3>${count}. <fmt:message key="checkout.step.shippingaddress"/></h3>
     </li>
 </ul>
 <c:if test="${state == 'SHIPPING_ADDRESS'}">
@@ -89,8 +87,6 @@
 <ul class="breadcrumb">
     <c:set var="count" value="${count + 1}" scope="page"/>
     <li class="active">
-        <h3>${count}. <fmt:message key="checkout.step.shippingmethod"/></h3>
-
         <c:if test="${SHIPPING_METHOD_EDIT}">
             <hst:actionURL var="link">
                 <hst:param name="action" value="EDIT"/>
@@ -98,6 +94,7 @@
             </hst:actionURL>
             <a href="${link}" class="pull-right">edit</a>
         </c:if>
+        <h3>${count}. <fmt:message key="checkout.step.shippingmethod"/></h3>
     </li>
 </ul>
 <c:if test="${state == 'SHIPPING_METHOD'}">
@@ -107,8 +104,6 @@
 <ul class="breadcrumb">
     <c:set var="count" value="${count + 1}" scope="page"/>
     <li class="active">
-        <h3>${count}. <fmt:message key="checkout.step.paymentmethod"/></h3>
-
         <c:if test="${PAYMENT_METHOD_EDIT}">
             <hst:actionURL var="link">
                 <hst:param name="action" value="EDIT"/>
@@ -116,6 +111,7 @@
             </hst:actionURL>
             <a href="${link}" class="pull-right">edit</a>
         </c:if>
+        <h3>${count}. <fmt:message key="checkout.step.paymentmethod"/></h3>
     </li>
 </ul>
 <c:if test="${state == 'PAYMENT_METHOD'}">
@@ -126,9 +122,9 @@
 <ul class="breadcrumb">
     <c:set var="count" value="${count + 1}" scope="page"/>
     <li class="active"><h3>${count}. <fmt:message key="checkout.step.orderreview"/></h3></li>
-
-    <c:if test="${state == 'ORDER_REVIEW'}">
-        <tag:checkoutOrderReview/>
-    </c:if>
 </ul>
+<c:if test="${state == 'ORDER_REVIEW'}">
+    <tag:checkoutOrderReview/>
+</c:if>
+
 

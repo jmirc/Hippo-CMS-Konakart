@@ -18,6 +18,10 @@
 </c:if>
 
 <form action="${orderReviewLink}" method="post">
+    <div class="alert alert-info">
+        Please review your order before processing.
+    </div>
+
     <table class="table table-striped table-condensed">
         <thead>
         <tr>
@@ -37,14 +41,12 @@
                     <c:forEach var="option" items="${item.opts}">
                         <c:choose>
                             <c:when test="${option.type == 1}">
-                                <br><small>&nbsp;<i> - ${option.name} : ${option.quantity} ${option.value}</i></small>
+                                <br><small>&nbsp;<i> - ${option.name} : ${option.quantity} ${option.value} (<kk:formatPrice price="${option.priceExTax}"/>)</i></small>
                             </c:when>
                             <c:otherwise>
-                                <br><small>&nbsp;<i> - ${option.name} : ${option.value}</i></small>
+                                <br><small>&nbsp;<i> - ${option.name} : ${option.value} (<kk:formatPrice price="${option.priceExTax}"/>)</i></small>
                             </c:otherwise>
                         </c:choose>
-
-                        <small><i> - <c:out value="${attribute}"/></i></small>
                     </c:forEach>
                 </td>
                 <td align="center" class="productListing-data" valign="top">
@@ -137,8 +139,9 @@
     </c:if>
 
     <br/><br/>
-
-    <input type="submit" class="btn btn-success" value="Place Order"/>
+    <hst:link var="editCartLink" siteMapItemRefId="cartDetailId"/>
+    <a class="btn btn-success" href="${editCartLink}">Edit your Cart</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="submit" class="btn btn-danger" value="Place Order"/>
 </form>
 
 

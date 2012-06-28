@@ -60,6 +60,7 @@ public class HippoModuleConfig {
     public static final String KONAKART_ACTIVITY_ACCEPT_STATE = "konakart:acceptState";
     public static final String KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE = "konakart:nextNonLoggedState";
     public static final String KONAKART_ACTIVITY_NEXT_LOGGED_STATE = "konakart:nextLoggedState";
+    public static final String KONAKART_ACTIVITY_TEMPLATE_RENDER_PATH = "konakart:templateRenderpath";
 
     private static HippoModuleConfig config = new HippoModuleConfig();
 
@@ -343,6 +344,10 @@ public class HippoModuleConfig {
 
                     if (activityNode.hasProperty(KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE)) {
                         activityConfig.setNextNonLoggedState(activityNode.getProperty(KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE).getString());
+                    }
+
+                    if (activityNode.hasProperty(KONAKART_ACTIVITY_TEMPLATE_RENDER_PATH)) {
+                        activityConfig.setTemplateRenderpath(activityNode.getProperty(KONAKART_ACTIVITY_TEMPLATE_RENDER_PATH).getString());
                     }
 
                     checkoutConfig.addActivityConfigList(activityConfig);

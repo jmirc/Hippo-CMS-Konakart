@@ -20,11 +20,11 @@ public class CheckoutProcessor extends BaseProcessor {
     @Override
     public void doBeforeRender(SeedData seedObject) throws ActivityException {
 
-        String initialState = getCurrentState(seedObject.getRequest());
-        String nextState = initialState;
+        String currentState = getCurrentState(seedObject.getRequest());
+        String nextState = currentState;
 
         // Set state
-        ((CheckoutSeedData) seedObject).setState(initialState);
+        ((CheckoutSeedData) seedObject).setState(currentState);
         ((CheckoutSeedData) seedObject).setAction(getCurrentAction(seedObject.getRequest()));
 
         if (log.isDebugEnabled()) {
@@ -38,7 +38,6 @@ public class CheckoutProcessor extends BaseProcessor {
         CheckoutProcessContext context = new CheckoutProcessContext();
         context.setSeedData(seedObject);
 
-
         for (Activity activity : activities) {
             if (log.isDebugEnabled()) {
                 log.debug("running activity:" + activity.getClass().getSimpleName() + " using arguments:" + context);
@@ -47,20 +46,23 @@ public class CheckoutProcessor extends BaseProcessor {
             activity.initialize(context);
 
             if (activity.acceptState(nextState)) {
-                activity.doBeforeRender();
 
                 // If an activity accept the initial state, this is means that this activity has been already
                 // executed so the real activity to execute is the next one.
-                if (activity.acceptState(initialState) && !isEditAction(seedObject.getRequest())) {
+                if (activity.acceptState(currentState) && !isEditAction(seedObject.getRequest())) {
                     nextState = activity.computeNextState();
+                } else {
+                    activity.doBeforeRender();
                 }
+
+                activity.doApplyTemplateRenderPath();
             }
         }
 
         ((CheckoutSeedData) seedObject).setState(nextState);
         seedObject.getRequest().setAttribute(STATE, nextState);
-    }
 
+    }
 
 
     @Override
@@ -87,7 +89,7 @@ public class CheckoutProcessor extends BaseProcessor {
                 log.debug("running activity:" + activity.getClass().getSimpleName() + " using arguments:" + context);
             }
 
-            if (activity.acceptState(context.getSeedData().getState())) {
+            if (activity.acceptState(currentState)) {
                 activity.initialize(context);
 
                 if (activity.doValidForm()) {
@@ -122,7 +124,5 @@ public class CheckoutProcessor extends BaseProcessor {
             activity.initialize(context);
             activity.doAdditionalData();
         }
-
-
     }
 }

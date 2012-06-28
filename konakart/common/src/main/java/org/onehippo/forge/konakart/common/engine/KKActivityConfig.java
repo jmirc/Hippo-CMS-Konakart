@@ -7,6 +7,7 @@ public class KKActivityConfig {
     private String acceptState;
     private String nextNonLoggedState;
     private String nextLoggedState;
+    private String templateRenderpath;
 
     public String getActivityClass() {
         return activityClass;
@@ -46,5 +47,13 @@ public class KKActivityConfig {
 
     public void setNextLoggedState(String nextLoggedState) {
         this.nextLoggedState = nextLoggedState;
+    }
+
+    public String getTemplateRenderPath() {
+        return templateRenderpath;
+    }
+
+    public void setTemplateRenderpath(String templateRenderpath) {
+        this.templateRenderpath = templateRenderpath;
     }
 }

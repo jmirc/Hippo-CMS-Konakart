@@ -17,12 +17,19 @@ public class ShippingMethodActivity extends BaseCheckoutActivity {
 
     @Override
     public void doBeforeRender() throws ActivityException {
+
+        if (!validateCurrentCart()) {
+            return;
+        }
+
         hstRequest.setAttribute(SHIPPING_QUOTES, kkAppEng.getOrderMgr().getShippingQuotes());
         hstRequest.setAttribute(SHIPPING_METHOD, kkAppEng.getOrderMgr().getCheckoutOrder().getShippingMethod());
     }
 
     @Override
     public void doAction() throws ActivityException {
+        super.doAction();
+
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
         if (seedData.getAction().equals(KKCheckoutConstants.ACTIONS.SELECT.name())) {
@@ -42,7 +49,6 @@ public class ShippingMethodActivity extends BaseCheckoutActivity {
 
     @Override
     public void doAdditionalData() {
-        super.doAdditionalData();
 
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 

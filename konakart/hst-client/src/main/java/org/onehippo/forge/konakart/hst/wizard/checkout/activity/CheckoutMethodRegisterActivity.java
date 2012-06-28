@@ -2,6 +2,7 @@ package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
+import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.ProcessorContext;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessContext;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
@@ -27,7 +28,9 @@ public class CheckoutMethodRegisterActivity extends BaseCheckoutActivity {
     }
 
     @Override
-    public void doAction() {
+    public void doAction() throws ActivityException {
+        super.doAction();
+
         CheckoutProcessContext checkoutProcessContext = (CheckoutProcessContext) processorContext;
         CheckoutSeedData seedData = checkoutProcessContext.getSeedData();
 

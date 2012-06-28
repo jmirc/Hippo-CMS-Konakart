@@ -74,7 +74,7 @@
             <c:if test="${PAYMENT_METHOD_EDIT}">
                 <br/><br/>
                 <p>
-                    <c:if test="${not empty checkoutOrder}">
+                   <c:if test="${not empty checkoutOrder}">
                         ${checkoutOrder.paymentMethod}
                     </c:if>
                 </p>

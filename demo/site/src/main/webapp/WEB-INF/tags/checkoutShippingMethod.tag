@@ -18,6 +18,11 @@
 </c:if>
 
 <form action="${shippingMethod}" method="post">
+    <div class="alert alert-info">
+        Select a shipping method.
+    </div>
+
+
     <c:forEach items="${shippingQuotes}" var="quote">
         <fieldset>
             <legend>${quote.title}</legend>
