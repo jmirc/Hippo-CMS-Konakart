@@ -2,14 +2,36 @@
 
 The aim of this project is to create a bridge between Hippo CMS and Konakart.
 
+## Before starting a project
+
+### Konakart installation 
+Please install the open-source or enterprise version of [Konakart](http://www.konakart.com/). 
+
+### Define Environment Variables
+In order to process with the next step, you need to define the KONAKART_HOME variable.
+
+```
+i.e.: KONAKART_HOME='C:\app\konakart\KonaKart-6.3.0.0\'
+```
+
+### Import Konakart libraries within your local .m2 repo
+Konakart uses ant to build the entire project. The librairies are not available on any Maven repository. 
+The project [Konakart Dependency](https://github.com/jmirc/Hippo-CMS-Konakart/tree/master/konakart-dependency) has been created to import into your local m2 repo the librairies.
+
+The following steps need to be executed:
+
+1. Clone the project
+1. cd konakart-dependency
+1. run mvn install
+
 ## How to start a project
 
-*  Create a new project using the latest version of the artifact. Currently tested with the version 1.05.05
+*  Create a new project using the latest version of the artifact. Currently tested with the version 1.05.06
 
-### POM.XML
+### Global POM.XML
 * Add the following conf
 ```xml
-    <dependencies>
+    <dependencyManagement>
      ...
      <dependency>
          <groupId>mysql</groupId>
@@ -17,7 +39,7 @@ The aim of this project is to create a bridge between Hippo CMS and Konakart.
          <version>5.1.18</version>
      </dependency>
       ...
-    </dependencies>
+    </dependencyManagement>
 
     <profile>
        <id>cargo.run</id>
@@ -69,8 +91,8 @@ The aim of this project is to create a bridge between Hippo CMS and Konakart.
 ```
 
 ### SITE Configuration
-1. Add a copy of the konakart.properties and the konakart_app.properties file under src/main/resources
-1. Add the following lines into the pom.xml file
+* Add a copy of the konakart.properties and the konakart_app.properties file under src/main/resources
+* Add the following lines into the pom.xml file
 
 ```xml
 
@@ -84,12 +106,9 @@ The aim of this project is to create a bridge between Hippo CMS and Konakart.
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 ```
-
-
-1. Create a new file named //konakart-hst-configuration.xml// under resources/META-INF/hst-assembly.overrides to add the konakart Valve
+* Create a new file named //konakart-hst-configuration.xml// under resources/META-INF/hst-assembly/overrides to add the konakart Valve
 
 ```xml
-
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -97,11 +116,8 @@ The aim of this project is to create a bridge between Hippo CMS and Konakart.
 
     <import resource="classpath:/org/onehippo/forge/konakart/hst/konakart-hst-configuration.xml"/>
 </beans>
-
 ```
-
-1. Add in the web.xml of your site the following value to context parameter hst-beans-annotated-classes (note that the values are comma separated):
-
+* Add in the web.xml of your site the following value to context parameter hst-beans-annotated-classes (note that the values are comma separated):
 ```xml
   <context-param>
     <param-name>hst-beans-annotated-classes</param-name>
@@ -113,7 +129,7 @@ The aim of this project is to create a bridge between Hippo CMS and Konakart.
 ```
 
 ### Global Configuration
-* Add the following database configuration to the context.xml file
+* Add the following database configuration to the context.xml file. You will add the connection to the Konakart DB previously created.
 
 ```xml
 
@@ -130,6 +146,6 @@ The aim of this project is to create a bridge between Hippo CMS and Konakart.
 ```
 
 ### Custom Admin Configuration
-1. You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
-    1. Update contentroot
-    1. Update galleryroot
+* You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
+    * Update contentroot (i.e. /content/documents/gettingstarted)
+    * Update galleryroot (i.e. /content/gallery/gettingstarted)
