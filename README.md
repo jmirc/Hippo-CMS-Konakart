@@ -1,0 +1,135 @@
+# Hippo CMS - Konakart integration
+
+The aim of this project is to create a bridge between Hippo CMS and Konakart.
+
+## How to start a project
+
+*  Create a new project using the latest version of the artifact. Currently tested with the version 1.05.05
+
+### POM.XML
+* Add the following conf
+```xml
+    <dependencies>
+     ...
+     <dependency>
+         <groupId>mysql</groupId>
+         <artifactId>mysql-connector-java</artifactId>
+         <version>5.1.18</version>
+     </dependency>
+      ...
+    </dependencies>
+
+    <profile>
+       <id>cargo.run</id>
+       <dependencies>
+          <dependency>
+              <groupId>mysql</groupId>
+              <artifactId>mysql-connector-java</artifactId>
+              <version>5.1.18</version>
+          </dependency>
+       </dependencies>
+       <build>
+         <plugins>
+            <plugin>
+            ...
+            <configuration>
+               <container>
+                 <dependencies>
+                      <dependency>
+                         <groupId>mysql</groupId>
+                         <artifactId>mysql-connector-java</artifactId>
+                      </dependency>
+                 </dependencies>
+               ...
+               </container>
+    </profile>
+```
+
+### CMS Configuration
+* Add a copy of the konakart.properties and the konakart_app.properties file under src/main/resources
+* Add the following lines into the pom.xml file
+
+```xml
+       <dependency>
+            <groupId>org.onehippo.forge.konakart</groupId>
+            <artifactId>hippo-addon-konakart-cms</artifactId>
+            <version>1.00.00-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.forge.konakart</groupId>
+            <artifactId>hippo-addon-konakart-repository</artifactId>
+            <version>1.00.00-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+```
+
+### SITE Configuration
+1. Add a copy of the konakart.properties and the konakart_app.properties file under src/main/resources
+1. Add the following lines into the pom.xml file
+
+```xml
+
+        <dependency>
+            <groupId>org.onehippo.forge.konakart</groupId>
+            <artifactId>hippo-addon-konakart-hstclient</artifactId>
+            <version>1.00.00-SNAPSHOT</version>
+        </dependency>
+       <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+```
+
+
+1. Create a new file named //konakart-hst-configuration.xml// under resources/META-INF/hst-assembly.overrides to add the konakart Valve
+
+```xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <import resource="classpath:/org/onehippo/forge/konakart/hst/konakart-hst-configuration.xml"/>
+</beans>
+
+```
+
+1. Add in the web.xml of your site the following value to context parameter hst-beans-annotated-classes (note that the values are comma separated):
+
+```xml
+  <context-param>
+    <param-name>hst-beans-annotated-classes</param-name>
+    <param-value>
+        classpath*:org/onehippo/forge/konakart/hst/beans/**/*.class
+    </param-value>
+  </context-param>
+
+```
+
+### Global Configuration
+* Add the following database configuration to the context.xml file
+
+```xml
+
+    <!-- Hippo Konakart configuration-->
+    <Resource
+            name="jdbc/konakart" auth="Container" type="javax.sql.DataSource"
+            maxActive="20" maxIdle="10" minIdle="2" initialSize="2" maxWait="10000"
+            testOnBorrow="true" validationQuery="select 1 from dual"
+            poolPreparedStatements="true"
+            username="konakart" password="konakart"
+            driverClassName="com.mysql.jdbc.Driver"
+            url="jdbc:mysql://localhost:3306/konakart?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;characterEncoding=utf8" />
+
+```
+
+### Custom Admin Configuration
+1. You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
+    1. Update contentroot
+    1. Update galleryroot
