@@ -1,24 +1,3 @@
-/*
- * =========================================================
- * Hippo CMS - Konakart
- * https://bitbucket.org/jmirc/hippo-cms-konakart
- * =========================================================
- * Copyright 2012
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =========================================================
- */
-
 package org.onehippo.forge.konakart.common.bl;
 
 import com.konakart.app.KKException;
@@ -70,10 +49,9 @@ public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
 
 
     /**
-     * 
      * Used to synchronize Hippo and Konakart
      *
-     * @param productId id of the product to update
+     * @param productId         id of the product to update
      * @param reviewsFolderName the name of the folder where the review will be saved
      * @throws Exception if the update could not be done
      */
@@ -88,7 +66,8 @@ public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
 
     /**
      * Update the status of a product
-     * @param productId id of the product to update
+     *
+     * @param productId      id of the product to update
      * @param publishedState true if the product is in a published state, false otherwise
      * @throws Exception if the update could not be done
      */
@@ -103,7 +82,8 @@ public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
 
     /**
      * Update the status of a product
-     * @param productId id of the product to update
+     *
+     * @param productId   id of the product to update
      * @param description the description to update
      * @throws Exception if the update could not be done
      */

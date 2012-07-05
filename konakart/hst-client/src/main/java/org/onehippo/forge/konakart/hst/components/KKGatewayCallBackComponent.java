@@ -1,24 +1,3 @@
-/*
- * =========================================================
- * Hippo CMS - Konakart
- * https://bitbucket.org/jmirc/hippo-cms-konakart
- * =========================================================
- * Copyright 2012
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =========================================================
- */
-
 package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.al.KKAppEng;
@@ -162,7 +141,7 @@ public abstract class KKGatewayCallBackComponent extends KKHstActionComponent {
      * @param pd         the PaymentDetails object
      * @param ccParmList the credit card parameters
      * @return The response to the post
-     * @throws IOException
+     * @throws java.io.IOException
      */
     public String getData(PaymentDetailsIf pd, List<NameValueIf> ccParmList) throws IOException {
         // Construct data for GET
@@ -301,8 +280,8 @@ public abstract class KKGatewayCallBackComponent extends KKHstActionComponent {
      * or not.
      *
      * @param kkAppEng the konakart app engine
-     * @param orderId the order id
-     * @param success true if the order is successful, false otherwise
+     * @param orderId  the order id
+     * @param success  true if the order is successful, false otherwise
      * @throws com.konakart.app.KKException .
      */
     protected void sendOrderConfirmationMail(KKAppEng kkAppEng, int orderId, boolean success)
@@ -317,12 +296,12 @@ public abstract class KKGatewayCallBackComponent extends KKHstActionComponent {
      * Send an order confirmation eMail. The template used is different if the order is successful
      * or not.
      *
-     * @param eng the engine
-     * @param sessionId the Konakart session id
+     * @param eng         the engine
+     * @param sessionId   the Konakart session id
      * @param countryCode the country code
-     * @param orderId the order id
-     * @param success true if the order is successful, false otherwise
-     * @throws KKException .
+     * @param orderId     the order id
+     * @param success     true if the order is successful, false otherwise
+     * @throws com.konakart.app.KKException .
      */
     protected void sendOrderConfirmationMail(KKEngIf eng, String sessionId, String countryCode,
                                              int orderId, boolean success) throws KKException {
@@ -364,7 +343,7 @@ public abstract class KKGatewayCallBackComponent extends KKHstActionComponent {
      * @param gatewayTransactionId      an Id from the gateway that identifies the transaction
      * @param konakartResultDescription KonaKart result description
      * @param konakartResultId          KonaKart result code
-     * @throws KKException
+     * @throws com.konakart.app.KKException
      */
     protected void saveIPNrecord(KKAppEng kkAppEng, int orderId, String moduleCode,
                                  String gatewayFullResponse, String gatewayResult, String gatewayTransactionId,

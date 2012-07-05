@@ -1,24 +1,3 @@
-/*
- * =========================================================
- * Hippo CMS - Konakart
- * https://bitbucket.org/jmirc/hippo-cms-konakart
- * =========================================================
- * Copyright 2012
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =========================================================
- */
-
 package org.onehippo.forge.konakart.cms.replication.synchronization.job;
 
 
@@ -59,6 +38,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;
@@ -72,7 +52,7 @@ public class KonakartSyncProductJob implements Job {
     private static Logger log = LoggerFactory.getLogger(KonakartSyncProductJob.class);
 
 
-    private javax.jcr.Session jcrSession;
+    private Session jcrSession;
 
     /**
      * Start the replication
@@ -87,8 +67,8 @@ public class KonakartSyncProductJob implements Job {
         String storeId = context.getJobDetail().getJobDataMap().getString(KonakartSynchronizationService.KK_STORE_ID);
 
         @SuppressWarnings("unchecked")
-        List<? extends ILocaleProvider.HippoLocale> locales =
-                (List<? extends ILocaleProvider.HippoLocale>) context.getJobDetail().getJobDataMap().get(KonakartSynchronizationService.LOCALES);
+        List<? extends HippoLocale> locales =
+                (List<? extends HippoLocale>) context.getJobDetail().getJobDataMap().get(KonakartSynchronizationService.LOCALES);
 
         KKStoreConfig kkStoreConfig = HippoModuleConfig.getConfig().getStoresConfig().get(storeId);
 
@@ -131,11 +111,11 @@ public class KonakartSyncProductJob implements Job {
      * Synchronize Konakart information to Hippo
      *
      * @param kkStoreConfig the store config
-     * @param locales list of available locales
+     * @param locales       list of available locales
      * @throws Exception an exception
      */
     private void syncRepositoryToKonakart(KKStoreConfig kkStoreConfig,
-                                          List<? extends ILocaleProvider.HippoLocale> locales) throws Exception {
+                                          List<? extends HippoLocale> locales) throws Exception {
 
         // Synchronize products
         syncProducts(kkStoreConfig, locales);
@@ -144,9 +124,8 @@ public class KonakartSyncProductJob implements Job {
     /**
      * Copy products from Konakart to Hippo
      *
-     *
      * @param kkStoreConfig the store config
-     * @param locales list of available locales
+     * @param locales       list of available locales
      * @throws Exception an exception
      */
     private void syncProducts(KKStoreConfig kkStoreConfig, List<? extends HippoLocale> locales) throws Exception {
@@ -165,7 +144,7 @@ public class KonakartSyncProductJob implements Job {
             String storeId = kkStoreConfig.getStoreId();
 
             if (!StringUtils.equals(currentLocale.toString(), language.getLocale())) {
-                log.info("Unable to map the Konakart locale <" + language.getLocale() +"> with any available hippo locale");
+                log.info("Unable to map the Konakart locale <" + language.getLocale() + "> with any available hippo locale");
                 continue;
             }
 
@@ -308,11 +287,11 @@ public class KonakartSyncProductJob implements Job {
     /**
      * Get the locale of a node representing a translated document, or a compound therein
      *
-     * @param node Node
+     * @param node    Node
      * @param locales list of available locales
      * @return Locale (nullable)
      */
-    public Locale getLocale(Node node, List<? extends ILocaleProvider.HippoLocale> locales) {
+    public Locale getLocale(Node node, List<? extends HippoLocale> locales) {
         if (node == null) {
             return null;
         }

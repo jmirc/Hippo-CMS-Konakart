@@ -1,24 +1,3 @@
-/*
- * =========================================================
- * Hippo CMS - Konakart
- * https://bitbucket.org/jmirc/hippo-cms-konakart
- * =========================================================
- * Copyright 2012
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =========================================================
- */
-
 package org.onehippo.forge.konakart.cms.replication.jcr;
 
 import org.slf4j.Logger;
@@ -42,7 +21,6 @@ public class GalleryProcesssorConfig {
 
 
     private Map<String, ImageConfig> imageConfigMap = new HashMap<String, ImageConfig>();
-
 
 
     /**
@@ -91,7 +69,7 @@ public class GalleryProcesssorConfig {
 
             NodeIterator nodeIterator = node.getNodes();
 
-            while(nodeIterator.hasNext()) {
+            while (nodeIterator.hasNext()) {
                 Node serviceNode = nodeIterator.nextNode();
 
                 String serviceName = serviceNode.getName();
@@ -110,11 +88,10 @@ public class GalleryProcesssorConfig {
     }
 
 
-
     public static class ImageConfig {
-        public static final String HEIGHT ="height";
-        public static final String WIDTH ="width";
-        public static final String UPSCALING ="upscaling";
+        public static final String HEIGHT = "height";
+        public static final String WIDTH = "width";
+        public static final String UPSCALING = "upscaling";
 
         private Long height;
         private Long width;
@@ -144,9 +121,6 @@ public class GalleryProcesssorConfig {
             this.upscaling = upscaling;
         }
     }
-
-
-
 
 
 }

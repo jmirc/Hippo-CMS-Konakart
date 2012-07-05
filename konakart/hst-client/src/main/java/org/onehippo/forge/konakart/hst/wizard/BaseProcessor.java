@@ -1,24 +1,3 @@
-/*
- * =========================================================
- * Hippo CMS - Konakart
- * https://bitbucket.org/jmirc/hippo-cms-konakart
- * =========================================================
- * Copyright 2012
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =========================================================
- */
-
 package org.onehippo.forge.konakart.hst.wizard;
 
 import com.google.common.collect.Lists;
@@ -35,7 +14,7 @@ import java.util.List;
 
 /**
  * Base class for all Workflow Processors. Responsible of keeping track of an ordered collection of
- * {@link Activity Activities}
+ * {@link org.onehippo.forge.konakart.hst.wizard.Activity Activities}
  */
 public abstract class BaseProcessor implements Processor {
 
@@ -44,9 +23,9 @@ public abstract class BaseProcessor implements Processor {
 
     private List<Activity> activities = Lists.newLinkedList();
 
-     /**
+    /**
      * Default constructor.
-     *
+     * <p/>
      * Load the list of activities
      */
     protected BaseProcessor() {
@@ -110,7 +89,6 @@ public abstract class BaseProcessor implements Processor {
     }
 
     /**
-     *
      * @param request the Hst request
      * @return the current action
      */
@@ -120,6 +98,7 @@ public abstract class BaseProcessor implements Processor {
 
     /**
      * Valid if the customer has clicked on edit button
+     *
      * @return true if the customer has clicked on the edit button, false otherwise
      */
     protected boolean isEditAction(HstRequest request) {

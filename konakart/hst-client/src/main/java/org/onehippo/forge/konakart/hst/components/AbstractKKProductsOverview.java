@@ -1,24 +1,3 @@
-/*
- * =========================================================
- * Hippo CMS - Konakart
- * https://bitbucket.org/jmirc/hippo-cms-konakart
- * =========================================================
- * Copyright 2012
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =========================================================
- */
-
 package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.al.KKAppEng;
@@ -47,7 +26,6 @@ import java.lang.reflect.ParameterizedType;
 
 /**
  * This overview component offers methods used to retrieve products information
- *
  */
 public abstract class AbstractKKProductsOverview<T extends KKProductDocument> extends KKHstActionComponent {
 
@@ -181,18 +159,18 @@ public abstract class AbstractKKProductsOverview<T extends KKProductDocument> ex
     /**
      * This method is called automatically after the overview components retrieves products
      *
-     * @param request the HstRequest
-     * @param response the HstResponse
+     * @param request     the HstRequest
+     * @param response    the HstResponse
      * @param currentBean the current bean
      */
     protected abstract void doBeforeRender(HstRequest request, HstResponse response, HippoBean currentBean);
 
     /**
      * @return the list of primary node types used
-     * by this component to retrieve the list of associated products
+     *         by this component to retrieve the list of associated products
      */
     protected String[] getPrimaryNodeTypes() {
-        return new String[] {KKCndConstants.PRODUCT_DOC_TYPE};
+        return new String[]{KKCndConstants.PRODUCT_DOC_TYPE};
     }
 
     /**

@@ -1,24 +1,3 @@
-/*
- * =========================================================
- * Hippo CMS - Konakart
- * https://bitbucket.org/jmirc/hippo-cms-konakart
- * =========================================================
- * Copyright 2012
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =========================================================
- */
-
 package org.onehippo.forge.konakart.cms.replication.factory;
 
 import com.google.common.collect.Lists;
@@ -58,7 +37,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     private static Logger log = LoggerFactory.getLogger(AbstractProductFactory.class);
 
-    protected javax.jcr.Session session;
+    protected Session session;
     private NodeHelper nodeHelper;
     private NodeImagesHelper nodeImagesHelper;
 
@@ -96,7 +75,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
         // Create the reviews' folder if not exists
         createReviewFolder(kkStoreConfig.getReviewFolder());
     }
-
 
 
     @Override
@@ -198,7 +176,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     /**
      * Create or update the konakart node.
-     *
      *
      * @param storeId     the store id
      * @param product     the konakart product
@@ -302,9 +279,9 @@ public abstract class AbstractProductFactory implements ProductFactory {
     /**
      * Upload the images from Konakart to Hippo CMS
      *
-     * @param productNode product node
+     * @param productNode   product node
      * @param baseImagePath path where the konakart's images are located
-     * @param product the konakart product
+     * @param product       the konakart product
      */
     private void uploadImages(Node productNode, String baseImagePath, String kkProductTypeName, Product product) {
         try {
@@ -467,6 +444,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     /**
      * Create a review's folder
+     *
      * @param reviewFolder the review's folder to create
      * @return the encoded review folder name
      */
@@ -484,7 +462,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         return Codecs.encodeNode(reviewFolder);
     }
-
 
 
 }

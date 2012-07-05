@@ -1,24 +1,3 @@
-/*
- * =========================================================
- * Hippo CMS - Konakart
- * https://bitbucket.org/jmirc/hippo-cms-konakart
- * =========================================================
- * Copyright 2012
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =========================================================
- */
-
 package org.onehippo.forge.konakart.site.service;
 
 import com.konakart.appif.CustomerEventIf;
@@ -35,7 +14,7 @@ public interface KKEventService {
      * events aren't enabled, then null is returned.
      *
      * @param request Hst Request
-     * @param action   Event action
+     * @param action  Event action
      * @return Returns a customer event object or null if events aren't enabled
      */
     @Nullable
@@ -45,13 +24,13 @@ public interface KKEventService {
      * Inserts a customer event where all of the available parameters are passed
      *
      * @param request Hst Request
-     * @param action   Event action
-     * @param str1     a string
-     * @param str2     a string
-     * @param int1     an integer
-     * @param int2     an integer
-     * @param dec1     a decimal
-     * @param dec2     a decimal
+     * @param action  Event action
+     * @param str1    a string
+     * @param str2    a string
+     * @param int1    an integer
+     * @param int2    an integer
+     * @param dec1    a decimal
+     * @param dec2    a decimal
      */
     void insertCustomerEvent(@Nonnull HstRequest request, int action, String str1, String str2,
                              int int1, int int2, BigDecimal dec1, BigDecimal dec2);
@@ -60,7 +39,7 @@ public interface KKEventService {
      * Shortcut method for inserting a customer event passing no custom event data
      *
      * @param request Hst Request
-     * @param action   the action to save
+     * @param action  the action to save
      */
     void insertCustomerEvent(@Nonnull HstRequest request, int action);
 
@@ -68,8 +47,8 @@ public interface KKEventService {
      * Shortcut method for inserting a customer event passing an integer as event data
      *
      * @param request Hst Request
-     * @param action   the action to save
-     * @param int1     an integer
+     * @param action  the action to save
+     * @param int1    an integer
      */
     void insertCustomerEvent(@Nonnull HstRequest request, int action, int int1);
 
@@ -77,8 +56,8 @@ public interface KKEventService {
      * Shortcut method for inserting a customer event passing a string as event data
      *
      * @param request Hst Request
-     * @param action   the action to save
-     * @param str1     a string
+     * @param action  the action to save
+     * @param str1    a string
      */
     void insertCustomerEvent(@Nonnull HstRequest request, int action, String str1);
 
@@ -86,8 +65,8 @@ public interface KKEventService {
      * Shortcut method for inserting a customer event passing a decimal as event data
      *
      * @param request Hst Request
-     * @param action   the action to save
-     * @param dec1     a decinal
+     * @param action  the action to save
+     * @param dec1    a decinal
      */
     void insertCustomerEvent(@Nonnull HstRequest request, int action, BigDecimal dec1);
 

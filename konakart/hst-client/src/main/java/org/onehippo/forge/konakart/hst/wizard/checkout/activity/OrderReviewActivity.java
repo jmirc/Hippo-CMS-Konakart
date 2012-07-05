@@ -1,24 +1,3 @@
-/*
- * =========================================================
- * Hippo CMS - Konakart
- * https://bitbucket.org/jmirc/hippo-cms-konakart
- * =========================================================
- * Copyright 2012
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =========================================================
- */
-
 package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
 import com.konakart.al.KKAppEng;
@@ -29,6 +8,7 @@ import com.konakart.app.PaymentDetails;
 import com.konakart.appif.EmailOptionsIf;
 import com.konakart.appif.OrderIf;
 import com.konakart.appif.PaymentDetailsIf;
+import com.konakart.bl.OrderMgr;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 
@@ -66,10 +46,10 @@ public class OrderReviewActivity extends BaseCheckoutActivity {
         * if it is.
         */
         BigDecimal orderTotal = checkoutOrder.getTotalIncTax();
-        if (orderTotal != null && orderTotal.compareTo(java.math.BigDecimal.ZERO) == 0) {
+        if (orderTotal != null && orderTotal.compareTo(BigDecimal.ZERO) == 0) {
 
             // Set the order status
-            checkoutOrder.setStatus(com.konakart.bl.OrderMgr.PAYMENT_RECEIVED_STATUS);
+            checkoutOrder.setStatus(OrderMgr.PAYMENT_RECEIVED_STATUS);
 
             try {
                 // Save the order
@@ -120,7 +100,7 @@ public class OrderReviewActivity extends BaseCheckoutActivity {
                 * for the callback action which will do it if the payment was approved.
                 */
                 // Set the order status
-                checkoutOrder.setStatus(com.konakart.bl.OrderMgr.WAITING_PAYMENT_STATUS);
+                checkoutOrder.setStatus(OrderMgr.WAITING_PAYMENT_STATUS);
 
                 // Save the order
                 int orderId = kkAppEng.getOrderMgr().saveOrder(/* sendEmail */true, getEmailOptions(kkAppEng));
@@ -176,7 +156,7 @@ public class OrderReviewActivity extends BaseCheckoutActivity {
                 * transaction.
                 */
                 // Set the order status
-                checkoutOrder.setStatus(com.konakart.bl.OrderMgr.WAITING_PAYMENT_STATUS);
+                checkoutOrder.setStatus(OrderMgr.WAITING_PAYMENT_STATUS);
 
                 // Save the order
                 int orderId = kkAppEng.getOrderMgr().saveOrder(/* sendEmail */false, null);
@@ -201,7 +181,7 @@ public class OrderReviewActivity extends BaseCheckoutActivity {
                 */
 
                 // Set the order status
-                checkoutOrder.setStatus(com.konakart.bl.OrderMgr.PENDING_STATUS);
+                checkoutOrder.setStatus(OrderMgr.PENDING_STATUS);
 
                 // Save the order
                 int orderId = kkAppEng.getOrderMgr().saveOrder(/* sendEmail */true,
@@ -222,7 +202,6 @@ public class OrderReviewActivity extends BaseCheckoutActivity {
         } catch (KKAppException e) {
             throw new ActivityException("Failed during the payment method", e);
         }
-
 
 
     }

@@ -17,10 +17,11 @@
 
                     <p>
                         <c:if test="${not empty product.specialPrice}"><s></c:if>
-                        <c:out value="${product.price0}"/>
+                        <kk:formatPrice price="${product.price0}"/>
                         <c:if test="${not empty product.specialPrice}"></s></c:if>
                         <c:if test="${not empty product.specialPrice}">&nbsp;|&nbsp;
-                            <c:out value="${product.specialPrice}"/></c:if>
+                            <kk:formatPrice price="${product.specialPrice}"/>
+                        </c:if>
                     </p>
                     <kk:rating product="${product}" var="rating"/>
                     <fmt:formatNumber value="${rating * 10}" var="ratingStyle" pattern="#0"/>

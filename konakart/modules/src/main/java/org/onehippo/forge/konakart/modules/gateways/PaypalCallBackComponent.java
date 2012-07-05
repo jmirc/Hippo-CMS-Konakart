@@ -1,24 +1,3 @@
-/*
- * =========================================================
- * Hippo CMS - Konakart
- * https://bitbucket.org/jmirc/hippo-cms-konakart
- * =========================================================
- * Copyright 2012
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =========================================================
- */
-
 package org.onehippo.forge.konakart.modules.gateways;
 
 import com.konakart.al.KKAppEng;
@@ -28,6 +7,7 @@ import com.konakart.appif.IpnHistoryIf;
 import com.konakart.appif.NameValueIf;
 import com.konakart.appif.PaymentDetailsIf;
 import com.konakart.bl.ConfigConstants;
+import com.konakart.bl.OrderMgr;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
@@ -196,7 +176,7 @@ public class PaypalCallBackComponent extends KKGatewayCallBackComponent {
                 if (paymentStatus != null && paymentStatus.equalsIgnoreCase(completed)) {
                     comment = ORDER_HISTORY_COMMENT_OK + txnId;
                     kkAppEng.getEng().changeOrderStatus(sessionId, orderId,
-                            com.konakart.bl.OrderMgr.PAYMENT_RECEIVED_STATUS, sendEmail, comment);
+                            OrderMgr.PAYMENT_RECEIVED_STATUS, sendEmail, comment);
 
                     // If the order payment was approved we update the inventory
                     kkAppEng.getEng().updateInventory(sessionId, orderId);
@@ -211,7 +191,7 @@ public class PaypalCallBackComponent extends KKGatewayCallBackComponent {
                 } else {
                     comment = ORDER_HISTORY_COMMENT_KO + paymentStatus;
                     kkAppEng.getEng().changeOrderStatus(sessionId, orderId,
-                            com.konakart.bl.OrderMgr.PAYMENT_DECLINED_STATUS, sendEmail, comment);
+                            OrderMgr.PAYMENT_DECLINED_STATUS, sendEmail, comment);
                     if (sendEmail) {
                         sendOrderConfirmationMail(kkAppEng, orderId, /* success */false);
                     }

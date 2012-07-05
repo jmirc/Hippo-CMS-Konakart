@@ -1,24 +1,3 @@
-/*
- * =========================================================
- * Hippo CMS - Konakart
- * https://bitbucket.org/jmirc/hippo-cms-konakart
- * =========================================================
- * Copyright 2012
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =========================================================
- */
-
 package org.onehippo.forge.konakart.plugins.rating;
 
 import org.apache.wicket.markup.html.basic.Label;
@@ -40,7 +19,6 @@ import javax.jcr.query.QueryResult;
 
 /**
  * Rating Plugin to display readonly fields for Votes and Average Rating
- *
  */
 public class RatingPlugin extends RenderPlugin {
 
@@ -63,9 +41,9 @@ public class RatingPlugin extends RenderPlugin {
             Node parent = productNode.getParent().getParent();
 
             if (parent.isNodeType("mix:referenceable")) {
-                String query = "select * from konakart:review where konakart:reviewproductlink = '" + parent.getIdentifier() +"'";
+                String query = "select * from konakart:review where konakart:reviewproductlink = '" + parent.getIdentifier() + "'";
 
-               QueryManager queryManager = productNode.getSession().getWorkspace().getQueryManager();
+                QueryManager queryManager = productNode.getSession().getWorkspace().getQueryManager();
                 Query reviewsQuery = queryManager.createQuery(query, Query.SQL);
 
                 QueryResult queryResult = reviewsQuery.execute();

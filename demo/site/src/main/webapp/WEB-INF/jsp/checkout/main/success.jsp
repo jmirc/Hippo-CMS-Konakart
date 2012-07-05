@@ -16,7 +16,7 @@ Your order has been successfully processed! Your products will arrive at their d
         </hst:actionURL>
 
         <form action="${checkoutSuccessLink}" class="well">
-            <c:forEach items="notifiedProducts" var="notifiedProduct">
+            <c:forEach items="${notifiedProducts}" var="notifiedProduct">
                 <input type="checkbox" name="remove_${notifiedProduct.prodId}"> ${notifiedProduct.prodName}
             </c:forEach>
 

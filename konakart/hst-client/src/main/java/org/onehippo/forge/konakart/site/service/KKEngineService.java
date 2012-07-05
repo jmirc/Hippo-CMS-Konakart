@@ -1,24 +1,3 @@
-/*
- * =========================================================
- * Hippo CMS - Konakart
- * https://bitbucket.org/jmirc/hippo-cms-konakart
- * =========================================================
- * Copyright 2012
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *  http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * =========================================================
- */
-
 package org.onehippo.forge.konakart.site.service;
 
 import com.konakart.al.KKAppEng;
@@ -53,13 +32,12 @@ public interface KKEngineService {
      * Sets the variable KKEngine to the KKEngine instance saved in the session. If cannot be found,
      * then it is instantiated and attached.
      *
-     *
-     *
-     * @param servletRequest http servlet request
+     * @param servletRequest  http servlet request
      * @param servletResponse http servlet response
-     * @param kkStoreConfig contains configurations set for the current selected store. See hst:mount (konakart:storeName)
+     * @param kkStoreConfig   contains configurations set for the current selected store. See hst:mount (konakart:storeName)
      * @return Returns a KonaKart client engine instance
-     * @throws HstComponentException thrown if the Konakart engine can't be initialized
+     * @throws org.hippoecm.hst.core.component.HstComponentException
+     *          thrown if the Konakart engine can't be initialized
      */
     KKAppEng initKKEngine(HttpServletRequest servletRequest, HttpServletResponse servletResponse,
                           KKStoreConfig kkStoreConfig) throws HstComponentException;
@@ -87,4 +65,4 @@ public interface KKEngineService {
     boolean loggedIn(HstRequest request, HstResponse response, String username, String password);
 
 
-    }
+}
