@@ -20,7 +20,7 @@ The following steps need to be executed:
 ### Global POM.XML
 * Add the following conf
 ```xml
-    <dependencies>
+    <dependencyManagement>
      ...
      <dependency>
          <groupId>mysql</groupId>
@@ -28,7 +28,7 @@ The following steps need to be executed:
          <version>5.1.18</version>
      </dependency>
       ...
-    </dependencies>
+    </dependencyManagement>
 
     <profile>
        <id>cargo.run</id>
