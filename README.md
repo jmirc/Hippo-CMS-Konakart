@@ -4,6 +4,17 @@ The aim of this project is to create a bridge between Hippo CMS and Konakart.
 
 ## Before starting a project
 
+### Konakart installation 
+Please install the open-source or enterprise version of [Konakart](http://www.konakart.com/). 
+
+### Define Environment Variables
+In order to process with the next step, you need to define the KONAKART_HOME variable.
+
+```
+ex: KONAKART_HOME='C:\app\konakart\KonaKart-6.3.0.0\'
+```
+
+### Import Konakart libraries within your local .m2 repo
 Konakart uses ant to build the entire project. The librairies are not available on any Maven repository. 
 The project [Konakart Dependency](https://github.com/jmirc/Hippo-CMS-Konakart/tree/master/konakart-dependency) has been created to import into your local m2 repo the librairies.
 
@@ -124,7 +135,7 @@ The following steps need to be executed:
 ```
 
 ### Global Configuration
-* Add the following database configuration to the context.xml file
+* Add the following database configuration to the context.xml file. You will add the connection to the Konakart DB previously created.
 
 ```xml
 
