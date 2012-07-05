@@ -10,6 +10,7 @@ The project [Konakart Dependency](https://github.com/jmirc/Hippo-CMS-Konakart/tr
 The following steps need to be executed:
 
 1. Clone the project
+1. cd konakart-dependency
 1. run mvn install
 
 ## How to start a project
