@@ -78,7 +78,19 @@ public abstract class BaseActivity implements Activity {
     @Override
     public boolean hasErrors() {
         Map<String,List<String>> messages = formMap.getMessages();
-        return messages != null && !messages.isEmpty();
+
+        boolean hasError = false;
+
+        if (messages != null) {
+            for (List<String> values : messages.values()) {
+                if (values.size() > 0) {
+                    hasError = true;
+                    break;
+                }
+            }
+        }
+
+        return hasError;
     }
 
     @Override
@@ -106,7 +118,8 @@ public abstract class BaseActivity implements Activity {
 
     @Override
     public String computeNextState() {
-        if (processorContext.getSeedData().getKkBaseHstComponent().isGuestCustomer(hstRequest)) {
+        if (processorContext.getSeedData().getKkBaseHstComponent().isGuestCustomer(hstRequest) &&
+                !isCheckoutAsGuest() && !isCheckoutAsRegister()) {
             return nextNonLoggedState;
         }
 
@@ -189,7 +202,6 @@ public abstract class BaseActivity implements Activity {
 
         return dontHaveAccount;
     }
-
 
     /**
      * Check if the customer asked to checkout as a guest

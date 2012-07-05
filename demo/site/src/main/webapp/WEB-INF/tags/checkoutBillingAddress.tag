@@ -16,6 +16,7 @@
 <form id="billingFormID" action="${billingLink}" method="post" class="form-horizontal">
 <fieldset>
 
+
 <c:if test="${fn:length(addresses) > 0}">
     <div class="alert alert-info">
         Select a billing address from your address book or enter a new address.
@@ -31,6 +32,7 @@
     </select>
 </c:if>
 
+<c:if test="${fn:length(addresses) == 0}">
 <br/>
 <br/>
 
@@ -58,6 +60,7 @@
     </div>
 </c:if>
 
+</c:if>
 
 
 <div >

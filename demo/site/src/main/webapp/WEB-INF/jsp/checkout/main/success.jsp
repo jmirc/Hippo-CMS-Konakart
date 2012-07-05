@@ -35,12 +35,7 @@ Your order has been successfully processed! Your products will arrive at their d
 
 
         </form>
-
-
-
-
-
-
+    </c:if>
 </c:if>
 
 

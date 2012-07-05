@@ -77,7 +77,7 @@ public class BillingAddressActivity extends BaseAddressActivity {
                     addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.failed.create.address"));
                     return;
                 }
-            } else if (isCheckoutAsGuest() || isCheckoutAsRegister()) { // User is not logged-in. User wants to checkout as guest.
+            } else if (StringUtils.isEmpty(sAddressId) && (isCheckoutAsGuest() || isCheckoutAsRegister())) { // User is not logged-in. User wants to checkout as guest.
 
                 CustomerRegistrationIf customerRegistration = createCustomerRegistration();
 
@@ -100,8 +100,12 @@ public class BillingAddressActivity extends BaseAddressActivity {
                 addAdditionalInformationToCustomerRegistration(customerRegistration);
 
                 try {
-                    // Register the customer
-                    kkAppEng.getEng().forceRegisterCustomer(customerRegistration);
+                    // Register the customer as guest
+                    if (isCheckoutAsGuest()) {
+                        kkAppEng.getEng().forceRegisterCustomer(customerRegistration);
+                    } else { // Register the customer a real customer
+                        kkAppEng.getEng().registerCustomer(customerRegistration);
+                    }
 
                     // Logged-in
                     KKServiceHelper.getKKEngineService().loggedIn(hstRequest, hstResponse, username, password);
