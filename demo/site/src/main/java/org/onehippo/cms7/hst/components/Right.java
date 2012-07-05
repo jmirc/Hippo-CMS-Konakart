@@ -16,14 +16,4 @@ public class Right extends KKBaseHstComponent {
 
         KKComponentUtils.setCheckoutAttributes(request);
     }
-
-    @Override
-    public void doAction(HstRequest request, HstResponse response) throws HstComponentException {
-        super.doAction(request, response);
-
-        String username = KKUtil.getEscapedParameter(request, "username");
-        String password = KKUtil.getEscapedParameter(request, "password");
-
-        KKServiceHelper.getKKEngineService().loggedIn(request, response, username, password);
-    }
 }

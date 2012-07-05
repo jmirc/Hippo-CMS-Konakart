@@ -1,4 +1,25 @@
 <?xml version="1.0" ?>
+<!--
+  ~ =========================================================
+  ~ Hippo CMS - Konakart
+  ~ https://bitbucket.org/jmirc/hippo-cms-konakart
+  ~ =========================================================
+  ~ Copyright 2012
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~ =========================================================
+  -->
+
 <!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/j2ee/dtd/web-jsptaglibrary_1_2.dtd">
 <taglib xmlns="http://java.sun.com/xml/ns/javaee" version="2.1"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -106,5 +127,62 @@
             <type>java.lang.Integer</type>
         </attribute>
     </tag>
+    <tag>
+        <description>This tag is used to manage checkout activity links</description>
+        <name>activityActionURL</name>
+        <tag-class>org.onehippo.forge.konakart.hst.tags.CheckoutActivityProcessActionURLTag</tag-class>
+        <tei-class>org.onehippo.forge.konakart.hst.tags.CheckoutActivityProcessActionURLTag$TEI</tei-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>The variable name of the actionURL</description>
+            <name>var</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>action</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Set the action that will be handled by the activity. By default the action is set to SELECT</description>
+        </attribute>
+        <attribute>
+            <name>state</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Set the state that you want to assign to this action. By default the current state will be used</description>
+        </attribute>
+    </tag>
+
+
+    <function>
+        <description>
+            Returns true if the customer asked to checkout as a guest
+        </description>
+        <name>hasCheckoutAsGuest</name>
+        <function-class>org.onehippo.forge.konakart.hst.tags.CheckoutFunctions</function-class>
+        <function-signature>boolean hasCheckoutAsGuest(org.hippoecm.hst.core.component.HstRequest)</function-signature>
+    </function>
+
+    <function>
+        <description>
+            Returns true if the customer asked to checkout as a register
+        </description>
+        <name>hasCheckoutAsRegister</name>
+        <function-class>org.onehippo.forge.konakart.hst.tags.CheckoutFunctions</function-class>
+        <function-signature>boolean hasCheckoutAsRegister(org.hippoecm.hst.core.component.HstRequest)</function-signature>
+    </function>
+
+    <function>
+        <description>
+            Used to valid if the current state is equals to the state's parameter
+        </description>
+        <name>checkCheckoutState</name>
+        <function-class>org.onehippo.forge.konakart.hst.tags.CheckoutFunctions</function-class>
+        <function-signature>boolean checkCheckoutState(org.hippoecm.hst.core.component.HstRequest,java.lang.String)</function-signature>
+    </function>
+
 
 </taglib>

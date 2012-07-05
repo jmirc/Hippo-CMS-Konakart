@@ -1,6 +1,9 @@
 /* Body - Products - Rating */
 .rating-container { }
-.rating { background: url(../images/rating.png) no-repeat 7px 2px ;}
+.rating {
+    background: url(../images/rating.png) no-repeat 7px 2px ;
+    line-height: 1.5;
+}
 .rating.stars-0 { background-position: left 0px; }
 .rating.stars-1 { background-position: left -20px; }
 .rating.stars-2 { background-position: left -40px; }

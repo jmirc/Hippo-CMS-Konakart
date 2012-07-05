@@ -1,3 +1,24 @@
+/*
+ * =========================================================
+ * Hippo CMS - Konakart
+ * https://bitbucket.org/jmirc/hippo-cms-konakart
+ * =========================================================
+ * Copyright 2012
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =========================================================
+ */
+
 package org.onehippo.forge.konakart.hst.wizard.checkout;
 
 import org.hippoecm.hst.component.support.forms.FormMap;
@@ -47,20 +68,28 @@ public class CheckoutProcessor extends BaseProcessor {
 
             if (activity.acceptState(nextState)) {
 
-                // If an activity accept the initial state, this is means that this activity has been already
-                // executed so the real activity to execute is the next one.
-                if (activity.acceptState(currentState) && !isEditAction(seedObject.getRequest())) {
-                    nextState = activity.computeNextState();
-                } else {
+                // Check if a form associated with the activity contains errors.
+                // If so, the current page should be refreashed.
+                if (activity.hasErrors()) {
                     activity.doBeforeRender();
+                } else {
+                    // If an activity accept the initial state, this is means that this activity has been already
+                    // executed so the real activity to execute is the next one.
+                    if (activity.acceptState(currentState) && !isEditAction(seedObject.getRequest())) {
+                        nextState = activity.computeNextState();
+                    } else {
+                        activity.doBeforeRender();
+                    }
+
+                    activity.doApplyTemplateRenderPath();
                 }
 
-                activity.doApplyTemplateRenderPath();
+                seedObject.getRequest().setAttribute("form", activity.getFormMap());
             }
         }
 
         ((CheckoutSeedData) seedObject).setState(nextState);
-        seedObject.getRequest().setAttribute(STATE, nextState);
+        seedObject.getRequest().setAttribute(KKCheckoutConstants.STATE, nextState);
 
     }
 
@@ -94,13 +123,15 @@ public class CheckoutProcessor extends BaseProcessor {
 
                 if (activity.doValidForm()) {
                     activity.doAction();
-                    formMap = activity.getFormMap();
                 }
+
+                formMap = activity.getFormMap();
             }
         }
 
-        seedObject.getResponse().setRenderParameter(STATE, currentState);
+        seedObject.getResponse().setRenderParameter(KKCheckoutConstants.STATE, currentState);
         seedObject.getResponse().setRenderParameter(KKCheckoutConstants.ACTION, ((CheckoutSeedData) seedObject).getAction());
+
 
         return formMap;
     }

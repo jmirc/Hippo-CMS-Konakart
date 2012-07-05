@@ -1,8 +1,32 @@
 <%@ include file="/WEB-INF/jspf/htmlTags.jspf" %>
 <%--@elvariable id="checkoutOrder" type="com.konakart.appif.OrderIf"--%>
 
+<hst:defineObjects/>
+
+<hst:headContribution category="css">
+    <hst:link path="/libs/datepicker/css/datepicker.css" var="datepickerCss"/>
+    <link rel="stylesheet" href="${datepickerCss}" type="text/css"/>
+</hst:headContribution>
+
 <hst:headContribution category="jsInternal">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+</hst:headContribution>
+
+<hst:headContribution category="jsInternal">
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
+</hst:headContribution>
+
+<hst:headContribution category="jsInternal">
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/additional-methods.min.js" type="text/javascript"></script>
+</hst:headContribution>
+
+<hst:headContribution category="jsInternal">
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_${hstRequest.locale.language}.js " type="text/javascript"></script>
+</hst:headContribution>
+
+<hst:headContribution category="jsInternal">
+    <hst:link path="/libs/datepicker/js/bootstrap-datepicker.js" var="datepickerJs"/>
+    <script src="${datepickerJs}" type="text/javascript"></script>
 </hst:headContribution>
 
 <hst:headContribution category="jsInternal">
@@ -10,17 +34,22 @@
     <script src="${checkoutJs}" type="text/javascript"></script>
 </hst:headContribution>
 
-
 <hst:link var="countryDropDown" path="/restservices/checkout/states"/>
-
 
 <script type="text/javascript">
     $(document).ready(function () {
         $('#CountryDropDown').change(function () {
             $.getJSON("${countryDropDown}/" + $(this).val(), "", function (data) {
                 var list = $('#StateDropDown');
-                list.empty('option');
-                list.append($('<option />').attr('selected', 'true').text('---').val('-1'));
+                list.empty('option')
+                     .append($('<option />').attr('selected', 'true').text('---').val('-1'));
+
+                if (data.length > 0) {
+                    $('#StateDropDown').addClass('highlight required');
+                } else {
+                    $('#StateDropDown').removeClass('highlight required');
+                }
+
                 $.each(data, function (index, itemData) {
                     list.append($('<option />').text(itemData.name).val(itemData.name));
                 });
@@ -28,10 +57,6 @@
         });
     });
 </script>
-
--${state}- <br/>
--${isLogged}- <br/>
-
 
 <c:set var="count" value="0" scope="page"/>
 <c:if test="${not isLogged}">

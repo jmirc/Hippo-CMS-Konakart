@@ -132,7 +132,9 @@
                                 class="icon-home icon-large icon-white"></i> Continue Shopping</a>
                     </div>
                     <div class="span3">
-                        <hst:link var="checkout" path="checkout"/>
+                        <hst:link var="checkout" path="/checkout">
+                            <hst:param name="new_checkout" value="true"/>
+                        </hst:link>
                         <a class="btn btn-danger" href="${checkout}"><i
                                 class="icon-shopping-cart icon-large icon-white"></i> Proceed to Checkout</a>
                     </div>

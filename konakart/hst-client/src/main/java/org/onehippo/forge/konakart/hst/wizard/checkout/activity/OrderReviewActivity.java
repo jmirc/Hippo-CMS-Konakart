@@ -1,3 +1,24 @@
+/*
+ * =========================================================
+ * Hippo CMS - Konakart
+ * https://bitbucket.org/jmirc/hippo-cms-konakart
+ * =========================================================
+ * Copyright 2012
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =========================================================
+ */
+
 package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
 import com.konakart.al.KKAppEng;
@@ -8,6 +29,7 @@ import com.konakart.app.PaymentDetails;
 import com.konakart.appif.EmailOptionsIf;
 import com.konakart.appif.OrderIf;
 import com.konakart.appif.PaymentDetailsIf;
+import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 
 import java.math.BigDecimal;
@@ -66,9 +88,9 @@ public class OrderReviewActivity extends BaseCheckoutActivity {
         int paymentType = kkAppEng.getOrderMgr().getPaymentType();
 
         if (paymentType == 0) {
-            setNextLoggedState(STATES.ORDER_REVIEW.name());
+            setNextLoggedState(KKCheckoutConstants.STATES.ORDER_REVIEW.name());
         } else {
-            setNextLoggedState(STATES.CHECKOUT_FINISHED.name());
+            setNextLoggedState(KKCheckoutConstants.STATES.CHECKOUT_FINISHED.name());
         }
 
     }

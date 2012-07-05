@@ -1,3 +1,24 @@
+/*
+ * =========================================================
+ * Hippo CMS - Konakart
+ * https://bitbucket.org/jmirc/hippo-cms-konakart
+ * =========================================================
+ * Copyright 2012
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * =========================================================
+ */
+
 package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.al.KKAppEng;
@@ -22,6 +43,7 @@ import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
 public class KKCheckout extends KKHstActionComponent {
 
     public static final String ONE_PAGE_CHECKOUT = "onePageCheckout";
+    public static final String ALLOW_CHECKOUT_WITHOUT_REGISTRATION = "allowCheckoutWithoutRegistration";
     public static final String CHECKOUT_ORDER = "checkoutOrder";
 
     @Override
@@ -29,11 +51,6 @@ public class KKCheckout extends KKHstActionComponent {
         super.doBeforeRender(request, response);
 
         KKAppEng kkAppEng = getKKAppEng(request);
-
-
-        FormMap formMap = new FormMap();
-        FormUtils.populate(request, formMap);
-        request.setAttribute("form", formMap);
 
         try {
             CheckoutSeedData seedData = new CheckoutSeedData();
@@ -51,6 +68,8 @@ public class KKCheckout extends KKHstActionComponent {
             request.setAttribute(CHECKOUT_ORDER, kkAppEng.getOrderMgr().getCheckoutOrder());
 
             request.setAttribute(ONE_PAGE_CHECKOUT, isOnePageCheckout(kkAppEng));
+            request.setAttribute(ALLOW_CHECKOUT_WITHOUT_REGISTRATION, kkAppEng.getConfigAsBoolean(ConfigConstants.ALLOW_CHECKOUT_WITHOUT_REGISTRATION, false));
+
         } catch (Exception e) {
             log.warn("Failed to initialize the checkout page", e);
             throw new HstComponentException("Failed to initialize the checkout page ",  e);
@@ -84,9 +103,12 @@ public class KKCheckout extends KKHstActionComponent {
      */
     protected boolean isOnePageCheckout(KKAppEng kkAppEng) {
         // Check to see whether one page checkout is configured
-        String onePageCheckout = kkAppEng.getConfig(ConfigConstants.ONE_PAGE_CHECKOUT);
+        boolean onePageCheckout = kkAppEng.getConfigAsBoolean(ConfigConstants.ONE_PAGE_CHECKOUT, false);
 
-        return onePageCheckout != null && onePageCheckout.equalsIgnoreCase("true");
+        // Check if the customer can checkout as a guest
+        boolean allowCheckoutWithoutRegistration = kkAppEng.getConfigAsBoolean(ConfigConstants.ALLOW_CHECKOUT_WITHOUT_REGISTRATION, false);
+
+        return onePageCheckout && allowCheckoutWithoutRegistration;
     }
 
     /**

@@ -9,7 +9,7 @@ public class LeftMenu  extends BaseHstComponent{
 
     @Override
     public void doBeforeRender(final HstRequest request, final HstResponse response) throws HstComponentException {
-        request.setAttribute("menu",request.getRequestContext().getHstSiteMenus().getSiteMenu("main"));
+        request.setAttribute("menu", request.getRequestContext().getHstSiteMenus().getSiteMenu("main"));
     }
 
 }
