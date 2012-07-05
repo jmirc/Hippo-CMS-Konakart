@@ -8,6 +8,7 @@ Konakart uses ant to build the entire project. The librairies are not available 
 The project [Konakart Dependency](https://github.com/jmirc/Hippo-CMS-Konakart/tree/master/konakart-dependency) has been created to import into your local m2 repo the librairies.
 
 The following steps need to be executed:
+
 1. Clone the project
 1. run mvn install
 
