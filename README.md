@@ -2,9 +2,18 @@
 
 The aim of this project is to create a bridge between Hippo CMS and Konakart.
 
+## Before starting a project
+
+Konakart uses ant to build the entire project. The librairies are not available on any Maven repositories. 
+The project [Konakart Dependency](https://github.com/jmirc/Hippo-CMS-Konakart/tree/master/konakart-dependency) has been created to import into your local m2 repo the librairies.
+
+The following steps need to be executed:
+1. Clone the project
+1. run mvn install
+
 ## How to start a project
 
-*  Create a new project using the latest version of the artifact. Currently tested with the version 1.05.05
+*  Create a new project using the latest version of the artifact. Currently tested with the version 1.05.06
 
 ### POM.XML
 * Add the following conf
