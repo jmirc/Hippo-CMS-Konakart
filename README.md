@@ -97,7 +97,7 @@ The following steps need to be executed:
 ```
 
 
-1. Create a new file named //konakart-hst-configuration.xml// under resources/META-INF/hst-assembly.overrides to add the konakart Valve
+1. Create a new file named //konakart-hst-configuration.xml// under resources/META-INF/hst-assembly/overrides to add the konakart Valve
 
 ```xml
 
