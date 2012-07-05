@@ -25,7 +25,10 @@ public class SpecialPriceExTaxDerivedDataFunction extends DerivedDataFunction {
 
             AdminProduct adminProduct = kkAdminEngine.getEngine().getProduct(kkAdminEngine.getSession(), ppid);
 
-            parameters.put("specialprice", new Value[]{getValueFactory().createValue(adminProduct.getSpecialPriceExTax())});
+            if (adminProduct.getSpecialPriceExTax() != null) {
+                parameters.put("specialprice", new Value[]{getValueFactory().createValue(adminProduct.getSpecialPriceExTax().doubleValue())});
+            }
+
         } catch (RepositoryException e) {
             parameters.clear();
         } catch (Exception e) {

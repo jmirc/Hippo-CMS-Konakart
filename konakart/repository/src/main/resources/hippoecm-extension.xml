@@ -343,7 +343,7 @@
     </sv:node>
 
 
-    <!-- Add the tree view  -->
+<!--    &lt;!&ndash; Add the tree view  &ndash;&gt;
     <sv:node sv:name="add-cms-tree-views">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hippo:initializeitem</sv:value>
@@ -359,7 +359,7 @@
         </sv:property>
     </sv:node>
 
-    <!-- Add the folder view  -->
+    &lt;!&ndash; Add the folder view  &ndash;&gt;
     <sv:node sv:name="add-cms-folder-views">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hippo:initializeitem</sv:value>
@@ -448,7 +448,7 @@
         <sv:property sv:name="hippo:contentroot" sv:type="String">
             <sv:value>/hippo:configuration/hippo:frontend/cms/cms-folder-views/hippostd:directory/root/filters</sv:value>
         </sv:property>
-    </sv:node>
+    </sv:node>-->
 
     <sv:node sv:name="ecommerce-content">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
