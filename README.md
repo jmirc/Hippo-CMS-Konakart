@@ -11,7 +11,7 @@ Please install the open-source or enterprise version of [Konakart](http://www.ko
 In order to process with the next step, you need to define the KONAKART_HOME variable.
 
 ```
-ex: KONAKART_HOME='C:\app\konakart\KonaKart-6.3.0.0\'
+i.e.: KONAKART_HOME='C:\app\konakart\KonaKart-6.3.0.0\'
 ```
 
 ### Import Konakart libraries within your local .m2 repo
@@ -146,6 +146,6 @@ The following steps need to be executed:
 ```
 
 ### Custom Admin Configuration
-1. You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
-    1. Update contentroot
-    1. Update galleryroot
+* You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
+    * Update contentroot (i.e. /content/documents/gettingstarted)
+    * Update galleryroot (i.e. /content/gallery/gettingstarted)
