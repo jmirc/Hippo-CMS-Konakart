@@ -93,7 +93,6 @@ The following steps need to be executed:
 ### SITE Configuration
 1. Add a copy of the konakart.properties and the konakart_app.properties file under src/main/resources
 1. Add the following lines into the pom.xml file
-
 ```xml
 
         <dependency>
@@ -106,10 +105,7 @@ The following steps need to be executed:
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 ```
-
-
 1. Create a new file named //konakart-hst-configuration.xml// under resources/META-INF/hst-assembly/overrides to add the konakart Valve
-
 ```xml
 
 <?xml version="1.0" encoding="UTF-8"?>
@@ -121,9 +117,7 @@ The following steps need to be executed:
 </beans>
 
 ```
-
 1. Add in the web.xml of your site the following value to context parameter hst-beans-annotated-classes (note that the values are comma separated):
-
 ```xml
   <context-param>
     <param-name>hst-beans-annotated-classes</param-name>
