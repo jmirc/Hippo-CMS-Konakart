@@ -27,7 +27,7 @@
         <hippo.jcr.version>2.2.10-h1</hippo.jcr.version>
 
         <forge.selection.version>2.05.05</forge.selection.version>
-        <forge.taxonomy.version>1.08.04-SNAPSHOT</forge.taxonomy.version>
+        <forge.taxonomy.version>1.08.04</forge.taxonomy.version>
         <forge.utilities.version>1.01.01</forge.utilities.version>
     </properties>
 
