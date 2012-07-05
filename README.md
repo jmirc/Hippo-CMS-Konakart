@@ -17,7 +17,7 @@ The following steps need to be executed:
 
 *  Create a new project using the latest version of the artifact. Currently tested with the version 1.05.06
 
-### POM.XML
+### Global POM.XML
 * Add the following conf
 ```xml
     <dependencies>
