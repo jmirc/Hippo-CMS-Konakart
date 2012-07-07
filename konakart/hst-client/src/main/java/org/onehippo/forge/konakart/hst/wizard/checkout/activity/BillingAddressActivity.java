@@ -13,11 +13,7 @@ import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessContext;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class BillingAddressActivity extends BaseAddressActivity {
@@ -87,7 +83,7 @@ public class BillingAddressActivity extends BaseAddressActivity {
                     }
 
                     // Logged-in
-                    KKServiceHelper.getKKEngineService().loggedIn(hstRequest, hstResponse, username, password);
+                    KKServiceHelper.getKKEngineService().logIn(hstRequest, hstResponse, username, password);
                 } catch (KKException e) {
                     log.error("Failed to register a customer", e);
                     addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.failed.register.customer"));

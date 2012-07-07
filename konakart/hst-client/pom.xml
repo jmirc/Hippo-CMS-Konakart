@@ -130,6 +130,7 @@
                 <directory>${basedir}/src/main/resources</directory>
                 <includes>
                     <include>**/*.tld</include>
+                    <include>**/*.conf</include>
                 </includes>
             </resource>
         </resources>

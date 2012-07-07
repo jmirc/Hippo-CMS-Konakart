@@ -1,23 +1,16 @@
-<!doctype html>
-<%@ include file="/WEB-INF/jspf/htmlTags.jspf" %>
+<%@ taglib prefix='hst' uri="http://www.hippoecm.org/jsp/hst/core" %>
 
-<% response.setStatus(403); %>
+<%-- Keep the current url as the "destination", so the login page redirects to it once done. --%>
+<hst:link fullyQualified="true" var="destination" navigationStateful="true" />
+<hst:link var="redirectUrl" path="/myaccount">
+    <hst:param name="needauth" value="true"/>
+    <hst:param name="destination" value="${destination}"/>
+</hst:link>
 
-<fmt:setBundle basename="org.hippoecm.hst.security.servlet.LoginServlet" />
-<html lang="en">
-  <head>
-    <meta charset="utf-8"/>
-    <title><fmt:message key="label.access.forbidden" /></title>
-    <link rel="stylesheet" type="text/css" href="<hst:link path='/login/hst/security/skin/screen.css' />" />
-  </head>
-  <body class="hippo-root">
-    <div>
-      <div class="hippo-login-panel">
-        <fmt:message key="label.access.forbidden" />
-        <div class="hippo-login-panel-copyright">
-          &copy; 1999-2011 Hippo B.V.
-        </div>
-      </div>
-    </div>
-  </body>
+<html>
+<head>
+    <meta http-equiv="refresh" content="0;URL=${redirectUrl}" />
+</head>
+<body>
+</body>
 </html>

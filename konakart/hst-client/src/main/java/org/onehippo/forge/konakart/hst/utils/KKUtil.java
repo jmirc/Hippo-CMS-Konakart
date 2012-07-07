@@ -27,6 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.jcr.RepositoryException;
 import javax.jcr.UnsupportedRepositoryOperationException;
+import java.util.Map;
 
 public final class KKUtil {
 
@@ -34,6 +35,35 @@ public final class KKUtil {
 
     private KKUtil() {
     }
+
+    /**
+     * A public request parameter is a request parameter that is not namespaced. Thus for example ?foo=bar. Typically,
+     * a namespaced request parameter for example looks like ?r1_r4:foo=bar.
+     * Public request parameters are used when some parameter from some hst component needs to be readable by another hst
+     * component. For example when you have a search box in the top of your webpage. The input value there should be
+     * readable by the center content block displaying the search results. In that case, this method can be used
+     * to fetch the public request parameter.
+     * @param request the hst request
+     * @param parameterName the parameter name
+     * @return The public request parameter for parameterName. If there are multiple values, the first one is returned. If no value, <code>null</code> is returned
+     */
+    public static String getPublicRequestParameter(HstRequest request, String parameterName) {
+        String contextNamespaceReference = request.getRequestContext().getContextNamespace();
+
+        if (contextNamespaceReference == null) {
+            contextNamespaceReference = "";
+        }
+
+        Map<String, String []> namespaceLessParameters = request.getParameterMap(contextNamespaceReference);
+        String [] paramValues = namespaceLessParameters.get(parameterName);
+
+        if (paramValues != null && paramValues.length > 0) {
+            return paramValues[0];
+        }
+
+        return null;
+    }
+
 
     public static int getIntConfigurationParameter(final HstRequest request, final String param, final int defaultValue) {
         String paramValue = request.getParameter(param);

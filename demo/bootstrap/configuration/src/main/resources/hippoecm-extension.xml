@@ -909,18 +909,46 @@
       <sv:value>/hst:hst/hst:configurations/gettingstarted/hst:pages</sv:value> 
     </sv:property> 
   </sv:node>  
-  <sv:node sv:name="gettingstarted-konakart-konakart-konakart-checkout-orderReviewActivity">
+  <sv:node sv:name="gettingstarted-hippo-configuration-hippo-queries-hippo-templates-simple"> 
+    <sv:property sv:name="jcr:primaryType" sv:type="Name"> 
+      <sv:value>hippo:initializeitem</sv:value> 
+    </sv:property>  
+    <sv:property sv:name="hippo:sequence" sv:type="Double"> 
+      <sv:value>30000.3</sv:value> 
+    </sv:property>  
+    <sv:property sv:name="hippo:contentresource" sv:type="String"> 
+      <sv:value>configuration/queries/templates/simple.xml</sv:value> 
+    </sv:property>  
+    <sv:property sv:name="hippo:contentroot" sv:type="String"> 
+      <sv:value>/hippo:configuration/hippo:queries/hippo:templates</sv:value> 
+    </sv:property> 
+  </sv:node>
+  <sv:node sv:name="gettingstarted-hst-hst-hst-configurations-gettingstarted-hst-pages-myaccount">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hippo:initializeitem</sv:value>
     </sv:property>
     <sv:property sv:name="hippo:sequence" sv:type="Double">
-      <sv:value>30000.3</sv:value>
+      <sv:value>10059.0</sv:value>
     </sv:property>
     <sv:property sv:name="hippo:contentresource" sv:type="String">
-      <sv:value>konakart/checkout/orderReviewActivity.xml</sv:value>
+      <sv:value>hst/configurations/gettingstarted/pages/myaccount.xml</sv:value>
     </sv:property>
     <sv:property sv:name="hippo:contentroot" sv:type="String">
-      <sv:value>/konakart:konakart/konakart:checkout</sv:value>
+      <sv:value>/hst:hst/hst:configurations/gettingstarted/hst:pages</sv:value>
+    </sv:property>
+  </sv:node>
+  <sv:node sv:name="gettingstarted-hst-hst-hst-configurations-gettingstarted-hst-components-myaccount">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hippo:initializeitem</sv:value>
+    </sv:property>
+    <sv:property sv:name="hippo:sequence" sv:type="Double">
+      <sv:value>10060.0</sv:value>
+    </sv:property>
+    <sv:property sv:name="hippo:contentresource" sv:type="String">
+      <sv:value>hst/configurations/gettingstarted/components/myaccount.xml</sv:value>
+    </sv:property>
+    <sv:property sv:name="hippo:contentroot" sv:type="String">
+      <sv:value>/hst:hst/hst:configurations/gettingstarted/hst:components</sv:value>
     </sv:property>
   </sv:node>
 </sv:node>

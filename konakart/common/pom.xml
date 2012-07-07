@@ -42,6 +42,18 @@
             <version>1.00.00-SNAPSHOT</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.onehippo.cms7</groupId>
+            <artifactId>hippo-repository-connector</artifactId>
+            <version>${hippo.repository.version}</version>
+        </dependency>
+
+        <!-- Utilities -->
+        <dependency>
+            <groupId>org.onehippo.forge.utilities</groupId>
+            <artifactId>hippo-utilities-repository</artifactId>
+            <version>${forge.utilities.version}</version>
+        </dependency>
 
     </dependencies>
 

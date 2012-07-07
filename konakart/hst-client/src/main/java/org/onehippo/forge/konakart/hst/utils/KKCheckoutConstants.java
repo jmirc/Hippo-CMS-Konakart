@@ -10,7 +10,7 @@ public interface KKCheckoutConstants {
 
     // List of actions
     enum ACTIONS {
-        REGISTER, LOGIN, SELECT, EDIT, UPDATE, REVIEW, ADD_TO_BASKET, REMOVE_FROM_BASKET, VALID_EMAIL, VALID_PASSWORD
+        REGISTER, SELECT, EDIT, UPDATE, REVIEW, ADD_TO_BASKET, REMOVE_FROM_BASKET
     }
 
     String STATE = "state";

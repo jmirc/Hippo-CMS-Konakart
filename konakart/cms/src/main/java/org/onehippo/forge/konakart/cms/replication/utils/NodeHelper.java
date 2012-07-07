@@ -2,10 +2,12 @@ package org.onehippo.forge.konakart.cms.replication.utils;
 
 import com.konakart.app.Product;
 import com.konakart.appif.ManufacturerIf;
+import com.konakartadmin.app.AdminCustomer;
 import org.hippoecm.repository.api.*;
 import org.hippoecm.repository.standardworkflow.DefaultWorkflow;
 import org.hippoecm.repository.standardworkflow.FolderWorkflow;
 import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.onehippo.forge.konakart.common.util.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,39 +71,6 @@ public class NodeHelper {
 
     public void setFolderAdditionWorkflowCategory(String folderAdditionWorkflowCategory) {
         this.folderAdditionWorkflowCategory = folderAdditionWorkflowCategory;
-    }
-
-    /**
-     * Creates content node(s) with the specified node type at the specified absolute path.
-     * <p/>
-     * The absolute path could be regarded differently according to physical implementations.
-     * For example, an implementation can regard the path as a simple one to add a simple JCR node.
-     * On the other hand, a sophisticated implementation can regard the path as an input for
-     * a workflow-enabled document/folder path.
-     * </P>
-     * <p/>
-     * If <CODE>autoCreateFolders</CODE> is true, then folders will be automatically created.
-     * </P>
-     *
-     * @param absPath           the absolute node path
-     * @param nodeTypeName      the node type name of the content object
-     * @param name              the content node name
-     * @param autoCreateFolders the flag to add folders
-     * @return the absolute path of the created node
-     */
-    public String createAndReturn(final String absPath, final String nodeTypeName, final String name, final boolean autoCreateFolders) throws Exception {
-        final Node parentFolderNode;
-        if (!session.itemExists(absPath)) {
-            if (!autoCreateFolders) {
-                throw new Exception("The folder node is not found on the path: " + absPath);
-            } else {
-                parentFolderNode = createMissingFolders(absPath);
-            }
-        } else {
-            parentFolderNode = session.getNode(absPath);
-        }
-
-        return createNodeByWorkflow(parentFolderNode, nodeTypeName, name);
     }
 
     public Node createMissingFolders(String absPath) throws Exception {
@@ -298,6 +267,48 @@ public class NodeHelper {
 
     }
 
+    public Node createOrRetrieveCustomer(AdminCustomer adminCustomer, int dirLevels) throws RepositoryException {
+
+        String usersPath = "hippo:configuration/hippo:users";
+
+        Node usersNode = session.getRootNode().getNode(usersPath);
+
+        String userId = adminCustomer.getEmailAddr();
+
+        int length = userId.length();
+        int pos = 0;
+        for (int i = 0; i < dirLevels; i++) {
+            if (i < length) {
+                pos = i;
+            }
+            String c = NodeNameCodec.encode(Character.toLowerCase(userId.charAt(pos)));
+            if (!usersNode.hasNode(c)) {
+                usersNode = usersNode.addNode(c, HippoNodeType.NT_USERFOLDER);
+            } else {
+                usersNode = usersNode.getNode(c);
+            }
+        }
+
+        Node user;
+
+        if (usersNode.hasNode(userId)) {
+            user = usersNode.getNode(userId);
+        } else {
+            user = usersNode.addNode(userId, "hipposys:user");
+        }
+
+        // Add extra definitions
+        user.setProperty("hipposys:securityprovider", "konakart");
+        user.setProperty("hipposys:active", adminCustomer.isEnabled());
+        user.setProperty("hipposys:firstname", adminCustomer.getFirstName());
+        user.setProperty("hipposys:lastname", adminCustomer.getLastName());
+        user.setProperty("hipposys:email", adminCustomer.getEmailAddr());
+        user.setProperty("hipposys:password", SecurityUtils.createSyncKonakartPassword());
+
+        return usersNode;
+    }
+
+
 
     /**
      * Update the hippostd state
@@ -336,48 +347,6 @@ public class NodeHelper {
 
         return null;
     }
-
-
-    /**
-     * Saves all pending changes.
-     *
-     * @throws Exception .
-     */
-    public void save() throws Exception {
-        try {
-            session.save();
-            // also do a refresh, because it is possible that through workflow another jcr session made the changes, and that the current
-            // has no changes, hence a session.save() does not trigger a refresh
-            session.refresh(false);
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
-    }
-
-
-    /**
-     * Invokes {@link javax.jcr.Session#refresh(boolean)} with <CODE>false</CODE> parameter.
-     *
-     * @throws Exception .
-     */
-    public void refresh() throws Exception {
-        refresh(false);
-    }
-
-    /**
-     * Invokes {@link javax.jcr.Session#refresh(boolean)}.
-     *
-     * @param keepChanges .
-     * @throws Exception .
-     */
-    public void refresh(boolean keepChanges) throws Exception {
-        try {
-            session.refresh(keepChanges);
-        } catch (Exception e) {
-            throw new Exception(e);
-        }
-    }
-
 
     public Workflow getWorkflow(String category, Node node) throws RepositoryException {
         Workspace workspace = session.getWorkspace();

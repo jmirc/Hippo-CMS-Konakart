@@ -20,6 +20,13 @@
 
 [konakart:review] > konakart:basedocument, hippostd:relaxed
 
+[konakart:adminengine] > mix:referenceable, mix:versionable, nt:base
+  - konakart:adminusername (string) mandatory
+  - konakart:adminpassword (string) mandatory
+  - konakart:enginemode (long) mandatory
+  - konakart:iscustomershared (boolean) mandatory
+  - konakart:isproductshared (boolean) mandatory
+
 [konakart:clientengine] > mix:referenceable, mix:versionable, nt:base
   - konakart:enginemode (long) mandatory
   - konakart:iscustomershared (boolean) mandatory
@@ -69,6 +76,7 @@
   - konakart:processor (string) mandatory
 
 [konakart:konakart] > mix:referenceable, mix:versionable, nt:base
+  + konakart:adminengine (konakart:adminengine) = konakart:adminengine version
   + konakart:clientengine (konakart:clientengine) = konakart:clientengine version
   + konakart:stores (konakart:stores) = konakart:stores version
   + konakart:producttypenamespaces (konakart:producttypenamespaces) = konakart:producttypenamespaces version

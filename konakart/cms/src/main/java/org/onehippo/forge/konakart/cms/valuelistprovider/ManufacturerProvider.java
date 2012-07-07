@@ -2,6 +2,7 @@ package org.onehippo.forge.konakart.cms.valuelistprovider;
 
 import com.konakartadmin.app.AdminManufacturer;
 import com.konakartadmin.app.KKAdminException;
+import com.konakartadmin.appif.KKAdminIf;
 import org.hippoecm.frontend.plugin.IPluginContext;
 import org.hippoecm.frontend.plugin.Plugin;
 import org.hippoecm.frontend.plugin.config.IPluginConfig;
@@ -43,17 +44,17 @@ public class ManufacturerProvider extends Plugin implements IValueListProvider {
 
     @Override
     public ValueList getValueList(String name, Locale locale) {
-        if (!"values".equals(name)) {
-            log.warn("unknown value list name " + name + " was requested, using 'values'");
-        }
 
         ValueList valueList = new ValueList();
 
         try {
-            AdminManufacturer[] adminManufacturer = KKAdminEngine.getInstance().getEngine().getAllManufacturers();
+            KKAdminIf engine = KKAdminEngine.getInstance().getEngine();
+            if (engine != null) {
+                AdminManufacturer[] adminManufacturer = engine.getAllManufacturers();
 
-            for (AdminManufacturer manufacturer : adminManufacturer) {
-                valueList.add(new ListItem(String.valueOf(manufacturer.getId()), manufacturer.getName()));
+                for (AdminManufacturer manufacturer : adminManufacturer) {
+                    valueList.add(new ListItem(String.valueOf(manufacturer.getId()), manufacturer.getName()));
+                }
             }
 
         } catch (KKAdminException e) {

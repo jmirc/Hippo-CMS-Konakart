@@ -49,6 +49,20 @@
             <sv:value>/konakart:konakart</sv:value>
         </sv:property>
     </sv:node>
+    <sv:node sv:name="konakart-admin-engine">
+        <sv:property sv:name="jcr:primaryType" sv:type="Name">
+            <sv:value>hippo:initializeitem</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:sequence" sv:type="Double">
+            <sv:value>10104.2</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:contentresource" sv:type="String">
+            <sv:value>konakart/adminengine.xml</sv:value>
+        </sv:property>
+        <sv:property sv:name="hippo:contentroot" sv:type="String">
+            <sv:value>/konakart:konakart</sv:value>
+        </sv:property>
+    </sv:node>
     <sv:node sv:name="konakart-store1">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hippo:initializeitem</sv:value>
@@ -342,9 +356,7 @@
         </sv:property>
     </sv:node>
 
-
-<!--    &lt;!&ndash; Add the tree view  &ndash;&gt;
-    <sv:node sv:name="add-cms-tree-views">
+    <sv:node sv:name="konakart-security-provider">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hippo:initializeitem</sv:value>
         </sv:property>
@@ -352,118 +364,13 @@
             <sv:value>10109.6</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-configuration/cms-tree-views/ecommerce.xml</sv:value>
+            <sv:value>hippo-security/konakart-security-provider.xml</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:frontend/cms/cms-tree-views</sv:value>
+            <sv:value>/hippo:configuration/hippo:security</sv:value>
         </sv:property>
     </sv:node>
 
-    &lt;!&ndash; Add the folder view  &ndash;&gt;
-    <sv:node sv:name="add-cms-folder-views">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10109.6</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-configuration/cms-folder-views/ecommerce.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:frontend/cms/cms-folder-views</sv:value>
-        </sv:property>
-    </sv:node>
-
-    <sv:node sv:name="add-cms-browser">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10109.6</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-configuration/cms-browser/ecommerce.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:frontend/cms</sv:value>
-        </sv:property>
-    </sv:node>
-
-    <sv:node sv:name="add-cms-browser-navigator">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10109.6</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-configuration/cms-browser/navigator/ecommerce.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:frontend/cms</sv:value>
-        </sv:property>
-    </sv:node>
-
-    <sv:node sv:name="add-cms-static-translator">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10109.7</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-configuration/cms-static/configTranslator/ecommerce.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:frontend/cms/cms-static/configTranslator/hippostd:translations</sv:value>
-        </sv:property>
-    </sv:node>
-
-    <sv:node sv:name="hide-product-folder-cms-tree-views">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10109.8</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-configuration/hideKonakartProductFolder.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:frontend/cms/cms-tree-views/documents/documentsBrowser/filters</sv:value>
-        </sv:property>
-    </sv:node>
-
-    <sv:node sv:name="hide-product-folder-cms-folder-views">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10109.9</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-configuration/hideKonakartProductFolder.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:frontend/cms/cms-folder-views/hippostd:directory/root/filters</sv:value>
-        </sv:property>
-    </sv:node>-->
-
-    <sv:node sv:name="ecommerce-content">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10110</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-data/ecommerce-content.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/content/konakart</sv:value>
-        </sv:property>
-    </sv:node>
     <sv:node sv:name="ecommerce-gallery">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hippo:initializeitem</sv:value>

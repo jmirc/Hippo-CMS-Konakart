@@ -149,3 +149,18 @@ The following steps need to be executed:
 * You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
     * Update contentroot (i.e. /content/documents/gettingstarted)
     * Update galleryroot (i.e. /content/gallery/gettingstarted)
+	
+### JAAS Security 
+* Update the hst-config.properties file to update the security auth
+
+Replace
+```
+# HST JAAS login configuration
+#java.security.auth.login.config = classpath:/org/hippoecm/hst/security/impl/login.conf
+```
+
+By
+```
+# HST KONAKART login configuration
+java.security.auth.login.config = classpath:/org/onehippo/forge/konakart/site/security/login.conf
+```	

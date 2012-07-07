@@ -2,6 +2,7 @@ package org.onehippo.forge.konakart.cms.valuelistprovider;
 
 import com.konakartadmin.app.AdminStore;
 import com.konakartadmin.app.KKAdminException;
+import com.konakartadmin.appif.KKAdminIf;
 import org.hippoecm.frontend.plugin.IPluginContext;
 import org.hippoecm.frontend.plugin.Plugin;
 import org.hippoecm.frontend.plugin.config.IPluginConfig;
@@ -42,17 +43,16 @@ public class StoreIdProvider extends Plugin implements IValueListProvider {
 
     @Override
     public ValueList getValueList(String name, Locale locale) {
-        if (!"values".equals(name)) {
-            log.warn("unknown value list name " + name + " was requested, using 'values'");
-        }
-
         ValueList valueList = new ValueList();
 
         try {
-            AdminStore[] adminStores = KKAdminEngine.getInstance().getEngine().getStores();
+            KKAdminIf engine = KKAdminEngine.getInstance().getEngine();
+            if (engine != null) {
+                AdminStore[] adminStores = engine.getStores();
 
-            for (AdminStore adminStore : adminStores) {
-                valueList.add(new ListItem(adminStore.getStoreId(), adminStore.getStoreName()));
+                for (AdminStore adminStore : adminStores) {
+                    valueList.add(new ListItem(adminStore.getStoreId(), adminStore.getStoreName()));
+                }
             }
 
         } catch (KKAdminException e) {

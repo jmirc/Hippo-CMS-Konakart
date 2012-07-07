@@ -2,10 +2,7 @@ package org.onehippo.forge.konakart.common.jcr;
 
 import com.google.common.collect.Maps;
 import org.onehippo.forge.konakart.common.KKCndConstants;
-import org.onehippo.forge.konakart.common.engine.KKActivityConfig;
-import org.onehippo.forge.konakart.common.engine.KKCheckoutConfig;
-import org.onehippo.forge.konakart.common.engine.KKEngineConfig;
-import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
+import org.onehippo.forge.konakart.common.engine.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,12 +40,6 @@ public class HippoModuleConfig {
     public static final String SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY = "konakart:lastupdatedtimekonakarttorepository";
     public static final String SYNC_LAST_UPDATED_TIME_REPOSITORY_TO_KONNAKART = "konakart:lastupdatedtimerepositorytokonnakart";
 
-    public static final String CLIENT_ENGINE_CONFIG_NODE_PATH = KONAKART_KONAKART_PATH + "/konakart:clientengine";
-
-    public static final String CLIENT_ENGINEMODE_PROPERTY = "konakart:enginemode";
-    public static final String CLIENT_IS_CUSTOMERS_SHARED_PROPERTY = "konakart:isCustomersShared";
-    public static final String CLIENT_IS_PRODUCTS_SHARED_PROPERTY = "konakart:isProductsShared";
-
     public static final String KONAKART_CHECKOUT_PATH = KONAKART_KONAKART_PATH + "/konakart:checkout";
 
     public static final String KONAKART_PROCESSOR = "konakart:processor";
@@ -64,7 +55,8 @@ public class HippoModuleConfig {
 
     private static HippoModuleConfig config = new HippoModuleConfig();
 
-    private KKEngineConfig clientEngineConfig = new KKEngineConfig();
+    private KKAdminEngineConfig adminEngineConfig = new KKAdminEngineConfig();
+    private KKClientEngineConfig clientClientEngineConfig = new KKClientEngineConfig();
 
     /**
      * Mapping between a contentRoot and a storeConfig
@@ -103,21 +95,32 @@ public class HippoModuleConfig {
     }
 
     /**
-     * @return the engine config.
+     * @return the admin engine config.
      */
-    public KKEngineConfig getClientEngineConfig(Session session) {
-        if (clientEngineConfig == null) {
-            loadClientEngineConfiguration(session);
+    public KKAdminEngineConfig getAdminEngineConfig(Session session) {
+        if (!adminEngineConfig.isInitialized()) {
+            adminEngineConfig.loadAdminEngineConfiguration(session);
         }
 
-        return clientEngineConfig;
+        return adminEngineConfig;
+    }
+
+    /**
+     * @return the client engine config.
+     */
+    public KKClientEngineConfig getClientEngineConfig(Session session) {
+        if (!clientClientEngineConfig.isInitialized()) {
+            clientClientEngineConfig.loadClientEngineConfiguration(session);
+        }
+
+        return clientClientEngineConfig;
     }
 
     /**
      * @return the engine config.
      */
-    public KKEngineConfig getClientEngineConfig() {
-        return clientEngineConfig;
+    public KKClientEngineConfig getClientClientEngineConfig() {
+        return clientClientEngineConfig;
     }
 
     /**
@@ -145,30 +148,6 @@ public class HippoModuleConfig {
         return config;
     }
 
-
-    /**
-     * @param session the Jcr session
-     */
-    private void loadClientEngineConfiguration(Session session) {
-        try {
-            Node node = session.getNode(CLIENT_ENGINE_CONFIG_NODE_PATH);
-
-            if (node.hasProperty(CLIENT_ENGINEMODE_PROPERTY)) {
-                clientEngineConfig.setEngineMode(node.getProperty(CLIENT_ENGINEMODE_PROPERTY).getLong());
-            }
-
-            if (node.hasProperty(CLIENT_IS_CUSTOMERS_SHARED_PROPERTY)) {
-                clientEngineConfig.setCustomersShared(node.getProperty(CLIENT_IS_CUSTOMERS_SHARED_PROPERTY).getBoolean());
-            }
-
-            if (node.hasProperty(CLIENT_IS_PRODUCTS_SHARED_PROPERTY)) {
-                clientEngineConfig.setProductsShared(node.getProperty(CLIENT_IS_PRODUCTS_SHARED_PROPERTY).getBoolean());
-            }
-        } catch (RepositoryException e) {
-            throw new IllegalStateException("Failed to load client engine mapping. Check the " + CLIENT_ENGINE_CONFIG_NODE_PATH + " node.", e);
-        }
-    }
-
     /**
      * Initialize the mapping between a Konakart product id and the Hippo document namespace
      *
@@ -182,7 +161,7 @@ public class HippoModuleConfig {
 
             for (KKCndConstants.PRODUCT_TYPE product_type : product_types) {
                 if (node.hasProperty(product_type.getNamespace())) {
-                    clientEngineConfig.addProductNodeTypeMapping(product_type.getNamespace(),
+                    clientClientEngineConfig.addProductNodeTypeMapping(product_type.getNamespace(),
                             node.getProperty(product_type.getNamespace()).getString());
                 }
             }

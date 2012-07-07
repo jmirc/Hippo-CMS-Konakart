@@ -83,7 +83,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         KKCndConstants.PRODUCT_TYPE product_type = KKCndConstants.PRODUCT_TYPE.findByType(product.getType());
 
         String kkProductTypeName = product_type.getName();
-        String productDocType = HippoModuleConfig.getConfig().getClientEngineConfig().getProductNodeTypeMapping().get(product_type.getNamespace());
+        String productDocType = HippoModuleConfig.getConfig().getClientClientEngineConfig().getProductNodeTypeMapping().get(product_type.getNamespace());
 
 
         if (StringUtils.isEmpty(productDocType)) {

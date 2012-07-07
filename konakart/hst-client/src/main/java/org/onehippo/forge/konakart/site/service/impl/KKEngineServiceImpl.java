@@ -8,7 +8,6 @@ import com.konakart.appif.CustomerTagIf;
 import com.konakart.appif.FetchProductOptionsIf;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
-import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
@@ -142,7 +141,7 @@ public class KKEngineServiceImpl implements KKEngineService {
     }
 
     @Override
-    public boolean loggedIn(HstRequest request, HstResponse response, String username, String password) {
+    public boolean logIn(HttpServletRequest request, HttpServletResponse response, String username, String password) {
 
         KKAppEng kkAppEng = getKKAppEng(request);
 
@@ -175,10 +174,6 @@ public class KKEngineServiceImpl implements KKEngineService {
                 return false;
             }
 
-            // Update the custom1 of each product under the basket to set the full path of the product's node
-            // TODO check how to handle that - perhaps we need to create a custom taglib
-            //updateBaskets(request);
-
             /*
             * Manage Cookies
             */
@@ -194,13 +189,32 @@ public class KKEngineServiceImpl implements KKEngineService {
             return true;
 
         } catch (Exception e) {
-            log.warn("Unable to logged-in", e);
+            log.warn("Unable to logged-in. Force to be logged-out", e);
+            try {
+                kkAppEng.getCustomerMgr().logout();
+            } catch (KKException e1) {
+                // do nothing
+            }
         }
 
         return false;
-
     }
 
+    @Override
+    public void logout(HttpServletRequest request) {
+
+        KKAppEng kkAppEng = getKKAppEng(request);
+
+        if (kkAppEng == null) {
+            return;
+        }
+
+        try {
+            kkAppEng.logout();
+        } catch (KKException e) {
+            log.error("Failed to log out from konakart", e);
+        }
+    }
 
     /**
      * Method called when a customer logs in or logs out. When logging in we need to decide whether

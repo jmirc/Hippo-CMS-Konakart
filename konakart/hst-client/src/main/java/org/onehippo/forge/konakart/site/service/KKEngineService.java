@@ -3,7 +3,6 @@ package org.onehippo.forge.konakart.site.service;
 import com.konakart.al.KKAppEng;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
-import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 
 import javax.annotation.Nonnull;
@@ -56,13 +55,18 @@ public interface KKEngineService {
     /**
      * Log a user to Konakart
      *
-     * @param request  the Hst request
-     * @param response the Hst response
+     * @param request  the http request
+     * @param response the http response
      * @param username the username
      * @param password the password
      * @return true if the user is logged-in, false otherwise
      */
-    boolean loggedIn(HstRequest request, HstResponse response, String username, String password);
+    boolean logIn(HttpServletRequest request, HttpServletResponse response, String username, String password);
 
+    /**
+     * Log out from Konakart
+     * @param request the http request
+     */
+    void logout(HttpServletRequest request);
 
 }

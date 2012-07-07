@@ -29,11 +29,17 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
+    <sv:property sv:name="hst:authenticated" sv:type="Boolean">
+      <sv:value>true</sv:value>
+    </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/newsoverview</sv:value>
     </sv:property>
     <sv:property sv:name="hst:relativecontentpath" sv:type="String">
       <sv:value>news</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:roles" sv:type="String" sv:multiple="true">
+      <sv:value>everybody</sv:value>
     </sv:property>
     <sv:node sv:name="_any_.html">
       <sv:property sv:name="jcr:primaryType" sv:type="Name">
@@ -107,17 +113,20 @@
       <sv:value>hst:pages/checkout</sv:value>
     </sv:property>
   </sv:node>
+  <sv:node sv:name="myaccount">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:sitemapitem</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
+      <sv:value>hst:pages/myaccount</sv:value>
+    </sv:property>
+  </sv:node>
   <sv:node sv:name="_any_">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
     <sv:property sv:name="hst:componentconfigurationid" sv:type="String">
       <sv:value>hst:pages/pagenotfound</sv:value>
-    </sv:property>
-  </sv:node>
-  <sv:node sv:name="myaccount">
-    <sv:property sv:name="jcr:primaryType" sv:type="Name">
-      <sv:value>hst:sitemapitem</sv:value>
     </sv:property>
   </sv:node>
 </sv:node>

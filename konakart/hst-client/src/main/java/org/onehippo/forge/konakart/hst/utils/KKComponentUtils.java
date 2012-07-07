@@ -10,6 +10,7 @@ import org.hippoecm.hst.content.beans.query.filter.Filter;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
+import org.hippoecm.hst.security.servlet.LoginServlet;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.components.KKCheckout;
@@ -74,6 +75,35 @@ public class KKComponentUtils {
             if (StringUtils.contains(attributeName, "_EDIT")) {
                 request.setAttribute(attributeName, request.getRequestContext().getAttribute(attributeName));
             }
+        }
+    }
+
+    /**
+     * Set the login attributes to the Hst request
+     *
+     * @param request the hst request to set
+     */
+    public static void setLoginAttributes(@Nonnull HstRequest request) {
+        final String destination = (String) request.getSession().getAttribute(LoginServlet.DESTINATION_ATTR_NAME);
+        if (destination != null) {
+            request.setAttribute("destination", destination);
+        }
+
+        final String username = (String) request.getSession().getAttribute(LoginServlet.USERNAME_ATTR_NAME);
+        if (username != null) {
+            request.setAttribute("username", username);
+        }
+
+        if (KKUtil.getPublicRequestParameter(request, "loginError") != null) {
+            request.setAttribute("loginError", true);
+        } else {
+            request.setAttribute("loginError", false);
+        }
+
+        if (KKUtil.getPublicRequestParameter(request, "needauth") != null) {
+            request.setAttribute("needauth", true);
+        } else {
+            request.setAttribute("needauth", false);
         }
     }
 
