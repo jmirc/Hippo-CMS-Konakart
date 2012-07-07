@@ -5,7 +5,7 @@ The aim of this project is to create a bridge between Hippo CMS and Konakart.
 ## Before starting a project
 
 ### Konakart installation 
-Please install the community version of [Konakart](http://www.konakart.com/downloads/community_edition) or the enterprise version.
+Please install the [community](http://www.konakart.com/downloads/community_edition) version or the enterprise version.
 
 Only community features are available.
 
