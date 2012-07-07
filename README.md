@@ -5,7 +5,9 @@ The aim of this project is to create a bridge between Hippo CMS and Konakart.
 ## Before starting a project
 
 ### Konakart installation 
-Please install the open-source or enterprise version of [Konakart](http://www.konakart.com/). 
+Please install the community version of [Konakart](http://www.konakart.com/downloads/community_edition) or the enterprise version.
+
+Only community features are available.
 
 ### Define Environment Variables
 In order to process with the next step, you need to define the KONAKART_HOME variable.
