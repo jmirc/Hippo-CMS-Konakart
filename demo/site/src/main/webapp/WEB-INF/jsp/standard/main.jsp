@@ -7,12 +7,15 @@
         <div class="span8">
             <hst:include ref="content"/>
             <hst:include ref="lists"/>
-            <hr class="soften">
-            <strong>Powered by Hippo CMS & KonaKart</strong>
         </div>
         <aside class="span2">
             <hst:include ref="right"/>
         </aside>
-
+    </div>
+    <div class="row-fluid">
+        <hr class="soften">
+        <div class="span12 footer">
+            <strong>Powered By Hippo CMS & KonaKart</strong>
+        </div>
     </div>
 </div>
