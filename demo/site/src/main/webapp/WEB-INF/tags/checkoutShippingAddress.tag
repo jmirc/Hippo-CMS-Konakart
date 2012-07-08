@@ -20,8 +20,10 @@
 <form id="shippingFormID" action="${billing}" method="post" class="form-horizontal">
 
     <div class="alert alert-info">
-        Select a billing address from your address book or enter a new address.
+        Select a shipping address from your address book or enter a new address.
     </div>
+
+    <c:if test="${fn:length(addresses) > 0}">
 
     <select id="select-address" name="address" class="input-xxlarge">
         <c:forEach items="${addresses}" var="address">
@@ -31,14 +33,15 @@
         </c:forEach>
         <option value="-1" <c:if test="${-1 == form.value['address'].value}">selected="selected"</c:if>>New address</option>
     </select>
+    </c:if>
 
     <br/>
     <br/>
+
     <div class="well" id="new-address-form">
         <tag:checkoutAddress/>
-
-
     </div>
+
     <br/>
     <input type="submit" class="btn btn-success" value="Continue"/>
 

@@ -68,9 +68,9 @@ public class OrderReviewActivity extends BaseCheckoutActivity {
         int paymentType = kkAppEng.getOrderMgr().getPaymentType();
 
         if (paymentType == 0) {
-            setNextLoggedState(KKCheckoutConstants.STATES.ORDER_REVIEW.name());
+            updateNextLoggedState(KKCheckoutConstants.STATES.ORDER_REVIEW.name());
         } else {
-            setNextLoggedState(KKCheckoutConstants.STATES.CHECKOUT_FINISHED.name());
+            updateNextLoggedState(KKCheckoutConstants.STATES.CHECKOUT_FINISHED.name());
         }
 
     }

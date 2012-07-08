@@ -1,6 +1,7 @@
 package org.onehippo.forge.konakart.hst.wizard.checkout;
 
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
+import org.onehippo.forge.konakart.hst.wizard.Processor;
 import org.onehippo.forge.konakart.hst.wizard.ProcessorContext;
 import org.onehippo.forge.konakart.hst.wizard.SeedData;
 import org.slf4j.Logger;
@@ -10,7 +11,18 @@ public class CheckoutProcessContext implements ProcessorContext {
 
     private Logger log = LoggerFactory.getLogger(CheckoutProcessContext.class);
 
+    private Processor processor;
     private CheckoutSeedData seedData;
+
+    @Override
+    public void setProcessor(Processor processor) {
+        this.processor = processor;
+    }
+
+    @Override
+    public Processor getProcessor() {
+        return processor;
+    }
 
     @Override
     public void setSeedData(SeedData seedObject) throws ActivityException {

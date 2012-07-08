@@ -21,11 +21,14 @@ public abstract class BaseActivity implements Activity {
 
     protected Logger log = LoggerFactory.getLogger(getClass());
 
+    private String name;
     private String acceptState;
     private boolean acceptEmtpyState = false;
     private String nextLoggedState;
     private String nextNonLoggedState;
     private String templateRenderPath;
+
+    private String overridesNextLoggedState;
 
     protected ProcessorContext processorContext;
     protected FormMap formMap;
@@ -78,11 +81,16 @@ public abstract class BaseActivity implements Activity {
 
     }
 
-    /**
-     * Set the step accepted by this activity
-     *
-     * @param acceptState the step to set
-     */
+    @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
     public void setAcceptState(String acceptState) {
         this.acceptState = acceptState;
     }
@@ -108,6 +116,10 @@ public abstract class BaseActivity implements Activity {
 
     public String getNextLoggedState() {
         return nextLoggedState;
+    }
+
+    public void updateNextLoggedState(String nextLoggedState) {
+        hstResponse.setRenderParameter(KKCheckoutConstants.FORCE_NEXT_LOGGED_STATE, nextLoggedState);
     }
 
     @Override

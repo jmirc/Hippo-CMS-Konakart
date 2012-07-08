@@ -3,6 +3,7 @@ package org.onehippo.forge.konakart.common.jcr;
 import com.google.common.collect.Maps;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.engine.*;
+import org.onehippo.forge.utilities.commons.NodeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,14 +74,6 @@ public class HippoModuleConfig {
      */
     public static HippoModuleConfig getConfig() {
         return config;
-    }
-
-    public Map<String, KKStoreConfig> getStoresConfig(Session session) {
-        if (storesConfig.isEmpty()) {
-            loadStoresConfiguration(session);
-        }
-
-        return storesConfig;
     }
 
     public Map<String, KKStoreConfig> getStoresConfig() {
@@ -307,29 +300,13 @@ public class HippoModuleConfig {
 
                     KKActivityConfig activityConfig = new KKActivityConfig();
 
-                    if (activityNode.hasProperty(KONAKART_ACTIVITY_ACCEPT_EMPTY_STATE)) {
-                        activityConfig.setAcceptEmptyState(activityNode.getProperty(KONAKART_ACTIVITY_ACCEPT_EMPTY_STATE).getBoolean());
-                    }
-
-                    if (activityNode.hasProperty(KONAKART_ACTIVITY_ACCEPT_STATE)) {
-                        activityConfig.setAcceptState(activityNode.getProperty(KONAKART_ACTIVITY_ACCEPT_STATE).getString());
-                    }
-
-                    if (activityNode.hasProperty(KONAKART_ACTIVITY_CLASS)) {
-                        activityConfig.setActivityClass(activityNode.getProperty(KONAKART_ACTIVITY_CLASS).getString());
-                    }
-
-                    if (activityNode.hasProperty(KONAKART_ACTIVITY_NEXT_LOGGED_STATE)) {
-                        activityConfig.setNextLoggedState(activityNode.getProperty(KONAKART_ACTIVITY_NEXT_LOGGED_STATE).getString());
-                    }
-
-                    if (activityNode.hasProperty(KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE)) {
-                        activityConfig.setNextNonLoggedState(activityNode.getProperty(KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE).getString());
-                    }
-
-                    if (activityNode.hasProperty(KONAKART_ACTIVITY_TEMPLATE_RENDER_PATH)) {
-                        activityConfig.setTemplateRenderpath(activityNode.getProperty(KONAKART_ACTIVITY_TEMPLATE_RENDER_PATH).getString());
-                    }
+                    activityConfig.setName(activityName);
+                    activityConfig.setAcceptEmptyState(NodeUtils.getBoolean(activityNode, KONAKART_ACTIVITY_ACCEPT_EMPTY_STATE));
+                    activityConfig.setAcceptState(NodeUtils.getString(activityNode, KONAKART_ACTIVITY_ACCEPT_STATE));
+                    activityConfig.setActivityClass(NodeUtils.getString(activityNode, KONAKART_ACTIVITY_CLASS));
+                    activityConfig.setNextLoggedState(NodeUtils.getString(activityNode, KONAKART_ACTIVITY_NEXT_LOGGED_STATE));
+                    activityConfig.setNextNonLoggedState(NodeUtils.getString(activityNode, KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE));
+                    activityConfig.setTemplateRenderpath(NodeUtils.getString(activityNode, KONAKART_ACTIVITY_TEMPLATE_RENDER_PATH));
 
                     checkoutConfig.addActivityConfigList(activityConfig);
 

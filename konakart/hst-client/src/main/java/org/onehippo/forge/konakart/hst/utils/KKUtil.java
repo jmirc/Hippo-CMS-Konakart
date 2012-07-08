@@ -64,6 +64,30 @@ public final class KKUtil {
         return null;
     }
 
+    /**
+     * A action request parameter is a request parameter that is namespaced. Thus for example ?foo=bar. Typically,
+     * a namespaced request parameter for example looks like ?r1_r4:foo=bar.
+     * @param request the hst request
+     * @param parameterName the parameter name
+     * @return The action request parameter for parameterName. If there are multiple values, the first one is returned. If no value, <code>null</code> is returned
+     */
+    public static String getActionRequestParameter(HstRequest request, String parameterName) {
+        String referenceNamespace = request.getReferenceNamespace();
+
+        if (referenceNamespace == null) {
+            referenceNamespace = "";
+        }
+
+        Map<String, String []> namespaceLessParameters = request.getParameterMap(referenceNamespace);
+        String [] paramValues = namespaceLessParameters.get(parameterName);
+
+        if (paramValues != null && paramValues.length > 0) {
+            return paramValues[0];
+        }
+
+        return null;
+    }
+
 
     public static int getIntConfigurationParameter(final HstRequest request, final String param, final int defaultValue) {
         String paramValue = request.getParameter(param);

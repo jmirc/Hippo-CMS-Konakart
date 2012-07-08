@@ -13,34 +13,34 @@
 
         <p class="verticalSpace">Good news: You can sign in with your e-mail address.</p>
 
+        <hst:link var="loginLink" path="/login/proxy" />
         <form id="loginFormID" action="${loginLink}" method="post">
-
             <div class="control-group">
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on"><i class="icon-envelope"></i></span><input
-                            class="required email highlight span5" id="inputIcon"
-                            name="email" type="text"
-                            placeholder="Email address"
-                            value="${form.value['email'].value}">
+                            class="required email highlight span5" id="username" name="username" value="${username}"
+                            type="text" placeholder="Email address">
                     </div>
                 </div>
             </div>
-            <div class="control-group  <c:if test="${not empty form.message['email']}">error</c:if>">
+            <div class="control-group">
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on"><i class="icon-lock"></i></span><input
                             class="required highlight span5" id="inputIcon2"
                             name="password" type="password"
                             placeholder="Password">
-                        <span class="help-inline">${form.message['email']}</span>
+                        <span class="help-inline">${login.failed}</span>
                     </div>
                     <p class="help-block">* These fields are required.</p>
                 </div>
             </div>
-
-            <div class="form-actions">
-                <button type="submit" class="btn btn-success">Login</button>
+            <div>
+                <%-- destination url when the login is successful --%>
+                <hst:link var="checkoutLink"/>
+                <input type="hidden" name="destination" value="${checkoutLink}"/>
+                <button class="btn btn-success" type="submit"><fmt:message key="login.form.submit"/></button>
             </div>
         </form>
 

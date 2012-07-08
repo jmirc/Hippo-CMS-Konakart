@@ -5,11 +5,7 @@
 <%@ taglib prefix="kk" uri="http://www.onehippo.org/jsp/konakart" %>
 <%--@elvariable id="paymentGateway" type="com.konakart.appif.PaymentDetailsIf"--%>
 
-
-<hst:actionURL var="orderReviewLink">
-    <hst:param name="action" value="SELECT"/>
-    <hst:param name="state" value="ORDER_REVIEW"/>
-</hst:actionURL>
+<kk:activityActionURL var="orderReviewLink" state="ORDER_REVIEW"/>
 
 <c:if test="${not empty form.message['globalmessage']}">
     <div class="alert alert-error">
