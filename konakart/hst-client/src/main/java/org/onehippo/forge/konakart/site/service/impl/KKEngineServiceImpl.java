@@ -10,6 +10,7 @@ import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
+import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.site.service.KKEngineService;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
@@ -69,8 +70,8 @@ public class KKEngineServiceImpl implements KKEngineService {
                 // initialize the Fetch production options
                 FetchProductOptionsIf productOptions = new FetchProductOptions();
                 productOptions.setCatalogId(kkStoreConfig.getCatalogId());
-                productOptions.setUseExternalPrice(KKServiceHelper.getUseExternalPrice());
-                productOptions.setUseExternalQuantity(KKServiceHelper.getUseExternalQuantity());
+                productOptions.setUseExternalPrice(HippoModuleConfig.getConfig().getClientEngineConfig().isUseExternalPrice());
+                productOptions.setUseExternalQuantity(HippoModuleConfig.getConfig().getClientEngineConfig().isUseExternalQuantity());
 
                 kkAppEng.setFetchProdOptions(productOptions);
 

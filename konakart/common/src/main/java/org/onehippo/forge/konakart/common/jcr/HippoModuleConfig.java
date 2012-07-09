@@ -17,7 +17,6 @@ public class HippoModuleConfig {
     public static final String SYNC_CONFIG_NODE_PATH = "/hippo:configuration/hippo:frontend/cms/cms-services/KonakartSynchronizationService";
 
     public static final String DEFAULT_PRODUCT_FOLDER_PROPERTY = "default.product.folder";
-    public static final String DEFAULT_REVIEW_FOLDER_PROPERTY = "default.review.folder";
     public static final String DEFAULT_PRODUCT_FACTORY_CLASS_NAME_PROPERTY = "default.product.factory.class";
     public static final String DEFAULT_SYNC_CRON_EXPRESSION_PROPERTY = "default.sync.cronexpression";
     public static final String DEFAULT_SYNC_JOB_CLASS_PROPERTY = "default.sync.job.class";
@@ -35,7 +34,6 @@ public class HippoModuleConfig {
     public static final String SYNC_NODE_PATH = "konakart:sync";
 
     public static final String SYNC_PRODUCT_FOLDER_PROPERTY = "konakart:productfolder";
-    public static final String SYNC_REVIEW_FOLDER_PROPERTY = "konakart:reviewfolder";
     public static final String SYNC_JOB_CLASS = "konakart:jobclass";
     public static final String SYNC_CRON_EXPRESSION = "konakart:synchronizationcronexpression";
     public static final String SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY = "konakart:lastupdatedtimekonakarttorepository";
@@ -57,7 +55,7 @@ public class HippoModuleConfig {
     private static HippoModuleConfig config = new HippoModuleConfig();
 
     private KKAdminEngineConfig adminEngineConfig = new KKAdminEngineConfig();
-    private KKClientEngineConfig clientClientEngineConfig = new KKClientEngineConfig();
+    private KKClientEngineConfig clientEngineConfig = new KKClientEngineConfig();
 
     /**
      * Mapping between a contentRoot and a storeConfig
@@ -102,18 +100,18 @@ public class HippoModuleConfig {
      * @return the client engine config.
      */
     public KKClientEngineConfig getClientEngineConfig(Session session) {
-        if (!clientClientEngineConfig.isInitialized()) {
-            clientClientEngineConfig.loadClientEngineConfiguration(session);
+        if (!clientEngineConfig.isInitialized()) {
+            clientEngineConfig.loadClientEngineConfiguration(session);
         }
 
-        return clientClientEngineConfig;
+        return clientEngineConfig;
     }
 
     /**
      * @return the engine config.
      */
-    public KKClientEngineConfig getClientClientEngineConfig() {
-        return clientClientEngineConfig;
+    public KKClientEngineConfig getClientEngineConfig() {
+        return clientEngineConfig;
     }
 
     /**
@@ -154,7 +152,7 @@ public class HippoModuleConfig {
 
             for (KKCndConstants.PRODUCT_TYPE product_type : product_types) {
                 if (node.hasProperty(product_type.getNamespace())) {
-                    clientClientEngineConfig.addProductNodeTypeMapping(product_type.getNamespace(),
+                    clientEngineConfig.addProductNodeTypeMapping(product_type.getNamespace(),
                             node.getProperty(product_type.getNamespace()).getString());
                 }
             }
@@ -191,10 +189,6 @@ public class HippoModuleConfig {
 
                     if (syncConfigNode.hasProperty(DEFAULT_PRODUCT_FOLDER_PROPERTY)) {
                         kkStoreConfig.setProductFolder(syncConfigNode.getProperty(DEFAULT_PRODUCT_FOLDER_PROPERTY).getString());
-                    }
-
-                    if (syncConfigNode.hasProperty(DEFAULT_REVIEW_FOLDER_PROPERTY)) {
-                        kkStoreConfig.setReviewFolder(syncConfigNode.getProperty(DEFAULT_REVIEW_FOLDER_PROPERTY).getString());
                     }
 
                     if (syncConfigNode.hasProperty(DEFAULT_PRODUCT_FACTORY_CLASS_NAME_PROPERTY)) {
@@ -246,10 +240,6 @@ public class HippoModuleConfig {
 
                 if (syncNode.hasProperty(SYNC_PRODUCT_FOLDER_PROPERTY)) {
                     kkStoreConfig.setProductFolder(syncNode.getProperty(SYNC_PRODUCT_FOLDER_PROPERTY).getString());
-                }
-
-                if (syncNode.hasProperty(SYNC_REVIEW_FOLDER_PROPERTY)) {
-                    kkStoreConfig.setReviewFolder(syncNode.getProperty(SYNC_REVIEW_FOLDER_PROPERTY).getString());
                 }
 
                 if (syncNode.hasProperty(SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY)) {

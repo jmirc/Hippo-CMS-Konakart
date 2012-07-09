@@ -7,7 +7,7 @@ import com.konakart.al.ReviewMgr;
 import com.konakart.app.KKException;
 import com.konakart.appif.CustomerIf;
 import org.apache.commons.lang.StringUtils;
-import org.hippoecm.hst.content.beans.manager.workflow.WorkflowPersistenceManager;
+import org.hippoecm.hst.content.beans.manager.workflow.WorkflowCallbackHandler;
 import org.hippoecm.hst.content.beans.query.HstQuery;
 import org.hippoecm.hst.content.beans.query.HstQueryResult;
 import org.hippoecm.hst.content.beans.query.exceptions.QueryException;
@@ -18,7 +18,7 @@ import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.util.ContentBeanUtils;
-import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.hippoecm.repository.reviewedactions.FullReviewedActionsWorkflow;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.beans.KKReviewDocument;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
@@ -27,7 +27,6 @@ import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 
 import javax.annotation.Nonnull;
-import javax.jcr.Session;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,6 +45,9 @@ public class DefaultKKProductDetail extends KKHstActionComponent {
     private static final String RATING = "rating";
     private static final String SUCCESS = "success";
     private static final String ERRORS = "errors";
+
+    public static final String REVIEWS = "reviews";
+    public static final String ALLOW_COMMENTS = "allowComments";
 
 
     @Override
@@ -80,37 +82,14 @@ public class DefaultKKProductDetail extends KKHstActionComponent {
             request.setAttribute("prodOptContainer", opts);
         }
 
+        request.setAttribute(ALLOW_COMMENTS, !isGuestCustomer(request));
+        request.setAttribute(REVIEWS, KKServiceHelper.getKKReviewService().getReviewsForProductId(request, document.getProductId()));
 
-        // Set the folder where the reviews will be saved
-        String reviewsFolderName = getKKStoreConfig(request).getReviewFolder();
-
-        HippoBean siteContentBase = getSiteContentBaseBean(request);
-        HippoFolder reviewsFolder = siteContentBase.getBean(reviewsFolderName);
-        if (reviewsFolder == null) {
-            log.warn("Product reviews folder not found: '{}/{}'. No product reviews will be shown.", siteContentBase.getPath(), reviewsFolderName);
-        } else {
-            try {
-                List<KKReviewDocument> reviews = new ArrayList<KKReviewDocument>();
-
-                final HstQuery incomingBeansQuery = ContentBeanUtils.createIncomingBeansQuery(document, reviewsFolder,
-                        4, getObjectConverter(), KKReviewDocument.class, false);
-                final HstQueryResult result = incomingBeansQuery.execute();
-                final HippoBeanIterator beanIterator = result.getHippoBeans();
-                int count = 0;
-                while (beanIterator.hasNext()) {
-                    KKReviewDocument review = (KKReviewDocument) beanIterator.nextHippoBean();
-                    reviews.add(review);
-                    count++;
-                }
-                request.setAttribute("reviews", reviews);
-                request.setAttribute("votes", count);
-            } catch (QueryException e) {
-                log.error("Unable to execute query to get the reviews :" + e.getMessage(), e);
-            }
-        }
-
-        request.setAttribute("allowComments", !isGuestCustomer(request));
-
+        request.setAttribute(ERRORS, request.getParameterValues(ERRORS));
+        request.setAttribute(COMMENT, request.getParameter(COMMENT));
+        request.setAttribute(NAME, request.getParameter(NAME));
+        request.setAttribute(EMAIL, request.getParameter(EMAIL));
+        request.setAttribute(SUCCESS, request.getParameter(SUCCESS));
     }
 
     @Override
@@ -170,81 +149,14 @@ public class DefaultKKProductDetail extends KKHstActionComponent {
             return;
         }
 
-        String productUuid = product.getCanonicalHandleUUID();
-        String reviewName = super.getKKStoreConfig(request).getReviewFolder();
-
-        Session persistableSession = null;
-        WorkflowPersistenceManager wpm;
-
         try {
-            persistableSession = getPersistableSession(request);
-            wpm = getWorkflowPersistenceManager(persistableSession);
-
-            final String reviewFolderPath = createReviewFolderPath(request, product, reviewName);
-            final String reviewNodeName = createReviewNodeName(product);
-
-            final String reviewPath = wpm.createAndReturn(reviewFolderPath, KKCndConstants.REVIEW_DOC_TYPE, reviewNodeName, true);
-
-            KKReviewDocument review = (KKReviewDocument) wpm.getObject(reviewPath);
-
-            // update content properties
-            if (review != null) {
-                review.setName(name);
-                review.setComment(comment);
-                review.setRating(rating);
-                review.setEmail(email);
-                review.setProductUuid(productUuid);
-                review.setCustomerId((long) currentCustomer.getId());
-
-                // update now           `
-                wpm.update(review);
-
-                // Add the review into konakart
-                ReviewMgr reviewMgr = KKServiceHelper.getKKEngineService().getKKAppEng(request).getReviewMgr();
-                reviewMgr.writeReview(comment, rating.intValue(), currentCustomer.getId());
-
-                response.setRenderParameter(SUCCESS, SUCCESS);
-            } else {
-                log.warn("Failed to add review for product '{}': could not retrieve Review bean for node '{}'.",
-                        product.getName(), reviewPath);
-
-                KKUtil.refreshWorkflowManager(wpm);
-            }
+            // Add the review into konakart
+            ReviewMgr reviewMgr = KKServiceHelper.getKKEngineService().getKKAppEng(request).getReviewMgr();
+            reviewMgr.writeReview(comment, rating.intValue(), currentCustomer.getId());
 
         } catch (Exception e) {
             log.warn("Failed to create a review for product '" + product.getName() + "'", e);
-        } finally {
-            if (persistableSession != null) {
-                persistableSession.logout();
-            }
         }
-    }
-
-    private String createReviewFolderPath(HstRequest request, KKProductDocument product, String reviewsFolderName) {
-        StringBuilder builder = new StringBuilder();
-
-        builder.append(request.getRequestContext().getResolvedMount().getMount().getCanonicalContentPath());
-
-        builder.append('/');
-        builder.append(reviewsFolderName);
-        builder.append('/');
-        builder.append(product.getName());
-
-        return builder.toString();
-    }
-
-    private String createReviewNodeName(KKProductDocument product) {
-        StringBuilder builder = new StringBuilder();
-
-        builder.append("Review for ");
-        builder.append(product.getName());
-        builder.append(' ');
-
-        final Date now = new Date();
-        final String timestamp = new SimpleDateFormat(DATE_PATTERN).format(now);
-        builder.append(timestamp);
-
-        return builder.toString();
     }
 
 }

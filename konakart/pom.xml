@@ -23,6 +23,7 @@
         <hippo.hst.version>2.24.04</hippo.hst.version>
         <hippo.cms.version>2.22.06</hippo.cms.version>
         <hippo.packages.version>2.22.03</hippo.packages.version>
+        <hippo.addon-publication-workflow.version>2.22.03</hippo.addon-publication-workflow.version>
 
         <hippo.jcr.version>2.2.10-h1</hippo.jcr.version>
 

@@ -14,21 +14,20 @@ import java.io.IOException;
 
 public class RatingTag extends KKTagSupport {
 
-    protected String var;
-    protected String scope;
-
     protected KKProductDocument kkProductDocument;
+    protected String var;
+    protected Boolean showVisible = false;
+
+    public void setProduct(KKProductDocument kkProductDocument) {
+        this.kkProductDocument = kkProductDocument;
+    }
 
     public void setVar(String var) {
         this.var = var;
     }
 
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
-
-    public void setProduct(KKProductDocument kkProductDocument) {
-        this.kkProductDocument = kkProductDocument;
+    public void setShowVisible(Boolean showVisible) {
+        this.showVisible = showVisible;
     }
 
     /* (non-Javadoc)
@@ -50,7 +49,7 @@ public class RatingTag extends KKTagSupport {
 
         if (kkProductDocument != null) {
             DataDescriptorIf dataDescriptorIf = new DataDescriptor();
-            dataDescriptorIf.setShowInvisible(false);
+            dataDescriptorIf.setShowInvisible(showVisible);
 
             try {
                 ReviewsIf reviewsIf = getKkAppEng().getEng().getReviewsPerProduct(dataDescriptorIf,
@@ -93,15 +92,6 @@ public class RatingTag extends KKTagSupport {
             }
         } else {
             int varScope = PageContext.PAGE_SCOPE;
-            if (this.scope != null) {
-                if ("request".equals(this.scope)) {
-                    varScope = PageContext.REQUEST_SCOPE;
-                } else if ("session".equals(this.scope)) {
-                    varScope = PageContext.SESSION_SCOPE;
-                } else if ("application".equals(this.scope)) {
-                    varScope = PageContext.APPLICATION_SCOPE;
-                }
-            }
             pageContext.setAttribute(var, rating, varScope);
         }
     }

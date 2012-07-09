@@ -62,30 +62,30 @@ public class KonakartValve implements Valve {
         // Retrieve the Konakart client
         KKAppEng kkAppEng = KKServiceHelper.getKKEngineService().getKKAppEng(request);
 
+        // Set the current store config
+        Mount resolvedMount = context.getRequestContext().getResolvedMount().getMount();
+        String storeName = resolvedMount.getProperty(KKCndConstants.KONAKART_CONFIG_STORE_NAME);
+
+        //  Set the default one
+        if (StringUtils.isEmpty(storeName)) {
+            storeName = KKCheckoutConstants.DEF_STORE_ID;
+        }
+
+
+        // Check if the store config has been created under /hippo-configuration/cms-services/KonakartSynchronizationService
+        KKStoreConfig kkStoreConfig;
+        try {
+            kkStoreConfig = HippoModuleConfig.getConfig().getStoreConfigByName(jcrSession, storeName);
+
+            request.setAttribute(KKStoreConfig.KK_STORE_CONFIG, kkStoreConfig);
+        } catch (RepositoryException e) {
+            throw new IllegalStateException("Failed to load the storeConfig. Please verify if a new storeConfig named "
+                    + storeName + " within /hippo-configuration/cms-services/KonakartSynchronizationService");
+        }
+
         // Initialize the konakart client if it has not been created
         // TODO: how to handle multiple stores??????
         if (kkAppEng == null) {
-            // Set the current store config
-            Mount resolvedMount = context.getRequestContext().getResolvedMount().getMount();
-            String storeName = resolvedMount.getProperty(KKCndConstants.KONAKART_CONFIG_STORE_NAME);
-
-            //  Set the default one
-            if (StringUtils.isEmpty(storeName)) {
-                storeName = KKCheckoutConstants.DEF_STORE_ID;
-            }
-
-
-            // Check if the store config has been created under /hippo-configuration/cms-services/KonakartSynchronizationService
-            KKStoreConfig kkStoreConfig;
-            try {
-                kkStoreConfig = HippoModuleConfig.getConfig().getStoreConfigByName(jcrSession, storeName);
-
-                request.setAttribute(KKStoreConfig.KK_STORE_CONFIG, kkStoreConfig);
-            } catch (RepositoryException e) {
-                throw new IllegalStateException("Failed to load the storeConfig. Please verify if a new storeConfig named "
-                        + storeName + " within /hippo-configuration/cms-services/KonakartSynchronizationService");
-            }
-
             // Initialize Konakart Engine
             kkAppEng = KKServiceHelper.getKKEngineService().initKKEngine(request, response, kkStoreConfig);
         }

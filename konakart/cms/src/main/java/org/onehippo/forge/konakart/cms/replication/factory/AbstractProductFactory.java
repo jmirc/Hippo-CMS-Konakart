@@ -72,8 +72,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
         setContentRoot(kkStoreConfig.getContentRoot());
         setGalleryRoot(kkStoreConfig.getGalleryRoot());
         setProductFolder(kkStoreConfig.getProductFolder());
-        // Create the reviews' folder if not exists
-        createReviewFolder(kkStoreConfig.getReviewFolder());
     }
 
 
@@ -83,7 +81,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         KKCndConstants.PRODUCT_TYPE product_type = KKCndConstants.PRODUCT_TYPE.findByType(product.getType());
 
         String kkProductTypeName = product_type.getName();
-        String productDocType = HippoModuleConfig.getConfig().getClientClientEngineConfig().getProductNodeTypeMapping().get(product_type.getNamespace());
+        String productDocType = HippoModuleConfig.getConfig().getClientEngineConfig().getProductNodeTypeMapping().get(product_type.getNamespace());
 
 
         if (StringUtils.isEmpty(productDocType)) {
@@ -449,27 +447,4 @@ public abstract class AbstractProductFactory implements ProductFactory {
     private void setProductFolder(String productFolder) {
         this.productFolder = productFolder;
     }
-
-    /**
-     * Create a review's folder
-     *
-     * @param reviewFolder the review's folder to create
-     * @return the encoded review folder name
-     */
-    private String createReviewFolder(String reviewFolder) {
-
-        if (StringUtils.isEmpty(reviewFolder)) {
-            reviewFolder = KKCndConstants.DEFAULT_REVIEWS_FOLDER;
-        }
-
-        try {
-            nodeHelper.createMissingFolders(contentRoot + reviewFolder);
-        } catch (Exception e) {
-            log.error("Failed to create the review folder.", e);
-        }
-
-        return Codecs.encodeNode(reviewFolder);
-    }
-
-
 }

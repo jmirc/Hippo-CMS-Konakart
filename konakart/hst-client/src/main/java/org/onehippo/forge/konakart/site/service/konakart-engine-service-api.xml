@@ -45,4 +45,7 @@
     <bean name="org.onehippo.forge.konakart.site.service.KKOrderService"
           class="org.onehippo.forge.konakart.site.service.impl.KKOrderServiceImpl"/>
 
+    <bean name="org.onehippo.forge.konakart.site.service.KKReviewService"
+          class="org.onehippo.forge.konakart.site.service.impl.KKReviewServiceImpl"/>
+
 </beans>

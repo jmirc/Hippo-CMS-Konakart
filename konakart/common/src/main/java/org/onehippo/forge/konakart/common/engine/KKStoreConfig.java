@@ -1,5 +1,7 @@
 package org.onehippo.forge.konakart.common.engine;
 
+import org.apache.commons.lang.StringUtils;
+import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +23,6 @@ public class KKStoreConfig {
     private String contentRoot;
     private String galleryRoot;
     private String productFolder;
-    private String reviewFolder;
     private Date lastUpdatedTimeKonakartToRepository = null;
     private Date lastUpdatedTimeRepositoryToKonakart = null;
     private String catalogId;
@@ -61,14 +62,6 @@ public class KKStoreConfig {
 
     public void setProductFolder(String productFolder) {
         this.productFolder = productFolder;
-    }
-
-    public String getReviewFolder() {
-        return reviewFolder;
-    }
-
-    public void setReviewFolder(String reviewFolder) {
-        this.reviewFolder = reviewFolder;
     }
 
     public Date getLastUpdatedTimeKonakartToRepository() {

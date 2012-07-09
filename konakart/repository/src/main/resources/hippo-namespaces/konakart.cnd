@@ -31,12 +31,13 @@
   - konakart:enginemode (long) mandatory
   - konakart:iscustomershared (boolean) mandatory
   - konakart:isproductshared (boolean) mandatory
+  - konakart:useexternalprice (boolean) mandatory
+  - konakart:useexternalquantity (boolean) mandatory
 
 [konakart:sync] > mix:referenceable, mix:versionable, nt:base
   - konakart:jobclass (string)
   - konakart:synchronizationcronexpression (string)
   - konakart:productfolder (string)
-  - konakart:reviewfolder (string)
   - konakart:lastupdatedtimerepositorytokonnakart (date)
   - konakart:lastupdatedtimekonakarttorepository (date)
 

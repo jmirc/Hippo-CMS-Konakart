@@ -4,32 +4,6 @@ import org.hippoecm.hst.site.HstServices;
 
 public class KKServiceHelper {
 
-    public static Boolean customersShared = false;
-    public static Boolean productsShared = false;
-    public static Integer engineMode = 0;
-    public static Boolean useExternalPrice = false;
-    public static Boolean useExternalQuantity = false;
-
-    public static Boolean getCustomersShared() {
-        return customersShared;
-    }
-
-    public static Boolean getProductsShared() {
-        return productsShared;
-    }
-
-    public static Integer getEngineMode() {
-        return engineMode;
-    }
-
-    public static Boolean getUseExternalPrice() {
-        return useExternalPrice;
-    }
-
-    public static Boolean getUseExternalQuantity() {
-        return useExternalQuantity;
-    }
-
     public static KKBasketService getKKBasketService() {
         return HstServices.getComponentManager().getComponent(KKBasketService.class.getName());
     }
@@ -56,6 +30,10 @@ public class KKServiceHelper {
 
     public static KKOrderService getKKOrderService() {
         return HstServices.getComponentManager().getComponent(KKOrderService.class.getName());
+    }
+
+    public static KKReviewService getKKReviewService() {
+        return HstServices.getComponentManager().getComponent(KKReviewService.class.getName());
     }
 
 }

@@ -14,6 +14,11 @@
     <script src="${rateJs}" type="text/javascript"></script>
 </hst:headContribution>
 
+<hst:headContribution category="jsInternal">
+    <hst:link var="rateJs" path="/js/rate.js"/>
+    <script src="${rateJs}" type="text/javascript"></script>
+</hst:headContribution>
+
 <kk:addToBasketActionURL product="${document}" var="addToBasket"/>
 
 <hst:link var="prdImgLink" hippobean="${document.mainImage.original}"/>
@@ -48,9 +53,9 @@ function setWishListId(id) {
                 <h4><c:out value="${document.name}"/></h4>
                 <c:if test="${not empty document.model}">
                     <h6>[${document.model}]
-                    <c:if test="${empty prodOptContainer}">
-                        &nbsp;-&nbsp;<span class="label label-info">${document.quantity} items in stock</span>
-                    </c:if>
+                        <c:if test="${empty prodOptContainer}">
+                            &nbsp;-&nbsp;<span class="label label-info">${document.quantity} items in stock</span>
+                        </c:if>
                     </h6>
                 </c:if>
                 <br/>
@@ -60,10 +65,10 @@ function setWishListId(id) {
 
                 <kk:rating product="${document}" var="rating"/>
                 <fmt:formatNumber value="${rating * 10}" var="ratingStyle" pattern="#0"/>
-
-                <p class="rating stars-${ratingStyle}"><a href="${fn:escapeXml(prdlink)}">
-                    <span style="margin-left: 100px;"><c:out value="${rating}"/></span>
-                </a>
+                <p class="rating stars-${ratingStyle}">
+                    <a href="${fn:escapeXml(prdlink)}">
+                        <span style="margin-left: 100px;">${rating}</span>
+                    </a>
                 </p>
 
                 <p>
@@ -135,30 +140,27 @@ function setWishListId(id) {
 </form>
 
 
-<div id="comments">
-    <c:forEach items="${reviews}" var="review">
-        <ul class="comment-item">
-            <li class="name"><a href="#"><c:out value="${review.name}"/></a></li>
-            <li class="date"><span class="seperator">|</span> <fmt:formatDate value="${review.date.time}"
-                                                                              pattern="MMM dd, yyyy"/></li>
-            <li class="text">
-                <ul>
-                    <li class="score"><fmt:message key="products.detail.score"/>:</li>
-                    <fmt:formatNumber value="${review.rating * 10}" var="reviewRatingStyle" pattern="#0"/>
-                    <li class="rating stars-${reviewRatingStyle}"></li>
-                    <li class="review"><c:out value="${review.comment}"/></li>
-                </ul>
-            </li>
-            <li class="bg-bottom"></li>
-        </ul>
-    </c:forEach>
-</div>
+<p class="verticalSpace">
+<h4>Reviews</h4>
+</p>
+
+
+<c:forEach items="${reviews}" var="review">
+    <div class=" well">
+        <p>
+        <h5>${review.customerName} | <fmt:formatDate value="${review.dateAdded.time}" pattern="MMM dd, yyyy"/></h5>
+        </p>
+        <fmt:formatNumber value="${review.rating * 10}" var="ratingStyle" pattern="#0"/>
+        <p class="rating stars-${ratingStyle}">&nbsp;</p>
+
+        <p>
+            ${review.reviewText}
+        </p>
+    </div>
+</c:forEach>
 
 <c:if test="${isLogged}">
-    <hst:actionURL var="reviewUrl">
-        <hst:param name="action" value="REVIEW"/>
-    </hst:actionURL>
-
+    <kk:activityActionURL action="REVIEW" var="reviewUrl"/>
     <br/>
     <br/>
 

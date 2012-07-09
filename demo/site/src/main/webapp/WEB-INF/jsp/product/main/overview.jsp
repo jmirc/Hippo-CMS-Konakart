@@ -34,6 +34,9 @@
                     <p>
                         <br/>
                         <a class="btn btn-primary" href="${fn:escapeXml(prdlink)}">Learn more</a>
+                        <kk:addToBasketActionURL product="${product}" var="addToBasket"/>
+                        <a class="btn btn-danger" href="${addToBasket}">Add to cart</a>
+
                     </p>
                 </div>
             </div>

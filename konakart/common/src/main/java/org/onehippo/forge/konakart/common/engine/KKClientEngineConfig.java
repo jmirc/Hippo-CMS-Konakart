@@ -16,11 +16,15 @@ public class KKClientEngineConfig {
     public static final String CLIENT_ENGINEMODE_PROPERTY = "konakart:enginemode";
     public static final String CLIENT_IS_CUSTOMERS_SHARED_PROPERTY = "konakart:iscustomersshared";
     public static final String CLIENT_IS_PRODUCTS_SHARED_PROPERTY = "konakart:isproductshared";
+    public static final String CLIENT_USE_EXTERNAL_PRICE_PROPERTY = "konakart:useexternalprice";
+    public static final String CLIENT_USE_EXTERNAL_QUANTITY_PROPERTY = "konakart:useexternalquantity";
 
     private boolean initialized = false;
     private int engineMode;
     private boolean isCustomersShared;
     private boolean isProductsShared;
+    private boolean useExternalPrice;
+    private boolean useExternalQuantity;
     private Map<String, String> productNodeTypeMapping = new HashMap<String, String>();
 
 
@@ -48,6 +52,22 @@ public class KKClientEngineConfig {
         isProductsShared = productsShared;
     }
 
+    public boolean isUseExternalPrice() {
+        return useExternalPrice;
+    }
+
+    public void setUseExternalPrice(boolean useExternalPrice) {
+        this.useExternalPrice = useExternalPrice;
+    }
+
+    public boolean isUseExternalQuantity() {
+        return useExternalQuantity;
+    }
+
+    public void setUseExternalQuantity(boolean useExternalQuantity) {
+        this.useExternalQuantity = useExternalQuantity;
+    }
+
     public Map<String, String> getProductNodeTypeMapping() {
         return productNodeTypeMapping;
     }
@@ -70,6 +90,8 @@ public class KKClientEngineConfig {
             setEngineMode(NodeUtils.getLong(node, CLIENT_ENGINEMODE_PROPERTY, 0L));
             setCustomersShared(NodeUtils.getBoolean(node, CLIENT_IS_CUSTOMERS_SHARED_PROPERTY, false));
             setProductsShared(NodeUtils.getBoolean(node, CLIENT_IS_PRODUCTS_SHARED_PROPERTY, false));
+            setUseExternalPrice(NodeUtils.getBoolean(node, CLIENT_USE_EXTERNAL_PRICE_PROPERTY, false));
+            setUseExternalQuantity(NodeUtils.getBoolean(node, CLIENT_USE_EXTERNAL_QUANTITY_PROPERTY, false));
 
             initialized = true;
         } catch (RepositoryException e) {

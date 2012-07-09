@@ -47,23 +47,6 @@ public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
         kkCriteria.remove(BaseProductsPeer.PRODUCTS_STATUS);
     }
 
-
-    /**
-     * Used to synchronize Hippo and Konakart
-     *
-     * @param productId         id of the product to update
-     * @param reviewsFolderName the name of the folder where the review will be saved
-     * @throws Exception if the update could not be done
-     */
-    public void synchronizeHippoKK(Integer productId, String reviewsFolderName) throws Exception {
-        KKCriteria localKKCriteria = getNewCriteria(isMultiStoreShareProducts());
-        localKKCriteria.add(BaseProductsPeer.PRODUCTS_ID, productId);
-        localKKCriteria.add(BaseProductsPeer.CUSTOM1, reviewsFolderName);
-        localKKCriteria.add(BaseProductsPeer.CUSTOM2, "");
-
-        BaseProductsPeer.doUpdate(localKKCriteria);
-    }
-
     /**
      * Update the status of a product
      *
@@ -77,22 +60,5 @@ public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
         localKKCriteria.add(BaseProductsPeer.PRODUCTS_STATUS, publishedState);
 
         BaseProductsPeer.doUpdate(localKKCriteria);
-    }
-
-
-    /**
-     * Update the status of a product
-     *
-     * @param productId   id of the product to update
-     * @param description the description to update
-     * @throws Exception if the update could not be done
-     */
-    public void updateDescription(Integer productId, Integer languageId, String description) throws Exception {
-        KKCriteria localKKCriteria = getNewCriteria(isMultiStoreShareProducts());
-        localKKCriteria.add(BaseProductsDescriptionPeer.PRODUCTS_ID, productId);
-        localKKCriteria.add(BaseProductsDescriptionPeer.LANGUAGE_ID, languageId);
-        localKKCriteria.add(BaseProductsDescriptionPeer.PRODUCTS_DESCRIPTION, description);
-
-        BaseProductsDescriptionPeer.doUpdate(localKKCriteria);
     }
 }
