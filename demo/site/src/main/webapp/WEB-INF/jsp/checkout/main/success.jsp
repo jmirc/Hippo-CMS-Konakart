@@ -3,39 +3,40 @@
 <h1>Your Order Has Been Processed!</h1>
 
 <p>
-Your order has been successfully processed! Your products will arrive at their destination within 2-5 working days. <br/>
+    <h4>Your order has been successfully processed! Your products will arrive at their destination within 2-5 working days.</h4>
+    <br/>
 </p>
 
 <c:if test="${globalProductNotifierEnabled}">
+    <p>
     <c:if test="${not empty notifiedProducts}">
-        Please notify me of updates to the products I have selected below:
+        <h5 class="verticalSpace">Please notify me of updates to the products I have selected below:</h5>
 
-        <hst:actionURL var="checkoutSuccessLink">
-            <hst:param name="action" value="SELECT"/>
-            <hst:param name="state" value="CHECKOUT_FINISHED"/>
-        </hst:actionURL>
+        <kk:activityActionURL var="checkoutSuccessLink" state="CHECKOUT_FINISHED"/>
 
-        <form action="${checkoutSuccessLink}" class="well">
+        <form action="${checkoutSuccessLink}" method="POST">
+            <div class="well">
             <c:forEach items="${notifiedProducts}" var="notifiedProduct">
-                <input type="checkbox" name="remove_${notifiedProduct.prodId}"> ${notifiedProduct.prodName}
-            </c:forEach>
-
-            <p>
-                <h3>Thanks for shopping with us online!</h3>
-            </p>
-
-            <!-- Update buton -->
-            <div class="inline">
-                <div class="row">
-                    <div class="span5">
-                        <input class="btn" type="submit" value="Continue"/>
+                <div class="control-group">
+                    <div class="controls">
+                        <label class="checkbox">
+                            <input type="checkbox" name="remove_${notifiedProduct.prodId}"/> ${notifiedProduct.prodName}
+                        </label>
                     </div>
                 </div>
+            </c:forEach>
+
+            </div>
+
+            <!-- Update buton -->
+            <div>
+                <button class="btn btn-success" type="submit">Continue</button>
             </div>
 
 
         </form>
     </c:if>
+    </p>
 </c:if>
 
 

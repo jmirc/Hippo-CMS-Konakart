@@ -3,7 +3,6 @@ package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 import com.google.common.collect.Lists;
 import com.konakart.al.NotifiedProductItem;
 import com.konakart.app.KKException;
-import com.konakart.appif.BasketIf;
 import com.konakart.appif.CustomerIf;
 import com.konakart.appif.OrderIf;
 import com.konakart.appif.OrderProductIf;
@@ -75,21 +74,21 @@ public class CheckoutFinishedActivity extends BaseCheckoutActivity {
                 int i = 0;
 
                 for (OrderProductIf orderProductIf : orderProductIfs) {
-                    definedFormFields[i] = REMOVE + orderProductIf.getId();
+                    definedFormFields[i] = REMOVE + orderProductIf.getProductId();
                     i++;
                 }
 
                 FormMap formMap = new FormMap(hstRequest, definedFormFields);
 
                 for (OrderProductIf orderProductIf : orderProductIfs) {
-                    FormField removeFormField = formMap.getField(REMOVE + orderProductIf.getId());
+                    FormField removeFormField = formMap.getField(REMOVE + orderProductIf.getProductId());
 
                     // Remove the basket item
                     if (removeFormField != null && removeFormField.getValues() != null
                             && removeFormField.getValues().size() > 0) {
 
                         try {
-                            kkAppEng.getCustomerMgr().addProductNotificationsToCustomer(orderProductIf.getId());
+                            kkAppEng.getCustomerMgr().addProductNotificationsToCustomer(orderProductIf.getProductId());
                         } catch (KKException e) {
                             log.warn("Failed to notify the customer about the availability of the product", e);
                         }

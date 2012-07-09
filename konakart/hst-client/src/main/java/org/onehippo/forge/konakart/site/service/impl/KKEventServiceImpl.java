@@ -6,12 +6,12 @@ import com.konakart.app.KKException;
 import com.konakart.appif.CustomerEventIf;
 import com.konakart.appif.CustomerIf;
 import com.konakart.bl.ConfigConstants;
-import org.hippoecm.hst.core.component.HstRequest;
 import org.onehippo.forge.konakart.site.service.KKEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 
 public class KKEventServiceImpl extends KKBaseServiceImpl implements KKEventService {
@@ -36,7 +36,7 @@ public class KKEventServiceImpl extends KKBaseServiceImpl implements KKEventServ
     public static final int ACTION_PRODUCT_VIEWED = 7;
 
     @Override
-    public CustomerEventIf getCustomerEvent(@Nonnull HstRequest request, int action) {
+    public CustomerEventIf getCustomerEvent(@Nonnull HttpServletRequest request, int action) {
 
         KKAppEng kkAppEng = getKKAppEng(request);
 
@@ -55,7 +55,7 @@ public class KKEventServiceImpl extends KKBaseServiceImpl implements KKEventServ
     }
 
     @Override
-    public void insertCustomerEvent(@Nonnull HstRequest request, int action, String str1, String str2,
+    public void insertCustomerEvent(@Nonnull HttpServletRequest request, int action, String str1, String str2,
                                     int int1, int int2, BigDecimal dec1, BigDecimal dec2) {
 
         CustomerEventIf event = getCustomerEvent(request, action);
@@ -76,22 +76,22 @@ public class KKEventServiceImpl extends KKBaseServiceImpl implements KKEventServ
     }
 
     @Override
-    public void insertCustomerEvent(@Nonnull HstRequest request, int action) {
+    public void insertCustomerEvent(@Nonnull HttpServletRequest request, int action) {
         insertCustomerEvent(request, action, null, null, 0, 0, null, null);
     }
 
     @Override
-    public void insertCustomerEvent(@Nonnull HstRequest request, int action, int int1) {
+    public void insertCustomerEvent(@Nonnull HttpServletRequest request, int action, int int1) {
         insertCustomerEvent(request, action, null, null, int1, 0, null, null);
     }
 
     @Override
-    public void insertCustomerEvent(@Nonnull HstRequest request, int action, String str1) {
+    public void insertCustomerEvent(@Nonnull HttpServletRequest request, int action, String str1) {
         insertCustomerEvent(request, action, str1, null, 0, 0, null, null);
     }
 
     @Override
-    public void insertCustomerEvent(@Nonnull HstRequest request, int action, BigDecimal dec1) {
+    public void insertCustomerEvent(@Nonnull HttpServletRequest request, int action, BigDecimal dec1) {
         insertCustomerEvent(request, action, null, null, 0, 0, dec1, null);
     }
 

@@ -2,6 +2,7 @@ package org.onehippo.forge.konakart.hst.wizard.checkout;
 
 import org.hippoecm.hst.component.support.forms.FormMap;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.Activity;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.BaseProcessor;
@@ -21,7 +22,7 @@ public class CheckoutProcessor extends BaseProcessor {
     public void doBeforeRender(SeedData seedObject) throws ActivityException {
 
         String currentState = getCurrentState(seedObject.getRequest());
-        String nextState = currentState;
+        String nextState = getNextState(seedObject.getRequest());
 
         // Set state
         ((CheckoutSeedData) seedObject).setState(currentState);
@@ -77,7 +78,7 @@ public class CheckoutProcessor extends BaseProcessor {
     public FormMap doAction(SeedData seedObject) throws ActivityException {
         FormMap formMap = null;
 
-        String currentState = getCurrentState(seedObject.getRequest());
+        String currentState = KKUtil.getActionRequestParameter(seedObject.getRequest(), KKCheckoutConstants.STATE);
 
         if (log.isDebugEnabled()) {
             log.debug("doAction - " + getClass().getSimpleName() + " processor is running..");
@@ -88,8 +89,11 @@ public class CheckoutProcessor extends BaseProcessor {
 
         // Create the processor context
         CheckoutProcessContext context = new CheckoutProcessContext();
+        context.setProcessor(this);
         context.setSeedData(seedObject);
         ((CheckoutSeedData) seedObject).setState(currentState);
+
+
 
         for (Activity activity : activities) {
 

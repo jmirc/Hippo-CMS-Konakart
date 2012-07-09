@@ -9,22 +9,6 @@
 </hst:headContribution>
 
 <hst:headContribution category="jsInternal">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-</hst:headContribution>
-
-<hst:headContribution category="jsInternal">
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
-</hst:headContribution>
-
-<hst:headContribution category="jsInternal">
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/additional-methods.min.js" type="text/javascript"></script>
-</hst:headContribution>
-
-<hst:headContribution category="jsInternal">
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_${hstRequest.locale.language}.js " type="text/javascript"></script>
-</hst:headContribution>
-
-<hst:headContribution category="jsInternal">
     <hst:link path="/libs/datepicker/js/bootstrap-datepicker.js" var="datepickerJs"/>
     <script src="${datepickerJs}" type="text/javascript"></script>
 </hst:headContribution>

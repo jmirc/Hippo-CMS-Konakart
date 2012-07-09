@@ -6,7 +6,7 @@
         <sv:value>frontend:pluginconfig</sv:value>
     </sv:property>
     <sv:property sv:name="display" sv:type="Boolean">
-        <sv:value>true</sv:value>
+        <sv:value>false</sv:value>
     </sv:property>
     <sv:property sv:name="path" sv:type="String">
         <sv:value>/hippo:namespaces/konakart</sv:value>

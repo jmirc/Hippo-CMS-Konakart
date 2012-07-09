@@ -69,9 +69,6 @@ public interface KKCndConstants {
     String REVIEW_CUSTOMER_ID = "konakart:reviewkonakartid";
     String REVIEW_DATE = "konakart:reviewdate";
 
-    String DEFAULT_REVIEWS_FOLDER = "reviews";
-
-
     // Product Type constants
     static enum PRODUCT_TYPE {
         ALL(-1, "All", "All"),

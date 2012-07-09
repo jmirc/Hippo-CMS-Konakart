@@ -296,7 +296,7 @@ public abstract class BaseAddressActivity extends BaseCheckoutActivity {
                         String password = formMap.getField(PASSWORD).getValue();
 
                         // Try to logged-in
-                        boolean isLoggedIn = KKServiceHelper.getKKEngineService().loggedIn(hstRequest, hstResponse, emailAddress, password);
+                        boolean isLoggedIn = KKServiceHelper.getKKEngineService().logIn(hstRequest, hstResponse, emailAddress, password);
 
                         if (!isLoggedIn) {
                             // login has failed

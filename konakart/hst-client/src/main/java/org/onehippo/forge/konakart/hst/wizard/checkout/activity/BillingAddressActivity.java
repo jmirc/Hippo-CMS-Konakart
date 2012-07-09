@@ -13,11 +13,7 @@ import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessContext;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 public class BillingAddressActivity extends BaseAddressActivity {
@@ -52,7 +48,7 @@ public class BillingAddressActivity extends BaseAddressActivity {
                     addressId = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getCustomerMgr().
                             addAddressToCustomer(createAddressForCustomer());
                 } catch (Exception e) {
-                    setNextLoggedState(KKCheckoutConstants.STATES.INITIAL.name());
+                    updateNextLoggedState(KKCheckoutConstants.STATES.INITIAL.name());
                     addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.failed.create.address"));
                     return;
                 }
@@ -87,7 +83,7 @@ public class BillingAddressActivity extends BaseAddressActivity {
                     }
 
                     // Logged-in
-                    KKServiceHelper.getKKEngineService().loggedIn(hstRequest, hstResponse, username, password);
+                    KKServiceHelper.getKKEngineService().logIn(hstRequest, hstResponse, username, password);
                 } catch (KKException e) {
                     log.error("Failed to register a customer", e);
                     addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.failed.register.customer"));
@@ -108,7 +104,7 @@ public class BillingAddressActivity extends BaseAddressActivity {
 
                     // Skip the SHIPPING ADDRESS step because the customer has decided to use the
                     // same billing address
-                    setNextLoggedState(KKCheckoutConstants.STATES.SHIPPING_METHOD.name());
+                    hstResponse.setRenderParameter(KKCheckoutConstants.FORCE_NEXT_LOGGED_STATE, KKCheckoutConstants.STATES.SHIPPING_METHOD.name());
                 } catch (KKException e) {
                     log.error("Failed to set the shipping address", e);
                 }

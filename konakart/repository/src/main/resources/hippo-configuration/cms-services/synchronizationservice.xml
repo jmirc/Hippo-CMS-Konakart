@@ -10,14 +10,11 @@
     <sv:property sv:name="default.product.folder" sv:type="String">
         <sv:value>Products</sv:value>
     </sv:property>
-    <sv:property sv:name="default.review.folder" sv:type="String">
-        <sv:value>Products Review</sv:value>
-    </sv:property>
     <sv:property sv:name="default.sync.cronexpression" sv:type="String">
         <sv:value>0 0/1 * 1/1 * ? *</sv:value>
     </sv:property>
     <sv:property sv:name="default.sync.job.class" sv:type="String">
-        <sv:value>org.onehippo.forge.konakart.cms.replication.synchronization.job.KonakartSyncProductJob</sv:value>
+        <sv:value>org.onehippo.forge.konakart.cms.replication.synchronization.job.KonakartSyncJob</sv:value>
     </sv:property>
     <sv:property sv:name="plugin.class" sv:type="String">
         <sv:value>org.onehippo.forge.konakart.cms.replication.service.KonakartSynchronizationService</sv:value>

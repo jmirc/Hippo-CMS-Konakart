@@ -2,8 +2,6 @@ package org.onehippo.forge.konakart.hst.wizard;
 
 import org.hippoecm.hst.component.support.forms.FormMap;
 
-import java.util.List;
-
 public interface Processor {
 
     /**
@@ -38,12 +36,4 @@ public interface Processor {
      * the activity is already past.
      */
     void doAdditionalData(SeedData seedObject) throws ActivityException;
-
-    /**
-     * Sets the collection of Activities to be executed by the Workflow Process
-     *
-     * @param activities ordered collection (List) of activities to be executed by the processor
-     */
-    void setActivities(List<Activity> activities);
-
 }

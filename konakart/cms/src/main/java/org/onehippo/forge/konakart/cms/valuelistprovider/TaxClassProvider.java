@@ -4,6 +4,7 @@ import com.konakartadmin.app.AdminTaxClass;
 import com.konakartadmin.app.AdminTaxClassSearch;
 import com.konakartadmin.app.AdminTaxClassSearchResult;
 import com.konakartadmin.app.KKAdminException;
+import com.konakartadmin.appif.KKAdminIf;
 import org.hippoecm.frontend.plugin.IPluginContext;
 import org.hippoecm.frontend.plugin.Plugin;
 import org.hippoecm.frontend.plugin.config.IPluginConfig;
@@ -45,20 +46,21 @@ public class TaxClassProvider extends Plugin implements IValueListProvider {
 
     @Override
     public ValueList getValueList(String name, Locale locale) {
-        if (!"values".equals(name)) {
-            log.warn("unknown value list name " + name + " was requested, using 'values'");
-        }
 
         ValueList valueList = new ValueList();
 
         AdminTaxClassSearch adminTaxClassSearch = new AdminTaxClassSearch();
 
         try {
-            AdminTaxClassSearchResult result = KKAdminEngine.getInstance().getEngine().getTaxClasses(adminTaxClassSearch);
-            AdminTaxClass[] taxes = result.getTaxClasses();
+            KKAdminIf engine = KKAdminEngine.getInstance().getEngine();
+            if (engine != null) {
 
-            for (AdminTaxClass tax : taxes) {
-                valueList.add(new ListItem(String.valueOf(tax.getTaxClassId()), tax.getTaxClassTitle()));
+                AdminTaxClassSearchResult result = engine.getTaxClasses(adminTaxClassSearch);
+                AdminTaxClass[] taxes = result.getTaxClasses();
+
+                for (AdminTaxClass tax : taxes) {
+                    valueList.add(new ListItem(String.valueOf(tax.getTaxClassId()), tax.getTaxClassTitle()));
+                }
             }
         } catch (KKAdminException e) {
             log.error("Failed to retrieve the list of taxes", e);

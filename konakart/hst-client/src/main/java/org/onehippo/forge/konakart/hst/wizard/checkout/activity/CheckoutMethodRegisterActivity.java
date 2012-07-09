@@ -3,7 +3,6 @@ package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 import com.konakart.bl.ConfigConstants;
 import org.apache.commons.lang.StringUtils;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
-import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessContext;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
@@ -42,18 +41,7 @@ public class CheckoutMethodRegisterActivity extends BaseCheckoutActivity {
 
         String action = seedData.getAction();
 
-        if (action.equals(KKCheckoutConstants.ACTIONS.LOGIN.name())) {
-
-            String username = KKUtil.getEscapedParameter(hstRequest, EMAIL);
-            String password = KKUtil.getEscapedParameter(hstRequest, PASSWORD);
-
-            if (!(KKServiceHelper.getKKEngineService().loggedIn(seedData.getRequest(), seedData.getResponse(), username, password))) {
-                addMessage(EMAIL, seedData.getBundleAsString("checkout.invalid.password"));
-            } else {
-                // Insert event
-                KKServiceHelper.getKKEventService().insertCustomerEvent(hstRequest, KKEventServiceImpl.ACTION_ENTER_CHECKOUT);
-            }
-        } else if (action.equals(KKCheckoutConstants.ACTIONS.REGISTER.name())) {
+        if (action.equals(KKCheckoutConstants.ACTIONS.REGISTER.name())) {
             String dontHaveAccount = getDontHaveAccountValue();
 
             if (StringUtils.isNotBlank(dontHaveAccount)) {

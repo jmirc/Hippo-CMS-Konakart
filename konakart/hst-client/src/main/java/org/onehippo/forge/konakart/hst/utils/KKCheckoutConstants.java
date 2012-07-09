@@ -10,7 +10,7 @@ public interface KKCheckoutConstants {
 
     // List of actions
     enum ACTIONS {
-        REGISTER, LOGIN, SELECT, EDIT, UPDATE, REVIEW, ADD_TO_BASKET, REMOVE_FROM_BASKET, VALID_EMAIL, VALID_PASSWORD
+        REGISTER, SELECT, EDIT, UPDATE, REVIEW, ADD_TO_BASKET, REMOVE_FROM_BASKET
     }
 
     String STATE = "state";
@@ -20,6 +20,8 @@ public interface KKCheckoutConstants {
         SHIPPING_ADDRESS, SHIPPING_METHOD, PAYMENT_METHOD, ORDER_REVIEW, CHECKOUT_FINISHED
     }
 
+    String FORCE_NEXT_LOGGED_STATE = "FORCE_NEXT_LOGGED_STATE";
+    String FORCE_NEXT_NON_LOGGED_STATE = "FORCE_NEXT_NON_LOGGED_STATE";
 
     String DONT_HAVE_ACCOUNT = "dontHaveAccount";
     String CHECKOUT_AS_GUEST = "checkoutAsGuest";

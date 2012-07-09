@@ -10,6 +10,17 @@ public interface Activity {
     static final String GLOBALMESSAGE = "globalmessage";
 
     /**
+     * Set the name of the activity
+     * @param name the name to set
+     */
+    void setName(String name);
+
+    /**
+     * @return the name of the activity
+     */
+    String getName();
+
+    /**
      * Set to true if the activity accepts an empty state, otherwise set to false
      *
      * @param acceptEmtpyState the state to set

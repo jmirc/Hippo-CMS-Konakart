@@ -25,13 +25,13 @@ public final class KKEngine {
 
         // Initialize the Engine conf if not exits
         if (KKAppEng.getEngConf() == null) {
-            KKEngineConfig engineConfig = HippoModuleConfig.getConfig().getClientEngineConfig(session);
+            KKClientEngineConfig clientEngineConfig = HippoModuleConfig.getConfig().getClientEngineConfig(session);
 
             // Initialize the engine conf
             EngineConfig engConf = new EngineConfig();
-            engConf.setMode(engineConfig.getEngineMode());
-            engConf.setCustomersShared(engineConfig.isCustomersShared());
-            engConf.setProductsShared(engineConfig.isProductsShared());
+            engConf.setMode(clientEngineConfig.getEngineMode());
+            engConf.setCustomersShared(clientEngineConfig.isCustomersShared());
+            engConf.setProductsShared(clientEngineConfig.isProductsShared());
             engConf.setPropertiesFileName(KONAKART_PROPERTIES);
             engConf.setAppPropertiesFileName(KONAKART_APP_PROPERTIES);
 

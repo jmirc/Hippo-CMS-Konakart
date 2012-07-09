@@ -2,10 +2,8 @@ package org.onehippo.forge.konakart.common.jcr;
 
 import com.google.common.collect.Maps;
 import org.onehippo.forge.konakart.common.KKCndConstants;
-import org.onehippo.forge.konakart.common.engine.KKActivityConfig;
-import org.onehippo.forge.konakart.common.engine.KKCheckoutConfig;
-import org.onehippo.forge.konakart.common.engine.KKEngineConfig;
-import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
+import org.onehippo.forge.konakart.common.engine.*;
+import org.onehippo.forge.utilities.commons.NodeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +17,6 @@ public class HippoModuleConfig {
     public static final String SYNC_CONFIG_NODE_PATH = "/hippo:configuration/hippo:frontend/cms/cms-services/KonakartSynchronizationService";
 
     public static final String DEFAULT_PRODUCT_FOLDER_PROPERTY = "default.product.folder";
-    public static final String DEFAULT_REVIEW_FOLDER_PROPERTY = "default.review.folder";
     public static final String DEFAULT_PRODUCT_FACTORY_CLASS_NAME_PROPERTY = "default.product.factory.class";
     public static final String DEFAULT_SYNC_CRON_EXPRESSION_PROPERTY = "default.sync.cronexpression";
     public static final String DEFAULT_SYNC_JOB_CLASS_PROPERTY = "default.sync.job.class";
@@ -37,17 +34,10 @@ public class HippoModuleConfig {
     public static final String SYNC_NODE_PATH = "konakart:sync";
 
     public static final String SYNC_PRODUCT_FOLDER_PROPERTY = "konakart:productfolder";
-    public static final String SYNC_REVIEW_FOLDER_PROPERTY = "konakart:reviewfolder";
     public static final String SYNC_JOB_CLASS = "konakart:jobclass";
     public static final String SYNC_CRON_EXPRESSION = "konakart:synchronizationcronexpression";
     public static final String SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY = "konakart:lastupdatedtimekonakarttorepository";
     public static final String SYNC_LAST_UPDATED_TIME_REPOSITORY_TO_KONNAKART = "konakart:lastupdatedtimerepositorytokonnakart";
-
-    public static final String CLIENT_ENGINE_CONFIG_NODE_PATH = KONAKART_KONAKART_PATH + "/konakart:clientengine";
-
-    public static final String CLIENT_ENGINEMODE_PROPERTY = "konakart:enginemode";
-    public static final String CLIENT_IS_CUSTOMERS_SHARED_PROPERTY = "konakart:isCustomersShared";
-    public static final String CLIENT_IS_PRODUCTS_SHARED_PROPERTY = "konakart:isProductsShared";
 
     public static final String KONAKART_CHECKOUT_PATH = KONAKART_KONAKART_PATH + "/konakart:checkout";
 
@@ -64,7 +54,8 @@ public class HippoModuleConfig {
 
     private static HippoModuleConfig config = new HippoModuleConfig();
 
-    private KKEngineConfig clientEngineConfig = new KKEngineConfig();
+    private KKAdminEngineConfig adminEngineConfig = new KKAdminEngineConfig();
+    private KKClientEngineConfig clientEngineConfig = new KKClientEngineConfig();
 
     /**
      * Mapping between a contentRoot and a storeConfig
@@ -83,14 +74,6 @@ public class HippoModuleConfig {
         return config;
     }
 
-    public Map<String, KKStoreConfig> getStoresConfig(Session session) {
-        if (storesConfig.isEmpty()) {
-            loadStoresConfiguration(session);
-        }
-
-        return storesConfig;
-    }
-
     public Map<String, KKStoreConfig> getStoresConfig() {
         return storesConfig;
     }
@@ -103,11 +86,22 @@ public class HippoModuleConfig {
     }
 
     /**
-     * @return the engine config.
+     * @return the admin engine config.
      */
-    public KKEngineConfig getClientEngineConfig(Session session) {
-        if (clientEngineConfig == null) {
-            loadClientEngineConfiguration(session);
+    public KKAdminEngineConfig getAdminEngineConfig(Session session) {
+        if (!adminEngineConfig.isInitialized()) {
+            adminEngineConfig.loadAdminEngineConfiguration(session);
+        }
+
+        return adminEngineConfig;
+    }
+
+    /**
+     * @return the client engine config.
+     */
+    public KKClientEngineConfig getClientEngineConfig(Session session) {
+        if (!clientEngineConfig.isInitialized()) {
+            clientEngineConfig.loadClientEngineConfiguration(session);
         }
 
         return clientEngineConfig;
@@ -116,7 +110,7 @@ public class HippoModuleConfig {
     /**
      * @return the engine config.
      */
-    public KKEngineConfig getClientEngineConfig() {
+    public KKClientEngineConfig getClientEngineConfig() {
         return clientEngineConfig;
     }
 
@@ -143,30 +137,6 @@ public class HippoModuleConfig {
         config.loadStoresConfiguration(session);
 
         return config;
-    }
-
-
-    /**
-     * @param session the Jcr session
-     */
-    private void loadClientEngineConfiguration(Session session) {
-        try {
-            Node node = session.getNode(CLIENT_ENGINE_CONFIG_NODE_PATH);
-
-            if (node.hasProperty(CLIENT_ENGINEMODE_PROPERTY)) {
-                clientEngineConfig.setEngineMode(node.getProperty(CLIENT_ENGINEMODE_PROPERTY).getLong());
-            }
-
-            if (node.hasProperty(CLIENT_IS_CUSTOMERS_SHARED_PROPERTY)) {
-                clientEngineConfig.setCustomersShared(node.getProperty(CLIENT_IS_CUSTOMERS_SHARED_PROPERTY).getBoolean());
-            }
-
-            if (node.hasProperty(CLIENT_IS_PRODUCTS_SHARED_PROPERTY)) {
-                clientEngineConfig.setProductsShared(node.getProperty(CLIENT_IS_PRODUCTS_SHARED_PROPERTY).getBoolean());
-            }
-        } catch (RepositoryException e) {
-            throw new IllegalStateException("Failed to load client engine mapping. Check the " + CLIENT_ENGINE_CONFIG_NODE_PATH + " node.", e);
-        }
     }
 
     /**
@@ -221,10 +191,6 @@ public class HippoModuleConfig {
                         kkStoreConfig.setProductFolder(syncConfigNode.getProperty(DEFAULT_PRODUCT_FOLDER_PROPERTY).getString());
                     }
 
-                    if (syncConfigNode.hasProperty(DEFAULT_REVIEW_FOLDER_PROPERTY)) {
-                        kkStoreConfig.setReviewFolder(syncConfigNode.getProperty(DEFAULT_REVIEW_FOLDER_PROPERTY).getString());
-                    }
-
                     if (syncConfigNode.hasProperty(DEFAULT_PRODUCT_FACTORY_CLASS_NAME_PROPERTY)) {
                         kkStoreConfig.setProductFactoryClassName(syncConfigNode.getProperty(DEFAULT_PRODUCT_FACTORY_CLASS_NAME_PROPERTY).getString());
                     }
@@ -276,10 +242,6 @@ public class HippoModuleConfig {
                     kkStoreConfig.setProductFolder(syncNode.getProperty(SYNC_PRODUCT_FOLDER_PROPERTY).getString());
                 }
 
-                if (syncNode.hasProperty(SYNC_REVIEW_FOLDER_PROPERTY)) {
-                    kkStoreConfig.setReviewFolder(syncNode.getProperty(SYNC_REVIEW_FOLDER_PROPERTY).getString());
-                }
-
                 if (syncNode.hasProperty(SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY)) {
                     kkStoreConfig.setLastUpdatedTimeKonakartToRepository(syncNode.getProperty(SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY).getDate().getTime());
                 } else {
@@ -328,29 +290,13 @@ public class HippoModuleConfig {
 
                     KKActivityConfig activityConfig = new KKActivityConfig();
 
-                    if (activityNode.hasProperty(KONAKART_ACTIVITY_ACCEPT_EMPTY_STATE)) {
-                        activityConfig.setAcceptEmptyState(activityNode.getProperty(KONAKART_ACTIVITY_ACCEPT_EMPTY_STATE).getBoolean());
-                    }
-
-                    if (activityNode.hasProperty(KONAKART_ACTIVITY_ACCEPT_STATE)) {
-                        activityConfig.setAcceptState(activityNode.getProperty(KONAKART_ACTIVITY_ACCEPT_STATE).getString());
-                    }
-
-                    if (activityNode.hasProperty(KONAKART_ACTIVITY_CLASS)) {
-                        activityConfig.setActivityClass(activityNode.getProperty(KONAKART_ACTIVITY_CLASS).getString());
-                    }
-
-                    if (activityNode.hasProperty(KONAKART_ACTIVITY_NEXT_LOGGED_STATE)) {
-                        activityConfig.setNextLoggedState(activityNode.getProperty(KONAKART_ACTIVITY_NEXT_LOGGED_STATE).getString());
-                    }
-
-                    if (activityNode.hasProperty(KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE)) {
-                        activityConfig.setNextNonLoggedState(activityNode.getProperty(KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE).getString());
-                    }
-
-                    if (activityNode.hasProperty(KONAKART_ACTIVITY_TEMPLATE_RENDER_PATH)) {
-                        activityConfig.setTemplateRenderpath(activityNode.getProperty(KONAKART_ACTIVITY_TEMPLATE_RENDER_PATH).getString());
-                    }
+                    activityConfig.setName(activityName);
+                    activityConfig.setAcceptEmptyState(NodeUtils.getBoolean(activityNode, KONAKART_ACTIVITY_ACCEPT_EMPTY_STATE));
+                    activityConfig.setAcceptState(NodeUtils.getString(activityNode, KONAKART_ACTIVITY_ACCEPT_STATE));
+                    activityConfig.setActivityClass(NodeUtils.getString(activityNode, KONAKART_ACTIVITY_CLASS));
+                    activityConfig.setNextLoggedState(NodeUtils.getString(activityNode, KONAKART_ACTIVITY_NEXT_LOGGED_STATE));
+                    activityConfig.setNextNonLoggedState(NodeUtils.getString(activityNode, KONAKART_ACTIVITY_NEXT_NON_LOGGED_STATE));
+                    activityConfig.setTemplateRenderpath(NodeUtils.getString(activityNode, KONAKART_ACTIVITY_TEMPLATE_RENDER_PATH));
 
                     checkoutConfig.addActivityConfigList(activityConfig);
 

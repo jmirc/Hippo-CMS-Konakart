@@ -72,8 +72,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
         setContentRoot(kkStoreConfig.getContentRoot());
         setGalleryRoot(kkStoreConfig.getGalleryRoot());
         setProductFolder(kkStoreConfig.getProductFolder());
-        // Create the reviews' folder if not exists
-        createReviewFolder(kkStoreConfig.getReviewFolder());
     }
 
 
@@ -185,14 +183,22 @@ public abstract class AbstractProductFactory implements ProductFactory {
     private void createOrUpdateKonakartProduct(String storeId, Product product, Node productNode) throws RepositoryException {
 
         productNode.setProperty(KKCndConstants.PRODUCT_ID, product.getId());
-        productNode.setProperty(KKCndConstants.PRODUCT_NAME, product.getName());
-        productNode.setProperty(KKCndConstants.PRODUCT_MODEL, product.getModel());
+
+        if (StringUtils.isNotBlank(product.getName())) {
+            productNode.setProperty(KKCndConstants.PRODUCT_NAME, product.getName());
+        }
+
+        if (StringUtils.isNotBlank(product.getModel())) {
+            productNode.setProperty(KKCndConstants.PRODUCT_MODEL, product.getModel());
+        }
 
         if (StringUtils.isNotBlank(product.getSku())) {
             productNode.setProperty(KKCndConstants.PRODUCT_SKU, product.getSku());
         }
 
         productNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER, String.valueOf(product.getManufacturerId()));
+
+
         productNode.setProperty(KKCndConstants.PRODUCT_TAX_CLASS, String.valueOf(product.getTaxClassId()));
 
 
@@ -441,27 +447,4 @@ public abstract class AbstractProductFactory implements ProductFactory {
     private void setProductFolder(String productFolder) {
         this.productFolder = productFolder;
     }
-
-    /**
-     * Create a review's folder
-     *
-     * @param reviewFolder the review's folder to create
-     * @return the encoded review folder name
-     */
-    private String createReviewFolder(String reviewFolder) {
-
-        if (StringUtils.isEmpty(reviewFolder)) {
-            reviewFolder = KKCndConstants.DEFAULT_REVIEWS_FOLDER;
-        }
-
-        try {
-            nodeHelper.createMissingFolders(contentRoot + reviewFolder);
-        } catch (Exception e) {
-            log.error("Failed to create the review folder.", e);
-        }
-
-        return Codecs.encodeNode(reviewFolder);
-    }
-
-
 }

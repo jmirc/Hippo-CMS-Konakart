@@ -30,7 +30,7 @@ public class ShippingAddressActivity extends BaseAddressActivity {
                 try {
                     addressId = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getCustomerMgr().addAddressToCustomer(createAddressForCustomer());
                 } catch (Exception e) {
-                    setNextLoggedState(KKCheckoutConstants.STATES.INITIAL.name());
+                    updateNextLoggedState(KKCheckoutConstants.STATES.INITIAL.name());
                     addMessage("globalmessage", seedData.getBundleAsString("checkout.failed.create.address"));
                     return;
                 }
@@ -41,7 +41,7 @@ public class ShippingAddressActivity extends BaseAddressActivity {
 
                 // Skip the SHIPPING ADDRESS step because the customer has decided to use the
                 // same billing address
-                setNextLoggedState(KKCheckoutConstants.STATES.SHIPPING_METHOD.name());
+                updateNextLoggedState(KKCheckoutConstants.STATES.SHIPPING_METHOD.name());
             } catch (KKException e) {
                 log.error("Failed to set the shipping address", e);
             }

@@ -39,9 +39,6 @@ public class ProductTypeProvider extends Plugin implements IValueListProvider {
 
     @Override
     public ValueList getValueList(String name, Locale locale) {
-        if (!"values".equals(name)) {
-            log.warn("unknown value list name " + name + " was requested, using 'values'");
-        }
 
         ValueList valueList = new ValueList();
         if ((locale != null) && "en".contains(locale.getLanguage())) {

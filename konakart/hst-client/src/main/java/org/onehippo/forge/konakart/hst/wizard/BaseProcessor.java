@@ -6,6 +6,7 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.onehippo.forge.konakart.common.engine.KKActivityConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +53,7 @@ public abstract class BaseProcessor implements Processor {
                         "not support the activity of type" + activity.getClass().getName());
             }
 
+            activity.setName(kkActivityConfig.getName());
             activity.setAcceptEmptyState(kkActivityConfig.isAcceptEmptyState());
             activity.setAcceptState(kkActivityConfig.getAcceptState());
             activity.setNextLoggedState(kkActivityConfig.getNextLoggedState());
@@ -62,16 +64,6 @@ public abstract class BaseProcessor implements Processor {
         }
     }
 
-
-    /**
-     * Sets the collection of Activities to be executed by the Workflow Process
-     *
-     * @param activities ordered collection (List) of activities to be executed by the processor
-     */
-    public void setActivities(List<Activity> activities) {
-        this.activities = activities;
-    }
-
     /**
      * @return the list of activities
      */
@@ -79,14 +71,29 @@ public abstract class BaseProcessor implements Processor {
         return activities;
     }
 
-
     /**
      * @param request the Hst Request
      * @return the current state
      */
     protected String getCurrentState(HstRequest request) {
-        return request.getParameter(KKCheckoutConstants.STATE);
+        return KKUtil.getActionRequestParameter(request, KKCheckoutConstants.STATE);
     }
+
+    /**
+     * @param request the Hst Request
+     * @return the next state
+     */
+    protected String getNextState(HstRequest request) {
+        String forceNextLoggedState = KKUtil.getActionRequestParameter(request, KKCheckoutConstants.FORCE_NEXT_LOGGED_STATE);
+
+        if (StringUtils.isNotBlank(forceNextLoggedState)) {
+            return forceNextLoggedState;
+        }
+
+        return getCurrentState(request);
+    }
+
+
 
     /**
      * @param request the Hst request

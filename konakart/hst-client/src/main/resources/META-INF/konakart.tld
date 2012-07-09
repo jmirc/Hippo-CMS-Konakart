@@ -32,7 +32,7 @@
     <description>Konakart Tag Library</description>
 
     <tag>
-        <description>This param tag is used to format a price.</description>
+        <description>This param tag is used to format a price in the current currency or another one if specified.</description>
         <name>formatPrice</name>
         <tag-class>org.onehippo.forge.konakart.hst.tags.FormatPriceTag</tag-class>
         <body-content>empty</body-content>
@@ -42,6 +42,16 @@
             <rtexprvalue>true</rtexprvalue>
             <type>java.math.BigDecimal</type>
             <description>Price to format</description>
+        </attribute>
+        <attribute>
+            <name>currencyCode</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>
+                The currency code could be set to display the price into the spacified currency.
+                Three letter currency code (USD, GBP, EUR etc.)
+            </description>
         </attribute>
     </tag>
     <tag>
@@ -62,6 +72,13 @@
             <rtexprvalue>true</rtexprvalue>
             <type>org.onehippo.forge.konakart.hst.beans.KKProductDocument</type>
             <description>Konakart Product</description>
+        </attribute>
+        <attribute>
+            <name>showVisible</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.Boolean</type>
+            <description>Include or not the invisible reviews to calculate the product's rating</description>
         </attribute>
     </tag>
     <tag>

@@ -2,12 +2,21 @@ package org.onehippo.forge.konakart.common.engine;
 
 public class KKActivityConfig {
 
+    private String name;
     private String activityClass;
     private boolean acceptEmptyState;
     private String acceptState;
     private String nextNonLoggedState;
     private String nextLoggedState;
     private String templateRenderpath;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getActivityClass() {
         return activityClass;
