@@ -127,7 +127,6 @@ The following steps need to be executed:
         classpath*:org/onehippo/forge/konakart/hst/beans/**/*.class
     </param-value>
   </context-param>
-
 ```
 
 ### Global Configuration
