@@ -26,3 +26,6 @@
 /demo/bootstrap/configuration/target
 /demo/bootstrap/content/target
 atlassian*
+.classpath
+.project
+.settings
