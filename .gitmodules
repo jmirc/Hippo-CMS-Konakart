@@ -1,0 +1,11 @@
+[submodule "dependency"]
+	path = konakart-dependency
+	url = https://github.com/jmirc/Hippo-CMS-Konakart.git
+
+[submodule "konakart"]
+	path = konakart
+	url = https://github.com/jmirc/Hippo-CMS-Konakart.git
+
+[submodule "demo"]
+	path = demo
+	url = https://github.com/jmirc/Hippo-CMS-Konakart.git
