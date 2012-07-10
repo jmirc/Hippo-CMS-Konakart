@@ -27,7 +27,7 @@ public class KKReviewServiceImpl extends KKBaseServiceImpl implements KKReviewSe
 
         try {
             reviewMgr.getDataDesc().setShowInvisible(showInvisible);
-            int nbReviews = reviewMgr.fetchAllReviews();
+            int nbReviews = reviewMgr.fetchReviewsPerProduct(productId);
 
             if (nbReviews > 0) {
                 return reviewMgr.getCurrentReviews();

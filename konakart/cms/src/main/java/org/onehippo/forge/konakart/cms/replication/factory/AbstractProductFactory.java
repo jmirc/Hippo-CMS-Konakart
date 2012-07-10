@@ -130,10 +130,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         createOrUpdateKonakartProduct(storeId, product, productNode);
 
         // Upload images
-        // Synchronize the image only during the creation of the product
-        if (addNewProduct) {
-            uploadImages(productNode, baseImagePath, kkProductTypeName, product);
-        }
+        uploadImages(productNode, baseImagePath, kkProductTypeName, product);
 
         // Save the session
         productNode.getSession().save();
@@ -299,7 +296,10 @@ public abstract class AbstractProductFactory implements ProductFactory {
             Node productGalleryNode = nodeImagesHelper.createMissingFolders(galleryRootNode);
 
             // upload base main image
-            uploadImage(productNode, productGalleryNode, baseImagePath, product.getImage());
+            uploadImage(productNode, productGalleryNode, baseImagePath, product.getImage(), "image1");
+            uploadImage(productNode, productGalleryNode, baseImagePath, product.getImage2(), "image2");
+            uploadImage(productNode, productGalleryNode, baseImagePath, product.getImage3(), "image3");
+            uploadImage(productNode, productGalleryNode, baseImagePath, product.getImage4(), "image4");
 
         } catch (Exception e) {
             log.error("Failed to add images", e);
@@ -315,13 +315,14 @@ public abstract class AbstractProductFactory implements ProductFactory {
      * @param productImage       the name of the product
      * @throws javax.jcr.RepositoryException .
      */
-    private void uploadImage(Node productNode, Node productGalleryNode, String baseImagePath, String productImage) throws RepositoryException {
+    private void uploadImage(Node productNode, Node productGalleryNode, String baseImagePath, String productImage,
+                             String imageNumber) throws RepositoryException {
 
         if (StringUtils.isEmpty(productImage)) {
             return;
         }
 
-        String image = baseImagePath + "/" + productImage;
+        String image = baseImagePath + "/" + imageNumber;
 
         File file = new File(image);
 
