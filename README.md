@@ -119,7 +119,9 @@ The following steps need to be executed:
     <import resource="classpath:/org/onehippo/forge/konakart/hst/konakart-hst-configuration.xml"/>
 </beans>
 ```
+
 * Add in the web.xml of your site the following value to context parameter hst-beans-annotated-classes (note that the values are comma separated):
+
 ```xml
   <context-param>
     <param-name>hst-beans-annotated-classes</param-name>
@@ -127,11 +129,12 @@ The following steps need to be executed:
         classpath*:org/onehippo/forge/konakart/hst/beans/**/*.class
     </param-value>
   </context-param>
-
 ```
 
 ### Global Configuration
 * Add the following database configuration to the context.xml file. You will add the connection to the Konakart DB previously created.
+
+**You need to change the username, password as well as the database name.**
 
 ```xml
 
@@ -141,9 +144,9 @@ The following steps need to be executed:
             maxActive="20" maxIdle="10" minIdle="2" initialSize="2" maxWait="10000"
             testOnBorrow="true" validationQuery="select 1 from dual"
             poolPreparedStatements="true"
-            username="konakart" password="konakart"
+            username="TBD" password="TBD"
             driverClassName="com.mysql.jdbc.Driver"
-            url="jdbc:mysql://localhost:3306/konakart?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;characterEncoding=utf8" />
+            url="jdbc:mysql://localhost:3306/TBD?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;characterEncoding=utf8" />
 
 ```
 
