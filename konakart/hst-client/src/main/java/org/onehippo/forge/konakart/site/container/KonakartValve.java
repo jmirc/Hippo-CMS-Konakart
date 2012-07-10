@@ -3,28 +3,40 @@ package org.onehippo.forge.konakart.site.container;
 import com.konakart.al.KKAppEng;
 import org.apache.cxf.common.util.StringUtils;
 import org.hippoecm.hst.configuration.hosting.Mount;
-import org.hippoecm.hst.core.container.*;
+import org.hippoecm.hst.core.container.ContainerConstants;
+import org.hippoecm.hst.core.container.ContainerException;
+import org.hippoecm.hst.core.container.Valve;
+import org.hippoecm.hst.core.container.ValveContext;
+import org.hippoecm.hst.core.linking.HstLink;
+import org.hippoecm.hst.core.linking.HstLinkCreator;
+import org.hippoecm.hst.core.request.HstRequestContext;
 import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.security.auth.Subject;
-import javax.security.auth.login.LoginContext;
-import javax.security.auth.login.LoginException;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Set;
 
 public class KonakartValve implements Valve {
 
+    public static Logger log = LoggerFactory.getLogger(KonakartValve.class);
+
+    public final static String REDIRECT_LOGOUT_URL = "/login/logout";
 
     @Override
     public void initialize() throws ContainerException {
@@ -40,6 +52,7 @@ public class KonakartValve implements Valve {
     public void invoke(ValveContext context) throws ContainerException {
         HttpServletRequest request = context.getServletRequest();
         HttpServletResponse response = context.getServletResponse();
+        HstRequestContext requestContext = context.getRequestContext();
 
         Session jcrSession;
 
@@ -48,6 +61,14 @@ public class KonakartValve implements Valve {
         } catch (RepositoryException e) {
             throw new IllegalStateException("Failed to retrieve the Jcr Session", e);
         }
+
+        // Initialize the Konakart Admin Client
+        try {
+            KKAdminEngine.getInstance().init(jcrSession);
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to initialize the Konakart Admin Client", e);
+        }
+
 
         // Pre-load the checkout activities
         try {
@@ -124,16 +145,26 @@ public class KonakartValve implements Valve {
 
             if (simpleCredentials != null) {
                 // Invalid username and password
+                String username =  userPrincipal.getName();
+                String password = String.valueOf(simpleCredentials.getPassword());
+
+                // The Login should work because the validation of the password has been done during the login process
+                // by the KonakartLoginModule.
                 if (!KKServiceHelper.getKKEngineService().logIn(request, response,
-                        simpleCredentials.getUserID(), String.valueOf(simpleCredentials.getPassword()))) {
+                        username, password)) {
 
                     try {
-                        LoginContext loginContext = new LoginContext("HSTSITE", subject);
-                        loginContext.logout();
-                    } catch (LoginException e) {
-                        // Failed to logout
-                        throw new ContainerSecurityNotAuthenticatedException("Not authenticated yet.");
+                        HstLinkCreator linkCreator = requestContext.getHstLinkCreator();
+                        HstLink link = linkCreator.create(REDIRECT_LOGOUT_URL, requestContext.getResolvedMount().getMount());
+
+                        request.getRequestDispatcher(link.getPath()).forward(request, response);
+                    } catch (IOException e) {
+                        log.error("Failed to redirect to the path - " + REDIRECT_LOGOUT_URL);
+                    } catch (ServletException e) {
+                        log.error("Failed to redirect to the path - " + REDIRECT_LOGOUT_URL);
                     }
+
+                    return;
                 }
             }
         } else {

@@ -1,7 +1,7 @@
 package org.onehippo.forge.konakart.cms.deriveddatafunction;
 
 import com.konakartadmin.app.AdminProduct;
-import com.konakartadmin.appif.KKAdminIf;
+import com.konakartadmin.blif.AdminProductMgrIf;
 import org.hippoecm.repository.ext.DerivedDataFunction;
 import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 
@@ -21,14 +21,12 @@ public class SpecialPriceExTaxDerivedDataFunction extends DerivedDataFunction {
         try {
             int ppid = (int) parameters.get("ppid")[0].getLong();
 
-            KKAdminIf engine = KKAdminEngine.getInstance().getEngine();
+            AdminProductMgrIf adminProdMgr = KKAdminEngine.getInstance().getFactory().getAdminProdMgr(true);
 
-            if(engine != null) {
-                AdminProduct adminProduct = engine.getProduct(KKAdminEngine.getInstance().getSession(), ppid);
+            AdminProduct adminProduct = adminProdMgr.getProduct(ppid);
 
-                if (adminProduct.getSpecialPriceExTax() != null) {
-                    parameters.put("specialprice", new Value[]{getValueFactory().createValue(adminProduct.getSpecialPriceExTax().doubleValue())});
-                }
+            if (adminProduct.getSpecialPriceExTax() != null) {
+                parameters.put("specialprice", new Value[]{getValueFactory().createValue(adminProduct.getSpecialPriceExTax().doubleValue())});
             }
         } catch (RepositoryException e) {
             parameters.clear();

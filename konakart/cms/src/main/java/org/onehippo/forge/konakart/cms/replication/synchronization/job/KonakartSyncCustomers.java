@@ -4,6 +4,7 @@ import com.konakartadmin.app.AdminCustomer;
 import com.konakartadmin.app.AdminCustomerSearch;
 import com.konakartadmin.app.AdminCustomerSearchResult;
 import com.konakartadmin.appif.KKAdminIf;
+import com.konakartadmin.blif.AdminCustomerMgrIf;
 import org.onehippo.forge.konakart.cms.replication.utils.NodeHelper;
 import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 import org.onehippo.forge.utilities.commons.NodeUtils;
@@ -29,13 +30,15 @@ public class KonakartSyncCustomers {
         try {
             int dirLevels = retrieveDirLevelsFromRepo(session);
 
-            KKAdminIf kkAdminIf = KKAdminEngine.getInstance().init(session);
+            KKAdminEngine.getInstance().init(session);
+
+            AdminCustomerMgrIf adminCustMgr = KKAdminEngine.getInstance().getFactory().getAdminCustMgr(true);
 
             //customer type. 0 = customer, 1 = Admin App user, 2 = non registered customer
             AdminCustomerSearch adminCustomerSearch = new AdminCustomerSearch();
             adminCustomerSearch.setType(0);
 
-            AdminCustomerSearchResult result = kkAdminIf.getCustomers(KKAdminEngine.getInstance().getSession(), adminCustomerSearch, 0, Integer.MAX_VALUE);
+            AdminCustomerSearchResult result = adminCustMgr.getCustomers(adminCustomerSearch, 0, Integer.MAX_VALUE);
 
             if (result == null) {
                 log.warn("No customers have been found. The synchronization will be skipped.");

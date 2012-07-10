@@ -3,8 +3,7 @@ package org.onehippo.forge.konakart.cms.valuelistprovider;
 import com.konakartadmin.app.AdminTaxClass;
 import com.konakartadmin.app.AdminTaxClassSearch;
 import com.konakartadmin.app.AdminTaxClassSearchResult;
-import com.konakartadmin.app.KKAdminException;
-import com.konakartadmin.appif.KKAdminIf;
+import com.konakartadmin.blif.AdminTaxMgrIf;
 import org.hippoecm.frontend.plugin.IPluginContext;
 import org.hippoecm.frontend.plugin.Plugin;
 import org.hippoecm.frontend.plugin.config.IPluginConfig;
@@ -52,17 +51,15 @@ public class TaxClassProvider extends Plugin implements IValueListProvider {
         AdminTaxClassSearch adminTaxClassSearch = new AdminTaxClassSearch();
 
         try {
-            KKAdminIf engine = KKAdminEngine.getInstance().getEngine();
-            if (engine != null) {
+            AdminTaxMgrIf adminTaxMgr = KKAdminEngine.getInstance().getFactory().getAdminTaxMgr(true);
+            AdminTaxClassSearchResult result = adminTaxMgr.getTaxClasses(adminTaxClassSearch);
+            AdminTaxClass[] taxes = result.getTaxClasses();
 
-                AdminTaxClassSearchResult result = engine.getTaxClasses(adminTaxClassSearch);
-                AdminTaxClass[] taxes = result.getTaxClasses();
 
-                for (AdminTaxClass tax : taxes) {
-                    valueList.add(new ListItem(String.valueOf(tax.getTaxClassId()), tax.getTaxClassTitle()));
-                }
+            for (AdminTaxClass tax : taxes) {
+                valueList.add(new ListItem(String.valueOf(tax.getTaxClassId()), tax.getTaxClassTitle()));
             }
-        } catch (KKAdminException e) {
+        } catch (Exception e) {
             log.error("Failed to retrieve the list of taxes", e);
         }
 

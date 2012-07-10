@@ -3,6 +3,7 @@ package org.onehippo.forge.konakart.common.engine;
 import com.konakartadmin.app.AdminEngineConfig;
 import com.konakartadmin.app.KKAdminException;
 import com.konakartadmin.appif.KKAdminIf;
+import com.konakartadmin.bl.AdminMgrFactory;
 import com.konakartadmin.ws.KKAdminEngineMgr;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.slf4j.Logger;
@@ -25,7 +26,11 @@ public class KKAdminEngine {
 
     private static KKAdminEngine instance = new KKAdminEngine();
 
+    private KKAdminEngineConfig adminEngineConfig;
+
     private KKAdminIf kkAdminEng;
+
+    private boolean isEnterprise;
 
     private String session;
 
@@ -40,11 +45,50 @@ public class KKAdminEngine {
     }
 
     /**
+     * @return true if we are in Enterprise Mode
+     */
+    public boolean isEnterprise() {
+        return isEnterprise;
+    }
+
+    /**
+     * @return true if we are in multistore Mode
+     */
+    public boolean isMultiStore() {
+        return adminEngineConfig.getEngineMode() > 0;
+    }
+
+    /**
+     * @return an helper class used to access to the administration functions
+     */
+    @Nonnull
+    public AdminMgrFactory getFactory() {
+        return new AdminMgrFactory(getEngine());
+    }
+
+    /**
      * @return the Konakart Admin client
      */
     @Nullable
-    public KKAdminIf getEngine() {
-        return kkAdminEng;
+    private KKAdminIf getEngine() {
+
+        try {
+            // the connection has expired.
+            if (session == null || kkAdminEng.checkSession(session) == -1) {
+                if (adminEngineConfig != null) {
+                    // Login
+                    login();
+                } else {
+                    log.error("Failed to log-in using the admin client. Admin engine config is null.");
+                    throw new IllegalStateException("Failed to log-in using the admin client. Admin engine config is null.");
+                }
+            }
+
+            return kkAdminEng;
+        } catch (Exception e) {
+            log.error("Failed to check the state of the Konakart admin connection", e);
+            throw new IllegalStateException("Failed to check the state of the Konakart admin connection.", e);
+        }
     }
 
     /**
@@ -60,22 +104,21 @@ public class KKAdminEngine {
      * @param session the Jcr Session
      * @throws Exception .
      */
-    public KKAdminIf init(@Nonnull Session session) throws Exception {
+    public void init(@Nonnull Session session) throws Exception {
         // Retrieve the global admin engine.
-        KKAdminEngineConfig adminEngineConfig = HippoModuleConfig.getConfig().getAdminEngineConfig(session);
+        adminEngineConfig = HippoModuleConfig.getConfig().getAdminEngineConfig(session);
 
         // Initialize the admin engine
         init(adminEngineConfig);
-
-        return kkAdminEng;
     }
 
 
     /**
     * Configure the Engine Config
     *
-    * @param adminEngineConfig the Konakart Admin Engine @see /konakart:konakart/konakart:clientengine within console
-    * @throws Exception .
+    *
+     * @param adminEngineConfig the Konakart Admin Engine @see /konakart:konakart/konakart:clientengine within console
+     * @throws Exception .
     */
     private void init(KKAdminEngineConfig adminEngineConfig) throws Exception {
 
@@ -91,17 +134,18 @@ public class KKAdminEngine {
             * This creates a KonaKart Admin Engine by name using the constructor that requires an
             * AdminEngineConfig object. This is the recommended approach.
             */
-            KKAdminIf tempKkAdminEng = kkAdminEngMgr.getKKAdminByName(ENG_CLASS_NAME, adEngConf);
+            kkAdminEng = kkAdminEngMgr.getKKAdminByName(ENG_CLASS_NAME, adEngConf);
 
-            try {
-                // login
-                session = tempKkAdminEng.login(adminEngineConfig.getUsername(), adminEngineConfig.getPassword());
-
-                kkAdminEng = tempKkAdminEng;
-
-            } catch (KKAdminException e) {
-                log.warn("Failed to log-in to the Konakart Admin.", e);
-            }
+            isEnterprise = adEngConf.getEngineId().equals("E");
         }
+    }
+
+    /**
+     * Create a connection using the admin client
+     * @throws KKAdminException if the login failed.
+     */
+    protected void login() throws KKAdminException {
+        // login
+        session = kkAdminEng.login(adminEngineConfig.getUsername(), adminEngineConfig.getPassword());
     }
 }

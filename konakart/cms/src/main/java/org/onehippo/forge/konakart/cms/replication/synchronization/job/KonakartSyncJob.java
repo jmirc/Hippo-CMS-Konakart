@@ -86,7 +86,7 @@ public class KonakartSyncJob implements Job {
      * @param locales       list of available locales
      * @throws Exception an exception
      */
-    private void syncRepositoryToKonakart(KKStoreConfig kkStoreConfig,
+    protected void syncRepositoryToKonakart(KKStoreConfig kkStoreConfig,
                                           List<? extends HippoLocale> locales) throws Exception {
 
         // Synchronize products
@@ -102,7 +102,7 @@ public class KonakartSyncJob implements Job {
      * @param kkStoreConfig the store config
      * @throws Exception an exception
      */
-    private void syncKonakartToRepository(KKStoreConfig kkStoreConfig) throws Exception {
+    protected void syncKonakartToRepository(KKStoreConfig kkStoreConfig) throws Exception {
 
         // Synchronize products
         KonakartSyncProducts.updateKonakartToRepository(kkStoreConfig, jcrSession);

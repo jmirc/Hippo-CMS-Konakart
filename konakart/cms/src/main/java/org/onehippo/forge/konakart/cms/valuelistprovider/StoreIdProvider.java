@@ -1,8 +1,8 @@
 package org.onehippo.forge.konakart.cms.valuelistprovider;
 
 import com.konakartadmin.app.AdminStore;
-import com.konakartadmin.app.KKAdminException;
-import com.konakartadmin.appif.KKAdminIf;
+import com.konakartadmin.blif.AdminMultiStoreMgrIf;
+import com.konakartadmin.blif.AdminStoreMgrIf;
 import org.hippoecm.frontend.plugin.IPluginContext;
 import org.hippoecm.frontend.plugin.Plugin;
 import org.hippoecm.frontend.plugin.config.IPluginConfig;
@@ -46,16 +46,23 @@ public class StoreIdProvider extends Plugin implements IValueListProvider {
         ValueList valueList = new ValueList();
 
         try {
-            KKAdminIf engine = KKAdminEngine.getInstance().getEngine();
-            if (engine != null) {
-                AdminStore[] adminStores = engine.getStores();
+            AdminStore[] adminStores = new AdminStore[0];
 
-                for (AdminStore adminStore : adminStores) {
-                    valueList.add(new ListItem(adminStore.getStoreId(), adminStore.getStoreName()));
-                }
+            if (!KKAdminEngine.getInstance().isEnterprise()) {
+                AdminStoreMgrIf adminStoreMgr = KKAdminEngine.getInstance().getFactory().getAdminCommunityStoreMgr(true);
+                adminStores = adminStoreMgr.getStores("");
+            } else if (!KKAdminEngine.getInstance().isMultiStore()) {
+                AdminStoreMgrIf adminStoreMgr = KKAdminEngine.getInstance().getFactory().getAdminStoreMgr(true);
+                adminStores = adminStoreMgr.getStores("");
+            } else {
+                AdminMultiStoreMgrIf adminStoreMgr = KKAdminEngine.getInstance().getFactory().getAdminMultiStoreMgr(true);
+                adminStores = adminStoreMgr.getStores("");
             }
 
-        } catch (KKAdminException e) {
+            for (AdminStore adminStore : adminStores) {
+                valueList.add(new ListItem(adminStore.getStoreId(), adminStore.getStoreName()));
+            }
+        } catch (Exception e) {
             log.error("Failed to retrieve the list of stores", e);
         }
 

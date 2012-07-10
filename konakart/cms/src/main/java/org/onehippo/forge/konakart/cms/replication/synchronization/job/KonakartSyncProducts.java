@@ -9,7 +9,6 @@ import com.konakart.appif.ProductSearchIf;
 import com.konakart.util.KKConstants;
 import com.konakartadmin.app.AdminProduct;
 import com.konakartadmin.app.KKAdminException;
-import com.konakartadmin.appif.KKAdminIf;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.hippoecm.frontend.translation.ILocaleProvider;
@@ -32,7 +31,6 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -280,10 +278,10 @@ public class KonakartSyncProducts {
         adminProduct.setPrice3(NodeUtils.getDecimal(node, KKCndConstants.PRODUCT_PRICE_3));
         adminProduct.setTaxClassId(NumberUtils.toInt(NodeUtils.getString(node, KKCndConstants.PRODUCT_TAX_CLASS, "-1")));
 
-        KKAdminIf engine = KKAdminEngine.getInstance().getEngine();
-
-        if (engine != null) {
-            engine.insertProduct(KKAdminEngine.getInstance().getSession(), adminProduct);
+        try {
+            KKAdminEngine.getInstance().getFactory().getAdminProdMgr(true).insertProduct(adminProduct);
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to retrieve an instance of the admimitration product manager");
         }
     }
 
