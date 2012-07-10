@@ -2,9 +2,6 @@ package org.onehippo.forge.konakart.site.security;
 
 import com.konakart.util.Security;
 import com.konakartadmin.app.AdminCustomer;
-import com.konakartadmin.app.AdminCustomerSearch;
-import com.konakartadmin.app.AdminCustomerSearchResult;
-import com.konakartadmin.appif.KKAdminIf;
 import com.konakartadmin.blif.AdminCustomerMgrIf;
 import org.hippoecm.hst.security.impl.DefaultLoginModule;
 import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
