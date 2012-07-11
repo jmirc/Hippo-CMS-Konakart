@@ -32,6 +32,9 @@ public class KonakartAdminPanelPlugin extends KonakartPanelPlugin {
 
     @Override
     public PanelPluginBreadCrumbPanel create(String componentId, IBreadCrumbModel breadCrumbModel) {
-        return new KonakartAdminPanel(componentId, breadCrumbModel);
+
+        String konakartUrl = getPluginConfig().getString("konakart-admin-url");
+
+        return new KonakartAdminPanel(componentId, breadCrumbModel, konakartUrl);
     }
 }
