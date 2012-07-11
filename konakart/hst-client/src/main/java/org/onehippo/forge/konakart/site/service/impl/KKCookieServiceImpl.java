@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
+import static org.onehippo.forge.konakart.site.service.KKTagsService.*;
+
 public class KKCookieServiceImpl extends KKBaseServiceImpl implements KKCookieService {
 
     /**
@@ -25,39 +27,6 @@ public class KKCookieServiceImpl extends KKBaseServiceImpl implements KKCookieSe
      */
     protected Logger log = LoggerFactory.getLogger(KKCookieServiceImpl.class);
 
-    /**
-     * Customer tags
-     */
-    public static final String TAG_PROD_PAGE_SIZE = "PROD_PAGE_SIZE";
-
-    public static final String TAG_ORDER_PAGE_SIZE = "ORDER_PAGE_SIZE";
-
-    public static final String TAG_REVIEW_PAGE_SIZE = "REVIEW_PAGE_SIZE";
-
-    public static final String TAG_PRODUCTS_VIEWED = "PRODUCTS_VIEWED";
-
-    public static final String TAG_CATEGORIES_VIEWED = "CATEGORIES_VIEWED";
-
-    public static final String TAG_MANUFACTURERS_VIEWED = "MANUFACTURERS_VIEWED";
-
-    public static final String TAG_SEARCH_STRING = "SEARCH_STRING";
-
-    public static final String TAG_COUNTRY_CODE = "COUNTRY_CODE";
-
-    public static final String TAG_BIRTH_DATE = "BIRTH_DATE";
-
-    public static final String TAG_IS_MALE = "IS_MALE";
-
-
-    public static final String GUEST_CUSTOMER_ID = "GUEST_CUSTOMER_ID";
-
-    public static final String CUSTOMER_LOCALE = "CUSTOMER_LOCALE";
-
-    public static final String CUSTOMER_NAME = "CUSTOMER_NAME";
-
-    public static final String CUSTOMER_UUID = "CUSTOMER_UUID";
-
-    public static final int COOKIE_MAX_AGE_IN_SECS = 365 * 24 * 60 * 60;
 
 
     @Override

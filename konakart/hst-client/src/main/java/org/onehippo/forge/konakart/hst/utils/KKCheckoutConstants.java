@@ -33,9 +33,4 @@ public interface KKCheckoutConstants {
     String ADD_TO_WISH_LIST = "addToWishList";
     String WISH_LIST_ID = "wishListId";
 
-    /*
-    * Customer tags
-    */
-    String TAG_PRODUCTS_VIEWED = "PRODUCTS_VIEWED";
-
 }

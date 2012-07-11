@@ -27,9 +27,6 @@
     <bean name="org.onehippo.forge.konakart.site.service.KKBasketService"
           class="org.onehippo.forge.konakart.site.service.impl.KKBasketServiceImpl"/>
 
-    <bean name="org.onehippo.forge.konakart.site.service.KKCartService"
-          class="org.onehippo.forge.konakart.site.service.impl.KKCartServiceImpl"/>
-
     <bean name="org.onehippo.forge.konakart.site.service.KKCookieService"
           class="org.onehippo.forge.konakart.site.service.impl.KKCookieServiceImpl"/>
 

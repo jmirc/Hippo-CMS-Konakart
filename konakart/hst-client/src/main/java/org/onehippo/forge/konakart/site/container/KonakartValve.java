@@ -170,7 +170,7 @@ public class KonakartValve implements Valve {
         } else {
             // No user principal has been found. The user has been logged out.
             // We need to log-out from Konakart
-            KKServiceHelper.getKKEngineService().logout(request);
+            KKServiceHelper.getKKEngineService().logOut(request, response);
         }
 
         // Instantiate the next context

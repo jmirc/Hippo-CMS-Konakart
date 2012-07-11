@@ -7,29 +7,18 @@ import com.konakart.al.ReviewMgr;
 import com.konakart.app.KKException;
 import com.konakart.appif.CustomerIf;
 import org.apache.commons.lang.StringUtils;
-import org.hippoecm.hst.content.beans.manager.workflow.WorkflowCallbackHandler;
-import org.hippoecm.hst.content.beans.query.HstQuery;
-import org.hippoecm.hst.content.beans.query.HstQueryResult;
-import org.hippoecm.hst.content.beans.query.exceptions.QueryException;
-import org.hippoecm.hst.content.beans.standard.HippoBean;
-import org.hippoecm.hst.content.beans.standard.HippoBeanIterator;
-import org.hippoecm.hst.content.beans.standard.HippoFolder;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
-import org.hippoecm.hst.util.ContentBeanUtils;
-import org.hippoecm.repository.reviewedactions.FullReviewedActionsWorkflow;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
-import org.onehippo.forge.konakart.hst.beans.KKReviewDocument;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
+import org.onehippo.forge.konakart.site.service.KKTagsService;
 
 import javax.annotation.Nonnull;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,7 +50,6 @@ public class DefaultKKProductDetail extends KKHstActionComponent {
         request.setAttribute("document", document);
 
         try {
-
             // Fetch the product related data from the database
             kkAppEng.getProductMgr().fetchSelectedProduct(document.getProductId());
 
@@ -69,6 +57,9 @@ public class DefaultKKProductDetail extends KKHstActionComponent {
             kkAppEng.getProductMgr().updateProductViewedCount(document.getProductId());
             kkAppEng.getProductMgr().fetchAlsoPurchasedArray();
             kkAppEng.getProductMgr().fetchRelatedProducts();
+
+            // Set the PRODUCTS_VIEWED customer tag for this customer
+            kkAppEng.getCustomerTagMgr().addToCustomerTag(KKTagsService.TAG_PRODUCTS_VIEWED, document.getProductId());
         } catch (KKException e) {
             log.info("Unable to fetch the data for the selected product {}", e.toString());
         } catch (KKAppException e) {
@@ -81,6 +72,7 @@ public class DefaultKKProductDetail extends KKHstActionComponent {
         if (opts != null) {
             request.setAttribute("prodOptContainer", opts);
         }
+
 
         request.setAttribute(ALLOW_COMMENTS, !isGuestCustomer(request));
         request.setAttribute(REVIEWS, KKServiceHelper.getKKReviewService().getReviewsForProductId(request, document.getProductId()));

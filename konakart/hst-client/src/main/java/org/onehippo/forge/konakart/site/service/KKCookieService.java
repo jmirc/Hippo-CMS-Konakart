@@ -10,6 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface KKCookieService {
 
+    public static final String GUEST_CUSTOMER_ID = "GUEST_CUSTOMER_ID";
+
+    public static final String CUSTOMER_LOCALE = "CUSTOMER_LOCALE";
+
+    public static final String CUSTOMER_NAME = "CUSTOMER_NAME";
+
+    public static final String CUSTOMER_UUID = "CUSTOMER_UUID";
+
+    public static final int COOKIE_MAX_AGE_IN_SECS = 365 * 24 * 60 * 60;
+
+
     /**
      * Method used to create a browser cookie when a customer first accesses the application. If the
      * cookie already exists then we retrieve the guest customer id from the cookie which will be

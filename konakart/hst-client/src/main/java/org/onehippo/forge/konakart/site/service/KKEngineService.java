@@ -66,7 +66,8 @@ public interface KKEngineService {
     /**
      * Log out from Konakart
      * @param request the http request
+     * @param response the http response
      */
-    void logout(HttpServletRequest request);
+    void logOut(HttpServletRequest request, HttpServletResponse response);
 
 }

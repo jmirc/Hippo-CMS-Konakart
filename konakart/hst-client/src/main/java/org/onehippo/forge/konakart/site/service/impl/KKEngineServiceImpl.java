@@ -11,7 +11,6 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.site.service.KKEngineService;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.slf4j.Logger;
@@ -22,6 +21,8 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import static org.onehippo.forge.konakart.site.service.KKTagsService.TAG_PRODUCTS_VIEWED;
 
 public class KKEngineServiceImpl implements KKEngineService {
 
@@ -107,8 +108,6 @@ public class KKEngineServiceImpl implements KKEngineService {
             return -1;
         }
 
-        KKCookieServiceImpl kkCookieServiceImpl = new KKCookieServiceImpl();
-
         try {
             // If the session is null, set the forward and return a negative number
             if (kkAppEng.getSessionId() == null) {
@@ -120,19 +119,7 @@ public class KKEngineServiceImpl implements KKEngineService {
                 // At this point we return a valid customer id
                 return kkAppEng.getEng().checkSession(kkAppEng.getSessionId());
             } catch (KKException e) {
-
-                //Get recently viewed products before logging out
-                CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(KKCheckoutConstants.TAG_PRODUCTS_VIEWED);
-
-                kkAppEng.getCustomerMgr().logout();
-
-                // Ensure that the guest customer is the one in the cookie
-                kkCookieServiceImpl.manageCookieLogout(servletRequest, servletResponse, kkAppEng);
-
-                // Set recently viewed products for the guest customer if changed while logged in
-                CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(KKCheckoutConstants.TAG_PRODUCTS_VIEWED);
-
-                updateRecentlyViewedProducts(kkAppEng, prodsViewedTagCust, prodsViewedTagGuest);
+                logOut(servletRequest, servletResponse);
             }
         } catch (Exception e) {
             log.warn("Unable to check the Konakart session - {} ", e.toString());
@@ -166,7 +153,7 @@ public class KKEngineServiceImpl implements KKEngineService {
             }
 
             // Get recently viewed products before logging in
-            CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(KKCheckoutConstants.TAG_PRODUCTS_VIEWED);
+            CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
 
             // Login
             String result = kkAppEng.getCustomerMgr().login(username, password);
@@ -184,7 +171,7 @@ public class KKEngineServiceImpl implements KKEngineService {
             KKServiceHelper.getKKEventService().insertCustomerEvent(request, KKEventServiceImpl.ACTION_CUSTOMER_LOGIN);
 
             // Set recently viewed products for the logged in customer if changed as guest
-            CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(KKCheckoutConstants.TAG_PRODUCTS_VIEWED);
+            CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
             updateRecentlyViewedProducts(kkAppEng, prodsViewedTagGuest, prodsViewedTagCust);
 
             return true;
@@ -202,17 +189,35 @@ public class KKEngineServiceImpl implements KKEngineService {
     }
 
     @Override
-    public void logout(HttpServletRequest request) {
-
-        KKAppEng kkAppEng = getKKAppEng(request);
-
-        if (kkAppEng == null) {
-            return;
-        }
+    public void logOut(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            kkAppEng.logout();
+            KKAppEng kkAppEng = getKKAppEng(request);
+
+            if (kkAppEng == null) {
+                return;
+            }
+
+            KKCookieServiceImpl kkCookieServiceImpl = new KKCookieServiceImpl();
+
+            //Get recently viewed products before logging out
+            CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+
+            // Log out
+            kkAppEng.getCustomerMgr().logout();
+
+            // Ensure that the guest customer is the one in the cookie
+            kkCookieServiceImpl.manageCookieLogout(request, response, kkAppEng);
+
+            // Set recently viewed products for the guest customer if changed while logged in
+            CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+
+            updateRecentlyViewedProducts(kkAppEng, prodsViewedTagCust, prodsViewedTagGuest);
+
+
         } catch (KKException e) {
+            log.error("Failed to log out from konakart", e);
+        } catch (KKAppException e) {
             log.error("Failed to log out from konakart", e);
         }
     }
@@ -241,7 +246,7 @@ public class KKEngineServiceImpl implements KKEngineService {
                  * If new tag doesn't exist or old tag is newer than new tag, then give newTag the
                  * value of old tag
                  */
-                kkAppEng.getCustomerTagMgr().insertCustomerTag(KKCheckoutConstants.TAG_PRODUCTS_VIEWED, oldTag.getValue());
+                kkAppEng.getCustomerTagMgr().insertCustomerTag(TAG_PRODUCTS_VIEWED, oldTag.getValue());
             }
         }
     }

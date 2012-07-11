@@ -8,10 +8,6 @@ public class KKServiceHelper {
         return HstServices.getComponentManager().getComponent(KKBasketService.class.getName());
     }
 
-    public static KKCartService getKKCartService() {
-        return HstServices.getComponentManager().getComponent(KKCartService.class.getName());
-    }
-
     public static KKCookieService getKKCookieService() {
         return HstServices.getComponentManager().getComponent(KKCookieService.class.getName());
     }
