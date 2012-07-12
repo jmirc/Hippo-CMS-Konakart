@@ -21,6 +21,7 @@ public class HippoModuleConfig {
     public static final String DEFAULT_SYNC_CRON_EXPRESSION_PROPERTY = "default.sync.cronexpression";
     public static final String DEFAULT_SYNC_JOB_CLASS_PROPERTY = "default.sync.job.class";
     public static final String STORES_PROPERTY = "stores";
+    public static final String DEVELOPMENT_MODE = "developper.mode";
 
     public static final String KONAKART_KONAKART_PATH = "/konakart:konakart";
     public static final String KONAKART_STORES_PATH = KONAKART_KONAKART_PATH + "/konakart:stores";
@@ -179,21 +180,11 @@ public class HippoModuleConfig {
                     KKStoreConfig kkStoreConfig = new KKStoreConfig();
 
                     // Set the default configurations.
-                    if (syncConfigNode.hasProperty(DEFAULT_SYNC_JOB_CLASS_PROPERTY)) {
-                        kkStoreConfig.setJobClass(syncConfigNode.getProperty(DEFAULT_SYNC_JOB_CLASS_PROPERTY).getString());
-                    }
-
-                    if (syncConfigNode.hasProperty(DEFAULT_SYNC_CRON_EXPRESSION_PROPERTY)) {
-                        kkStoreConfig.setCronExpression(syncConfigNode.getProperty(DEFAULT_SYNC_CRON_EXPRESSION_PROPERTY).getString());
-                    }
-
-                    if (syncConfigNode.hasProperty(DEFAULT_PRODUCT_FOLDER_PROPERTY)) {
-                        kkStoreConfig.setProductFolder(syncConfigNode.getProperty(DEFAULT_PRODUCT_FOLDER_PROPERTY).getString());
-                    }
-
-                    if (syncConfigNode.hasProperty(DEFAULT_PRODUCT_FACTORY_CLASS_NAME_PROPERTY)) {
-                        kkStoreConfig.setProductFactoryClassName(syncConfigNode.getProperty(DEFAULT_PRODUCT_FACTORY_CLASS_NAME_PROPERTY).getString());
-                    }
+                    kkStoreConfig.setJobClass(NodeUtils.getString(syncConfigNode, DEFAULT_SYNC_JOB_CLASS_PROPERTY));
+                    kkStoreConfig.setCronExpression(NodeUtils.getString(syncConfigNode, DEFAULT_SYNC_CRON_EXPRESSION_PROPERTY));
+                    kkStoreConfig.setProductFolder(NodeUtils.getString(syncConfigNode, DEFAULT_PRODUCT_FOLDER_PROPERTY));
+                    kkStoreConfig.setProductFactoryClassName(NodeUtils.getString(syncConfigNode, DEFAULT_PRODUCT_FACTORY_CLASS_NAME_PROPERTY));
+                    kkStoreConfig.setDevelopmentMode(NodeUtils.getBoolean(syncConfigNode, DEVELOPMENT_MODE, false));
 
                     loadStoreConfigByName(session, storeName.getString(), kkStoreConfig);
                 }
@@ -211,48 +202,19 @@ public class HippoModuleConfig {
 
             kkStoreConfig.setNodePath(storeNode.getPath());
 
-            if (storeNode.hasProperty(STORE_CONTENT_ROOT_PROPERTY)) {
-                kkStoreConfig.setContentRoot(storeNode.getProperty(STORE_CONTENT_ROOT_PROPERTY).getString());
-            }
-
-            if (storeNode.hasProperty(STORE_GALLERY_ROOT_PROPERTY)) {
-                kkStoreConfig.setGalleryRoot(storeNode.getProperty(STORE_GALLERY_ROOT_PROPERTY).getString());
-            }
-
-            if (storeNode.hasProperty(STORE_STORE_ID_PROPERTY)) {
-                kkStoreConfig.setStoreId(storeNode.getProperty(STORE_STORE_ID_PROPERTY).getString());
-            }
-
-            if (storeNode.hasProperty(STORE_CATALOG_ID_PROPERTY)) {
-                kkStoreConfig.setCatalogId(storeNode.getProperty(STORE_CATALOG_ID_PROPERTY).getString());
-            }
+            kkStoreConfig.setContentRoot(NodeUtils.getString(storeNode, STORE_CONTENT_ROOT_PROPERTY));
+            kkStoreConfig.setGalleryRoot(NodeUtils.getString(storeNode, STORE_GALLERY_ROOT_PROPERTY));
+            kkStoreConfig.setStoreId(NodeUtils.getString(storeNode, STORE_STORE_ID_PROPERTY));
+            kkStoreConfig.setCatalogId(NodeUtils.getString(storeNode, STORE_CATALOG_ID_PROPERTY));
 
             if (storeNode.hasNode(SYNC_NODE_PATH)) {
                 Node syncNode = storeNode.getNode(SYNC_NODE_PATH);
 
-                if (syncNode.hasProperty(SYNC_JOB_CLASS)) {
-                    kkStoreConfig.setJobClass(syncNode.getProperty(SYNC_JOB_CLASS).getString());
-                }
-
-                if (syncNode.hasProperty(SYNC_CRON_EXPRESSION)) {
-                    kkStoreConfig.setCronExpression(syncNode.getProperty(SYNC_CRON_EXPRESSION).getString());
-                }
-
-                if (syncNode.hasProperty(SYNC_PRODUCT_FOLDER_PROPERTY)) {
-                    kkStoreConfig.setProductFolder(syncNode.getProperty(SYNC_PRODUCT_FOLDER_PROPERTY).getString());
-                }
-
-                if (syncNode.hasProperty(SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY)) {
-                    kkStoreConfig.setLastUpdatedTimeKonakartToRepository(syncNode.getProperty(SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY).getDate().getTime());
-                } else {
-                    kkStoreConfig.setLastUpdatedTimeKonakartToRepository(null);
-                }
-
-                if (syncNode.hasProperty(SYNC_LAST_UPDATED_TIME_REPOSITORY_TO_KONNAKART)) {
-                    kkStoreConfig.setLastUpdatedTimeRepositoryToKonakart(syncNode.getProperty(SYNC_LAST_UPDATED_TIME_REPOSITORY_TO_KONNAKART).getDate().getTime());
-                } else {
-                    kkStoreConfig.setLastUpdatedTimeRepositoryToKonakart(null);
-                }
+                kkStoreConfig.setJobClass(NodeUtils.getString(syncNode, SYNC_JOB_CLASS));
+                kkStoreConfig.setCronExpression(NodeUtils.getString(syncNode, SYNC_CRON_EXPRESSION));
+                kkStoreConfig.setProductFolder(NodeUtils.getString(syncNode, SYNC_PRODUCT_FOLDER_PROPERTY));
+                kkStoreConfig.setLastUpdatedTimeKonakartToRepository(NodeUtils.getDate(syncNode, SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY));
+                kkStoreConfig.setLastUpdatedTimeRepositoryToKonakart(NodeUtils.getDate(syncNode, SYNC_LAST_UPDATED_TIME_REPOSITORY_TO_KONNAKART));
             }
 
 
