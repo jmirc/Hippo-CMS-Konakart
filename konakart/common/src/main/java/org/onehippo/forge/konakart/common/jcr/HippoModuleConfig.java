@@ -179,7 +179,6 @@ public class HippoModuleConfig {
 
                     KKStoreConfig kkStoreConfig = new KKStoreConfig();
 
-                    // Set the default configurations.
                     kkStoreConfig.setJobClass(NodeUtils.getString(syncConfigNode, DEFAULT_SYNC_JOB_CLASS_PROPERTY));
                     kkStoreConfig.setCronExpression(NodeUtils.getString(syncConfigNode, DEFAULT_SYNC_CRON_EXPRESSION_PROPERTY));
                     kkStoreConfig.setProductFolder(NodeUtils.getString(syncConfigNode, DEFAULT_PRODUCT_FOLDER_PROPERTY));
@@ -197,6 +196,10 @@ public class HippoModuleConfig {
     private void loadStoreConfigByName(Session session, String storeName, KKStoreConfig kkStoreConfig) throws RepositoryException {
         Node rootNode = session.getNode(KONAKART_STORES_PATH);
 
+
+        // Set the default configurations.
+
+
         if (rootNode.hasNode(storeName)) {
             Node storeNode = rootNode.getNode(storeName);
 
@@ -210,9 +213,9 @@ public class HippoModuleConfig {
             if (storeNode.hasNode(SYNC_NODE_PATH)) {
                 Node syncNode = storeNode.getNode(SYNC_NODE_PATH);
 
-                kkStoreConfig.setJobClass(NodeUtils.getString(syncNode, SYNC_JOB_CLASS));
-                kkStoreConfig.setCronExpression(NodeUtils.getString(syncNode, SYNC_CRON_EXPRESSION));
-                kkStoreConfig.setProductFolder(NodeUtils.getString(syncNode, SYNC_PRODUCT_FOLDER_PROPERTY));
+                kkStoreConfig.setJobClass(NodeUtils.getString(syncNode, SYNC_JOB_CLASS, kkStoreConfig.getJobClass()));
+                kkStoreConfig.setCronExpression(NodeUtils.getString(syncNode, SYNC_CRON_EXPRESSION, kkStoreConfig.getCronExpression()));
+                kkStoreConfig.setProductFolder(NodeUtils.getString(syncNode, SYNC_PRODUCT_FOLDER_PROPERTY, kkStoreConfig.getProductFolder()));
                 kkStoreConfig.setLastUpdatedTimeKonakartToRepository(NodeUtils.getDate(syncNode, SYNC_LAST_UPDATED_TIME_KONAKART_TO_REPOSITORY));
                 kkStoreConfig.setLastUpdatedTimeRepositoryToKonakart(NodeUtils.getDate(syncNode, SYNC_LAST_UPDATED_TIME_REPOSITORY_TO_KONNAKART));
             }
