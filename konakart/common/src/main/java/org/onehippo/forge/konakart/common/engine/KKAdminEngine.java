@@ -45,6 +45,14 @@ public class KKAdminEngine {
     }
 
     /**
+     * @return true if the client has been initialize, false otherwise
+     */
+    public boolean isInitialized() {
+        return adminEngineConfig != null;
+    }
+
+
+    /**
      * @return true if we are in Enterprise Mode
      */
     public boolean isEnterprise() {
@@ -109,18 +117,15 @@ public class KKAdminEngine {
         adminEngineConfig = HippoModuleConfig.getConfig().getAdminEngineConfig(session);
 
         // Initialize the admin engine
-        init(adminEngineConfig);
+        init();
     }
 
 
     /**
     * Configure the Engine Config
-    *
-    *
-     * @param adminEngineConfig the Konakart Admin Engine @see /konakart:konakart/konakart:clientengine within console
      * @throws Exception .
     */
-    private void init(KKAdminEngineConfig adminEngineConfig) throws Exception {
+    private void init() throws Exception {
 
         if (kkAdminEng == null) {
             KKAdminEngineMgr kkAdminEngMgr = new KKAdminEngineMgr();

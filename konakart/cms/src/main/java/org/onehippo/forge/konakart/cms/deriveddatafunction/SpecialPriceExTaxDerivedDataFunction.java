@@ -13,7 +13,7 @@ public class SpecialPriceExTaxDerivedDataFunction extends DerivedDataFunction {
 
     @Override
     public Map<String, Value[]> compute(Map<String, Value[]> parameters) {
-        if (!parameters.containsKey("ppid")) {
+        if (!parameters.containsKey("ppid") || !KKAdminEngine.getInstance().isInitialized()) {
             parameters.clear();
             return parameters;
         }
