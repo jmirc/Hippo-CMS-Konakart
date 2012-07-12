@@ -71,9 +71,16 @@ public class KonakartSyncProducts {
             kkengine = KKEngine.get(storeId);
 
             // Retrieve the product factory
-            CustomProductMgr productMgr = new CustomProductMgr(kkengine.getEng(), kkStoreConfig.getLastUpdatedTimeKonakartToRepository());
+            CustomProductMgr productMgr;
 
-            // Get only visible products
+            // In the development mode the entire product lists is retrieved.
+            if (kkStoreConfig.isDevelopmentMode()) {
+                productMgr = new CustomProductMgr(kkengine.getEng());
+            } else {
+                productMgr = new CustomProductMgr(kkengine.getEng(), kkStoreConfig.getLastUpdatedTimeKonakartToRepository());
+            }
+
+            // Get all products - visible or not
             DataDescriptorIf dataDescriptorIf = new DataDescriptor();
             dataDescriptorIf.setShowInvisible(true);
             dataDescriptorIf.setFillDescription(true);

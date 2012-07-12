@@ -31,6 +31,7 @@ public class KKStoreConfig {
     private boolean initialized;
     private String jobClass;
     private String productFactoryClassName;
+    private boolean developmentMode;
 
     public String getNodePath() {
         return nodePath;
@@ -159,6 +160,15 @@ public class KKStoreConfig {
 
     public void setProductFactoryClassName(String productFactoryClassName) {
         this.productFactoryClassName = productFactoryClassName;
+    }
+
+
+    public boolean isDevelopmentMode() {
+        return developmentMode;
+    }
+
+    public void setDevelopmentMode(boolean developmentMode) {
+        this.developmentMode = developmentMode;
     }
 
     private Node getSyncNode(Session session) throws RepositoryException {
