@@ -150,7 +150,7 @@ The following steps need to be executed:
 
 ```
 
-### Custom Admin Configuration
+### Store1 Configuration
 * You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
     * Update contentroot (i.e. /content/documents/gettingstarted)
     * Update galleryroot (i.e. /content/gallery/gettingstarted)
