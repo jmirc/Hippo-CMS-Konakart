@@ -131,7 +131,7 @@ The following steps need to be executed:
   </context-param>
 ```
 
-### Global Configuration
+### Database Configuration
 * Add the following database configuration to the context.xml file. You will add the connection to the Konakart DB previously created.
 
 **You need to change the username, password as well as the database name.**
@@ -150,11 +150,14 @@ The following steps need to be executed:
 
 ```
 
-### Store1 Configuration
+### Hippo-Konakart Store1 Configuration
 * You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
     * Update contentroot (i.e. /content/documents/gettingstarted)
     * Update galleryroot (i.e. /content/gallery/gettingstarted)
 	
+### Synchronization job 
+
+
 ### JAAS Security 
 * Update the hst-config.properties file to update the security auth
 
