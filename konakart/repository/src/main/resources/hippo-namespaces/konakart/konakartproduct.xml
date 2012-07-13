@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <sv:node sv:name="physicalproduct" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>hipposysedit:templatetype</sv:value>
@@ -28,7 +27,7 @@
             <sv:value>hippo:translation</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:language" sv:type="String">
-            <sv:value>en</sv:value>
+            <sv:value>fr</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:message" sv:type="String">
             <sv:value>Produit Physique</sv:value>
@@ -53,7 +52,7 @@
                 <sv:value>hippo:harddocument</sv:value>
             </sv:property>
             <sv:property sv:name="jcr:uuid" sv:type="String">
-                <sv:value>32559aad-0178-4186-9603-8b36a7600ab7</sv:value>
+                <sv:value>fc32435e-9e92-476e-9b9a-9b93e2d062f1</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
             <sv:property sv:name="hipposysedit:node" sv:type="Boolean">
@@ -502,6 +501,29 @@
                     <sv:value>String</sv:value>
                 </sv:property>
             </sv:node>
+            <sv:node sv:name="ppcategories">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>hipposysedit:field</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:mandatory" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:multiple" sv:type="Boolean">
+                    <sv:value>true</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:ordered" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:path" sv:type="String">
+                    <sv:value>konakart:ppcategories</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:primary" sv:type="Boolean">
+                    <sv:value>false</sv:value>
+                </sv:property>
+                <sv:property sv:name="hipposysedit:type" sv:type="String">
+                    <sv:value>Long</sv:value>
+                </sv:property>
+            </sv:node>
         </sv:node>
     </sv:node>
     <sv:node sv:name="hipposysedit:prototypes">
@@ -510,13 +532,13 @@
         </sv:property>
         <sv:node sv:name="hipposysedit:prototype">
             <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                <sv:value>konakart:physicalproduct</sv:value>
+                <sv:value>konakart:konakartproduct</sv:value>
             </sv:property>
             <sv:property sv:multiple="true" sv:name="jcr:mixinTypes" sv:type="Name">
                 <sv:value>hippo:harddocument</sv:value>
             </sv:property>
             <sv:property sv:name="jcr:uuid" sv:type="String">
-                <sv:value>df678776-7211-47b8-b629-71c63e735d54</sv:value>
+                <sv:value>98bb3734-4f69-43c7-bb62-6f444b5b1efc</sv:value>
             </sv:property>
             <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
             <sv:property sv:name="hippostd:holder" sv:type="String">
@@ -545,6 +567,9 @@
             </sv:property>
             <sv:property sv:name="hippotranslation:locale" sv:type="String">
                 <sv:value>document-type-locale</sv:value>
+            </sv:property>
+            <sv:property sv:multiple="true" sv:name="konakart:ppcategories" sv:type="Long">
+                <sv:value>0</sv:value>
             </sv:property>
             <sv:property sv:name="konakart:ppid" sv:type="Long">
                 <sv:value>0</sv:value>
@@ -626,7 +651,7 @@
                 <sv:value>validator.id</sv:value>
             </sv:property>
             <sv:property sv:name="type" sv:type="String">
-                <sv:value>konakart:physicalproduct</sv:value>
+                <sv:value>konakart:konakartproduct</sv:value>
             </sv:property>
             <sv:node sv:name="root">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
@@ -1245,43 +1270,6 @@
                     </sv:property>
                 </sv:node>
             </sv:node>
-            <sv:node sv:name="ppcategories">
-                <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                    <sv:value>frontend:plugin</sv:value>
-                </sv:property>
-                <sv:property sv:name="caption" sv:type="String">
-                    <sv:value>Categories</sv:value>
-                </sv:property>
-                <sv:property sv:name="mode" sv:type="String">
-                    <sv:value>${mode}</sv:value>
-                </sv:property>
-                <sv:property sv:name="model.compareTo" sv:type="String">
-                    <sv:value>${model.compareTo}</sv:value>
-                </sv:property>
-                <sv:property sv:name="plugin.class" sv:type="String">
-                    <sv:value>org.onehippo.forge.konakart.cms.taxonomy.CategoriesTaxonomyPickerPlugin</sv:value>
-                </sv:property>
-                <sv:property sv:name="taxonomy.classification.dao" sv:type="String">
-                    <sv:value>service.taxonomy.dao</sv:value>
-                </sv:property>
-                <sv:property sv:name="taxonomy.id" sv:type="String">
-                    <sv:value>service.taxonomy</sv:value>
-                </sv:property>
-                <sv:property sv:name="taxonomy.name" sv:type="String">
-                    <sv:value>categories</sv:value>
-                </sv:property>
-                <sv:property sv:name="wicket.id" sv:type="String">
-                    <sv:value>${cluster.id}.left.item</sv:value>
-                </sv:property>
-                <sv:property sv:name="wicket.model" sv:type="String">
-                    <sv:value>${wicket.model}</sv:value>
-                </sv:property>
-                <sv:node sv:name="cluster.options">
-                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
-                        <sv:value>frontend:pluginconfig</sv:value>
-                    </sv:property>
-                </sv:node>
-            </sv:node>
             <sv:node sv:name="ppstoreid">
                 <sv:property sv:name="jcr:primaryType" sv:type="Name">
                     <sv:value>frontend:plugin</sv:value>
@@ -1363,6 +1351,28 @@
                 </sv:property>
                 <sv:property sv:name="wicket.model" sv:type="String">
                     <sv:value>${wicket.model}</sv:value>
+                </sv:property>
+                <sv:node sv:name="cluster.options">
+                    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                        <sv:value>frontend:pluginconfig</sv:value>
+                    </sv:property>
+                </sv:node>
+            </sv:node>
+            <sv:node sv:name="ppcategories">
+                <sv:property sv:name="jcr:primaryType" sv:type="Name">
+                    <sv:value>frontend:plugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="caption" sv:type="String">
+                    <sv:value>Categories</sv:value>
+                </sv:property>
+                <sv:property sv:name="field" sv:type="String">
+                    <sv:value>ppcategories</sv:value>
+                </sv:property>
+                <sv:property sv:name="plugin.class" sv:type="String">
+                    <sv:value>org.hippoecm.frontend.editor.plugins.field.PropertyFieldPlugin</sv:value>
+                </sv:property>
+                <sv:property sv:name="wicket.id" sv:type="String">
+                    <sv:value>${cluster.id}.left.item</sv:value>
                 </sv:property>
                 <sv:node sv:name="cluster.options">
                     <sv:property sv:name="jcr:primaryType" sv:type="Name">

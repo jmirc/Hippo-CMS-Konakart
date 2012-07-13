@@ -117,7 +117,11 @@ public class KonakartSyncProducts {
                 // Sync the konakart product
                 productFactory.setSession(jcrSession);
                 productFactory.setKKStoreConfig(kkStoreConfig);
-                productFactory.add(storeId, product, language, baseImagePath);
+                String productHandle = productFactory.add(storeId, product, language, baseImagePath);
+
+                if (productHandle != null) {
+                    productMgr.synchronizeHippoKK(product.getId(), productHandle);
+                }
             }
         }
     }

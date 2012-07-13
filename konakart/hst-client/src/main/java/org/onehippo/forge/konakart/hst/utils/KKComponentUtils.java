@@ -1,7 +1,10 @@
 package org.onehippo.forge.konakart.hst.utils;
 
+import com.konakart.appif.ProductIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
+import org.hippoecm.hst.content.beans.ObjectBeanManagerException;
+import org.hippoecm.hst.content.beans.manager.ObjectConverter;
 import org.hippoecm.hst.content.beans.query.HstQuery;
 import org.hippoecm.hst.content.beans.query.HstQueryManager;
 import org.hippoecm.hst.content.beans.query.HstQueryResult;
@@ -19,7 +22,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import javax.jcr.Session;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.LinkedList;
 
 /**
  * This class is used to offer methods used to interact with Konakart
@@ -134,6 +141,8 @@ public class KKComponentUtils {
 
         return (KKProductDocument) currentBean;
     }
+
+
 
     /**
      * Find and retrieve the associated KKProductDoucment from a product id.

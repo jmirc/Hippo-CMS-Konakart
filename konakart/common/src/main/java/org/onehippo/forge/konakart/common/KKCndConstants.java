@@ -8,9 +8,6 @@ public interface KKCndConstants {
     String NEW_PRODUCTS_FOLDER_TEMPLATE = "new-products-folder";
     String NEW_PRODUCT_DOCUMENT_TEMPLATE = "new-konakartproduct-document";
 
-    String NEW_MANUFACTURERS_FOLDER_TEMPLATE = "new-manufacturers-folder";
-    String NEW_MANUFACTURER_DOCUMENT_TEMPLATE = "new-manufacturer-document";
-
     String KONAKART_CONFIG_STORE_NAME = "konakart:storeName";
 
     String BASEDOCUMENT_DOC_TYPE = "konakart:basedocument";
@@ -20,7 +17,7 @@ public interface KKCndConstants {
     //    PRODUCT DEFINITIONS
     //############################################
 
-    String PRODUCT_DOC_TYPE = "konakart:physicalproduct";
+    String PRODUCT_DOC_TYPE = "konakart:konakartproduct";
 
     String PRODUCT_NAME = "konakart:ppname";
     String PRODUCT_ID = "konakart:ppid";

@@ -105,25 +105,6 @@
             <version>${forge.selection.version}</version>
         </dependency>
 
-        <!-- Taxonomy -->
-        <dependency>
-            <groupId>org.onehippo</groupId>
-            <artifactId>taxonomy-api</artifactId>
-            <version>${forge.taxonomy.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.onehippo</groupId>
-            <artifactId>taxonomy-addon-frontend</artifactId>
-            <version>${forge.taxonomy.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.onehippo</groupId>
-            <artifactId>taxonomy-addon-repository</artifactId>
-            <version>${forge.taxonomy.version}</version>
-        </dependency>
-
         <!-- Utilities -->
         <dependency>
             <groupId>org.onehippo.forge.utilities</groupId>

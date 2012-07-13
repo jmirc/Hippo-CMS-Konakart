@@ -15,7 +15,6 @@ public class KonakartPerspective extends PanelPluginPerspective {
 
     public KonakartPerspective(IPluginContext context, IPluginConfig config) {
         super(context, config);
-        add(CSSPackageResource.getHeaderContribution(KonakartPerspective.class, "konakart-perspective.css"));
     }
 
     @Override

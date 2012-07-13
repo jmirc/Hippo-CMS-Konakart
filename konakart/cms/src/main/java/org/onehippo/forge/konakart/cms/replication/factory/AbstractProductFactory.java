@@ -8,12 +8,12 @@ import org.hippoecm.frontend.plugins.gallery.processor.ScalingGalleryProcessor;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingParameters;
 import org.joda.time.DateTime;
 import org.onehippo.forge.konakart.cms.replication.jcr.GalleryProcesssorConfig;
-import org.onehippo.forge.konakart.common.KKCndConstants;
-import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
-import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.cms.replication.utils.Codecs;
 import org.onehippo.forge.konakart.cms.replication.utils.NodeHelper;
 import org.onehippo.forge.konakart.cms.replication.utils.NodeImagesHelper;
+import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
+import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +76,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
 
     @Override
-    public void add(String storeId, Product product, LanguageIf language, String baseImagePath) throws Exception {
+    public String add(String storeId, Product product, LanguageIf language, String baseImagePath) throws Exception {
+
 
         KKCndConstants.PRODUCT_TYPE product_type = KKCndConstants.PRODUCT_TYPE.findByType(product.getType());
 
@@ -88,7 +89,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
             log.error("No product namespace has been associated for the product namespace : "
                     + product_type.getNamespace() + ". Please set the it within the pluginconfig located " +
                     "at " + HippoModuleConfig.KONAKART_PRODUCT_TYPE_NAMESPACES_PATH);
-            return;
+            return null;
         }
 
         String absPath = contentRoot + Codecs.encodeNode(productFolder) + "/" + Codecs.encodeNode(kkProductTypeName)
@@ -100,7 +101,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         if (session.getRootNode().hasNode(StringUtils.removeStart(absPath, "/"))) {
             rootFolder = session.getNode(absPath);
         } else {
-            absPath = contentRoot + productFolder + "/" + kkProductTypeName
+            absPath = contentRoot + Codecs.encodeNode(productFolder) + "/" + kkProductTypeName
                     + "/" + createProductNodeRoot(product);
 
             rootFolder = nodeHelper.createMissingFolders(absPath);
@@ -149,6 +150,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
                 log.info("The konakart product with id : {} has been updated", product.getId());
             }
         }
+
+        return productNode.getIdentifier();
     }
 
     /**
@@ -253,6 +256,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
             productNode.setProperty(KKCndConstants.PRODUCT_ORDER_NOT_IN_STOCK, Boolean.FALSE);
         }
 
+        //product.getCategoryId()
+
         // Only synchronize the content from Konakart to Hippo during the creation of the product.
         if (!productNode.hasNode(KKCndConstants.PRODUCT_DESCRIPTION)) {
             Node descriptionNode = productNode.addNode(KKCndConstants.PRODUCT_DESCRIPTION, "hippostd:html");
@@ -290,7 +295,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         try {
             // Retrieve the gallery root node
             // add the product node root
-            String galleryRootNode = galleryRoot + "/" + kkProductTypeName + "/" + createProductNodeRoot(product) + "/" + product.getId();
+            String galleryRootNode = galleryRoot + "/" + kkProductTypeName + "/" + createProductNodeRoot(product) + "/" + product.getName() + "/" + product.getId();
 
             // Get the root folder
             Node productGalleryNode = nodeImagesHelper.createMissingFolders(galleryRootNode);
@@ -322,7 +327,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
             return;
         }
 
-        String image = baseImagePath + "/" + imageNumber;
+        String image = baseImagePath + "/" + productImage;
 
         File file = new File(image);
 
@@ -334,11 +339,10 @@ public abstract class AbstractProductFactory implements ProductFactory {
         Node rootImageNode = null;
 
         try {
-            String fileName = file.getName();
             String contentType = new MimetypesFileTypeMap().getContentType(image);
 
             // Create the image name
-            rootImageNode = nodeImagesHelper.createGalleryItem(productGalleryNode, fileName);
+            rootImageNode = nodeImagesHelper.createGalleryItem(productGalleryNode, imageNumber);
 
             final ScalingGalleryProcessor processor = new ScalingGalleryProcessor();
 
@@ -362,7 +366,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
                     processor.addScalingParameters(imagesVersionName, parameters);
 
                     Node node = rootImageNode.addNode(imagesVersionName, "hippogallery:image");
-                    processor.initGalleryResource(node, isStream, contentType, fileName, Calendar.getInstance());
+                    processor.initGalleryResource(node, isStream, contentType, imageNumber, Calendar.getInstance());
                 }
             }
 

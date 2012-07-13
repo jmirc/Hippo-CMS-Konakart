@@ -1,20 +1,14 @@
 package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.al.KKAppEng;
+import com.konakart.appif.ProductIf;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
-import org.hippoecm.hst.content.beans.query.HstQuery;
-import org.hippoecm.hst.content.beans.query.HstQueryManager;
-import org.hippoecm.hst.content.beans.query.HstQueryResult;
-import org.hippoecm.hst.content.beans.query.exceptions.QueryException;
-import org.hippoecm.hst.content.beans.query.filter.Filter;
-import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
 import org.hippoecm.hst.util.HstResponseUtils;
-import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
@@ -24,6 +18,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -127,6 +124,39 @@ public class KKBaseHstComponent extends BaseHstComponent {
 
         HstResponseUtils.sendRedirectOrForward(request, response, link.getPath());
     }
+
+
+    /**
+     * Convert a list of konakart products to a list of KKProductDocument
+     *
+     * @param productIfs list of konakart products
+     */
+    public List<KKProductDocument> convertProducts(HstRequest hstRequest, ProductIf[] productIfs) {
+
+        if (productIfs == null || productIfs.length == 0) {
+            return Collections.emptyList();
+        }
+
+        LinkedList<KKProductDocument> documents = new LinkedList<KKProductDocument>();
+
+        for (ProductIf productIf : productIfs) {
+            try {
+                if (productIf.getCustom10() == null) {
+                    log.error("Synchronization error. Custom 10 is null for the product id - " + productIf.getId());
+                } else {
+                    KKProductDocument kkProductDocument = (KKProductDocument) super.getObjectConverter().getObject(productIf.getCustom10(),
+                            super.getSiteContentBaseBean(hstRequest).getNode());
+
+                    documents.addLast(kkProductDocument);
+                }
+            } catch (Exception e) {
+                log.error("Failed to find the Hippo Document for the product id - " + productIf.getId());
+            }
+        }
+
+        return documents;
+    }
+
 
 
 }

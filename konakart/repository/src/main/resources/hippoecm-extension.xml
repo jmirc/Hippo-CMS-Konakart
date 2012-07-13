@@ -149,40 +149,10 @@
             <sv:value>10107</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-namespaces/konakart/physicalproduct.xml</sv:value>
+            <sv:value>hippo-namespaces/konakart/konakartproduct.xml</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:contentroot" sv:type="String">
             <sv:value>/hippo:namespaces/konakart</sv:value>
-        </sv:property>
-    </sv:node>
-
-    <sv:node sv:name="konakart-type-manufacturer">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10107.1</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-namespaces/konakart/manufacturer.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:namespaces/konakart</sv:value>
-        </sv:property>
-    </sv:node>
-
-    <sv:node sv:name="konakart-type-review">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-namespaces/konakart/review.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:namespaces/konakart</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10107.2</sv:value>
         </sv:property>
     </sv:node>
 
@@ -210,44 +180,12 @@
             <sv:value>10108</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-templates/new-physicalproduct-document.xml</sv:value>
+            <sv:value>hippo-templates/new-konakartproduct-document.xml</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:contentroot" sv:type="String">
             <sv:value>/hippo:configuration/hippo:queries/hippo:templates</sv:value>
         </sv:property>
     </sv:node>
-
-    <sv:node sv:name="new-manufacturers-folder-template">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10108</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-templates/new-manufacturers-folder.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:queries/hippo:templates</sv:value>
-        </sv:property>
-    </sv:node>
-
-    <sv:node sv:name="new-manufacturer-document-template">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10108</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-templates/new-manufacturer-document.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:queries/hippo:templates</sv:value>
-        </sv:property>
-    </sv:node>
-
-
 
     <!-- Hide Konakart namespace -->
     <sv:node sv:name="hide-mynamespace-from-tree-views">
@@ -400,6 +338,7 @@
             <sv:value>/hippo:configuration/hippo:frontend/cms/cms-static/</sv:value>
         </sv:property>
     </sv:node>
+
     <sv:node sv:name="konakart-loader-auth">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hippo:initializeitem</sv:value>
@@ -414,35 +353,4 @@
             <sv:value>/hippo:configuration/hippo:domains/frontendconfig/frontend-plugins/</sv:value>
         </sv:property>
     </sv:node>
-
-
-    <sv:node sv:name="ecommerce-gallery">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10111</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-data/ecommerce-gallery.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/content/gallery</sv:value>
-        </sv:property>
-    </sv:node>
-    <sv:node sv:name="ecommerce-taxonomy">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10112</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-data/ecommerce-taxonomy.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/content/</sv:value>
-        </sv:property>
-    </sv:node>
-
 </sv:node>

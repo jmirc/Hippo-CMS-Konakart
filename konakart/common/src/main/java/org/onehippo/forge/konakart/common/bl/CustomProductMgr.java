@@ -61,4 +61,22 @@ public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
 
         BaseProductsPeer.doUpdate(localKKCriteria);
     }
+
+    /**
+     *
+     * Used to synchronize Hippo and Konakart.
+     *
+     * This is used to retrieve the Hippo Product Document with a product Id.
+     *
+     * @param productId id of the product to update
+     * @param productDocumentHandle handle of the document created into Hippo
+     * @throws Exception if the update could not be done
+     */
+    public void synchronizeHippoKK(Integer productId, String productDocumentHandle) throws Exception {
+        KKCriteria localKKCriteria = getNewCriteria(isMultiStoreShareProducts());
+        localKKCriteria.add(BaseProductsPeer.PRODUCTS_ID, productId);
+        localKKCriteria.add(BaseProductsPeer.CUSTOM10, productDocumentHandle);
+
+        BaseProductsPeer.doUpdate(localKKCriteria);
+    }
 }

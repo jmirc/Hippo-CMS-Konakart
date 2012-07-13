@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <sv:node sv:name="konakart:producttypenamespaces" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>konakart:producttypenamespaces</sv:value>
     </sv:property>
+    <sv:property sv:name="konakart:bundle" sv:type="String">
+        <sv:value>konakart:konakartproduct</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:bundlefreeshipping" sv:type="String">
+        <sv:value>konakart:konakartproduct</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:giftcertificate" sv:type="String">
+        <sv:value>konakart:konakartproduct</sv:value>
+    </sv:property>
     <sv:property sv:name="konakart:physicalproduct" sv:type="String">
-        <sv:value>konakart:physicalproduct</sv:value>
+        <sv:value>konakart:konakartproduct</sv:value>
     </sv:property>
 </sv:node>
