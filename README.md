@@ -155,8 +155,6 @@ The following steps need to be executed:
     * Update contentroot (i.e. /content/documents/gettingstarted)
     * Update galleryroot (i.e. /content/gallery/gettingstarted)
 	
-### Synchronization job 
-
 
 ### JAAS Security 
 * Update the hst-config.properties file to update the security auth
