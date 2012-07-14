@@ -176,7 +176,7 @@ By
 java.security.auth.login.config = classpath:/org/onehippo/forge/konakart/site/security/login.conf
 ```
 
-## Now compule and run your project
+## Now compile and run your project
 
 
 ## Post configuration
