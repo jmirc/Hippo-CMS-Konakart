@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/hippokart.iml" filepath="$PROJECT_DIR$/hippokart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cms/hippokart-cms.iml" filepath="$PROJECT_DIR$/cms/hippokart-cms.iml" />
+      <module fileurl="file://$PROJECT_DIR$/content/hippokart-content.iml" filepath="$PROJECT_DIR$/content/hippokart-content.iml" />
+      <module fileurl="file://$PROJECT_DIR$/site/hippokart-site.iml" filepath="$PROJECT_DIR$/site/hippokart-site.iml" />
+    </modules>
+  </component>
+</project>
+

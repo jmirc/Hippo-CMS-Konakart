@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.onehippo.cms7:hippo-addon-publication-workflow-repository:2.22.04">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hippo-addon-publication-workflow-repository/2.22.04/hippo-addon-publication-workflow-repository-2.22.04.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hippo-addon-publication-workflow-repository/2.22.04/hippo-addon-publication-workflow-repository-2.22.04-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hippo-addon-publication-workflow-repository/2.22.04/hippo-addon-publication-workflow-repository-2.22.04-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

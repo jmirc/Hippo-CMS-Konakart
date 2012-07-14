@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="hippokart-site:war">
+    <output-path>$PROJECT_DIR$/site/target</output-path>
+    <root id="archive" name="site.war">
+      <element id="artifact" artifact-name="hippokart-site:war exploded" />
+    </root>
+  </artifact>
+</component>

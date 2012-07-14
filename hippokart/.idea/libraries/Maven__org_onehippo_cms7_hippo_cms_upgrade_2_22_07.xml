@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.onehippo.cms7:hippo-cms-upgrade:2.22.07">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hippo-cms-upgrade/2.22.07/hippo-cms-upgrade-2.22.07.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hippo-cms-upgrade/2.22.07/hippo-cms-upgrade-2.22.07-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/onehippo/cms7/hippo-cms-upgrade/2.22.07/hippo-cms-upgrade-2.22.07-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
