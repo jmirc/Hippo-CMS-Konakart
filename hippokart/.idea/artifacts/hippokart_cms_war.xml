@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="hippokart-cms:war">
-    <output-path>$PROJECT_DIR$/cms/target</output-path>
-    <root id="archive" name="cms.war">
-      <element id="artifact" artifact-name="hippokart-cms:war exploded" />
-    </root>
-  </artifact>
-</component>
