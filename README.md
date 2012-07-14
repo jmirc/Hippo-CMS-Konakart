@@ -85,7 +85,7 @@ The following steps need to be executed:
 ```
 
 ### CMS Configuration
-* Add a copy of the konakart.properties and the konakart_app.properties file under src/main/resources
+* Add a copy of the konakart.properties and the konakart_app.properties files under src/main/resources
 * Add the following lines into the pom.xml file
 
 ```xml
@@ -106,7 +106,7 @@ The following steps need to be executed:
 ```
 
 ### SITE Configuration
-* Add a copy of the konakart.properties and the konakart_app.properties file under src/main/resources
+* Add a copy of the konakart.properties, the konakart_app.properties and the konakart_velocity.properties files under src/main/resources
 * Add the following lines into the pom.xml file
 
 ```xml
