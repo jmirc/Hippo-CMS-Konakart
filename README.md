@@ -161,13 +161,6 @@ The following steps need to be executed:
             url="jdbc:mysql://localhost:3306/TBD?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;characterEncoding=utf8" />
 
 ```
-
-### Hippo-Konakart Store1 Configuration
-* You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
-    * Update contentroot (i.e. /content/documents/gettingstarted)
-    * Update galleryroot (i.e. /content/gallery/gettingstarted)
-	
-
 ### JAAS Security 
 * Update the hst-config.properties file to update the security auth
 
@@ -181,4 +174,18 @@ By
 ```
 # HST KONAKART login configuration
 java.security.auth.login.config = classpath:/org/onehippo/forge/konakart/site/security/login.conf
-```	
+```
+
+## Now compule and run your project
+
+
+## Post configuration
+
+
+### Hippo-Konakart Store1 Configuration
+* You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
+    * Update contentroot (i.e. /content/documents/gettingstarted)
+    * Update galleryroot (i.e. /content/gallery/gettingstarted)
+	
+
+	
