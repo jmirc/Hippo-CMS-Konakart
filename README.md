@@ -46,7 +46,7 @@ The following steps need to be executed:
     <profile>
        <id>cargo.run</id>
        <dependencies>
-	  <dependency>
+       	  <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-cms</artifactId>
             <version>1.00.00-SNAPSHOT</version>
