@@ -42,7 +42,7 @@
             </sv:property>
             <sv:property sv:name="hippo:related___pathreference" sv:type="String"/>
             <sv:property sv:multiple="true" sv:name="hippostd:foldertype" sv:type="String">
-                <sv:value>new-physicalproduct-document</sv:value>
+                <sv:value>new-konakartproduct-document</sv:value>
                 <sv:value>new-products-folder</sv:value>
             </sv:property>
         </sv:node>

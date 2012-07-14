@@ -37,3 +37,17 @@ label.error {
 .footer {
     text-align: center;
 }
+
+.pull-right-register-button {
+    float: right;
+    margin-top: 84px;
+}
+
+.pull-right-sign-button {
+    float: right;
+    margin-top: 10px;
+}
+
+.register-new-customer {
+    padding-bottom: 111px;
+}

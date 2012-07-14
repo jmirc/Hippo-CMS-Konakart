@@ -63,7 +63,7 @@ public abstract class BaseComponent extends BaseHstComponent {
 
         try {
             @SuppressWarnings("unchecked")
-            HstQuery hstQuery = getQueryManager(request).createQuery(scope, filterClass, true);
+            HstQuery hstQuery = getQueryManager(request).createQuery(scope);
             hstQuery.setLimit(pageSize);
             hstQuery.setOffset(pageSize * (crPage - 1));
             if(sortBy != null && !sortBy.isEmpty()) {

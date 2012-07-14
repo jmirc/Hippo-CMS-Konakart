@@ -141,7 +141,7 @@
 
 
     <!-- Document types -->
-    <sv:node sv:name="konakart-type-physicalproduct">
+    <sv:node sv:name="konakart-type-konakartproduct">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hippo:initializeitem</sv:value>
         </sv:property>
@@ -172,7 +172,7 @@
         </sv:property>
     </sv:node>
 
-    <sv:node sv:name="new-physicalproducts-document-template">
+    <sv:node sv:name="new-konakartproducts-document-template">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hippo:initializeitem</sv:value>
         </sv:property>

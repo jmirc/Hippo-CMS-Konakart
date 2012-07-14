@@ -3,6 +3,7 @@ package org.onehippo.forge.konakart.hst.components;
 import com.konakart.al.KKAppEng;
 import com.konakart.appif.ProductIf;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
+import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -52,7 +54,7 @@ public class KKBaseHstComponent extends BaseHstComponent {
      */
     @Nonnull
     public KKAppEng getKKAppEng(@Nonnull HstRequest request) {
-        KKAppEng kkAppEng = (KKAppEng) request.getAttribute(KKAppEng.KONAKART_KEY);
+        KKAppEng kkAppEng = KKComponentUtils.getKKAppEng(request);
 
         return checkNotNull(kkAppEng);
     }
@@ -123,6 +125,59 @@ public class KKBaseHstComponent extends BaseHstComponent {
         HstLink link = linkCreator.createByRefId(refId, request.getRequestContext().getResolvedMount().getMount());
 
         HstResponseUtils.sendRedirectOrForward(request, response, link.getPath());
+    }
+
+    /**
+     * Get the current Konakart Product Document
+     *
+     * @param request the HST request
+     * @return the product document
+     * @throws org.hippoecm.hst.core.component.HstComponentException
+     *          thrown if the document is not a type of KKProductDocument
+     */
+    public KKProductDocument getKKProductDocument(@Nonnull HstRequest request) throws HstComponentException {
+        HippoBean currentBean = getContentBean(request);
+
+        if (currentBean == null) {
+            throw new HstComponentException("No document has been found");
+        }
+
+        // Not an instance of KKProductdocuemnt
+        if (!(currentBean instanceof KKProductDocument)) {
+            log.error(currentBean.getClass().getName() + " must extend " + KKProductDocument.class.getName());
+            throw new HstComponentException(currentBean.getClass().getName() + " must extend " +
+                    KKProductDocument.class.getName());
+        }
+
+        return (KKProductDocument) currentBean;
+    }
+
+
+    /**
+     * Convert a konakart products to a KKProductDocument
+     *
+     * @param hstRequest the hst request
+     * @param product a konakart product
+     */
+    @Nullable
+    public KKProductDocument convertProduct(HstRequest hstRequest, ProductIf product) {
+
+        if (product == null) {
+            return null;
+        }
+
+        try {
+            if (product.getCustom10() == null) {
+                log.error("Synchronization error. Custom 10 is null for the product id - " + product.getId());
+            } else {
+                return  (KKProductDocument) super.getObjectConverter().getObject(product.getCustom10(),
+                        super.getSiteContentBaseBean(hstRequest).getNode());
+            }
+        } catch (Exception e) {
+            log.error("Failed to find the Hippo Document for the product id - " + product.getId());
+        }
+
+        return null;
     }
 
 

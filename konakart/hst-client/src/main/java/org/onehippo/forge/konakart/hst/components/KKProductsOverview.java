@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.hst.components;
 
+import com.konakart.appif.CategoryIf;
 import com.konakart.appif.ProductIf;
 import com.konakart.bl.ProductMgr;
 import org.hippoecm.hst.core.component.HstComponentException;
@@ -57,7 +58,11 @@ public class KKProductsOverview extends KKHstActionComponent {
      * @param overviewInfo the Parameters info annotation
      * @return a list of products
      */
-    protected List<KKProductDocument> searchProducts(@Nonnull HstRequest hstRequest, KKProductsOverviewInfo overviewInfo) {
+    protected List<KKProductDocument> searchProducts(@Nonnull HstRequest hstRequest,
+                                                     KKProductsOverviewInfo overviewInfo) {
+
+        CategoryIf categoryIf = getKKAppEng(hstRequest).getProductMgr().getSelectedCategory();
+
         ProductIf[] productIfs = KKServiceHelper.getKKProductService().
                 fetchNewProducts(hstRequest, ProductMgr.DONT_INCLUDE, true, overviewInfo.getLimit());
 

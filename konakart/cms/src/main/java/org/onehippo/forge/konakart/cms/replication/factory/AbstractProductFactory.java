@@ -3,6 +3,8 @@ package org.onehippo.forge.konakart.cms.replication.factory;
 import com.google.common.collect.Lists;
 import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
+import com.konakartadmin.app.AdminCategory;
+import com.konakartadmin.app.AdminProduct;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingGalleryProcessor;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingParameters;
@@ -12,6 +14,7 @@ import org.onehippo.forge.konakart.cms.replication.utils.Codecs;
 import org.onehippo.forge.konakart.cms.replication.utils.NodeHelper;
 import org.onehippo.forge.konakart.cms.replication.utils.NodeImagesHelper;
 import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.slf4j.Logger;
@@ -256,32 +259,55 @@ public abstract class AbstractProductFactory implements ProductFactory {
             productNode.setProperty(KKCndConstants.PRODUCT_ORDER_NOT_IN_STOCK, Boolean.FALSE);
         }
 
-        //product.getCategoryId()
-
-        // Only synchronize the content from Konakart to Hippo during the creation of the product.
+        Node descriptionNode;
         if (!productNode.hasNode(KKCndConstants.PRODUCT_DESCRIPTION)) {
-            Node descriptionNode = productNode.addNode(KKCndConstants.PRODUCT_DESCRIPTION, "hippostd:html");
+            descriptionNode = productNode.addNode(KKCndConstants.PRODUCT_DESCRIPTION, "hippostd:html");
+        } else {
+            descriptionNode = productNode.getNode(KKCndConstants.PRODUCT_DESCRIPTION);
+        }
 
-            // Set the description property
-            String description = "<html><body>";
+        // Set the description property
+        String description = "<html><body>";
 
-            if (product.getDescription() != null) {
-                description += product.getDescription();
+        if (product.getDescription() != null) {
+            description += product.getDescription();
+        }
+
+        description += "</body></html>";
+
+        descriptionNode.setProperty("hippostd:content", description);
+
+        // Initialize the category
+        AdminCategory[] adminCategories = retrieveCategories(product.getId());
+
+        if (adminCategories.length > 0) {
+            Value[] categories = new Value[adminCategories.length];
+
+            for (int i=0; i < adminCategories.length; i++) {
+                int categoryId = adminCategories[i].getId();
+                categories[i] = session.getValueFactory().createValue(categoryId);
             }
 
-            description += "</body></html>";
+            productNode.setProperty(KKCndConstants.PRODUCT_CATEGORIES, categories);
+        }
+    }
 
-            descriptionNode.setProperty("hippostd:content", description);
+    protected AdminCategory[] retrieveCategories(int id) {
+        try {
+            AdminProduct adminProduct = KKAdminEngine.getInstance().getFactory().getAdminProdMgr(true).getProduct(id);
+
+            if (adminProduct != null) {
+                return adminProduct.getCategories();
+
+            }
+
+        } catch (Exception e) {
+            log.warn("Failed to retrieve the list of categories", e);
         }
 
-        if (!productNode.hasNode(KKCndConstants.PRODUCT_ABSTRACT)) {
-            Node descriptionNode = productNode.addNode(KKCndConstants.PRODUCT_ABSTRACT, "hippostd:html");
+        return new AdminCategory[0];
 
-            // Set the description property
-            String description = "<html><body></body></html>";
 
-            descriptionNode.setProperty("hippostd:content", description);
-        }
     }
 
     /**

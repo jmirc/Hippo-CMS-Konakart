@@ -55,10 +55,10 @@
     </div>
 </div>
 <div class="control-group <c:if test="${not empty form.message['dateofbirth']}">error</c:if>">
-    <label class="required control-label" for="input03"><fmt:message key="checkout.dateofbirth"/></label>
+    <label class="required control-label" for="input031"><fmt:message key="checkout.dateofbirth"/></label>
 
     <div class="controls">
-        <input type="text" class="input-small highlight required" id="dateofbirth" name="dateofbirth"
+        <input type="text" class="input-small highlight required" id="dateofbirth" name="dateofbirth" id="input031"
                value="${form.value['dateofbirth'].value}" readonly data-date-format="yyyy/mm/dd">
         <span class="help-inline">${form.message['dateofbirth']}</span>
     </div>

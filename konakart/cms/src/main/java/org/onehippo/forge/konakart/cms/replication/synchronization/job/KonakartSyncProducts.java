@@ -324,7 +324,7 @@ public class KonakartSyncProducts {
     }
 
 
-    private static  ProductFactory createProductFactory(String productFactoryClassName) {
+    private static ProductFactory createProductFactory(String productFactoryClassName) {
         if (StringUtils.isNotBlank(productFactoryClassName)) {
             try {
                 return (ProductFactory) Class.forName(productFactoryClassName).newInstance();

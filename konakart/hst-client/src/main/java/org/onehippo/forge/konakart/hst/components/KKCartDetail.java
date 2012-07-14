@@ -146,7 +146,7 @@ public class KKCartDetail extends KKHstActionComponent {
                                 b.getQuantityInStock());
 
                         // Generate the image link
-                        KKProductDocument productDocument = KKComponentUtils.getProductDocumentById(request, b.getProductId());
+                        KKProductDocument productDocument = convertProduct(request, b.getProduct());
 
                         item.setProductDocument(productDocument);
 

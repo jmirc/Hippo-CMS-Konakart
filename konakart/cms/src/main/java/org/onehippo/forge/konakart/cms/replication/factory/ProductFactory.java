@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.cms.replication.factory;
 
+import com.konakart.al.KKAppEng;
 import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
@@ -34,6 +35,7 @@ public interface ProductFactory {
      */
     @Nullable
     String add(final String storeId, final Product product, final LanguageIf language, final String baseImagePath) throws Exception;
+
 
 
 }
