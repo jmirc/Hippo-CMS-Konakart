@@ -46,6 +46,21 @@ The following steps need to be executed:
     <profile>
        <id>cargo.run</id>
        <dependencies>
+	  <dependency>
+            <groupId>org.onehippo.forge.konakart</groupId>
+            <artifactId>hippo-addon-konakart-cms</artifactId>
+            <version>1.00.00-SNAPSHOT</version>
+          </dependency>
+          <dependency>
+            <groupId>org.onehippo.forge.konakart</groupId>
+            <artifactId>hippo-addon-konakart-repository</artifactId>
+            <version>1.00.00-SNAPSHOT</version>
+          </dependency>
+          <dependency>
+            <groupId>org.onehippo.forge.konakart</groupId>
+            <artifactId>hippo-addon-konakart-hstclient</artifactId>
+            <version>1.00.00-SNAPSHOT</version>
+          </dependency>          
           <dependency>
               <groupId>mysql</groupId>
               <artifactId>mysql-connector-java</artifactId>
@@ -77,13 +92,11 @@ The following steps need to be executed:
        <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-cms</artifactId>
-            <version>1.00.00-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-repository</artifactId>
-            <version>1.00.00-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -101,7 +114,6 @@ The following steps need to be executed:
         <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-hstclient</artifactId>
-            <version>1.00.00-SNAPSHOT</version>
         </dependency>
        <dependency>
             <groupId>mysql</groupId>
