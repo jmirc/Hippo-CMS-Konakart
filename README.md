@@ -46,6 +46,21 @@ The following steps need to be executed:
     <profile>
        <id>cargo.run</id>
        <dependencies>
+       	  <dependency>
+            <groupId>org.onehippo.forge.konakart</groupId>
+            <artifactId>hippo-addon-konakart-cms</artifactId>
+            <version>1.00.00-SNAPSHOT</version>
+          </dependency>
+          <dependency>
+            <groupId>org.onehippo.forge.konakart</groupId>
+            <artifactId>hippo-addon-konakart-repository</artifactId>
+            <version>1.00.00-SNAPSHOT</version>
+          </dependency>
+          <dependency>
+            <groupId>org.onehippo.forge.konakart</groupId>
+            <artifactId>hippo-addon-konakart-hstclient</artifactId>
+            <version>1.00.00-SNAPSHOT</version>
+          </dependency>          
           <dependency>
               <groupId>mysql</groupId>
               <artifactId>mysql-connector-java</artifactId>
@@ -70,20 +85,18 @@ The following steps need to be executed:
 ```
 
 ### CMS Configuration
-* Add a copy of the konakart.properties and the konakart_app.properties file under src/main/resources
+* Add a copy of the konakart.properties and the konakart_app.properties files under src/main/resources
 * Add the following lines into the pom.xml file
 
 ```xml
        <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-cms</artifactId>
-            <version>1.00.00-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-repository</artifactId>
-            <version>1.00.00-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -93,7 +106,7 @@ The following steps need to be executed:
 ```
 
 ### SITE Configuration
-* Add a copy of the konakart.properties and the konakart_app.properties file under src/main/resources
+* Add a copy of the konakart.properties, the konakart_app.properties and the konakart_velocity.properties files under src/main/resources
 * Add the following lines into the pom.xml file
 
 ```xml
@@ -101,7 +114,6 @@ The following steps need to be executed:
         <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-hstclient</artifactId>
-            <version>1.00.00-SNAPSHOT</version>
         </dependency>
        <dependency>
             <groupId>mysql</groupId>
@@ -149,13 +161,6 @@ The following steps need to be executed:
             url="jdbc:mysql://localhost:3306/TBD?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;characterEncoding=utf8" />
 
 ```
-
-### Hippo-Konakart Store1 Configuration
-* You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
-    * Update contentroot (i.e. /content/documents/gettingstarted)
-    * Update galleryroot (i.e. /content/gallery/gettingstarted)
-	
-
 ### JAAS Security 
 * Update the hst-config.properties file to update the security auth
 
@@ -169,4 +174,18 @@ By
 ```
 # HST KONAKART login configuration
 java.security.auth.login.config = classpath:/org/onehippo/forge/konakart/site/security/login.conf
-```	
+```
+
+## Now compile and run your project
+
+
+## Post configuration
+
+
+### Hippo-Konakart Store1 Configuration
+* You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
+    * Update contentroot (i.e. /content/documents/gettingstarted)
+    * Update galleryroot (i.e. /content/gallery/gettingstarted)
+	
+
+	
