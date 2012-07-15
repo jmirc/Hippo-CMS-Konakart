@@ -73,29 +73,35 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
             // Add this product to the basket
             if (StringUtils.isNotEmpty(productId)) {
 
-                try {
-                    ProductIf productIf = kkAppEng.getEng().getProduct(kkAppEng.getSessionId(),
-                            Integer.parseInt(productId), kkAppEng.getLangId());
-
-                    OptionIf[] optionIfs = productIf.getOpts();
-
-                    if (optionIfs != null && optionIfs.length > 0) {
-                        KKProductDocument productDocument = convertProduct(request, productIf);
-
-                        HstLinkCreator linkCreator = request.getRequestContext().getHstLinkCreator();
-                        HstLink link = linkCreator.create(productDocument, request.getRequestContext());
-
-                        HstResponseUtils.sendRedirect(request, response, link.getPath());
-
-                        return;
-                    }
-                } catch (KKException e) {
-                    log.warn("Failed to retrieve the Konakart product with his id - " + productId);
-                    return;
-                }
-
                 // Get the selected options if exists
                 OptionIf[] optionIfs = retrieveSelectedProductOptions(kkAppEng, request);
+
+
+                // Check if a product has been added but no options have been selected
+                if (optionIfs.length == 0) {
+
+                    try {
+                        ProductIf productIf = kkAppEng.getEng().getProduct(kkAppEng.getSessionId(),
+                                Integer.parseInt(productId), kkAppEng.getLangId());
+
+                        OptionIf[] currentOptionIfs = productIf.getOpts();
+
+                        if (currentOptionIfs != null && currentOptionIfs.length > 0) {
+                            KKProductDocument productDocument = convertProduct(request, productIf);
+
+                            HstLinkCreator linkCreator = request.getRequestContext().getHstLinkCreator();
+                            HstLink link = linkCreator.create(productDocument, request.getRequestContext());
+
+                            HstResponseUtils.sendRedirect(request, response, link.getPath());
+
+                            return;
+                        }
+                    } catch (KKException e) {
+                        log.warn("Failed to retrieve the Konakart product with his id - " + productId);
+                        return;
+                    }
+                }
+
 
                 // Add this product to the wish list
                 if (StringUtils.isNotEmpty(addToWishList) && Boolean.valueOf(addToWishList)) {

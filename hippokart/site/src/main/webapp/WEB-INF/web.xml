@@ -171,6 +171,14 @@
     <servlet>
         <servlet-name>LoginServlet</servlet-name>
         <servlet-class>org.hippoecm.hst.security.servlet.LoginServlet</servlet-class>
+        <init-param>
+            <param-name>loginErrorPage</param-name>
+            <param-value>/WEB-INF/jsp/errorpages/loginFailure.jsp</param-value>
+        </init-param>
+        <init-param>
+            <param-name>loginFormPagePath</param-name>
+            <param-value>/WEB-INF/jsp/errorpages/loginPageRedirector.jsp</param-value>
+        </init-param>
     </servlet>
 
     <servlet>

@@ -84,6 +84,14 @@ the parent version to 7.7.1 then the property definitions below can be removed -
             <name>Hippo maven 2 repository.</name>
             <url>http://maven.onehippo.com/maven2/</url>
         </repository>
+        <repository>
+            <id>hippo-maven2-snapshots</id>
+            <name>Hippo Maven 2 Snapshots</name>
+            <url>http://maven.onehippo.com/maven2-snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
     </repositories>
 
     <dependencyManagement>
@@ -246,12 +254,6 @@ the parent version to 7.7.1 then the property definitions below can be removed -
                         <artifactId>cargo-maven2-plugin</artifactId>
                         <configuration>
                             <configuration>
-                                <dependencies>
-                                    <dependency>
-                                        <groupId>mysql</groupId>
-                                        <artifactId>mysql-connector-java</artifactId>
-                                    </dependency>
-                                </dependencies>
                                 <deployables>
                                     <deployable>
                                         <type>war</type>
@@ -277,6 +279,12 @@ the parent version to 7.7.1 then the property definitions below can be removed -
                                 </configfiles>
                             </configuration>
                             <container>
+                                <dependencies>
+                                    <dependency>
+                                        <groupId>mysql</groupId>
+                                        <artifactId>mysql-connector-java</artifactId>
+                                    </dependency>
+                                </dependencies>
                                 <systemProperties>
                                     <derby.stream.error.file>${project.basedir}/target/derby.log
                                     </derby.stream.error.file>
