@@ -14,11 +14,6 @@
     <script src="${rateJs}" type="text/javascript"></script>
 </hst:headContribution>
 
-<hst:headContribution category="jsInternal">
-    <hst:link var="rateJs" path="/js/rate.js"/>
-    <script src="${rateJs}" type="text/javascript"></script>
-</hst:headContribution>
-
 <kk:addToBasketActionURL product="${document}" var="addToBasket"/>
 
 <hst:link var="prdImgLink" hippobean="${document.mainImage.original}"/>
@@ -128,7 +123,7 @@ function setWishListId(id) {
 
                     <c:if test="${wishListEnabled}">
                         <input type="submit" onmouseover="setAddToWishList()" class="btn btn-primary"
-                               value="Add to wish list"/>
+                        value="Add to wish list"/>
                     </c:if>
 
 

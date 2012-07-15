@@ -1,10 +1,31 @@
 <%@ include file="/WEB-INF/jspf/htmlTags.jspf" %>
-<%--@elvariable id="menu" type="org.hippoecm.hst.core.sitemenu.HstSiteMenu"--%>
+<%--@elvariable id="category" type="com.konakart.appif.CategoryIf"--%>
+<%--@elvariable id="childCategory" type="com.konakart.appif.CategoryIf"--%>
 
-<c:if test="${not empty menu.siteMenuItems}">
-  <ul class="nav nav-pills nav-stacked">
-    <c:forEach var="item" items="${menu.siteMenuItems}">
-      <tag:menuitem siteMenuItem="${item}"/>
-    </c:forEach>
-  </ul>
-</c:if>
+<ul class="breadcrumb">
+    <li>Categories</li>
+</ul>
+<div class="span3 product_list">
+
+    <ul class="nav">
+        <c:forEach var="category" items="${categoriesFacet}">
+            <c:if test="${category.level eq 0}">
+                <li>
+                    <hst:link path="/listing/${category.id}" var="selectCategory"/>
+                    <a class="<c:if test="${category.selected}">active</c:if>" href="${selectCategory}">${category.name} (${category.numberOfProducts})</a>
+                    <c:if test="${category.selected && fn:length(category.children) > 0}">
+                        <ul>
+                            <c:forEach var="childCategory" items="${category.children}">
+                                <li>
+                                    <hst:link path="/listing/${childCategory.id}" var="selectChildCategory"/>
+                                    <a class="<c:if test="${childCategory.selected}">active</c:if>" href="${selectChildCategory}"> - ${childCategory.name} (${childCategory.numberOfProducts})</a>
+                                </li>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
+                </li>
+            </c:if>
+        </c:forEach>
+    </ul>
+</div>
+
