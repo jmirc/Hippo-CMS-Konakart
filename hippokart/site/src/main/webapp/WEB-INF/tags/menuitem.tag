@@ -4,11 +4,12 @@
               required="true" %>
 
 <c:choose>
-    <c:when test="${siteMenuItem.selected}">
+    <c:when test="${siteMenuItem.selected || siteMenuItem.expanded}">
         <c:choose>
             <c:when test="${siteMenuItem.expanded and not empty siteMenuItem.childMenuItems}">
                 <li class="active dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">${fn:escapeXml(siteMenuItem.name)}
+                    <hst:link var="link" link="${siteMenuItem.hstLink}"/>
+                    <a href="${link}" class="dropdown-toggle" data-toggle="dropdown">${fn:escapeXml(siteMenuItem.name)}
                         <b class="caret"></b>
                         <ul class="dropdown-menu">
                             <c:forEach var="child" items="${siteMenuItem.childMenuItems}">
@@ -20,7 +21,8 @@
             </c:when>
             <c:otherwise>
                 <li class="active">
-                    <a href="#">${fn:escapeXml(siteMenuItem.name)}</a>
+                    <hst:link var="link" link="${siteMenuItem.hstLink}"/>
+                    <a href="${link}">${fn:escapeXml(siteMenuItem.name)}</a>
                 </li>
             </c:otherwise>
         </c:choose>

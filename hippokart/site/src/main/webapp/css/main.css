@@ -149,3 +149,8 @@ label.error {
     float: right;
     margin-top: -20px;
 }
+
+.pull-right-signin-button {
+    float: right;
+    margin-bottom: 20px !important;
+}

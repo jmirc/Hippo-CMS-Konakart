@@ -41,6 +41,12 @@ public class KKProductServiceImpl extends KKBaseServiceImpl implements KKProduct
     @Override
     public ProductIf[] fetchNewProducts(HstRequest hstRequest, int categoryId, boolean fetchDescription,
                                         boolean showInvisible, int limit) {
+        return fetchNewProducts(hstRequest, categoryId, fetchDescription, showInvisible, limit,
+                DataDescConstants.ORDER_BY_DATE_ADDED);
+    }
+    @Override
+    public ProductIf[] fetchNewProducts(HstRequest hstRequest, int categoryId, boolean fetchDescription,
+                                        boolean showInvisible, int limit, String orderBy) {
         KKAppEng kkAppEng = getKKAppEng(hstRequest);
 
         DataDescriptorIf dataDescriptorIf = new DataDescriptor();
@@ -49,7 +55,7 @@ public class KKProductServiceImpl extends KKBaseServiceImpl implements KKProduct
         dataDescriptorIf.setFillDescription(fetchDescription);
         dataDescriptorIf.setOffset(0);
         dataDescriptorIf.setLimit(limit);
-        dataDescriptorIf.setOrderBy(DataDescConstants.ORDER_BY_DATE_ADDED);
+        dataDescriptorIf.setOrderBy(orderBy);
 
         try {
             ProductsIf productsIf = kkAppEng.getEng().getProductsPerCategoryWithOptions(kkAppEng.getSessionId(), dataDescriptorIf, categoryId,

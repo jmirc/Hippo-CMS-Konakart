@@ -11,14 +11,14 @@
         <c:forEach var="category" items="${categoriesFacet}">
             <c:if test="${category.level eq 0}">
                 <li>
-                    <hst:link path="/listing/${category.id}" var="selectCategory"/>
-                    <a class="<c:if test="${category.selected}">active</c:if>" href="${selectCategory}">${category.name} (${category.numberOfProducts})</a>
+                    <hst:link siteMapItemRefId="categoryRefId" var="selectCategory"/>
+                    <a class="<c:if test="${category.selected}">active</c:if>" href="${selectCategory}/${category.id}">${category.name} (${category.numberOfProducts})</a>
                     <c:if test="${category.selected && fn:length(category.children) > 0}">
                         <ul>
                             <c:forEach var="childCategory" items="${category.children}">
                                 <li>
-                                    <hst:link path="/listing/${childCategory.id}" var="selectChildCategory"/>
-                                    <a class="<c:if test="${childCategory.selected}">active</c:if>" href="${selectChildCategory}"> - ${childCategory.name} (${childCategory.numberOfProducts})</a>
+                                    <hst:link siteMapItemRefId="categoryRefId" var="selectChildCategory"/>
+                                    <a class="<c:if test="${childCategory.selected}">active</c:if>" href="${selectChildCategory}/${childCategory.id}"> - ${childCategory.name} (${childCategory.numberOfProducts})</a>
                                 </li>
                             </c:forEach>
                         </ul>

@@ -159,7 +159,7 @@
 
 <ul class="breadcrumb">
     <c:set var="count" value="${count + 1}" scope="page"/>
-    <li class="active"><h3>${count}. <fmt:message key="checkout.step.orderreview"/></h3></li>
+    <li class="active"><h3>Step ${count}. <fmt:message key="checkout.step.orderreview"/></h3></li>
 </ul>
 <c:if test="${state == 'ORDER_REVIEW'}">
     <tag:checkoutOrderReview/>

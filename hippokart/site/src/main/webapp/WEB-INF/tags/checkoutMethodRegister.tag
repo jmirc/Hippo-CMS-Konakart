@@ -4,6 +4,40 @@
 <%--@elvariable id="item" type="org.onehippo.forge.konakart.hst.vo.CartItem"--%>
 
 <div class="row-fluid">
+    <div class="span5">
+
+        <kk:activityActionURL action="LOGIN" var="loginLink"/>
+
+        <h4>Registered Customers</h4></p>
+        <p>If you have an account with us, please log in.</p>
+
+        <hst:link var="loginLink" path="/login/proxy" />
+        <form id="loginFormID" action="${loginLink}" method="post">
+            <div class="control-group">
+                <label for="username" class="control-label">Username</label>
+                <div class="controls">
+                    <input class="required email highlight input-large" id="username" name="username" value="${username}"
+                           type="text" placeholder="Email address">
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Password</label>
+                <div class="controls">
+                    <input class="required highlight input-large" id="inputIcon2"
+                           name="password" type="password"
+                           placeholder="Password">
+
+                    <span class="help-inline">${login.failed}</span>
+                </div>
+            </div>
+
+            <%-- destination url when the login is successful --%>
+            <hst:link var="checkoutLink"/>
+            <input type="hidden" name="destination" value="${checkoutLink}"/>
+            <button class="btn btn-primary pull-right-signin-button" type="submit"><fmt:message key="login.form.submit"/></button>
+        </form>
+    </div>
+
     <div class="span6 ">
         <p>
             <c:choose>
@@ -50,39 +84,6 @@
         </form>
     </div>
 
-    <div class="span5">
-
-        <kk:activityActionURL action="LOGIN" var="loginLink"/>
-
-        <h4>Registered Customers</h4></p>
-        <p>If you have an account with us, please log in.</p>
-
-        <hst:link var="loginLink" path="/login/proxy" />
-        <form id="loginFormID" action="${loginLink}" method="post">
-            <div class="control-group">
-                <label for="username" class="control-label">Username</label>
-                <div class="controls">
-                    <input class="required email highlight input-large" id="username" name="username" value="${username}"
-                           type="text" placeholder="Email address">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">Password</label>
-                <div class="controls">
-                    <input class="required highlight input-large" id="inputIcon2"
-                           name="password" type="password"
-                           placeholder="Password">
-
-                    <span class="help-inline">${login.failed}</span>
-                </div>
-            </div>
-
-            <%-- destination url when the login is successful --%>
-            <hst:link var="checkoutLink"/>
-            <input type="hidden" name="destination" value="${checkoutLink}"/>
-            <button class="btn btn-primary" type="submit"><fmt:message key="login.form.submit"/></button>
-        </form>
-    </div>
 </div>
 
 
