@@ -1,27 +1,36 @@
 <%@ include file="/WEB-INF/jspf/htmlTags.jspf" %>
 <%--@elvariable id="document" type="org.onehippo.cms7.hst.hippokart.beans.TextDocument"--%>
 
-<c:choose>
-  <c:when test="${empty document}">
-    <tag:pagenotfound/>
-  </c:when>
-  <c:otherwise>
+<div class="row">
 
-    <c:if test="${not empty document.title}">
-      <hst:element var="headTitle" name="title">
-        <c:out value="${document.title}"/>
-      </hst:element>
-      <hst:headContribution keyHint="headTitle" element="${headTitle}"/>
-    </c:if>
+    <c:choose>
+        <c:when test="${empty document}">
+            <tag:pagenotfound/>
+        </c:when>
+        <c:otherwise>
 
-    <article class="well well-large">
-      <hst:cmseditlink hippobean="${document}"/>
-      <header>
-        <h2>${fn:escapeXml(document.title)}</h2>
-        <p>${fn:escapeXml(document.summary)}</p>
-      </header>
-      <hst:html hippohtml="${document.html}"/>
-    </article>
 
-  </c:otherwise>
-</c:choose>
+
+            <c:if test="${not empty document.title}">
+                <hst:element var="headTitle" name="title">
+                    <c:out value="${document.title}"/>
+                </hst:element>
+                <hst:headContribution keyHint="headTitle" element="${headTitle}"/>
+            </c:if>
+
+            <hst:cmseditlink hippobean="${document}"/>
+            <div class="span2">
+                &nbsp;
+            </div>
+            <div class="span9">
+                <div class="page-header">
+                    <h1>${fn:escapeXml(document.title)}&nbsp;<small>${fn:escapeXml(document.summary)}</small></h1>
+                </div>
+                <div class="row">
+                    <hst:html hippohtml="${document.html}"/>
+                </div>
+            </div>
+
+        </c:otherwise>
+    </c:choose>
+</div>

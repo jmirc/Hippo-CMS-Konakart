@@ -23,6 +23,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('#CountryDropDown').change(function () {
+            alert('change is called');
             $.getJSON("${countryDropDown}/" + $(this).val(), "", function (data) {
                 var list = $('#StateDropDown');
                 list.empty('option')
