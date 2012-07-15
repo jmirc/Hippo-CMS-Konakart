@@ -3,15 +3,21 @@ package org.onehippo.forge.konakart.hst.components;
 import com.konakart.al.KKAppEng;
 import com.konakart.al.ProdOption;
 import com.konakart.al.ProdOptionContainer;
+import com.konakart.app.KKException;
 import com.konakart.app.Option;
 import com.konakart.appif.BasketIf;
 import com.konakart.appif.OptionIf;
+import com.konakart.appif.ProductIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.component.support.forms.FormField;
 import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.component.support.forms.FormUtils;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
+import org.hippoecm.hst.core.linking.HstLink;
+import org.hippoecm.hst.core.linking.HstLinkCreator;
+import org.hippoecm.hst.util.HstResponseUtils;
+import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
@@ -50,27 +56,60 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
 
 
         if (StringUtils.equals(action, KKCheckoutConstants.ACTIONS.ADD_TO_BASKET.name())) {
-            String productId = KKUtil.getEscapedParameter(request, KKCheckoutConstants.PRODUCT_ID);
-            String addToWishList = KKUtil.getEscapedParameter(request, KKCheckoutConstants.ADD_TO_WISH_LIST);
+            String productId = KKUtil.getActionRequestParameter(request, KKCheckoutConstants.PRODUCT_ID);
+            String addToWishList = KKUtil.getActionRequestParameter(request, KKCheckoutConstants.ADD_TO_WISH_LIST);
+            String sQuantity = KKUtil.getActionRequestParameter(request, KKCheckoutConstants.QUANTITY);
+
+            int quantity = 1;
+
+            if (StringUtils.isNotBlank(sQuantity)) {
+                quantity = Integer.parseInt(sQuantity);
+
+                if (quantity < 1) {
+                    quantity = 1;
+                }
+            }
 
             // Add this product to the basket
             if (StringUtils.isNotEmpty(productId)) {
+
+                try {
+                    ProductIf productIf = kkAppEng.getEng().getProduct(kkAppEng.getSessionId(),
+                            Integer.parseInt(productId), kkAppEng.getLangId());
+
+                    OptionIf[] optionIfs = productIf.getOpts();
+
+                    if (optionIfs != null && optionIfs.length > 0) {
+                        KKProductDocument productDocument = convertProduct(request, productIf);
+
+                        HstLinkCreator linkCreator = request.getRequestContext().getHstLinkCreator();
+                        HstLink link = linkCreator.create(productDocument, request.getRequestContext());
+
+                        HstResponseUtils.sendRedirect(request, response, link.getPath());
+
+                        return;
+                    }
+                } catch (KKException e) {
+                    log.warn("Failed to retrieve the Konakart product with his id - " + productId);
+                    return;
+                }
+
                 // Get the selected options if exists
                 OptionIf[] optionIfs = retrieveSelectedProductOptions(kkAppEng, request);
 
                 // Add this product to the wish list
                 if (StringUtils.isNotEmpty(addToWishList) && Boolean.valueOf(addToWishList)) {
-                    String wishListId = KKUtil.getEscapedParameter(request, KKCheckoutConstants.WISH_LIST_ID);
+                    String wishListId = KKUtil.getActionRequestParameter(request, KKCheckoutConstants.WISH_LIST_ID);
 
                     if (StringUtils.isNotEmpty(wishListId)) {
                         boolean added = KKServiceHelper.getKKBasketService().addProductToWishList(kkAppEng, request,
-                                Integer.valueOf(wishListId), Integer.valueOf(productId), optionIfs);
+                                Integer.valueOf(wishListId), Integer.valueOf(productId), optionIfs, quantity);
 
                         redirectAfterProductAddedToWishList(added, request, response);
                     }
                 } else {
                     boolean added = KKServiceHelper.getKKBasketService().addProductToBasket(kkAppEng, request,
-                            Integer.valueOf(productId), optionIfs);
+                            Integer.valueOf(productId), optionIfs, quantity);
 
                     redirectAfterProductAddedToBasket(added, request, response);
                 }
@@ -121,7 +160,7 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
      */
     protected void redirectAfterProductAddedToBasket(boolean added, @Nonnull HstRequest request,
                                                      @Nonnull HstResponse response) {
-
+        redirectByRefId(request, response, getCartDetailRefId());
     }
 
 

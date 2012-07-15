@@ -26,7 +26,7 @@ public class KKCheckout extends KKHstActionComponent {
     public static final String CHECKOUT_ORDER = "checkoutOrder";
 
     @Override
-    public final void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
+    public void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
         super.doBeforeRender(request, response);
 
         KKAppEng kkAppEng = getKKAppEng(request);

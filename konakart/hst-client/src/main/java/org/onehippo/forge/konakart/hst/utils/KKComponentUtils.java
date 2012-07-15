@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import java.util.Enumeration;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -32,9 +33,12 @@ public class KKComponentUtils {
     public static final String DEFAULT_WISH_LIST = "defaultWishList";
     public static final String CURRENT_CUSTOMER = "currentCustomer";
     public static final String BASKET_TOTAL = "basketTotal";
+    public static final String NB_ITEMS = "nbItems";
     public static final String WISH_LIST_ENABLED = "wishListEnabled";
     public static final String DISPLAY_PRICE_WITH_TAX = "displayPriceWithTax";
     public static final String IS_LOGGED = "isLogged";
+    public static final String CURRENT_CATEGORIES = "currentCategories";
+
 
     /**
      * Set the global konakart attributes to the Hst request
@@ -58,6 +62,7 @@ public class KKComponentUtils {
             // Set the current customer
             request.setAttribute(CURRENT_CUSTOMER, KKServiceHelper.getKKCustomerService().getCurrentCustomer(request));
             request.setAttribute(BASKET_TOTAL, KKServiceHelper.getKKBasketService().getBasketTotal(request));
+            request.setAttribute(NB_ITEMS, KKServiceHelper.getKKBasketService().getNumberOfITems(request));
         } catch (Exception e) {
             log.warn("Failed to render the HST component {}", e.toString());
         }
@@ -135,6 +140,28 @@ public class KKComponentUtils {
         }
 
         request.setAttribute(CATEGORIES_FACET, categoryList);
+    }
+
+    /**
+     * Set the current categories
+     *
+     * @param request the hst request to set
+     */
+    public static void setCurrentCategories(HstRequest request) {
+
+        KKAppEng kkAppEng = getKKAppEng(request);
+
+        LinkedList<CategoryIf> categoryIfs = new LinkedList<CategoryIf>();
+        CategoryIf currentCategory = kkAppEng.getCategoryMgr().getCurrentCat();
+
+        categoryIfs.addFirst(currentCategory);
+
+        while (currentCategory.getParent() != null) {
+            categoryIfs.addFirst(currentCategory.getParent());
+            currentCategory = currentCategory.getParent();
+        }
+
+        request.setAttribute(CURRENT_CATEGORIES, categoryIfs);
     }
 
     /**

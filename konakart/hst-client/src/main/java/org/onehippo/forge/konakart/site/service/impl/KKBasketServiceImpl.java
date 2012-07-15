@@ -6,10 +6,7 @@ import com.konakart.al.KKAppException;
 import com.konakart.app.Basket;
 import com.konakart.app.KKException;
 import com.konakart.app.WishListItem;
-import com.konakart.appif.BasketIf;
-import com.konakart.appif.OptionIf;
-import com.konakart.appif.ProductIf;
-import com.konakart.appif.WishListItemIf;
+import com.konakart.appif.*;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.onehippo.forge.konakart.site.service.KKBasketService;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
@@ -44,8 +41,22 @@ public class KKBasketServiceImpl extends KKBaseServiceImpl implements KKBasketSe
     }
 
     @Override
+    public int getNumberOfITems(@Nonnull HstRequest request) {
+
+        CustomerIf customerIf = KKServiceHelper.getKKCustomerService().getCurrentCustomer(request);
+
+        BasketIf[] baskets = customerIf.getBasketItems();
+
+        if (baskets != null) {
+            return baskets.length;
+        }
+
+        return 0;
+    }
+
+    @Override
     public boolean addProductToBasket(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request,
-                                      int productId, @Nonnull OptionIf[] optionIfs) {
+                                      int productId, @Nonnull OptionIf[] optionIfs, int quantity) {
 
         // Get the product from its Id
         try {
@@ -61,7 +72,7 @@ public class KKBasketServiceImpl extends KKBaseServiceImpl implements KKBasketSe
             * that the array of options may be null.
             */
             BasketIf b = new Basket();
-            b.setQuantity(1);
+            b.setQuantity(quantity);
             b.setOpts(optionIfs);
             b.setProductId(selectedProd.getId());
 
@@ -83,7 +94,8 @@ public class KKBasketServiceImpl extends KKBaseServiceImpl implements KKBasketSe
     }
 
     @Override
-    public boolean addProductToWishList(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request, int wishListId, int productId, @Nonnull OptionIf[] optionIfs) {
+    public boolean addProductToWishList(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request, int wishListId,
+                                        int productId, @Nonnull OptionIf[] optionIfs, int quantity) {
         try {
             // Add an item to the customer's wish list
             if (KKServiceHelper.getKKCustomerService().wishListEnabled(request)) {
@@ -96,7 +108,7 @@ public class KKBasketServiceImpl extends KKBaseServiceImpl implements KKBasketSe
                 // Medium priority
                 wli.setPriority(3);
                 // Quantity = 1
-                wli.setQuantityDesired(1);
+                wli.setQuantityDesired(quantity);
                 // Add the item
                 kkAppEng.getWishListMgr().addToWishList(wli);
                 // Refresh the customer's wish list

@@ -30,6 +30,7 @@ public interface KKCheckoutConstants {
 
     String PRODUCT_ID = "prodId";
     String BASKET_ID = "basketId";
+    String QUANTITY = "quantity";
     String ADD_TO_WISH_LIST = "addToWishList";
     String WISH_LIST_ID = "wishListId";
 

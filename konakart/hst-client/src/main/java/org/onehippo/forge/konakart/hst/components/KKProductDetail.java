@@ -12,6 +12,7 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.onehippo.forge.konakart.site.service.KKTagsService;
@@ -23,17 +24,16 @@ import java.util.List;
 /**
  * This detail product component should be used to retrieve a product
  */
-public class DefaultKKProductDetail extends KKHstActionComponent {
+public class KKProductDetail extends KKHstActionComponent {
 
-    private static final String DATE_PATTERN = "yyyy-MM-dd HH.mm.ss.SSS";
-
+    public static final String  PRODUCT = "product";
     private static final String NAME = "name";
     private static final String COMMENT = "comment";
     private static final String EMAIL = "email";
     private static final String RATING = "rating";
     private static final String SUCCESS = "success";
-    private static final String ERRORS = "errors";
 
+    private static final String ERRORS = "errors";
     public static final String REVIEWS = "reviews";
     public static final String ALLOW_COMMENTS = "allowComments";
 
@@ -45,8 +45,9 @@ public class DefaultKKProductDetail extends KKHstActionComponent {
         KKAppEng kkAppEng = getKKAppEng(request);
 
         KKProductDocument document = getKKProductDocument(request);
+        document.setProductIf(convertProduct(request, document));
 
-        request.setAttribute("document", document);
+        request.setAttribute(PRODUCT, document);
 
         try {
             // Fetch the product related data from the database
@@ -72,6 +73,8 @@ public class DefaultKKProductDetail extends KKHstActionComponent {
             request.setAttribute("prodOptContainer", opts);
         }
 
+
+        KKComponentUtils.setCurrentCategories(request);
 
         request.setAttribute(ALLOW_COMMENTS, !isGuestCustomer(request));
         request.setAttribute(REVIEWS, KKServiceHelper.getKKReviewService().getReviewsForProductId(request, document.getProductId()));

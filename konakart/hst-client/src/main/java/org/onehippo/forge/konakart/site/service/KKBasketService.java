@@ -25,6 +25,14 @@ public interface KKBasketService {
     String getBasketTotal(@Nonnull HstRequest request);
 
     /**
+     * Returns the number of items into the basket
+     *
+     * @param request the Hst request
+     * @return Returns the number of items into the basket
+     */
+    int getNumberOfITems(@Nonnull HstRequest request);
+
+    /**
      * Used to get an instance of the BasketMgr.
      *
      * @param request the hst request
@@ -42,7 +50,7 @@ public interface KKBasketService {
      * @return true if the product has been added, false otherwise
      */
     boolean addProductToBasket(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request, int prodId,
-                               @Nonnull OptionIf[] optionIfs);
+                               @Nonnull OptionIf[] optionIfs, int quantity);
 
 
     /**
@@ -56,6 +64,6 @@ public interface KKBasketService {
      * @return true if the product has been added, false otherwise
      */
     public boolean addProductToWishList(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request, int wishListId,
-                                        int productId, @Nonnull OptionIf[] optionIfs);
+                                        int productId, @Nonnull OptionIf[] optionIfs, int quantity);
 
 }

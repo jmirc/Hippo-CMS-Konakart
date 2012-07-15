@@ -1,11 +1,13 @@
 package org.onehippo.forge.konakart.hst.beans;
 
+import com.konakart.appif.ProductIf;
 import org.hippoecm.hst.content.beans.Node;
 import org.hippoecm.hst.content.beans.standard.*;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,27 +20,25 @@ public class KKProductDocument extends HippoDocument {
     protected Logger log = LoggerFactory.getLogger(KKProductDocument.class);
 
     private List<HippoGalleryImageSet> images;
+    private ProductIf productIf;
+    private boolean shouldIncludeTax;
+
+    public ProductIf getProductIf() {
+        return productIf;
+    }
+
+    public void setProductIf(ProductIf productIf) {
+        this.productIf = productIf;
+    }
+
+    public void setShouldIncludeTax(boolean shouldIncludeTax) {
+        this.shouldIncludeTax = shouldIncludeTax;
+    }
 
     public int getProductId() {
         Long id = getProperty(KKCndConstants.PRODUCT_ID);
 
         return id.intValue();
-    }
-
-    public String getName() {
-        return getProperty(KKCndConstants.PRODUCT_NAME);
-    }
-
-    public String getSku() {
-        return getProperty(KKCndConstants.PRODUCT_SKU);
-    }
-
-    public String getModel() {
-        return getProperty(KKCndConstants.PRODUCT_MODEL);
-    }
-
-    public String getStoreId() {
-        return getProperty(KKCndConstants.PRODUCT_STORE_ID);
     }
 
     public HippoHtml getAbstractInfo() {
@@ -49,36 +49,12 @@ public class KKProductDocument extends HippoDocument {
         return getHippoHtml(KKCndConstants.PRODUCT_DESCRIPTION);
     }
 
-    public Double getSpecialPrice() {
-        return getProperty(KKCndConstants.PRODUCT_SPECIAL_PRICE);
-    }
+    public BigDecimal getSpecialPrice() {
+        if (shouldIncludeTax) {
+            return productIf.getSpecialPriceIncTax();
+        }
 
-    public Double getPrice0() {
-        return getProperty(KKCndConstants.PRODUCT_PRICE_0);
-    }
-
-    public Double getPrice1() {
-        return getProperty(KKCndConstants.PRODUCT_PRICE_1);
-    }
-
-    public Double getPrice2() {
-        return getProperty(KKCndConstants.PRODUCT_PRICE_2);
-    }
-
-    public Double getPrice3() {
-        return getProperty(KKCndConstants.PRODUCT_PRICE_3);
-    }
-
-    public Long getQuantity() {
-        return getProperty(KKCndConstants.PRODUCT_QUANTITY);
-    }
-
-    public Double getWeight() {
-        return getProperty(KKCndConstants.PRODUCT_WEIGHT);
-    }
-
-    public Boolean getCanOrderNotInStock() {
-        return getProperty(KKCndConstants.PRODUCT_ORDER_NOT_IN_STOCK);
+        return productIf.getSpecialPriceExTax();
     }
 
     /**

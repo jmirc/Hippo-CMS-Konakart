@@ -62,7 +62,7 @@ public class KonakartSyncProducts {
 
             String storeId = kkStoreConfig.getStoreId();
 
-            if (!StringUtils.equals(currentLocale.toString(), language.getLocale())) {
+            if (currentLocale == null || !StringUtils.equals(currentLocale.toString(), language.getLocale())) {
                 log.info("Unable to map the Konakart locale <" + language.getLocale() + "> with any available hippo locale");
                 continue;
             }

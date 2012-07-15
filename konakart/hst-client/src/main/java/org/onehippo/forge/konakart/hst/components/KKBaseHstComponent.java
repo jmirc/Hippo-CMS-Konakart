@@ -1,7 +1,11 @@
 package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.al.KKAppEng;
+import com.konakart.app.DataDescriptor;
+import com.konakart.appif.DataDescriptorIf;
 import com.konakart.appif.ProductIf;
+import com.konakart.appif.ReviewIf;
+import com.konakart.appif.ReviewsIf;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
 import org.hippoecm.hst.core.component.HstComponentException;
@@ -20,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -170,14 +175,66 @@ public class KKBaseHstComponent extends BaseHstComponent {
             if (product.getCustom10() == null) {
                 log.error("Synchronization error. Custom 10 is null for the product id - " + product.getId());
             } else {
-                return  (KKProductDocument) super.getObjectConverter().getObject(product.getCustom10(),
+                KKProductDocument kkProductDocument =  (KKProductDocument) super.getObjectConverter().getObject(product.getCustom10(),
                         super.getSiteContentBaseBean(hstRequest).getNode());
+
+                kkProductDocument.setProductIf(product);
+
+                return kkProductDocument;
             }
         } catch (Exception e) {
             log.error("Failed to find the Hippo Document for the product id - " + product.getId());
         }
 
         return null;
+    }
+
+    /**
+     * Convert a konakart products to a KKProductDocument
+     *
+     * @param hstRequest the hst request
+     * @param product a konakart product
+     */
+    @Nullable
+    public ProductIf convertProduct(HstRequest hstRequest, KKProductDocument product) {
+        if (product == null) {
+            return null;
+        }
+
+        ProductIf productIf = null;
+
+        try {
+            KKAppEng kkAppEng = getKKAppEng(hstRequest);
+            productIf = kkAppEng.getEng().getProduct(kkAppEng.getSessionId(), product.getProductId(), kkAppEng.getLangId());
+
+            DataDescriptorIf dataDescriptorIf = new DataDescriptor();
+            dataDescriptorIf.setShowInvisible(false);
+
+            ReviewsIf reviewsIf = kkAppEng.getEng().getReviewsPerProduct(dataDescriptorIf, product.getProductId());
+
+            if (reviewsIf.getTotalNumReviews() == 0) {
+                productIf.setRating(new BigDecimal(0));
+            }
+
+            // Retreive the reviews.
+            ReviewIf[] reviews = reviewsIf.getReviewArray();
+
+            // Double check...
+            if (reviews != null && reviews.length > 0) {
+                double rating = 0;
+
+                for (ReviewIf reviewIf : reviews) {
+                    rating += reviewIf.getRating();
+                }
+
+                productIf.setRating(new BigDecimal(rating / reviews.length));
+            }
+
+        } catch (Exception e) {
+            log.error("Failed to find the Konakart product with the id - " + product.getProductId());
+        }
+
+        return productIf;
     }
 
 
@@ -202,6 +259,8 @@ public class KKBaseHstComponent extends BaseHstComponent {
                     KKProductDocument kkProductDocument = (KKProductDocument) super.getObjectConverter().getObject(productIf.getCustom10(),
                             super.getSiteContentBaseBean(hstRequest).getNode());
 
+                    kkProductDocument.setProductIf(productIf);
+
                     documents.addLast(kkProductDocument);
                 }
             } catch (Exception e) {
@@ -211,7 +270,4 @@ public class KKBaseHstComponent extends BaseHstComponent {
 
         return documents;
     }
-
-
-
 }
