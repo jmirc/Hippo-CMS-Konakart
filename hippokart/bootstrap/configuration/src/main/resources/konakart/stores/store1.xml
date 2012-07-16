@@ -6,4 +6,9 @@
   <sv:property sv:name="konakart:contentroot" sv:type="String" h:merge="override">
     <sv:value>/content/documents/hippokart</sv:value>
   </sv:property>
+  <sv:node sv:name="konakart:sync">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>konakart:sync</sv:value>
+    </sv:property>
+  </sv:node>
 </sv:node>
