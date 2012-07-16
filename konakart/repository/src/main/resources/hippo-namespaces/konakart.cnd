@@ -19,21 +19,21 @@
 
 [konakart:review] > konakart:basedocument, hippostd:relaxed
 
-[konakart:adminengine] > mix:referenceable, mix:versionable, nt:base
+[konakart:adminengine] > nt:base
   - konakart:adminusername (string) mandatory
   - konakart:adminpassword (string) mandatory
   - konakart:enginemode (long) mandatory
   - konakart:iscustomershared (boolean) mandatory
   - konakart:isproductshared (boolean) mandatory
 
-[konakart:clientengine] > mix:referenceable, mix:versionable, nt:base
+[konakart:clientengine] > nt:base
   - konakart:enginemode (long) mandatory
   - konakart:iscustomershared (boolean) mandatory
   - konakart:isproductshared (boolean) mandatory
   - konakart:useexternalprice (boolean) mandatory
   - konakart:useexternalquantity (boolean) mandatory
 
-[konakart:sync] > mix:referenceable, mix:versionable, nt:base
+[konakart:sync] > nt:base
   - konakart:jobclass (string)
   - konakart:synchronizationcronexpression (string)
   - konakart:productfolder (string)
@@ -41,7 +41,7 @@
   - konakart:lastupdatedtimekonakarttorepository (date)
 
 
-[konakart:producttypenamespaces] > mix:referenceable, mix:versionable, nt:base
+[konakart:producttypenamespaces] > nt:base
   - konakart:bookableproduct (string)
   - konakart:bundle (string)
   - konakart:bundlefreeshipping (string)
@@ -51,18 +51,18 @@
   - konakart:physicalproductfreeshipping (string)
 
 
-[konakart:store] > mix:referenceable, mix:versionable, nt:base
+[konakart:store] > nt:base
   - konakart:contentroot (string) mandatory
   - konakart:galleryroot (string) mandatory
   - konakart:storeid (string) mandatory
   - konakart:catalogid (string)
-  + konakart:sync (konakart:sync) = konakart:sync version
-  + konakart:producttypenamespaces (konakart:producttypenamespaces) = konakart:producttypenamespaces version
+  + konakart:sync (konakart:sync) = konakart:sync
+  + konakart:producttypenamespaces (konakart:producttypenamespaces) = konakart:producttypenamespaces
 
-[konakart:stores] > mix:referenceable, mix:versionable, nt:base
-  + * (konakart:store) = konakart:store version
+[konakart:stores] > nt:base
+  + * (konakart:store) = konakart:store
 
-[konakart:activity] > mix:referenceable, mix:versionable, nt:base
+[konakart:activity] > nt:base
   - konakart:class (string) mandatory
   - konakart:acceptEmptyState (boolean)
   - konakart:acceptState (string) mandatory
@@ -70,15 +70,15 @@
   - konakart:nextLoggedState (string) mandatory
   - konakart:templateRenderpath (string) mandatory
 
-[konakart:checkout] > mix:referenceable, mix:versionable, nt:base
-  + * (konakart:activity) = konakart:activity version
+[konakart:checkout] > nt:base
+  + * (konakart:activity) = konakart:activity
   - konakart:activities (string) mandatory multiple
   - konakart:processor (string) mandatory
 
-[konakart:konakart] > mix:referenceable, mix:versionable, nt:base
-  + konakart:adminengine (konakart:adminengine) = konakart:adminengine version
-  + konakart:clientengine (konakart:clientengine) = konakart:clientengine version
-  + konakart:stores (konakart:stores) = konakart:stores version
-  + konakart:producttypenamespaces (konakart:producttypenamespaces) = konakart:producttypenamespaces version
-  + konakart:checkout (konakart:checkout) = konakart:checkout version
+[konakart:konakart] > nt:base
+  + konakart:adminengine (konakart:adminengine) = konakart:adminengine
+  + konakart:clientengine (konakart:clientengine) = konakart:clientengine
+  + konakart:stores (konakart:stores) = konakart:stores
+  + konakart:producttypenamespaces (konakart:producttypenamespaces) = konakart:producttypenamespaces
+  + konakart:checkout (konakart:checkout) = konakart:checkout
 
