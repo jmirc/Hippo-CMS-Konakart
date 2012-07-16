@@ -121,6 +121,7 @@
             <div class="span6">
 
                 <c:set var="rating" value="${product.productIf.rating}"/>
+                <c:set var="nbReviews" value="${product.productIf.numberReviews}"/>
                 <fmt:formatNumber value="${rating * 10}" var="ratingStyle" pattern="#0"/>
                 <p class="rating stars-${ratingStyle}">
                     <a href="#">
@@ -128,9 +129,9 @@
                     </a>
                     <a href="#">
                         <c:choose>
-                            <c:when test="${empty rating}">0 review</c:when>
-                            <c:when test="${rating eq 1}">1 review</c:when>
-                            <c:otherwise>${rating} reviews</c:otherwise>
+                            <c:when test="${empty nbReviews}">0 review</c:when>
+                            <c:when test="${nbReviews eq 1}">1 review</c:when>
+                            <c:otherwise>${nbReviews} reviews</c:otherwise>
                         </c:choose>
                     </a></p>
 
