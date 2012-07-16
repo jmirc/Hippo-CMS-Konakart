@@ -6,7 +6,8 @@ import com.konakart.appif.CustomerRegistrationIf;
 import com.konakart.appif.OrderIf;
 import com.konakart.appif.OrderStatusHistoryIf;
 import org.apache.commons.lang.StringUtils;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
+import org.onehippo.forge.konakart.hst.utils.KKRegisterFormUtils;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessContext;
@@ -30,10 +31,10 @@ public class BillingAddressActivity extends BaseAddressActivity {
 
         String action = seedData.getAction();
 
-        if (action.equals(KKCheckoutConstants.ACTIONS.SELECT.name())) {
+        if (action.equals(KKActionsConstants.ACTIONS.SELECT.name())) {
 
 
-            String sAddressId = KKUtil.getEscapedParameter(seedData.getRequest(), ADDRESS);
+            String sAddressId = KKUtil.getEscapedParameter(seedData.getRequest(), KKRegisterFormUtils.ADDRESS);
             String shippingAddress = KKUtil.getEscapedParameter(seedData.getRequest(), SHIPPING_ADDRESS);
 
             Integer addressId = -1;
@@ -46,23 +47,23 @@ public class BillingAddressActivity extends BaseAddressActivity {
             if (StringUtils.isNotEmpty(sAddressId) && (StringUtils.equals(sAddressId, "-1"))) {
                 try {
                     addressId = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getCustomerMgr().
-                            addAddressToCustomer(createAddressForCustomer());
+                            addAddressToCustomer(registerFormUtils.createAddressForCustomer(formMap));
                 } catch (Exception e) {
-                    updateNextLoggedState(KKCheckoutConstants.STATES.INITIAL.name());
+                    updateNextLoggedState(KKActionsConstants.STATES.INITIAL.name());
                     addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.failed.create.address"));
                     return;
                 }
             } else if (StringUtils.isEmpty(sAddressId) && (isCheckoutAsGuest() || isCheckoutAsRegister())) { // User is not logged-in. User wants to checkout as guest.
 
-                CustomerRegistrationIf customerRegistration = createCustomerRegistration();
+                CustomerRegistrationIf customerRegistration = registerFormUtils.createCustomerRegistration(formMap);
 
-                String username = formMap.getField(EMAIL).getValue();
+                String username = formMap.getField(KKRegisterFormUtils.EMAIL).getValue();
 
                 // Generate a random password.
                 String password = String.valueOf(System.currentTimeMillis());
 
                 if (isCheckoutAsRegister()) {
-                    password = formMap.getField(PASSWORD).getValue();
+                    password = formMap.getField(KKRegisterFormUtils.PASSWORD).getValue();
                 }
 
                 // Set the password
@@ -104,7 +105,7 @@ public class BillingAddressActivity extends BaseAddressActivity {
 
                     // Skip the SHIPPING ADDRESS step because the customer has decided to use the
                     // same billing address
-                    hstResponse.setRenderParameter(KKCheckoutConstants.FORCE_NEXT_LOGGED_STATE, KKCheckoutConstants.STATES.SHIPPING_METHOD.name());
+                    hstResponse.setRenderParameter(KKActionsConstants.FORCE_NEXT_LOGGED_STATE, KKActionsConstants.STATES.SHIPPING_METHOD.name());
                 } catch (KKException e) {
                     log.error("Failed to set the shipping address", e);
                 }
@@ -122,7 +123,7 @@ public class BillingAddressActivity extends BaseAddressActivity {
             checkoutOrder.setStatusTrail(oshArray);
         }
 
-        hstResponse.setRenderParameter(KKCheckoutConstants.ACTION, action);
+        hstResponse.setRenderParameter(KKActionsConstants.ACTION, action);
     }
 
     @Override
@@ -131,8 +132,8 @@ public class BillingAddressActivity extends BaseAddressActivity {
 
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
-        List<String> acceptedStates = Arrays.asList(KKCheckoutConstants.STATES.SHIPPING_ADDRESS.name(), KKCheckoutConstants.STATES.SHIPPING_METHOD.name(),
-                KKCheckoutConstants.STATES.PAYMENT_METHOD.name(), KKCheckoutConstants.STATES.ORDER_REVIEW.name());
+        List<String> acceptedStates = Arrays.asList(KKActionsConstants.STATES.SHIPPING_ADDRESS.name(), KKActionsConstants.STATES.SHIPPING_METHOD.name(),
+                KKActionsConstants.STATES.PAYMENT_METHOD.name(), KKActionsConstants.STATES.ORDER_REVIEW.name());
 
         String state = seedData.getState();
 

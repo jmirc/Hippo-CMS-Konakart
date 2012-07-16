@@ -2,7 +2,7 @@ package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
 import com.konakart.bl.ConfigConstants;
 import org.apache.commons.lang.StringUtils;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessContext;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
@@ -41,18 +41,18 @@ public class CheckoutMethodRegisterActivity extends BaseCheckoutActivity {
 
         String action = seedData.getAction();
 
-        if (action.equals(KKCheckoutConstants.ACTIONS.REGISTER.name())) {
+        if (action.equals(KKActionsConstants.ACTIONS.REGISTER.name())) {
             String dontHaveAccount = getDontHaveAccountValue();
 
             if (StringUtils.isNotBlank(dontHaveAccount)) {
-                hstResponse.setRenderParameter(KKCheckoutConstants.DONT_HAVE_ACCOUNT, dontHaveAccount);
+                hstResponse.setRenderParameter(KKActionsConstants.DONT_HAVE_ACCOUNT, dontHaveAccount);
 
                 // Insert event
                 KKServiceHelper.getKKEventService().insertCustomerEvent(hstRequest, KKEventServiceImpl.ACTION_ENTER_CHECKOUT);
             }
         }
 
-        hstResponse.setRenderParameter(KKCheckoutConstants.ACTION, action);
+        hstResponse.setRenderParameter(KKActionsConstants.ACTION, action);
     }
 
 }

@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="${datepickerCss}" type="text/css"/>
 </hst:headContribution>
 
-<hst:headContribution category="jsInternal">
+<hst:headContribution category="scripts">
     <hst:link path="/libs/datepicker/js/bootstrap-datepicker.js" var="datepickerJs"/>
     <script src="${datepickerJs}" type="text/javascript"></script>
 </hst:headContribution>
 
-<hst:headContribution category="jsInternal">
+<hst:headContribution category="scripts">
     <hst:link path="/js/checkout.js" var="checkoutJs"/>
     <script src="${checkoutJs}" type="text/javascript"></script>
 </hst:headContribution>

@@ -1,7 +1,7 @@
 package org.onehippo.forge.konakart.hst.wizard.checkout;
 
 import org.hippoecm.hst.component.support.forms.FormMap;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.Activity;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
@@ -69,7 +69,7 @@ public class CheckoutProcessor extends BaseProcessor {
         }
 
         ((CheckoutSeedData) seedObject).setState(nextState);
-        seedObject.getRequest().setAttribute(KKCheckoutConstants.STATE, nextState);
+        seedObject.getRequest().setAttribute(KKActionsConstants.STATE, nextState);
 
     }
 
@@ -78,7 +78,7 @@ public class CheckoutProcessor extends BaseProcessor {
     public FormMap doAction(SeedData seedObject) throws ActivityException {
         FormMap formMap = null;
 
-        String currentState = KKUtil.getActionRequestParameter(seedObject.getRequest(), KKCheckoutConstants.STATE);
+        String currentState = KKUtil.getActionRequestParameter(seedObject.getRequest(), KKActionsConstants.STATE);
 
         if (log.isDebugEnabled()) {
             log.debug("doAction - " + getClass().getSimpleName() + " processor is running..");
@@ -112,8 +112,8 @@ public class CheckoutProcessor extends BaseProcessor {
             }
         }
 
-        seedObject.getResponse().setRenderParameter(KKCheckoutConstants.STATE, currentState);
-        seedObject.getResponse().setRenderParameter(KKCheckoutConstants.ACTION, ((CheckoutSeedData) seedObject).getAction());
+        seedObject.getResponse().setRenderParameter(KKActionsConstants.STATE, currentState);
+        seedObject.getResponse().setRenderParameter(KKActionsConstants.ACTION, ((CheckoutSeedData) seedObject).getAction());
 
 
         return formMap;

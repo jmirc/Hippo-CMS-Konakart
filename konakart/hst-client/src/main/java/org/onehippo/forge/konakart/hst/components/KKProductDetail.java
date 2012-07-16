@@ -11,7 +11,7 @@ import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
@@ -93,7 +93,7 @@ public class KKProductDetail extends KKHstActionComponent {
 
         KKProductDocument product = getKKProductDocument(request);
 
-        if (StringUtils.equals(action, KKCheckoutConstants.ACTIONS.REVIEW.name())) {
+        if (StringUtils.equals(action, KKActionsConstants.ACTIONS.REVIEW.name())) {
             processReview(product, request, response);
         }
     }

@@ -4,7 +4,7 @@ import com.konakart.app.KKException;
 import com.konakart.appif.CustomerIf;
 import com.konakart.appif.OrderIf;
 import org.apache.commons.lang.StringUtils;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
@@ -62,11 +62,11 @@ public class PaymentMethodActivity extends BaseCheckoutActivity {
 
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
-        if (seedData.getAction().equals(KKCheckoutConstants.ACTIONS.SELECT.name())) {
+        if (seedData.getAction().equals(KKActionsConstants.ACTIONS.SELECT.name())) {
             String paymentMethod = KKUtil.getEscapedParameter(seedData.getRequest(), PAYMENT_METHOD);
 
             if (StringUtils.isEmpty(paymentMethod)) {
-                updateNextLoggedState(KKCheckoutConstants.STATES.PAYMENT_METHOD.name());
+                updateNextLoggedState(KKActionsConstants.STATES.PAYMENT_METHOD.name());
                 addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.select.payment.method"));
                 return;
             }
@@ -85,7 +85,7 @@ public class PaymentMethodActivity extends BaseCheckoutActivity {
 
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
-        List<String> acceptedStates = Arrays.asList(KKCheckoutConstants.STATES.PAYMENT_METHOD.name(), KKCheckoutConstants.STATES.ORDER_REVIEW.name());
+        List<String> acceptedStates = Arrays.asList(KKActionsConstants.STATES.PAYMENT_METHOD.name(), KKActionsConstants.STATES.ORDER_REVIEW.name());
 
         String state = seedData.getState();
 

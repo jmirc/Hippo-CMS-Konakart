@@ -15,7 +15,7 @@ import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +89,7 @@ public class KonakartValve implements Valve {
 
         //  Set the default one
         if (StringUtils.isEmpty(storeName)) {
-            storeName = KKCheckoutConstants.DEF_STORE_ID;
+            storeName = KKActionsConstants.DEF_STORE_ID;
         }
 
 

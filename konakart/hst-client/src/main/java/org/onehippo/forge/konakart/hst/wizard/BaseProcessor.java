@@ -5,7 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.onehippo.forge.konakart.common.engine.KKActivityConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +76,7 @@ public abstract class BaseProcessor implements Processor {
      * @return the current state
      */
     protected String getCurrentState(HstRequest request) {
-        return KKUtil.getActionRequestParameter(request, KKCheckoutConstants.STATE);
+        return KKUtil.getActionRequestParameter(request, KKActionsConstants.STATE);
     }
 
     /**
@@ -84,7 +84,7 @@ public abstract class BaseProcessor implements Processor {
      * @return the next state
      */
     protected String getNextState(HstRequest request) {
-        String forceNextLoggedState = KKUtil.getActionRequestParameter(request, KKCheckoutConstants.FORCE_NEXT_LOGGED_STATE);
+        String forceNextLoggedState = KKUtil.getActionRequestParameter(request, KKActionsConstants.FORCE_NEXT_LOGGED_STATE);
 
         if (StringUtils.isNotBlank(forceNextLoggedState)) {
             return forceNextLoggedState;
@@ -100,7 +100,7 @@ public abstract class BaseProcessor implements Processor {
      * @return the current action
      */
     protected String getCurrentAction(HstRequest request) {
-        return request.getParameter(KKCheckoutConstants.ACTION);
+        return request.getParameter(KKActionsConstants.ACTION);
     }
 
     /**
@@ -111,7 +111,7 @@ public abstract class BaseProcessor implements Processor {
     protected boolean isEditAction(HstRequest request) {
         String currentAction = getCurrentAction(request);
 
-        return (currentAction != null) && currentAction.equals(KKCheckoutConstants.ACTIONS.EDIT.name());
+        return (currentAction != null) && currentAction.equals(KKActionsConstants.ACTIONS.EDIT.name());
     }
 
 

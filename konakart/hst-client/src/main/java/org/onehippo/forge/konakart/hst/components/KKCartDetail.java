@@ -15,9 +15,7 @@ import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
-import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
-import org.onehippo.forge.konakart.hst.utils.KKUtil;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.hst.vo.CartItem;
 import org.onehippo.forge.konakart.hst.vo.OrderItem;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
@@ -217,7 +215,7 @@ public class KKCartDetail extends KKHstActionComponent {
         // We need to find the Basket object corresponding to the cartItem object and we remove it or
         // update it if required.
 
-        if (StringUtils.equals(action, KKCheckoutConstants.ACTIONS.UPDATE.name())) {
+        if (StringUtils.equals(action, KKActionsConstants.ACTIONS.UPDATE.name())) {
             KKAppEng kkAppEng = getKKAppEng(request);
 
             // basket items

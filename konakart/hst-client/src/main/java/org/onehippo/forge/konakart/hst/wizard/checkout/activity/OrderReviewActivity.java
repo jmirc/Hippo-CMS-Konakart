@@ -9,7 +9,7 @@ import com.konakart.appif.EmailOptionsIf;
 import com.konakart.appif.OrderIf;
 import com.konakart.appif.PaymentDetailsIf;
 import com.konakart.bl.OrderMgr;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 
 import java.math.BigDecimal;
@@ -68,9 +68,9 @@ public class OrderReviewActivity extends BaseCheckoutActivity {
         int paymentType = kkAppEng.getOrderMgr().getPaymentType();
 
         if (paymentType == 0) {
-            updateNextLoggedState(KKCheckoutConstants.STATES.ORDER_REVIEW.name());
+            updateNextLoggedState(KKActionsConstants.STATES.ORDER_REVIEW.name());
         } else {
-            updateNextLoggedState(KKCheckoutConstants.STATES.CHECKOUT_FINISHED.name());
+            updateNextLoggedState(KKActionsConstants.STATES.CHECKOUT_FINISHED.name());
         }
 
     }

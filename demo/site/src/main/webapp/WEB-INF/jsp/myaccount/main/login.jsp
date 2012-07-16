@@ -34,19 +34,19 @@
             please click on the Password Forgotten link below and we'll send you a new one.
             </div>
             <p class="verticalSpace">
-                <c:choose>
+            <c:choose>
                 <c:when test="${loginError}">
-            <div class="alert alert-error">
-                <fmt:message key="login.errors.invalidUserPass"/>
-            </div>
-            </c:when>
-            <c:otherwise>
-                <c:if test="${needauth}">
-                    <div class="alert alert-info">
-                        <fmt:message key="login.warning.needToAuthenticate"/>
+                    <div class="alert alert-error">
+                        <fmt:message key="login.errors.invalidUserPass"/>
                     </div>
-                </c:if>
-            </c:otherwise>
+                </c:when>
+                <c:otherwise>
+                    <c:if test="${needauth}">
+                        <div class="alert alert-info">
+                            <fmt:message key="login.warning.needToAuthenticate"/>
+                        </div>
+                    </c:if>
+                </c:otherwise>
             </c:choose>
             </p>
 

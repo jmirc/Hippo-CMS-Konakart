@@ -2,7 +2,7 @@ package org.onehippo.forge.konakart.hst.utils;
 
 import com.konakart.util.KKConstants;
 
-public interface KKCheckoutConstants {
+public interface KKActionsConstants {
 
     static final String DEF_STORE_ID = KKConstants.KONAKART_DEFAULT_STORE_ID;
 
@@ -10,7 +10,7 @@ public interface KKCheckoutConstants {
 
     // List of actions
     enum ACTIONS {
-        REGISTER, SELECT, EDIT, UPDATE, REVIEW, ADD_TO_BASKET, REMOVE_FROM_BASKET
+        REGISTER, CREATE_ACCOUNT, SELECT, EDIT, UPDATE, REVIEW, ADD_TO_BASKET, REMOVE_FROM_BASKET
     }
 
     String STATE = "state";

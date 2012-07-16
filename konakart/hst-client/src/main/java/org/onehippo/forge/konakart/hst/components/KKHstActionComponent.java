@@ -18,7 +18,7 @@ import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
 import org.hippoecm.hst.util.HstResponseUtils;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.onehippo.forge.konakart.site.service.impl.KKEventServiceImpl;
@@ -32,7 +32,7 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
 
     @Override
     final public void doAction(HstRequest request, HstResponse response) {
-        String type = KKUtil.getEscapedParameter(request, KKCheckoutConstants.ACTION);
+        String type = KKUtil.getEscapedParameter(request, KKActionsConstants.ACTION);
 
         doAction(type, request, response);
     }
@@ -55,10 +55,10 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
         KKAppEng kkAppEng = getKKAppEng(request);
 
 
-        if (StringUtils.equals(action, KKCheckoutConstants.ACTIONS.ADD_TO_BASKET.name())) {
-            String productId = KKUtil.getActionRequestParameter(request, KKCheckoutConstants.PRODUCT_ID);
-            String addToWishList = KKUtil.getActionRequestParameter(request, KKCheckoutConstants.ADD_TO_WISH_LIST);
-            String sQuantity = KKUtil.getActionRequestParameter(request, KKCheckoutConstants.QUANTITY);
+        if (StringUtils.equals(action, KKActionsConstants.ACTIONS.ADD_TO_BASKET.name())) {
+            String productId = KKUtil.getActionRequestParameter(request, KKActionsConstants.PRODUCT_ID);
+            String addToWishList = KKUtil.getActionRequestParameter(request, KKActionsConstants.ADD_TO_WISH_LIST);
+            String sQuantity = KKUtil.getActionRequestParameter(request, KKActionsConstants.QUANTITY);
 
             int quantity = 1;
 
@@ -105,7 +105,7 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
 
                 // Add this product to the wish list
                 if (StringUtils.isNotEmpty(addToWishList) && Boolean.valueOf(addToWishList)) {
-                    String wishListId = KKUtil.getActionRequestParameter(request, KKCheckoutConstants.WISH_LIST_ID);
+                    String wishListId = KKUtil.getActionRequestParameter(request, KKActionsConstants.WISH_LIST_ID);
 
                     if (StringUtils.isNotEmpty(wishListId)) {
                         boolean added = KKServiceHelper.getKKBasketService().addProductToWishList(kkAppEng, request,
@@ -123,8 +123,8 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
 
         }
 
-        if (StringUtils.equals(action, KKCheckoutConstants.ACTIONS.REMOVE_FROM_BASKET.name())) {
-            String basketId = KKUtil.getEscapedParameter(request, KKCheckoutConstants.BASKET_ID);
+        if (StringUtils.equals(action, KKActionsConstants.ACTIONS.REMOVE_FROM_BASKET.name())) {
+            String basketId = KKUtil.getEscapedParameter(request, KKActionsConstants.BASKET_ID);
 
             // Remove this product fromthe basket
             if (StringUtils.isNotEmpty(basketId)) {

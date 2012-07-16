@@ -22,7 +22,6 @@
 
 <!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/j2ee/dtd/web-jsptaglibrary_1_2.dtd">
 <taglib xmlns="http://java.sun.com/xml/ns/javaee" version="2.1"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         >
 
     <tlib-version>1.0</tlib-version>
@@ -81,6 +80,7 @@
             <description>Include or not the invisible reviews to calculate the product's rating</description>
         </attribute>
     </tag>
+
     <tag>
         <description>This tag is used to add a product to the cart</description>
         <name>addToBasketActionURL</name>

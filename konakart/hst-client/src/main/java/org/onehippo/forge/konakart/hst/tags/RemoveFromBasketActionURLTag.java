@@ -2,7 +2,7 @@ package org.onehippo.forge.konakart.hst.tags;
 
 import org.hippoecm.hst.core.component.HstURL;
 import org.hippoecm.hst.tag.HstActionURLTag;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.hst.vo.CartItem;
 
 import javax.servlet.jsp.tagext.TagData;
@@ -22,7 +22,7 @@ public class RemoveFromBasketActionURLTag extends HstActionURLTag {
     protected void setUrlParameters(HstURL url) {
         super.setUrlParameters(url);
 
-        url.setParameter("action", KKCheckoutConstants.ACTIONS.REMOVE_FROM_BASKET.name());
+        url.setParameter("action", KKActionsConstants.ACTIONS.REMOVE_FROM_BASKET.name());
         url.setParameter("basketId", String.valueOf(cartItem.getBasketItemId()));
     }
 

@@ -1,7 +1,7 @@
 package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
 import org.apache.commons.lang.StringUtils;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutSeedData;
@@ -32,11 +32,11 @@ public class ShippingMethodActivity extends BaseCheckoutActivity {
 
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
-        if (seedData.getAction().equals(KKCheckoutConstants.ACTIONS.SELECT.name())) {
+        if (seedData.getAction().equals(KKActionsConstants.ACTIONS.SELECT.name())) {
             String shippingMethod = KKUtil.getEscapedParameter(seedData.getRequest(), SHIPPING_METHOD);
 
             if (StringUtils.isEmpty(shippingMethod)) {
-                updateNextLoggedState(KKCheckoutConstants.STATES.SHIPPING_METHOD.name());
+                updateNextLoggedState(KKActionsConstants.STATES.SHIPPING_METHOD.name());
                 addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.select.shipping.method"));
                 return;
             }
@@ -53,7 +53,7 @@ public class ShippingMethodActivity extends BaseCheckoutActivity {
 
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
-        List<String> acceptedStates = Arrays.asList(KKCheckoutConstants.STATES.PAYMENT_METHOD.name(), KKCheckoutConstants.STATES.ORDER_REVIEW.name());
+        List<String> acceptedStates = Arrays.asList(KKActionsConstants.STATES.PAYMENT_METHOD.name(), KKActionsConstants.STATES.ORDER_REVIEW.name());
 
         String state = seedData.getState();
 

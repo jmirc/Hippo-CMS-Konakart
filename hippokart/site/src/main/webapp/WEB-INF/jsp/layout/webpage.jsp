@@ -14,13 +14,30 @@
     <hst:link var="bootstrapswitchcss" path="/libs/bootstrap/css/united/bootstrap.css"/>
     <link id="switch_style" rel="stylesheet" href="${bootstrapswitchcss}" type="text/css"/>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/jquery.validate.min.js" type="text/javascript"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/additional-methods.min.js" type="text/javascript"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.9/localization/messages_${hstRequest.locale.language}.js" type="text/javascript"></script>
+    <hst:headContributions categoryIncludes="css" xhtml="true"/>
+
+
+    <hst:link path="/libs/jquery/jquery.js" var="jqueryJs"/>
+    <script src="${jqueryJs}" type="text/javascript"></script>
+
+    <hst:headContribution category="homeScripts">
+        <hst:link path="/libs/jquery-validation/jquery.validate.min.js" var="jqueryValidateJs"/>
+        <script src="${jqueryValidateJs}" type="text/javascript"></script>
+    </hst:headContribution>
+
+    <hst:headContribution category="homeScripts">
+        <hst:link path="/libs/jquery-validation/additional-methods.min.js" var="additionalMethodsJs"/>
+        <script src="${additionalMethodsJs}" type="text/javascript"></script>
+    </hst:headContribution>
+
+    <c:if test="${hstRequest.locale.language != 'en'}">
+        <hst:headContribution category="homeScripts">
+            <hst:link path="/libs/jquery-validation/localization/messages_${hstRequest.locale.language}.js" var="jqueryValidateLocaleJs"/>
+            <script src="${jqueryValidateLocaleJs}" type="text/javascript"></script>
+        </hst:headContribution>
+    </c:if>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <hst:headContributions categoryExcludes="scripts" xhtml="true"/>
 
 
 </head>
@@ -33,6 +50,7 @@
         <hst:include ref="main"/>
         <hst:include ref="footer"/>
      </div>
+<hst:headContributions categoryIncludes="homeScripts" xhtml="true"/>
 <hst:headContributions categoryIncludes="scripts" xhtml="true"/>
 </body>
 </html>

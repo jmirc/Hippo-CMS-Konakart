@@ -5,7 +5,8 @@
 
 <c:choose>
     <c:when test="${siteMenuItem.selected}">
-        <strong><a href="#">${fn:escapeXml(siteMenuItem.name)}</a></strong>
+        <hst:link link="${siteMenuItem.hstLink}" var="link"/>
+        <strong><a href="${link}">${fn:escapeXml(siteMenuItem.name)}</a></strong>
     </c:when>
     <c:otherwise>
         <c:choose>

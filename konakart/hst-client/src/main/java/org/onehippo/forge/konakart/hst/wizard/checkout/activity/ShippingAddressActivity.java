@@ -2,7 +2,8 @@ package org.onehippo.forge.konakart.hst.wizard.checkout.activity;
 
 import com.konakart.app.KKException;
 import org.apache.commons.lang.StringUtils;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
+import org.onehippo.forge.konakart.hst.utils.KKRegisterFormUtils;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.hst.wizard.ActivityException;
 import org.onehippo.forge.konakart.hst.wizard.checkout.CheckoutProcessContext;
@@ -22,15 +23,16 @@ public class ShippingAddressActivity extends BaseAddressActivity {
         CheckoutSeedData seedData = checkoutProcessContext.getSeedData();
 
 
-        if (seedData.getAction().equals(KKCheckoutConstants.ACTIONS.SELECT.name())) {
-            Integer addressId = Integer.valueOf(KKUtil.getEscapedParameter(seedData.getRequest(), ADDRESS));
+        if (seedData.getAction().equals(KKActionsConstants.ACTIONS.SELECT.name())) {
+            Integer addressId = Integer.valueOf(KKUtil.getEscapedParameter(seedData.getRequest(), KKRegisterFormUtils.ADDRESS));
 
             // Ask for a new address
             if (addressId == -1) {
                 try {
-                    addressId = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getCustomerMgr().addAddressToCustomer(createAddressForCustomer());
+                    addressId = KKServiceHelper.getKKEngineService().
+                            getKKAppEng(hstRequest).getCustomerMgr().addAddressToCustomer(registerFormUtils.createAddressForCustomer(formMap));
                 } catch (Exception e) {
-                    updateNextLoggedState(KKCheckoutConstants.STATES.INITIAL.name());
+                    updateNextLoggedState(KKActionsConstants.STATES.INITIAL.name());
                     addMessage("globalmessage", seedData.getBundleAsString("checkout.failed.create.address"));
                     return;
                 }
@@ -41,7 +43,7 @@ public class ShippingAddressActivity extends BaseAddressActivity {
 
                 // Skip the SHIPPING ADDRESS step because the customer has decided to use the
                 // same billing address
-                updateNextLoggedState(KKCheckoutConstants.STATES.SHIPPING_METHOD.name());
+                updateNextLoggedState(KKActionsConstants.STATES.SHIPPING_METHOD.name());
             } catch (KKException e) {
                 log.error("Failed to set the shipping address", e);
             }
@@ -54,8 +56,8 @@ public class ShippingAddressActivity extends BaseAddressActivity {
 
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
-        List<String> acceptedStates = Arrays.asList(KKCheckoutConstants.STATES.SHIPPING_METHOD.name(), KKCheckoutConstants.STATES.PAYMENT_METHOD.name(),
-                KKCheckoutConstants.STATES.ORDER_REVIEW.name());
+        List<String> acceptedStates = Arrays.asList(KKActionsConstants.STATES.SHIPPING_METHOD.name(), KKActionsConstants.STATES.PAYMENT_METHOD.name(),
+                KKActionsConstants.STATES.ORDER_REVIEW.name());
 
 
         String state = seedData.getState();

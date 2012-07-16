@@ -6,11 +6,12 @@ import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.component.support.forms.FormUtils;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
-import org.onehippo.forge.konakart.hst.utils.KKCheckoutConstants;
+import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -119,7 +120,7 @@ public abstract class BaseActivity implements Activity {
     }
 
     public void updateNextLoggedState(String nextLoggedState) {
-        hstResponse.setRenderParameter(KKCheckoutConstants.FORCE_NEXT_LOGGED_STATE, nextLoggedState);
+        hstResponse.setRenderParameter(KKActionsConstants.FORCE_NEXT_LOGGED_STATE, nextLoggedState);
     }
 
     @Override
@@ -146,7 +147,7 @@ public abstract class BaseActivity implements Activity {
 
     @Override
     public boolean doValidForm() {
-        hstResponse.setRenderParameter(KKCheckoutConstants.DONT_HAVE_ACCOUNT, getDontHaveAccountValue());
+        hstResponse.setRenderParameter(KKActionsConstants.DONT_HAVE_ACCOUNT, getDontHaveAccountValue());
 
         // By default the form is valid.
         return true;
@@ -155,7 +156,7 @@ public abstract class BaseActivity implements Activity {
     @Override
     public void doAction() throws ActivityException {
         doApplyTemplateRenderPath();
-        hstResponse.setRenderParameter(KKCheckoutConstants.DONT_HAVE_ACCOUNT, getDontHaveAccountValue());
+        hstResponse.setRenderParameter(KKActionsConstants.DONT_HAVE_ACCOUNT, getDontHaveAccountValue());
     }
 
     public void doApplyTemplateRenderPath() {
@@ -164,12 +165,12 @@ public abstract class BaseActivity implements Activity {
 
     @Override
     public void doAdditionalData() {
-        hstResponse.setRenderParameter(KKCheckoutConstants.DONT_HAVE_ACCOUNT, getDontHaveAccountValue());
+        hstResponse.setRenderParameter(KKActionsConstants.DONT_HAVE_ACCOUNT, getDontHaveAccountValue());
     }
 
     @Override
-    public String[] getCheckoutFormMapFields() {
-        return new String[0];
+    public List<String> getCheckoutFormMapFields() {
+        return Collections.emptyList();
     }
 
     /**
@@ -187,10 +188,10 @@ public abstract class BaseActivity implements Activity {
      */
     @Nullable
     protected String getDontHaveAccountValue() {
-        String dontHaveAccount = hstRequest.getParameter(KKCheckoutConstants.DONT_HAVE_ACCOUNT);
+        String dontHaveAccount = hstRequest.getParameter(KKActionsConstants.DONT_HAVE_ACCOUNT);
 
         if (StringUtils.isEmpty(dontHaveAccount)) {
-            dontHaveAccount = (String) hstRequest.getAttribute(KKCheckoutConstants.DONT_HAVE_ACCOUNT);
+            dontHaveAccount = (String) hstRequest.getAttribute(KKActionsConstants.DONT_HAVE_ACCOUNT);
         }
 
         return dontHaveAccount;
@@ -204,7 +205,7 @@ public abstract class BaseActivity implements Activity {
     protected boolean isCheckoutAsGuest() {
         String dontHaveAccount = getDontHaveAccountValue();
 
-        return StringUtils.isNotBlank(dontHaveAccount) && StringUtils.equals(dontHaveAccount, KKCheckoutConstants.CHECKOUT_AS_GUEST);
+        return StringUtils.isNotBlank(dontHaveAccount) && StringUtils.equals(dontHaveAccount, KKActionsConstants.CHECKOUT_AS_GUEST);
     }
 
     /**
@@ -215,6 +216,6 @@ public abstract class BaseActivity implements Activity {
     protected boolean isCheckoutAsRegister() {
         String dontHaveAccount = getDontHaveAccountValue();
 
-        return StringUtils.isNotBlank(dontHaveAccount) && StringUtils.equals(dontHaveAccount, KKCheckoutConstants.CHECKOUT_ASK_REGISTER);
+        return StringUtils.isNotBlank(dontHaveAccount) && StringUtils.equals(dontHaveAccount, KKActionsConstants.CHECKOUT_ASK_REGISTER);
     }
 }

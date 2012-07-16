@@ -2,6 +2,8 @@ package org.onehippo.forge.konakart.hst.wizard;
 
 import org.hippoecm.hst.component.support.forms.FormMap;
 
+import java.util.List;
+
 /**
  * Encapsulate the business logic of a single step in the wizard process
  */
@@ -116,7 +118,7 @@ public interface Activity {
      *
      * @return the onePageCheckout formMapFields
      */
-    String[] getCheckoutFormMapFields();
+    List<String> getCheckoutFormMapFields();
 
 
     /**
