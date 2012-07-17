@@ -74,7 +74,7 @@ public class KKProductsOverview extends KKHstActionComponent {
         try {
             ProductMgr productMgr = getKKAppEng(hstRequest).getProductMgr();
             productMgr.fetchNewProductsArray(NO_CATEGORY);
-            return productMgr.getCurrentProducts();
+            return productMgr.getNewProducts();
         } catch (KKException e) {
             return new ProductIf[0];
         }
