@@ -300,50 +300,33 @@
                     </c:if>
                 </div>
                 <div class="tab-pane" id="3">
-                    <ul class="thumbnails related_products">
 
-                        <li class="span2">
-                            <div class="thumbnail">
-                                <a href="product.html"><img alt="" src="http://placehold.it/220x180"/></a>
+                    <c:if test="${not empty crossCellProducts}" >
+                        <ul class="thumbnails related_products">
+                            <c:forEach items="${crossCellProducts}" var="product">
+                                <li class="span2">
+                                    <div class="thumbnail">
+                                        <hst:link hippobean="${product}" var="productLink"/>
+                                        <hst:link hippobean="${product.mainImage.thumbnail}" var="prdImgLink"/>
+                                        <a href="${productLink}"><img alt="" src="${prdImgLink}"/></a>
 
-                                <div class="caption">
-                                    <a href="product.html"><h5>iPod Touch</h5></a> Price: &#36;50.00<br/><br/>
-                                </div>
-                            </div>
-                        </li>
+                                        <div class="caption">
+                                            <a href="${productLink}"><h5>${product.productIf.name}</h5></a>
+                                            Price:
+                                            <c:if test="${not empty product.specialPrice}"><s></c:if>
+                                            <kk:formatPrice price="${product.productIf.price0}"/>
+                                            <c:if test="${not empty product.specialPrice}"></s></c:if>
+                                            <c:if test="${not empty product.specialPrice}">&nbsp;|&nbsp;
+                                                <kk:formatPrice price="${product.specialPrice}"/>
+                                            </c:if>
+                                            <br/><br/>
+                                        </div>
+                                    </div>
+                                </li>
 
-                        <li class="span2">
-                            <div class="thumbnail">
-                                <a href="product.html"><img alt="" src="http://placehold.it/220x180"/></a>
-
-                                <div class="caption">
-                                    <a href="product.html"><h5>iPod Touch</h5></a> Price: &#36;50.00<br/><br/>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="span2">
-                            <div class="thumbnail">
-                                <a href="product.html"><img alt="" src="http://placehold.it/220x180"/></a>
-
-                                <div class="caption">
-                                    <a href="product.html"><h5>iPod Touch</h5></a> Price: &#36;50.00<br/><br/>
-                                </div>
-                            </div>
-                        </li>
-
-                        <li class="span2">
-                            <div class="thumbnail">
-                                <a href="product.html"><img alt="" src="http://placehold.it/220x180"/></a>
-
-                                <div class="caption">
-                                    <a href="product.html"><h5>iPod Touch</h5></a> Price: &#36;50.00<br/><br/>
-                                </div>
-                            </div>
-                        </li>
-
-
-                    </ul>
+                            </c:forEach>
+                        </ul>
+                    </c:if>
                 </div>
             </div>
         </div>

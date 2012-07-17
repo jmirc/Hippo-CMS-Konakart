@@ -32,8 +32,4 @@ public class KKServiceHelper {
         return HstServices.getComponentManager().getComponent(KKReviewService.class.getName());
     }
 
-    public static KKProductService getKKProductService() {
-        return HstServices.getComponentManager().getComponent(KKProductService.class.getName());
-    }
-
 }

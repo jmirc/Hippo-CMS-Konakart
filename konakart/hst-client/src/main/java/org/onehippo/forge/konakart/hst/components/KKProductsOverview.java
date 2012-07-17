@@ -1,14 +1,13 @@
 package org.onehippo.forge.konakart.hst.components;
 
+import com.konakart.al.ProductMgr;
 import com.konakart.app.KKException;
 import com.konakart.appif.ProductIf;
-import com.konakart.bl.ProductMgr;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
-import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.onehippo.forge.utilities.hst.paging.IterablePagination;
 
 import javax.annotation.Nonnull;
@@ -18,6 +17,8 @@ import java.util.List;
  * This overview component offers methods used to retrieve products information
  */
 public class KKProductsOverview extends KKHstActionComponent {
+
+    public static final int NO_CATEGORY = com.konakart.bl.ProductMgr.DONT_INCLUDE;
 
     private static final int DEFAULT_LIMIT = 100;
     private static final int DEFAULT_PAGE_SIZE = 6;
@@ -70,8 +71,13 @@ public class KKProductsOverview extends KKHstActionComponent {
      * @return a list of products
      */
     protected ProductIf[] searchProducts(@Nonnull HstRequest hstRequest) {
-        return KKServiceHelper.getKKProductService().
-                fetchNewProducts(hstRequest, ProductMgr.DONT_INCLUDE, true, DEFAULT_LIMIT);
+        try {
+            ProductMgr productMgr = getKKAppEng(hstRequest).getProductMgr();
+            productMgr.fetchNewProductsArray(NO_CATEGORY);
+            return productMgr.getCurrentProducts();
+        } catch (KKException e) {
+            return new ProductIf[0];
+        }
     }
 
     public int getPageSize() {

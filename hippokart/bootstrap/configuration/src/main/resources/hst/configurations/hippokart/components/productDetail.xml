@@ -4,7 +4,7 @@
     <sv:value>hst:component</sv:value>
   </sv:property>
   <sv:property sv:name="hst:componentclassname" sv:type="String">
-    <sv:value>org.onehippo.forge.konakart.hst.components.KKProductDetail</sv:value>
+    <sv:value>org.onehippo.cms7.hst.hippokart.components.ProductDetail</sv:value>
   </sv:property>
   <sv:property sv:name="hst:parameternames" sv:type="String" sv:multiple="true"/>
   <sv:property sv:name="hst:parametervalues" sv:type="String" sv:multiple="true"/>
