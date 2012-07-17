@@ -79,24 +79,33 @@ public class KKAdminEngine {
      */
     @Nullable
     private KKAdminIf getEngine() {
+        boolean reconnect;
 
         try {
-            // the connection has expired.
-            if (session == null || kkAdminEng.checkSession(session) == -1) {
-                if (adminEngineConfig != null) {
-                    // Login
-                    login();
-                } else {
-                    log.error("Failed to log-in using the admin client. Admin engine config is null.");
-                    throw new IllegalStateException("Failed to log-in using the admin client. Admin engine config is null.");
-                }
-            }
+            int sessionId = kkAdminEng.checkSession(session);
 
-            return kkAdminEng;
-        } catch (Exception e) {
-            log.error("Failed to check the state of the Konakart admin connection", e);
-            throw new IllegalStateException("Failed to check the state of the Konakart admin connection.", e);
+            reconnect = sessionId == -1;
+        } catch (KKAdminException e) {
+            reconnect = true;
         }
+
+
+        if (reconnect) {
+            if (adminEngineConfig != null) {
+                // Login
+                try {
+                    login();
+                } catch (KKAdminException e) {
+                    log.error("Failed to check the state of the Konakart admin connection", e);
+                    throw new IllegalStateException("Failed to check the state of the Konakart admin connection.", e);
+                }
+            } else {
+                log.error("Failed to log-in using the admin client.");
+                throw new IllegalStateException("Failed to log-in using the admin client.");
+            }
+        }
+
+        return kkAdminEng;
     }
 
     /**
