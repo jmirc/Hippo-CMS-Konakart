@@ -1,6 +1,5 @@
 package org.onehippo.forge.konakart.hst.components;
 
-import com.konakart.al.ProductMgr;
 import com.konakart.app.KKException;
 import com.konakart.appif.ProductIf;
 import org.hippoecm.hst.core.component.HstComponentException;
@@ -8,6 +7,7 @@ import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
+import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.onehippo.forge.utilities.hst.paging.IterablePagination;
 
 import javax.annotation.Nonnull;
@@ -71,13 +71,8 @@ public class KKProductsOverview extends KKHstActionComponent {
      * @return a list of products
      */
     protected ProductIf[] searchProducts(@Nonnull HstRequest hstRequest) {
-        try {
-            ProductMgr productMgr = getKKAppEng(hstRequest).getProductMgr();
-            productMgr.fetchNewProductsArray(NO_CATEGORY);
-            return productMgr.getNewProducts();
-        } catch (KKException e) {
-            return new ProductIf[0];
-        }
+        return KKServiceHelper.getKKProductService().
+                fetchNewProducts(hstRequest, NO_CATEGORY, true, DEFAULT_LIMIT);
     }
 
     public int getPageSize() {
