@@ -1,7 +1,9 @@
 package org.onehippo.forge.konakart.cms.valuelistprovider;
 
-import com.konakartadmin.app.AdminManufacturer;
-import com.konakartadmin.blif.AdminManufacturerMgrIf;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import org.hippoecm.frontend.plugin.IPluginContext;
 import org.hippoecm.frontend.plugin.Plugin;
 import org.hippoecm.frontend.plugin.config.IPluginConfig;
@@ -12,9 +14,8 @@ import org.onehippo.forge.selection.frontend.provider.IValueListProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import com.konakartadmin.app.AdminManufacturer;
+import com.konakartadmin.blif.AdminManufacturerMgrIf;
 
 public class ManufacturerProvider extends Plugin implements IValueListProvider {
 
@@ -55,7 +56,7 @@ public class ManufacturerProvider extends Plugin implements IValueListProvider {
             }
 
         } catch (Exception e) {
-            log.error("Failed to retrieve the list of taxes", e);
+            log.error("Failed to retrieve the list of manufacturers", e);
         }
 
         return valueList;
