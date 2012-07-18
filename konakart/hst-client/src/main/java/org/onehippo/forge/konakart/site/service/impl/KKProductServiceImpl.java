@@ -1,5 +1,8 @@
 package org.onehippo.forge.konakart.site.service.impl;
 
+import org.hippoecm.hst.core.component.HstRequest;
+import org.onehippo.forge.konakart.site.service.KKProductService;
+
 import com.konakart.al.KKAppEng;
 import com.konakart.app.DataDescConstants;
 import com.konakart.app.DataDescriptor;
@@ -8,8 +11,6 @@ import com.konakart.appif.DataDescriptorIf;
 import com.konakart.appif.ProductIf;
 import com.konakart.appif.ProductsIf;
 import com.konakart.bl.ProductMgr;
-import org.hippoecm.hst.core.component.HstRequest;
-import org.onehippo.forge.konakart.site.service.KKProductService;
 
 public class KKProductServiceImpl extends KKBaseServiceImpl implements KKProductService {
 
@@ -44,8 +45,16 @@ public class KKProductServiceImpl extends KKBaseServiceImpl implements KKProduct
         return fetchNewProducts(hstRequest, categoryId, fetchDescription, showInvisible, limit,
                 DataDescConstants.ORDER_BY_DATE_ADDED);
     }
+    
     @Override
     public ProductIf[] fetchNewProducts(HstRequest hstRequest, int categoryId, boolean fetchDescription,
+                                        boolean showInvisible, int limit, String orderBy) {
+        return fetchNewProducts(hstRequest, categoryId, ProductMgr.DONT_INCLUDE, fetchDescription, showInvisible, limit,
+                                DataDescConstants.ORDER_BY_DATE_ADDED);
+    }
+    
+    @Override
+    public ProductIf[] fetchNewProducts(HstRequest hstRequest, int categoryId, int manufacturerId, boolean fetchDescription,
                                         boolean showInvisible, int limit, String orderBy) {
         KKAppEng kkAppEng = getKKAppEng(hstRequest);
 
@@ -58,9 +67,12 @@ public class KKProductServiceImpl extends KKBaseServiceImpl implements KKProduct
         dataDescriptorIf.setOrderBy(orderBy);
 
         try {
-            ProductsIf productsIf = kkAppEng.getEng().getProductsPerCategoryWithOptions(kkAppEng.getSessionId(), dataDescriptorIf, categoryId,
-                    true, kkAppEng.getLangId(), kkAppEng.getFetchProdOptions());
-
+            ProductsIf productsIf = kkAppEng.getEng().getProductsPerCategoryPerManufacturerWithOptions(kkAppEng.getSessionId(), 
+                                                                                                       dataDescriptorIf, 
+                                                                                                       categoryId,
+                                                                                                       manufacturerId, 
+                                                                                                       kkAppEng.getLangId(), 
+                                                                                                       kkAppEng.getFetchProdOptions());
             return productsIf.getProductArray();
         } catch (KKException e) {
             log.warn("Failed to retrieve the new products");
