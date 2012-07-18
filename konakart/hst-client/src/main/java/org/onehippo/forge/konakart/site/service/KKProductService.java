@@ -1,7 +1,8 @@
 package org.onehippo.forge.konakart.site.service;
 
-import com.konakart.appif.ProductIf;
 import org.hippoecm.hst.core.component.HstRequest;
+
+import com.konakart.appif.ProductIf;
 
 public interface KKProductService {
 
@@ -83,4 +84,19 @@ public interface KKProductService {
                                  boolean showInvisible, int limit, String orderBy);
 
 
+    /**
+     * Get the latest products added to the catalog for the category and manufacturer whose ids are passed in as a parameter.
+     *
+     * @param hstRequest       the hst request
+     * @param categoryId       The id of the selected category
+     * @param manufacturerId   The id of the selected manufacturer
+     * @param fetchDescription When set to true, the product description is also fetched.
+     * @param showInvisible    Show invisible products
+     * @param limit            the maximum number of objects returned. By default limit is equals to DataDescConstants.MAX_ROWS
+     * @param orderBy          define how results will be displayed
+     *
+     */
+    ProductIf[] fetchNewProducts(HstRequest hstRequest, int categoryId, int manufacturerId, boolean fetchDescription,
+                                 boolean showInvisible, int limit, String orderBy);
+    
 }

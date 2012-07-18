@@ -1,7 +1,9 @@
 package org.onehippo.forge.konakart.hst.components;
 
-import com.konakart.app.KKException;
-import com.konakart.appif.ProductIf;
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
@@ -10,8 +12,8 @@ import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.onehippo.forge.utilities.hst.paging.IterablePagination;
 
-import javax.annotation.Nonnull;
-import java.util.List;
+import com.konakart.app.KKException;
+import com.konakart.appif.ProductIf;
 
 /**
  * This overview component offers methods used to retrieve products information
@@ -19,6 +21,7 @@ import java.util.List;
 public class KKProductsOverview extends KKHstActionComponent {
 
     public static final int NO_CATEGORY = com.konakart.bl.ProductMgr.DONT_INCLUDE;
+    public static final int NO_MANUFACTURER = com.konakart.bl.ProductMgr.DONT_INCLUDE;
 
     private static final int DEFAULT_LIMIT = 100;
     private static final int DEFAULT_PAGE_SIZE = 6;
