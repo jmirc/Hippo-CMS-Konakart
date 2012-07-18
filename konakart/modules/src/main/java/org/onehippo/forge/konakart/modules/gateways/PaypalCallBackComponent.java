@@ -3,8 +3,10 @@ package org.onehippo.forge.konakart.modules.gateways;
 import com.konakart.al.KKAppEng;
 import com.konakart.app.IpnHistory;
 import com.konakart.app.KKException;
+import com.konakart.app.OrderUpdate;
 import com.konakart.appif.IpnHistoryIf;
 import com.konakart.appif.NameValueIf;
+import com.konakart.appif.OrderUpdateIf;
 import com.konakart.appif.PaymentDetailsIf;
 import com.konakart.bl.ConfigConstants;
 import com.konakart.bl.OrderMgr;
@@ -147,6 +149,11 @@ public class PaypalCallBackComponent extends KKGatewayCallBackComponent {
                 ipnHistory.setGatewayFullResponse(sb.toString());
                 ipnHistory.setGatewayTransactionId(txnId);
 
+                // If successful, we update the inventory as well as changing the state of the
+                // order.
+                OrderUpdateIf updateOrder = new OrderUpdate();
+                updateOrder.setUpdatedById(kkAppEng.getActiveCustId());
+
                 // We save all of this data in the database to keep a record of the
                 // callback
                 if (secretKey == null) {
@@ -175,8 +182,8 @@ public class PaypalCallBackComponent extends KKGatewayCallBackComponent {
                 String comment;
                 if (paymentStatus != null && paymentStatus.equalsIgnoreCase(completed)) {
                     comment = ORDER_HISTORY_COMMENT_OK + txnId;
-                    kkAppEng.getEng().changeOrderStatus(sessionId, orderId,
-                            OrderMgr.PAYMENT_RECEIVED_STATUS, sendEmail, comment);
+                    kkAppEng.getEng().updateOrder(sessionId, orderId,
+                            OrderMgr.PAYMENT_RECEIVED_STATUS, sendEmail, comment, updateOrder);
 
                     // If the order payment was approved we update the inventory
                     kkAppEng.getEng().updateInventory(sessionId, orderId);
@@ -190,8 +197,8 @@ public class PaypalCallBackComponent extends KKGatewayCallBackComponent {
                     }
                 } else {
                     comment = ORDER_HISTORY_COMMENT_KO + paymentStatus;
-                    kkAppEng.getEng().changeOrderStatus(sessionId, orderId,
-                            OrderMgr.PAYMENT_DECLINED_STATUS, sendEmail, comment);
+                    kkAppEng.getEng().updateOrder(sessionId, orderId,
+                            OrderMgr.PAYMENT_DECLINED_STATUS, sendEmail, comment, updateOrder);
                     if (sendEmail) {
                         sendOrderConfirmationMail(kkAppEng, orderId, /* success */false);
                     }

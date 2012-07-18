@@ -6,7 +6,6 @@ import com.konakartadmin.app.AdminCustomer;
 import org.hippoecm.repository.api.*;
 import org.hippoecm.repository.standardworkflow.DefaultWorkflow;
 import org.hippoecm.repository.standardworkflow.FolderWorkflow;
-import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.util.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -203,7 +202,6 @@ public class NodeHelper {
         // Add mixin
         childNode.addMixin("hippo:harddocument");
         childNode.addMixin("hippotranslation:translated");
-        childNode.addMixin(KKCndConstants.PRODUCT_TYPE_MIXIN);
 
         // Add extra definitions
         childNode.setProperty("hippo:availability", new String[]{"live", "preview"});

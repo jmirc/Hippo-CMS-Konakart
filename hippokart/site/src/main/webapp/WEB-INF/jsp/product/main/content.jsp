@@ -307,8 +307,8 @@
                                 <li class="span2">
                                     <div class="thumbnail">
                                         <hst:link hippobean="${product}" var="productLink"/>
-                                        <hst:link hippobean="${product.mainImage.thumbnail}" var="prdImgLink"/>
-                                        <a href="${productLink}"><img alt="" src="${prdImgLink}"/></a>
+                                        <hst:link hippobean="${product.mainImage.original}" var="prdImgLink"/>
+                                        <a href="${productLink}"><img alt="" width="220" height="180" src="${prdImgLink}"/></a>
 
                                         <div class="caption">
                                             <a href="${productLink}"><h5>${product.productIf.name}</h5></a>

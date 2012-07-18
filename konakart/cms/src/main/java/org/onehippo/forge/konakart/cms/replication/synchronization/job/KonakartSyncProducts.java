@@ -7,10 +7,7 @@ import com.konakart.appif.LanguageIf;
 import com.konakart.appif.ProductIf;
 import com.konakart.appif.ProductSearchIf;
 import com.konakart.util.KKConstants;
-import com.konakartadmin.app.AdminProduct;
-import com.konakartadmin.app.KKAdminException;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.NumberUtils;
 import org.hippoecm.frontend.translation.ILocaleProvider;
 import org.hippoecm.repository.api.HippoNodeType;
 import org.hippoecm.repository.translation.HippoTranslationNodeType;
@@ -20,10 +17,8 @@ import org.onehippo.forge.konakart.cms.replication.utils.Codecs;
 import org.onehippo.forge.konakart.cms.replication.utils.NodeHelper;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.bl.CustomProductMgr;
-import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
-import org.onehippo.forge.utilities.commons.NodeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +26,6 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -117,11 +111,7 @@ public class KonakartSyncProducts {
                 // Sync the konakart product
                 productFactory.setSession(jcrSession);
                 productFactory.setKKStoreConfig(kkStoreConfig);
-                String productHandle = productFactory.add(storeId, product, language, baseImagePath);
-
-                if (productHandle != null) {
-                    productMgr.synchronizeHippoKK(product.getId(), productHandle);
-                }
+                productFactory.add(storeId, product, language, baseImagePath);
             }
         }
     }
@@ -140,9 +130,6 @@ public class KonakartSyncProducts {
 
         KKAppEng kkengine = KKEngine.get(kkStoreConfig.getStoreId());
 
-        // Try to retrieve the product by id
-        CustomProductMgr productMgr = new CustomProductMgr(kkengine.getEng());
-
         Node seed = getProductRoot(kkStoreConfig, jcrSession);
 
         if (seed != null) {
@@ -156,41 +143,17 @@ public class KonakartSyncProducts {
             }
 
             for (SyncProduct syncProduct : syncProducts) {
-                // Create a new product
-                if (syncProduct.getkProductId() == 0) {
-                    insertProduct(syncProduct, jcrSession);
-                } else {
-                    // Retrieve the product from Konakart
-                    ProductIf productIf = kkengine.getEng().getProduct(kkengine.getSessionId(), syncProduct.getkProductId(),
-                            kkengine.getLangId());
+                // Retrieve the product from Konakart
+                ProductIf productIf = kkengine.getEng().getProduct(kkengine.getSessionId(), syncProduct.getkProductId(),
+                        kkengine.getLangId());
 
-                    // Retrieve the hippo node
-                    Node node = jcrSession.getNodeByIdentifier(syncProduct.getHippoUuid());
+                // Retrieve the hippo node
+                Node node = jcrSession.getNodeByIdentifier(syncProduct.getHippoUuid());
 
-                    // If the product is null, it means that the product has been removed from the store.
-                    // So the Hippo document should be unpublished.
-                    if (productIf == null) {
-                        nodeHelper.updateState(node.getParent(), NodeHelper.UNPUBLISHED_STATE);
-                    } else {
-                        // Synchronize the state of a product on konakart according to the state of the node,
-                        // is only available when Konakart does not shared products over Stores.
-                        if (!KKAppEng.getEngConf().isProductsShared()) {
-                            Date lastUpdatedTimeRepositoryToKonakart = kkStoreConfig.getLastUpdatedTimeRepositoryToKonakart();
-
-                            // Update only newer updated products
-                            if (lastUpdatedTimeRepositoryToKonakart == null || syncProduct.getLastModificationDate().after(lastUpdatedTimeRepositoryToKonakart)) {
-                                String nodeState = nodeHelper.getNodeState(node);
-
-                                if (nodeState != null) {
-                                    if (nodeState.equalsIgnoreCase(NodeHelper.UNPUBLISHED_STATE)) {
-                                        productMgr.updateStatus(productIf.getId(), false);
-                                    } else {
-                                        productMgr.updateStatus(productIf.getId(), true);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                // If the product is null, it means that the product has been removed from the store.
+                // So the Hippo document should be unpublished.
+                if (productIf == null) {
+                    nodeHelper.updateState(node.getParent(), NodeHelper.UNPUBLISHED_STATE);
                 }
             }
         }
@@ -274,27 +237,6 @@ public class KonakartSyncProducts {
         return locale;
     }
 
-    private static void insertProduct(SyncProduct syncProduct, Session jcrSession) throws KKAdminException, RepositoryException {
-        // Retrieve the hippo node
-        Node node = jcrSession.getNodeByIdentifier(syncProduct.getHippoUuid());
-
-        AdminProduct adminProduct = new AdminProduct();
-
-        adminProduct.setName(NodeUtils.getString(node, KKCndConstants.PRODUCT_NAME));
-        adminProduct.setSku(NodeUtils.getString(node, KKCndConstants.PRODUCT_SKU));
-
-        adminProduct.setPrice0(NodeUtils.getDecimal(node, KKCndConstants.PRODUCT_PRICE_0));
-        adminProduct.setPrice1(NodeUtils.getDecimal(node, KKCndConstants.PRODUCT_PRICE_1));
-        adminProduct.setPrice2(NodeUtils.getDecimal(node, KKCndConstants.PRODUCT_PRICE_2));
-        adminProduct.setPrice3(NodeUtils.getDecimal(node, KKCndConstants.PRODUCT_PRICE_3));
-        adminProduct.setTaxClassId(NumberUtils.toInt(NodeUtils.getString(node, KKCndConstants.PRODUCT_TAX_CLASS, "-1")));
-
-        try {
-            KKAdminEngine.getInstance().getFactory().getAdminProdMgr(true).insertProduct(adminProduct);
-        } catch (Exception e) {
-            throw new IllegalStateException("Failed to retrieve an instance of the admimitration product manager");
-        }
-    }
 
     private static void findAllProductIdsFromRepository(Node seed, List<SyncProduct> syncProducts) throws RepositoryException {
         if (seed.isNodeType("hippo:handle")) {
@@ -303,16 +245,13 @@ public class KonakartSyncProducts {
 
         if (seed.isNodeType(KKCndConstants.PRODUCT_DOC_TYPE)) {
 
-            Date lastModificationDate = NodeUtils.getDate(seed, "hippostdpubwf:lastModificationDate");
-
             SyncProduct syncProduct = new SyncProduct();
             syncProduct.setHippoUuid(seed.getIdentifier());
             syncProduct.setkProductId((int) seed.getProperty(KKCndConstants.PRODUCT_ID).getLong());
-            syncProduct.setLastModificationDate(lastModificationDate);
 
             syncProducts.add(syncProduct);
 
-        } else if (seed.isNodeType("hippostd:folder") || seed.isNodeType(KKCndConstants.PRODUCT_TYPE_MIXIN)) {
+        } else if (seed.isNodeType("hippostd:folder")) {
             for (NodeIterator nodeIt = seed.getNodes(); nodeIt.hasNext(); ) {
                 Node child = nodeIt.nextNode();
 
@@ -345,7 +284,6 @@ public class KonakartSyncProducts {
     public static class SyncProduct {
         private int kProductId;
         private String hippoUuid;
-        private Date lastModificationDate;
 
         public int getkProductId() {
             return kProductId;
@@ -361,14 +299,6 @@ public class KonakartSyncProducts {
 
         public void setHippoUuid(String hippoUuid) {
             this.hippoUuid = hippoUuid;
-        }
-
-        public Date getLastModificationDate() {
-            return lastModificationDate;
-        }
-
-        public void setLastModificationDate(Date lastModificationDate) {
-            this.lastModificationDate = lastModificationDate;
         }
     }
 }

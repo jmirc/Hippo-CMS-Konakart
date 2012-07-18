@@ -3,8 +3,6 @@ package org.onehippo.forge.konakart.common;
 public interface KKCndConstants {
 
 
-    String PRODUCT_TYPE_MIXIN = "konakart:isproduct";
-
     String NEW_PRODUCTS_FOLDER_TEMPLATE = "new-products-folder";
     String NEW_PRODUCT_DOCUMENT_TEMPLATE = "new-konakartproduct-document";
 
@@ -19,52 +17,8 @@ public interface KKCndConstants {
 
     String PRODUCT_DOC_TYPE = "konakart:konakartproduct";
 
-    String PRODUCT_NAME = "konakart:ppname";
     String PRODUCT_ID = "konakart:ppid";
-    String PRODUCT_ABSTRACT = "konakart:ppabstract";
-    String PRODUCT_DESCRIPTION = "konakart:ppdescription";
-    String PRODUCT_SKU = "konakart:ppsku";
-    String PRODUCT_MODEL = "konakart:ppmodel";
-    String PRODUCT_STORE_ID = "konakart:ppstoreid";
-
-    String PRODUCT_SPECIAL_PRICE = "konakart:ppspecialpriceextax";
-    String PRODUCT_PRICE_0 = "konakart:pppriceextax";
-    String PRODUCT_PRICE_1 = "konakart:pppriceextax1";
-    String PRODUCT_PRICE_2 = "konakart:pppriceextax2";
-    String PRODUCT_PRICE_3 = "konakart:pppriceextax3";
-
-    String PRODUCT_QUANTITY = "konakart:ppquantity";
-    String PRODUCT_WEIGHT = "konakart:ppweight";
-
-    String PRODUCT_ORDER_NOT_IN_STOCK = "konakart:ppordernotinstock";
-
-    String PRODUCT_TAX_CLASS = "konakart:pptaxclass";
-    String PRODUCT_MANUFACTURER = "konakart:ppmanufacturer";
-
     String PRODUCT_IMAGES = "konakart:ppimages";
-    String PRODUCT_CATEGORIES = "konakart:ppcategories";
-
-
-    //############################################
-    //    MANUFACTURER DEFINITIONS
-    //############################################
-
-    String MANUFACTURER_DOC_TYPE = "konakart:manufacturerdocument";
-    String MANUFACTURER_ID = "konakart:manufacturerid";
-    String MANUFACTURER_NAME = "konakart:manufacturername";
-    String MANUFACTURER_IMAGE = "konakart:manufacturerimage";
-    String MANUFACTURER_URL = "konakart:manufacturerurl";
-    String MANUFACTURER_CUSTOM = "konakart:manufacturercustom";
-
-    String REVIEW_DOC_TYPE = "konakart:review";
-    String REVIEW_NAME = "konakart:reviewname";
-    String REVIEW_EMAIL = "konakart:reviewemail";
-    String REVIEW_RATING = "konakart:reviewrating";
-    String REVIEW_VOTES = "konakart:reviewvotes";
-    String REVIEW_COMMENT = "konakart:reviewcomment";
-    String REVIEW_PRODUCT_LINK = "konakart:reviewproductlink";
-    String REVIEW_CUSTOMER_ID = "konakart:reviewkonakartid";
-    String REVIEW_DATE = "konakart:reviewdate";
 
     // Product Type constants
     static enum PRODUCT_TYPE {

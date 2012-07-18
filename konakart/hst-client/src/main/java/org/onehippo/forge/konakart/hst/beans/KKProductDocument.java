@@ -41,14 +41,6 @@ public class KKProductDocument extends HippoDocument {
         return id.intValue();
     }
 
-    public HippoHtml getAbstractInfo() {
-        return getHippoHtml(KKCndConstants.PRODUCT_ABSTRACT);
-    }
-
-    public HippoHtml getDescription() {
-        return getHippoHtml(KKCndConstants.PRODUCT_DESCRIPTION);
-    }
-
     public BigDecimal getSpecialPrice() {
         if (shouldIncludeTax) {
             return productIf.getSpecialPriceIncTax();

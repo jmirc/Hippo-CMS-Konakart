@@ -7,13 +7,18 @@ import com.konakart.appif.ProductIf;
 import com.konakart.appif.ReviewIf;
 import com.konakart.appif.ReviewsIf;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
+import org.hippoecm.hst.content.beans.query.HstQuery;
+import org.hippoecm.hst.content.beans.query.HstQueryResult;
+import org.hippoecm.hst.content.beans.query.filter.Filter;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
+import org.hippoecm.hst.content.beans.standard.HippoFolder;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
 import org.hippoecm.hst.util.HstResponseUtils;
+import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
@@ -172,18 +177,35 @@ public class KKBaseHstComponent extends BaseHstComponent {
         }
 
         try {
-            if (product.getCustom10() == null) {
-                log.error("Synchronization error. Custom 10 is null for the product id - " + product.getId());
-            } else {
-                KKProductDocument kkProductDocument =  (KKProductDocument) super.getObjectConverter().getObject(product.getCustom10(),
-                        super.getSiteContentBaseBean(hstRequest).getNode());
+            HippoBean scope = getContentBean(hstRequest);
 
-                kkProductDocument.setProductIf(product);
-
-                return kkProductDocument;
+            if (scope == null || !(scope instanceof HippoFolder)) {
+                scope = getSiteContentBaseBean(hstRequest);
             }
+
+            // the third argument, 'true', indicates whether to include subtypes
+            HstQuery hstQuery = getQueryManager(hstRequest).createQuery(scope, KKProductDocument.class, true);
+
+            Filter filter = hstQuery.createFilter();
+            filter.addEqualTo(KKCndConstants.PRODUCT_ID, Long.valueOf(product.getId()));
+
+            hstQuery.setFilter(filter);
+
+            // execute the query
+            HstQueryResult result = hstQuery.execute();
+
+            if (result.getSize() == 0) {
+                log.error("Failed to retrieve the KKPRoductDocument with the konakart id = " + product.getId());
+                return null;
+            }
+
+            // return the first element
+            KKProductDocument document =  (KKProductDocument) result.getHippoBeans().next();
+            document.setProductIf(product);
+
+            return document;
         } catch (Exception e) {
-            log.error("Failed to find the Hippo Document for the product id - " + product.getId());
+            log.error("Failed to find the Hippo Document for the product id - " + product.getId(), e);
         }
 
         return null;
@@ -252,19 +274,11 @@ public class KKBaseHstComponent extends BaseHstComponent {
         LinkedList<KKProductDocument> documents = new LinkedList<KKProductDocument>();
 
         for (ProductIf productIf : productIfs) {
-            try {
-                if (productIf.getCustom10() == null) {
-                    log.error("Synchronization error. Custom 10 is null for the product id - " + productIf.getId());
-                } else {
-                    KKProductDocument kkProductDocument = (KKProductDocument) super.getObjectConverter().getObject(productIf.getCustom10(),
-                            super.getSiteContentBaseBean(hstRequest).getNode());
 
-                    kkProductDocument.setProductIf(productIf);
+            KKProductDocument document = convertProduct(hstRequest, productIf);
 
-                    documents.addLast(kkProductDocument);
-                }
-            } catch (Exception e) {
-                log.error("Failed to find the Hippo Document for the product id - " + productIf.getId());
+            if (document != null) {
+                documents.addLast(document);
             }
         }
 

@@ -6,18 +6,12 @@
 <'nt'='http://www.jcp.org/jcr/nt/1.0'>
 
 
-[konakart:isproduct] mixin
-
 [konakart:ecommerce] > hippostd:folder
   orderable
 
 [konakart:basedocument] > hippo:document, hippostd:publishableSummary, hippostdpubwf:document
 
 [konakart:konakartproduct] > konakart:basedocument, hippostd:relaxed
-
-[konakart:manufacturerdocument] > konakart:basedocument, hippostd:relaxed
-
-[konakart:review] > konakart:basedocument, hippostd:relaxed
 
 [konakart:adminengine] > nt:base
   - konakart:adminusername (string) mandatory

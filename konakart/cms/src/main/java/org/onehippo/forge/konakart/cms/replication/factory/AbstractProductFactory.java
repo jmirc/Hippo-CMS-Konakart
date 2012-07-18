@@ -1,6 +1,5 @@
 package org.onehippo.forge.konakart.cms.replication.factory;
 
-import com.google.common.collect.Lists;
 import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
 import com.konakartadmin.app.AdminCategory;
@@ -21,13 +20,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.activation.MimetypesFileTypeMap;
-import javax.jcr.*;
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Calendar;
-import java.util.List;
 
 /**
  * To use the replication synchronization, you need to add a class that will extend this class to define
@@ -79,7 +80,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
 
     @Override
-    public String add(String storeId, Product product, LanguageIf language, String baseImagePath) throws Exception {
+    public void add(String storeId, Product product, LanguageIf language, String baseImagePath) throws Exception {
 
 
         KKCndConstants.PRODUCT_TYPE product_type = KKCndConstants.PRODUCT_TYPE.findByType(product.getType());
@@ -92,7 +93,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
             log.error("No product namespace has been associated for the product namespace : "
                     + product_type.getNamespace() + ". Please set the it within the pluginconfig located " +
                     "at " + HippoModuleConfig.KONAKART_PRODUCT_TYPE_NAMESPACES_PATH);
-            return null;
+            return;
         }
 
         String absPath = contentRoot + Codecs.encodeNode(productFolder) + "/" + Codecs.encodeNode(kkProductTypeName)
@@ -114,7 +115,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         Node productNode = nodeHelper.createOrRetrieveDocument(rootFolder, product, productDocType,
                 session.getUserID(), language.getCode());
 
-        boolean addNewProduct = !productNode.hasNode(KKCndConstants.PRODUCT_DESCRIPTION);
+        boolean addNewProduct = !productNode.hasNode(KKCndConstants.PRODUCT_ID);
         boolean hasCheckout = false;
 
         // Check if the node is check-in
@@ -153,8 +154,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
                 log.info("The konakart product with id : {} has been updated", product.getId());
             }
         }
-
-        return productNode.getIdentifier();
     }
 
     /**
@@ -186,110 +185,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
     private void createOrUpdateKonakartProduct(String storeId, Product product, Node productNode) throws RepositoryException {
 
         productNode.setProperty(KKCndConstants.PRODUCT_ID, product.getId());
-
-        if (StringUtils.isNotBlank(product.getName())) {
-            productNode.setProperty(KKCndConstants.PRODUCT_NAME, product.getName());
-        }
-
-        if (StringUtils.isNotBlank(product.getModel())) {
-            productNode.setProperty(KKCndConstants.PRODUCT_MODEL, product.getModel());
-        }
-
-        if (StringUtils.isNotBlank(product.getSku())) {
-            productNode.setProperty(KKCndConstants.PRODUCT_SKU, product.getSku());
-        }
-
-        productNode.setProperty(KKCndConstants.PRODUCT_MANUFACTURER, String.valueOf(product.getManufacturerId()));
-
-
-        productNode.setProperty(KKCndConstants.PRODUCT_TAX_CLASS, String.valueOf(product.getTaxClassId()));
-
-
-        List<Value> valueList = Lists.newArrayList();
-
-        if (productNode.hasProperty(KKCndConstants.PRODUCT_STORE_ID)) {
-            Value[] values = productNode.getProperty(KKCndConstants.PRODUCT_STORE_ID).getValues();
-
-            boolean added = false;
-            for (Value value : values) {
-                if (StringUtils.equalsIgnoreCase(value.getString(), storeId)) {
-                    added = true;
-                }
-            }
-
-            valueList = Lists.newArrayList(values);
-
-            if (!added) {
-                valueList.add(session.getValueFactory().createValue(storeId));
-            }
-        } else {
-            Value storeIdValue = session.getValueFactory().createValue(storeId);
-            valueList.add(storeIdValue);
-
-
-        }
-
-        productNode.setProperty(KKCndConstants.PRODUCT_STORE_ID, valueList.toArray(new Value[valueList.size()]));
-
-        if (product.getPrice0() != null) {
-            productNode.setProperty(KKCndConstants.PRODUCT_PRICE_0, product.getPrice0().doubleValue());
-        }
-
-        if (product.getPrice1() != null) {
-            productNode.setProperty(KKCndConstants.PRODUCT_PRICE_1, product.getPrice1().doubleValue());
-        }
-
-        if (product.getPrice2() != null) {
-            productNode.setProperty(KKCndConstants.PRODUCT_PRICE_2, product.getPrice2().doubleValue());
-        }
-
-        if (product.getPrice3() != null) {
-            productNode.setProperty(KKCndConstants.PRODUCT_PRICE_3, product.getPrice3().doubleValue());
-        }
-
-        productNode.setProperty(KKCndConstants.PRODUCT_QUANTITY, product.getQuantity());
-
-        if (product.getWeight() != null) {
-            productNode.setProperty(KKCndConstants.PRODUCT_WEIGHT, product.getWeight().doubleValue());
-        }
-
-        if (product.getCanOrderWhenNotInStock() != null) {
-            productNode.setProperty(KKCndConstants.PRODUCT_ORDER_NOT_IN_STOCK, product.getCanOrderWhenNotInStock());
-        } else {
-            productNode.setProperty(KKCndConstants.PRODUCT_ORDER_NOT_IN_STOCK, Boolean.FALSE);
-        }
-
-        Node descriptionNode;
-        if (!productNode.hasNode(KKCndConstants.PRODUCT_DESCRIPTION)) {
-            descriptionNode = productNode.addNode(KKCndConstants.PRODUCT_DESCRIPTION, "hippostd:html");
-        } else {
-            descriptionNode = productNode.getNode(KKCndConstants.PRODUCT_DESCRIPTION);
-        }
-
-        // Set the description property
-        String description = "<html><body>";
-
-        if (product.getDescription() != null) {
-            description += product.getDescription();
-        }
-
-        description += "</body></html>";
-
-        descriptionNode.setProperty("hippostd:content", description);
-
-        // Initialize the category
-        AdminCategory[] adminCategories = retrieveCategories(product.getId());
-
-        if (adminCategories.length > 0) {
-            Value[] categories = new Value[adminCategories.length];
-
-            for (int i=0; i < adminCategories.length; i++) {
-                int categoryId = adminCategories[i].getId();
-                categories[i] = session.getValueFactory().createValue(categoryId);
-            }
-
-            productNode.setProperty(KKCndConstants.PRODUCT_CATEGORIES, categories);
-        }
     }
 
     protected AdminCategory[] retrieveCategories(int id) {

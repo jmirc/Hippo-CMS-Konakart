@@ -7,11 +7,9 @@ import com.konakart.appif.KKEngIf;
 import com.konakart.bl.KKCriteria;
 import com.konakart.bl.ProductMgr;
 import com.konakart.blif.ProductMgrIf;
-import com.konakart.om.BaseProductsDescriptionPeer;
 import com.konakart.om.BaseProductsPeer;
 import com.workingdogs.village.DataSetException;
 import org.apache.torque.TorqueException;
-import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Criteria;
 import org.apache.torque.util.SqlEnum;
 
@@ -45,38 +43,5 @@ public class CustomProductMgr extends ProductMgr implements ProductMgrIf {
         }
 
         kkCriteria.remove(BaseProductsPeer.PRODUCTS_STATUS);
-    }
-
-    /**
-     * Update the status of a product
-     *
-     * @param productId      id of the product to update
-     * @param publishedState true if the product is in a published state, false otherwise
-     * @throws Exception if the update could not be done
-     */
-    public void updateStatus(Integer productId, boolean publishedState) throws Exception {
-        KKCriteria localKKCriteria = getNewCriteria(isMultiStoreShareProducts());
-        localKKCriteria.add(BaseProductsPeer.PRODUCTS_ID, productId);
-        localKKCriteria.add(BaseProductsPeer.PRODUCTS_STATUS, publishedState);
-
-        BaseProductsPeer.doUpdate(localKKCriteria);
-    }
-
-    /**
-     *
-     * Used to synchronize Hippo and Konakart.
-     *
-     * This is used to retrieve the Hippo Product Document with a product Id.
-     *
-     * @param productId id of the product to update
-     * @param productDocumentHandle handle of the document created into Hippo
-     * @throws Exception if the update could not be done
-     */
-    public void synchronizeHippoKK(Integer productId, String productDocumentHandle) throws Exception {
-        KKCriteria localKKCriteria = getNewCriteria(isMultiStoreShareProducts());
-        localKKCriteria.add(BaseProductsPeer.PRODUCTS_ID, productId);
-        localKKCriteria.add(BaseProductsPeer.CUSTOM10, productDocumentHandle);
-
-        BaseProductsPeer.doUpdate(localKKCriteria);
     }
 }
