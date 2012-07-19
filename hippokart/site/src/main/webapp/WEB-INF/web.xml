@@ -8,6 +8,18 @@
     <display-name>eCommerce Project site</display-name>
     <description>eCommerce Project site</description>
 
+    <!--
+      Configure Spring Web Application Context configuration files.
+      You should include your spring security configuration in any file(s) in the following.
+    -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/applicationContext-security.xml
+        </param-value>
+    </context-param>
+
+
     <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>
@@ -107,6 +119,25 @@
         -->
     </filter>
 
+    <!--
+      Configure Spring Security Filter.
+      Usually you may just copy and paste the following into your web application descriptor.
+    -->
+    <filter>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+
+    <!--
+      Configure Spring Security Filter Mapping.
+      Usually you may just copy and paste the following into your web application descriptor.
+    -->
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+        <dispatcher>REQUEST</dispatcher>
+    </filter-mapping>
+
     <filter-mapping>
         <filter-name>CharacterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
@@ -169,19 +200,6 @@
     </servlet>
 
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>org.hippoecm.hst.security.servlet.LoginServlet</servlet-class>
-        <init-param>
-            <param-name>loginErrorPage</param-name>
-            <param-value>/WEB-INF/jsp/errorpages/loginFailure.jsp</param-value>
-        </init-param>
-        <init-param>
-            <param-name>loginFormPagePath</param-name>
-            <param-value>/WEB-INF/jsp/errorpages/loginPageRedirector.jsp</param-value>
-        </init-param>
-    </servlet>
-
-    <servlet>
         <servlet-name>SecurityResourceServlet</servlet-name>
         <servlet-class>org.hippoecm.hst.servlet.ResourceServlet</servlet-class>
         <init-param>
@@ -217,11 +235,6 @@
     <servlet-mapping>
         <servlet-name>TemplateComposerResourceServlet</servlet-name>
         <url-pattern>/hst/pagecomposer/sources/*</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login/*</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

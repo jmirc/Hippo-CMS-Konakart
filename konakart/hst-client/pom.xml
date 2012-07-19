@@ -37,6 +37,8 @@
 
     <dependencies>
 
+
+
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>jsp-api</artifactId>
@@ -106,13 +108,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.onehippo.cms7.hst</groupId>
-            <artifactId>hst-api</artifactId>
-            <version>${hippo.hst.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.onehippo.cms7</groupId>
             <artifactId>hippo-addon-publication-workflow-common</artifactId>
             <version>${hippo.addon-publication-workflow.version}</version>
@@ -130,6 +125,41 @@
             <artifactId>hst-commons</artifactId>
             <version>${hippo.hst.version}</version>
             <scope>provided</scope>
+        </dependency>
+
+
+        <!--
+          The HST Spring Security Support requires Spring Framework Libraries.
+          You can declare the Spring Framework dependencies by yourself.
+          One of the simplest way is to use hst-spring-dependencies pom dependency for convenience.
+        -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.onehippo.forge.hst-springsec</groupId>
+            <artifactId>hst-springsec</artifactId>
+            <version>${hst-springsec.version}</version>
         </dependency>
 
     </dependencies>

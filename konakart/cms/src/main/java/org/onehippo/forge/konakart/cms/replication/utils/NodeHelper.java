@@ -6,6 +6,7 @@ import com.konakartadmin.app.AdminCustomer;
 import org.hippoecm.repository.api.*;
 import org.hippoecm.repository.standardworkflow.DefaultWorkflow;
 import org.hippoecm.repository.standardworkflow.FolderWorkflow;
+import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.util.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -296,7 +297,7 @@ public class NodeHelper {
         }
 
         // Add extra definitions
-        user.setProperty("hipposys:securityprovider", "konakart");
+        user.setProperty("hipposys:securityprovider", KKCndConstants.KONAKART_SECURITY_PROVIDER);
         user.setProperty("hipposys:active", adminCustomer.isEnabled());
         user.setProperty("hipposys:firstname", adminCustomer.getFirstName());
         user.setProperty("hipposys:lastname", adminCustomer.getLastName());

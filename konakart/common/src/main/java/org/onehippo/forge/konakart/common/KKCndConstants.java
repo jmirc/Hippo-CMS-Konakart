@@ -19,6 +19,7 @@ public interface KKCndConstants {
 
     String PRODUCT_ID = "konakart:ppid";
     String PRODUCT_IMAGES = "konakart:ppimages";
+    String KONAKART_SECURITY_PROVIDER = "konakart";
 
     // Product Type constants
     static enum PRODUCT_TYPE {

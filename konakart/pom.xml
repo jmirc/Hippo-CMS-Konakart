@@ -29,6 +29,10 @@
 
         <forge.selection.version>2.05.06</forge.selection.version>
         <forge.utilities.version>1.01.01</forge.utilities.version>
+
+        <spring.security.version>3.0.5.RELEASE</spring.security.version>
+        <hst-springsec.version>0.01.00</hst-springsec.version>
+
     </properties>
 
 
@@ -60,6 +64,11 @@
             <snapshots>
                 <enabled>true</enabled>
             </snapshots>
+        </repository>
+        <repository>
+            <id>hippo-security</id>
+            <name>Hippo maven 2 repository.</name>
+            <url>https://forge.onehippo.org/svn/hst-springsec/maven2/</url>
         </repository>
         <repository>
             <id>hippo-maven2-forge</id>

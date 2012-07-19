@@ -44,9 +44,7 @@ public class MyAccount extends KKMyAccount {
     }
 
     @Override
-    protected void addAdditionalInformationToCustomerRegistration(CustomerRegistrationIf customerRegistration,
-                                                                  FormMap formMap) {
-
+    protected void doCallBeforeRegisterCustomer(CustomerRegistrationIf customerRegistration, FormMap formMap) {
         FormField formField = formMap.getField(CUSTOM_CUSTOMER_1);
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
             customerRegistration.setCustomerCustom1(formField.getValue());
@@ -56,5 +54,10 @@ public class MyAccount extends KKMyAccount {
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
             customerRegistration.setAddressCustom1(formField.getValue());
         }
+    }
+
+    @Override
+    protected void doCallAfterRegisterCustomer(HstRequest request, HstResponse response, int customerId) {
+
     }
 }

@@ -91,9 +91,6 @@ public class KonakartSyncJob implements Job {
 
         // Synchronize products
         KonakartSyncProducts.updateRepositoryToKonakart(kkStoreConfig, locales, jcrSession);
-
-        // Synchronize the customer
-        KonakartSyncCustomers.updateRepositoryToKonakart(jcrSession);
     }
 
     /**

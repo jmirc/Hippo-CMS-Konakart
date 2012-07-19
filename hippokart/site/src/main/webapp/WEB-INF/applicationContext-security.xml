@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:lang="http://www.springframework.org/schema/lang"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:util="http://www.springframework.org/schema/util"
+             xmlns:aop="http://www.springframework.org/schema/aop"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/lang http://www.springframework.org/schema/beans/spring-lang-3.0.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+                           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.0.xsd">
+
+    <!-- HTTP Security Configuration -->
+    <http auto-config="true">
+        <intercept-url pattern="/css/**" filters="none"/>
+        <intercept-url pattern="/images/**" filters="none"/>
+        <intercept-url pattern="/binaries/**" filters="none"/>
+        <intercept-url pattern="/login*" filters="none"/>
+        <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY, ROLE_everybody" />
+        <form-login login-page="/login"
+                    default-target-url="/"
+                    always-use-default-target="true"
+                    authentication-failure-url="/login?loginError=true"/>
+        <logout/>
+        <remember-me
+                key="60dc2e90-d1f9-11e1-9b23-0800200c9a66"
+                user-service-ref="userServiceDetailsService"
+                token-validity-seconds="31536000"
+                />
+    </http>
+
+    <authentication-manager>
+        <authentication-provider ref="kkAuthenticationProvider" />
+    </authentication-manager>
+
+
+    <beans:bean name="kkAuthenticationProvider" class="org.onehippo.forge.konakart.site.security.KKAuthenticationProvider"/>
+    <beans:bean name="userServiceDetailsService" class="org.onehippo.forge.konakart.site.security.impl.KKUserDetailsServiceImpl"/>
+
+</beans:beans>

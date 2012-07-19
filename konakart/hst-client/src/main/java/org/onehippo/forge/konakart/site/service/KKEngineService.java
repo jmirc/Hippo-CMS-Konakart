@@ -64,6 +64,16 @@ public interface KKEngineService {
     boolean logIn(HttpServletRequest request, HttpServletResponse response, String username, String password);
 
     /**
+     * Log a user to Konakart
+     *
+     * @param request  the http request
+     * @param response the http response
+     * @param customerId the customer id
+     * @return true if the user is logged-in, false otherwise
+     */
+    boolean loginByAdmin(HttpServletRequest request, HttpServletResponse response, int customerId);
+
+    /**
      * Log out from Konakart
      * @param request the http request
      * @param response the http response

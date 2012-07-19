@@ -8,6 +8,7 @@ import com.konakart.appif.CustomerTagIf;
 import com.konakart.appif.FetchProductOptionsIf;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
+import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
@@ -157,6 +158,68 @@ public class KKEngineServiceImpl implements KKEngineService {
 
             // Login
             String result = kkAppEng.getCustomerMgr().login(username, password);
+
+            if (result == null) {
+                return false;
+            }
+
+            /*
+            * Manage Cookies
+            */
+            KKServiceHelper.getKKCookieService().manageCookiesLogin(request, response, kkAppEng);
+
+            // Insert event
+            KKServiceHelper.getKKEventService().insertCustomerEvent(request, KKEventServiceImpl.ACTION_CUSTOMER_LOGIN);
+
+            // Set recently viewed products for the logged in customer if changed as guest
+            CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+            updateRecentlyViewedProducts(kkAppEng, prodsViewedTagGuest, prodsViewedTagCust);
+
+            return true;
+
+        } catch (Exception e) {
+            log.warn("Unable to logged-in. Force to be logged-out", e);
+            try {
+                kkAppEng.getCustomerMgr().logout();
+            } catch (KKException e1) {
+                // do nothing
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean loginByAdmin(HttpServletRequest request, HttpServletResponse response, int customerId) {
+
+        KKAppEng kkAppEng = getKKAppEng(request);
+
+        if (kkAppEng == null) {
+            return false;
+        }
+
+        try {
+            int custId = validKKSession(request, response);
+
+            // Check if the user is already logged in
+            if (custId >= 0) {
+                if (log.isDebugEnabled()) {
+                    log.debug("User already logged in");
+                }
+
+                // Refresh the data relevant to the customer such as his basked and recent orders.
+                kkAppEng.getCustomerMgr().refreshCustomerCachedData();
+
+                return true;
+            }
+
+            // Get recently viewed products before logging in
+            CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+
+            String adminSessionId = KKAdminEngine.getInstance().getSession();
+
+            // Login
+            String result = kkAppEng.getCustomerMgr().loginByAdmin(adminSessionId, customerId);
 
             if (result == null) {
                 return false;

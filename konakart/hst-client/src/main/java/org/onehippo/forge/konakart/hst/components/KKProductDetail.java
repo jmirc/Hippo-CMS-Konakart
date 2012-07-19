@@ -106,7 +106,7 @@ public class KKProductDetail extends KKHstActionComponent {
      * @param request  the HST request
      * @param response the HST response
      */
-    private void processReview(@Nonnull KKProductDocument product, @Nonnull HstRequest request,
+    protected void processReview(@Nonnull KKProductDocument product, @Nonnull HstRequest request,
                                @Nonnull HstResponse response) {
 
         CustomerIf currentCustomer = KKServiceHelper.getKKCustomerService().getCurrentCustomer(request);

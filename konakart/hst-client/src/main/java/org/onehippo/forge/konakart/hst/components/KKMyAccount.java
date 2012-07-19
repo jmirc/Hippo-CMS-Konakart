@@ -105,10 +105,6 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
 
                 CustomerRegistrationIf customerRegistration = registerFormUtils.createCustomerRegistration(formMap);
 
-                // Set additional informations
-                addAdditionalInformationToCustomerRegistration(customerRegistration, formMap);
-
-
                 String username = formMap.getField(KKRegisterFormUtils.EMAIL).getValue();
                 String password = formMap.getField(KKRegisterFormUtils.PASSWORD).getValue();
 
@@ -118,12 +114,16 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
                 // Set the locale
                 customerRegistration.setLocale(request.getLocale().toString());
 
+                // Register the customer
                 try {
-                    // Register the customer
-                    kkAppEng.getEng().registerCustomer(customerRegistration);
+                    // Set additional informations
+                    doCallBeforeRegisterCustomer(customerRegistration, formMap);
 
-                    // Logged-in
-                    KKServiceHelper.getKKEngineService().logIn(request, response, username, password);
+                    // Register the customer
+                    int customerId = kkAppEng.getEng().registerCustomer(customerRegistration);
+
+                    // call after the customer is registered
+                    doCallAfterRegisterCustomer(request, response, customerId);
                 } catch (KKException e) {
                     log.error("Failed to register the customer with the email " + username, e);
                     FormUtils.persistFormMap(request, response, formMap, null);
@@ -132,6 +132,9 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
             }
         }
     }
+
+
+
 
     /**
      * This method is used to valid if the register form is valid.
@@ -196,6 +199,7 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
         return result;
     }
 
+
     /**
      * This method is called to set any parameters or to do actions before rendering the JSP
      *
@@ -226,6 +230,15 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
      * @param customerRegistration the customer registration
      * @param formMap the form map
      */
-    protected abstract void addAdditionalInformationToCustomerRegistration(CustomerRegistrationIf customerRegistration,
-                                                                           FormMap formMap);
+    protected abstract void doCallBeforeRegisterCustomer(CustomerRegistrationIf customerRegistration,
+                                                         FormMap formMap);
+
+    /**
+     * This method is called after the customer is registered
+     * @param request the hst request
+     * @param response the hst response
+     * @param customerId id of the created customer
+     */
+    protected abstract void doCallAfterRegisterCustomer(HstRequest request, HstResponse response, int customerId);
+
 }

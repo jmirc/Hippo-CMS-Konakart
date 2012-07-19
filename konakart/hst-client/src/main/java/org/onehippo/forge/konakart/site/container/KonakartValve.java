@@ -3,7 +3,6 @@ package org.onehippo.forge.konakart.site.container;
 import com.konakart.al.KKAppEng;
 import org.apache.cxf.common.util.StringUtils;
 import org.hippoecm.hst.configuration.hosting.Mount;
-import org.hippoecm.hst.core.container.ContainerConstants;
 import org.hippoecm.hst.core.container.ContainerException;
 import org.hippoecm.hst.core.container.Valve;
 import org.hippoecm.hst.core.container.ValveContext;
@@ -16,21 +15,19 @@ import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
+import org.onehippo.forge.konakart.site.security.KKUser;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import javax.jcr.SimpleCredentials;
-import javax.security.auth.Subject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Set;
 
 public class KonakartValve implements Valve {
 
@@ -50,6 +47,7 @@ public class KonakartValve implements Valve {
 
     @Override
     public void invoke(ValveContext context) throws ContainerException {
+
         HttpServletRequest request = context.getServletRequest();
         HttpServletResponse response = context.getServletResponse();
         HstRequestContext requestContext = context.getRequestContext();
@@ -124,46 +122,30 @@ public class KonakartValve implements Valve {
         // The second phase valids the username/password against Konakart.
         Principal userPrincipal = request.getUserPrincipal();
 
-        if (userPrincipal != null) {
-            SimpleCredentials simpleCredentials = null;
+        if (userPrincipal instanceof Authentication) {
 
-            HttpSession session = request.getSession(false);
-            Subject subject = (session != null ? (Subject) session.getAttribute(ContainerConstants.SUBJECT_ATTR_NAME) : null);
+            Authentication authentication = (Authentication) userPrincipal;
+            KKUser kkUser = (KKUser) authentication.getPrincipal();
 
-            if (subject != null) {
-                Set<SimpleCredentials> privateCredentialsSet = subject.getPrivateCredentials(SimpleCredentials.class);
+            if (kkUser.isRememberMeAuthentication()) {
+                int customerId = kkUser.getCustomerId();
 
-                if (!privateCredentialsSet.isEmpty()) {
-                    simpleCredentials = privateCredentialsSet.iterator().next();
+                // The Login should work because the validation of the password has been done during the login process
+                // by the KonakartLoginModule.
+                if (!KKServiceHelper.getKKEngineService().loginByAdmin(request, response, customerId)) {
+                    logout(request, response, requestContext);
+                    return;
                 }
-            }
-
-            if (simpleCredentials == null && session != null) {
-                simpleCredentials = (SimpleCredentials) session.getAttribute(ContainerConstants.SUBJECT_REPO_CREDS_ATTR_NAME);
-
-            }
-
-            if (simpleCredentials != null) {
+            } else {
                 // Invalid username and password
                 String username =  userPrincipal.getName();
-                String password = String.valueOf(simpleCredentials.getPassword());
+                String password = String.valueOf(authentication.getCredentials());
 
                 // The Login should work because the validation of the password has been done during the login process
                 // by the KonakartLoginModule.
                 if (!KKServiceHelper.getKKEngineService().logIn(request, response,
                         username, password)) {
-
-                    try {
-                        HstLinkCreator linkCreator = requestContext.getHstLinkCreator();
-                        HstLink link = linkCreator.create(REDIRECT_LOGOUT_URL, requestContext.getResolvedMount().getMount());
-
-                        request.getRequestDispatcher(link.getPath()).forward(request, response);
-                    } catch (IOException e) {
-                        log.error("Failed to redirect to the path - " + REDIRECT_LOGOUT_URL);
-                    } catch (ServletException e) {
-                        log.error("Failed to redirect to the path - " + REDIRECT_LOGOUT_URL);
-                    }
-
+                    logout(request, response, requestContext);
                     return;
                 }
             }
@@ -175,5 +157,18 @@ public class KonakartValve implements Valve {
 
         // Instantiate the next context
         context.invokeNext();
+    }
+
+    private void logout(HttpServletRequest request, HttpServletResponse response, HstRequestContext requestContext) {
+        try {
+            HstLinkCreator linkCreator = requestContext.getHstLinkCreator();
+            HstLink link = linkCreator.create(REDIRECT_LOGOUT_URL, requestContext.getResolvedMount().getMount());
+
+            request.getRequestDispatcher(link.getPath()).forward(request, response);
+        } catch (IOException e) {
+            log.error("Failed to redirect to the path - " + REDIRECT_LOGOUT_URL);
+        } catch (ServletException e) {
+            log.error("Failed to redirect to the path - " + REDIRECT_LOGOUT_URL);
+        }
     }
 }

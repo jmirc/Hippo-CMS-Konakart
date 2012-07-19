@@ -28,7 +28,24 @@
     <import resource="classpath*:org/hippoecm/hst/site/container/SpringComponentManager-pipelines.xml"/>
 
 
-    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    <bean name="springSecurityValve" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject">
+            <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+                <property name="targetObject"
+                          ref="org.hippoecm.hst.core.container.Pipelines" />
+                <property name="targetMethod" value="getPipeline"/>
+                <property name="arguments">
+                    <value>DefaultSitePipeline</value>
+                </property>
+            </bean>
+        </property>
+        <property name="targetMethod" value="addInitializationValve"/>
+        <property name="arguments">
+            <bean class="org.onehippo.forge.security.support.springsecurity.container.SpringSecurityValve"/>
+        </property>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean" depends-on="springSecurityValve">
         <property name="targetObject">
             <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
                 <property name="targetObject"
