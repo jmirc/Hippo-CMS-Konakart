@@ -161,8 +161,11 @@ The following steps need to be executed:
             url="jdbc:mysql://localhost:3306/TBD?zeroDateTimeBehavior=convertToNull&amp;autoReconnect=true&amp;characterEncoding=utf8" />
 
 ```
-### JAAS Security 
-* Update the hst-config.properties file to update the security auth
+### Security 
+The authentication is based on spring security.
+
+* You need to create a new file under _src/main/webapp/WEB-INF/applicationContext-security.xml_
+TBD
 
 Replace
 ```
