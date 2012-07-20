@@ -3,9 +3,7 @@ package org.onehippo.forge.konakart.hst.components;
 import com.konakart.al.KKAppEng;
 import com.konakart.app.KKException;
 import com.konakart.appif.CustomerRegistrationIf;
-import com.konakart.appif.ZoneIf;
 import org.apache.commons.lang.StringUtils;
-import org.hippoecm.hst.component.support.forms.FormField;
 import org.hippoecm.hst.component.support.forms.FormMap;
 import org.hippoecm.hst.component.support.forms.FormUtils;
 import org.hippoecm.hst.core.component.HstComponentException;
@@ -24,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -49,41 +46,18 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
 
         String action = request.getParameter(KKActionsConstants.ACTION);
 
+        // not login
         if (isGuestCustomer(request)) {
             FormMap formMap = new FormMap();
             FormUtils.populate(request, formMap);
             request.setAttribute(FORM, formMap);
 
             if (StringUtils.equals(action, KKActionsConstants.ACTIONS.REGISTER.name())) {
-                try {
-                    request.setAttribute(COUNTRIES, KKServiceHelper.getKKEngineService().getKKAppEng(request).getAllCountries());
-
-                    // Set the province if has been selected
-                    FormField countryField = formMap.getField(COUNTRY);
-
-                    if (countryField != null) {
-
-                        int country = StringUtils.isNotBlank(countryField.getValue()) ? Integer.valueOf(countryField.getValue()) : -1;
-                        ZoneIf[] zones = KKServiceHelper.getKKEngineService().getKKAppEng(request).getEng().getZonesPerCountry(country);
-
-                        List<String> stateProvinces = new ArrayList<String>();
-
-                        for (ZoneIf zone : zones) {
-                            stateProvinces.add(zone.getZoneName());
-                        }
-
-                        request.setAttribute(PROVINCES, stateProvinces);
-                    }
-                } catch (KKException e) {
-                    log.error("Failed to retrieve the list of provinces - {} ", e.toString());
-                }
-
-                deBeforeRenderRegisterAction(request, response);
+                deBeforeRenderRegisterAction(request, response, formMap);
             } else if (StringUtils.equals(action, KKActionsConstants.ACTIONS.CREATE_ACCOUNT.name())) {
-
-                doBeforeRenderCreateAction(request, response);
+                doBeforeRenderCreateAction(request, response, formMap);
             } else {
-                doBeforeRenderNotLoginAction(request, response);
+                doBeforeRenderNotLoginAction(request, response, formMap);
             }
         }
     }
@@ -201,6 +175,24 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
         result = result & checkMandatoryField(formMap, EMAIL, errorMessage);
         result = result & checkMandatoryField(formMap, DATEOFBIRTH, errorMessage);
 
+        result = result & checkExistingCustomer(formMap, request, response);
+
+
+        result = result & checkMandatoryField(formMap, PASSWORD, errorMessage);
+        result = result & checkMandatoryField(formMap, PASSWORD_CONFIRMATION, errorMessage);
+
+        return result;
+    }
+
+    /**
+     * Check if a customer has already the same email
+     *
+     * @param formMap the form map
+     * @param request the hst request
+     * @param response the hst esponse
+     * @return false if the customer exists or if the email could not be validated, true otherwise
+     */
+    protected boolean checkExistingCustomer(FormMap formMap, HstRequest request, HstResponse response) {
         // Valid if the a customer has already this email
         String emailAddress = formMap.getField(EMAIL).getValue();
 
@@ -218,20 +210,16 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
 
                 if (!isLoggedIn) {
                     // login has failed
-                    result = false;
                     response.setRenderParameter(ALREADYEXITS, "true");
+                    return false;
                 }
             }
         } catch (KKException e) {
-            result = false;
             log.error("Failed to validate if the email set during the checkout process already exists.", e);
             response.setRenderParameter(REGISTER_FAILED, "true");
+            return false;
         }
-
-        result = result & checkMandatoryField(formMap, PASSWORD, errorMessage);
-        result = result & checkMandatoryField(formMap, PASSWORD_CONFIRMATION, errorMessage);
-
-        return result;
+        return true;
     }
 
 
@@ -240,24 +228,27 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
      *
      * @param request the hst request
      * @param response the hst response
+     * @param formMap
      */
-    protected abstract void doBeforeRenderNotLoginAction(HstRequest request, HstResponse response);
+    protected abstract void doBeforeRenderNotLoginAction(HstRequest request, HstResponse response, FormMap formMap);
 
     /**
      * This method is called to set any parameters or to do actions before rendering the JSP
      *
      * @param request the hst request
      * @param response the hst response
+     * @param formMap
      */
-    protected abstract void deBeforeRenderRegisterAction(HstRequest request, HstResponse response);
+    protected abstract void deBeforeRenderRegisterAction(HstRequest request, HstResponse response, FormMap formMap);
 
     /**
      * This method is called to set any parameters or to do actions before rendering the JSP
      *
      * @param request the hst request
      * @param response the hst response
+     * @param formMap
      */
-    protected abstract void doBeforeRenderCreateAction(HstRequest request, HstResponse response);
+    protected abstract void doBeforeRenderCreateAction(HstRequest request, HstResponse response, FormMap formMap);
 
     /**
      * This method could be overrides to add additionnal information to the user
