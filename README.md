@@ -167,17 +167,6 @@ The authentication is based on spring security.
 * You need to create a new file under _src/main/webapp/WEB-INF/applicationContext-security.xml_
 TBD
 
-Replace
-```
-# HST JAAS login configuration
-#java.security.auth.login.config = classpath:/org/hippoecm/hst/security/impl/login.conf
-```
-
-By
-```
-# HST KONAKART login configuration
-java.security.auth.login.config = classpath:/org/onehippo/forge/konakart/site/security/login.conf
-```
 
 ## Now compile and run your project
 
