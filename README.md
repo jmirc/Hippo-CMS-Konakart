@@ -162,11 +162,10 @@ The following steps need to be executed:
 
 ```
 ### Security 
-The authentication is based on spring security.
+The authentication process is based on spring security.
 
-* You need to create a new file under _src/main/webapp/WEB-INF/applicationContext-security.xml_
-TBD
-
+* You need to create a new file under _src/main/webapp/WEB-INF/applicationContext-security.xml_. Take the [example](https://raw.github.com/jmirc/Hippo-CMS-Konakart/master/hippokart/site/src/main/webapp/WEB-INF/applicationContext-security.xml)
+* You need to modify the _web.xml_. Take the [example](https://raw.github.com/jmirc/Hippo-CMS-Konakart/master/hippokart/site/src/main/webapp/WEB-INF/web.xml)
 
 ## Now compile and run your project
 
