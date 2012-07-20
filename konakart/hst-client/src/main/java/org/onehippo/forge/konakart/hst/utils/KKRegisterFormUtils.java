@@ -44,13 +44,15 @@ public class KKRegisterFormUtils {
     public static final String SAVEINADDRESSBOOK = "saveinaddressbook";
     public static final String PASSWORD = "password";
     public static final String PASSWORD_CONFIRMATION = "passwordConfirmation";
+    public static final String SUBSCRIBE_NEWSLETTER = "subscribeNewsletter";
 
     public static List<String> PARAMS = new ArrayList<String>();
 
     static {
         Collections.addAll(PARAMS, GENDER, FIRSTNAME, LASTNAME, EMAIL, DATEOFBIRTH, DAY, MONTH, YEAR, COMPANYNAME
                 , STREETADDRESS, SUBURB, POSTALCODE, CITY, STATEPROVINCE, COUNTRY, PRIMARYTELEPHONE
-                , OTHERTELEPHONE, FAXNUMBER, SAVEINADDRESSBOOK, ADDRESS, PASSWORD, PASSWORD_CONFIRMATION);
+                , OTHERTELEPHONE, FAXNUMBER, SAVEINADDRESSBOOK, ADDRESS, PASSWORD, PASSWORD_CONFIRMATION
+                , SUBSCRIBE_NEWSLETTER);
     }
 
     /**
@@ -202,6 +204,13 @@ public class KKRegisterFormUtils {
         formField = formMap.getField(OTHERTELEPHONE);
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
             customerRegistration.setTelephoneNumber1(formField.getValue());
+        }
+
+        formField = formMap.getField(SUBSCRIBE_NEWSLETTER);
+        if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
+            customerRegistration.setNewsletter("1");
+        } else {
+            customerRegistration.setNewsletter("0");
         }
 
         return customerRegistration;

@@ -236,7 +236,7 @@
                     I have read and agree to the Privacy Policy
                 </label>
                 <label class="checkbox">
-                    <input type="checkbox" name="subscribeNewsletter" checked="checked">
+                    <input type="checkbox" name="subscribeNewsletter" checked="checked" value="1">
                     Subscribe to our newsletter
                 </label>
             </div>

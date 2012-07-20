@@ -11,11 +11,18 @@ import org.hippoecm.hst.component.support.forms.FormUtils;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
+import org.hippoecm.hst.site.HstServices;
 import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
 import org.onehippo.forge.konakart.hst.utils.KKRegisterFormUtils;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
+import org.onehippo.forge.konakart.site.security.KKAuthenticationProvider;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,6 +129,9 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
                     // Register the customer
                     int customerId = kkAppEng.getEng().registerCustomer(customerRegistration);
 
+                    // do auto login
+                    doAutoLoginAfterSuccessful(request, username, password);
+
                     // call after the customer is registered
                     doCallAfterRegisterCustomer(request, response, customerId);
                 } catch (KKException e) {
@@ -133,7 +143,32 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
         }
     }
 
+    /**
+     * When user successfully register, auto login user
+     * instead of redirecting them to login page and asking them to login again
+     * @param request the hst request
+     * @param username the username
+     * @param password the password
+     */
+    protected void doAutoLoginAfterSuccessful(HstRequest request, String username, String password) {
 
+        AuthenticationProvider authenticationProvider = HstServices.getComponentManager().getComponent("authenticationProvider");
+
+        if (authenticationProvider == null) {
+            authenticationProvider = new KKAuthenticationProvider();
+        }
+
+        // After successfully Creating user
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
+
+        // generate session if one doesn't exist
+        request.getSession();
+
+        token.setDetails(new WebAuthenticationDetails(request));
+        Authentication authenticatedUser = authenticationProvider.authenticate(token);
+
+        SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
+    }
 
 
     /**

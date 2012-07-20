@@ -41,7 +41,7 @@
                 </c:forEach>
             </c:if>
             <c:if test="${isLogged}">
-                <hst:link path="/login/logout" var="logout"/>
+                <hst:link path="/j_spring_security_logout" var="logout"/>
                 | <a href="${logout}">Logout</a>
             </c:if>
         </div>

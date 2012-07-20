@@ -29,13 +29,15 @@
     </div>
 </div>
 
-<hr />
+<hr/>
 
 <div class="row">
 
     <div class="span5 well">
         <h2>New Customers</h2>
-        <p>By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.</p><br />
+
+        <p>By creating an account with our store, you will be able to move through the checkout process faster, store
+            multiple shipping addresses, view and track your orders in your account and more.</p><br/>
 
         <hst:actionURL var="register">
             <hst:param name="action" value="REGISTER"/>
@@ -45,11 +47,13 @@
 
     <div class="span5 well pull-right">
         <h2>Registered Customers</h2>
+
         <p>If you have an account with us, please log in.</p>
 
         <p class="verticalSpace">
             <c:choose>
             <c:when test="${loginError}">
+
         <div class="alert alert-error">
             <fmt:message key="login.errors.invalidUserPass"/>
         </div>
@@ -65,28 +69,37 @@
         </p>
 
 
-        <hst:link var="loginLink" path="/login/proxy" />
-        <form id="loginFormID" action="${loginLink}" method="post">
+        <hst:link var="myaccountLink" fullyQualified="true"/>
+        <hst:link var="loginLink" path="/j_spring_security_check"/>
+        <form id="loginFormID" action="${loginLink}?spring-security-redirect=${myaccountLink}" method="post">
             <div class="control-group">
                 <label for="username" class="control-label">Username</label>
+
                 <div class="controls">
-                    <input class="required email highlight input-large" id="username" name="username" value="${username}"
+                    <input class="required email highlight input-large" id="username" name="j_username"
+                           value="${SPRING_SECURITY_LAST_USERNAME}"
                            type="text" placeholder="Email address">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Password</label>
+
                 <div class="controls">
                     <input class="required highlight input-large" id="inputIcon2"
-                           name="password" type="password"
+                           name="j_password" type="password"
                            placeholder="Password">
 
                     <span class="help-inline">${login.failed}</span>
                 </div>
             </div>
-
-            <hst:link var="myaccountLink"/>
-            <input type="hidden" name="destination" value="${myaccountLink}"/>
+            <div class="control-group">
+                <div class="controls">
+                    <label class="checkbox">
+                        <input type="checkbox" id="optionsCheckbox" name="_spring_security_remember_me" value="true">
+                        Remember me
+                    </label>
+                </div>
+            </div>
             <button class="btn btn-primary pull-right" type="submit"><fmt:message key="login.form.submit"/></button>
         </form>
     </div>

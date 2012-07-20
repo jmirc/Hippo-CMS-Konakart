@@ -74,6 +74,8 @@ the parent version to 7.7.1 then the property definitions below can be removed -
         <easymock.version>3.1</easymock.version>
         <freemarker.version>2.3.18</freemarker.version>
 
+        <hippo.services.version>3-SNAPSHOT</hippo.services.version>
+
         <filesync.override>false</filesync.override>
         <maven.plugins.filesync.version>1.0.0</maven.plugins.filesync.version>
     </properties>
