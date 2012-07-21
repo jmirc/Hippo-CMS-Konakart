@@ -179,6 +179,11 @@ The authentication process is based on spring security.
     * Español - es_ES
     * Português - pt_BR
 
+The English locale must be updated from *en_GB* to *en_US*.
+
+
+       
+
 
                 
 
