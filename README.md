@@ -172,6 +172,20 @@ The authentication process is based on spring security.
 
 ## Post configuration
 
+### Hippo-Konakart Locales Configuration
+* In order to synchronize the product between Konakart and Hippo, you need to update the available locale within Konakart. By default, Konakart installs the following locales:
+    * Deutch - de_DE
+    * English - en_GB
+    * Español - es_ES
+    * Português - pt_BR
+
+The English locale must be updated from *en_GB* to *en_US*.
+
+
+       
+
+
+                
 
 ### Hippo-Konakart Store1 Configuration
 * You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
