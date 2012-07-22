@@ -15,14 +15,15 @@ public class KKClientEngineConfig {
 
     public static final String CLIENT_ENGINEMODE_PROPERTY = "konakart:enginemode";
     public static final String CLIENT_IS_CUSTOMERS_SHARED_PROPERTY = "konakart:iscustomersshared";
-    public static final String CLIENT_IS_PRODUCTS_SHARED_PROPERTY = "konakart:isproductshared";
+    public static final String CLIENT_IS_PRODUCTS_SHARED_PROPERTY = "konakart:isproductsshared";
+    public static final String CLIENT_IS_CATEGORIES_SHARED_PROPERTY = "konakart:iscategoriesshared";
     public static final String CLIENT_USE_EXTERNAL_PRICE_PROPERTY = "konakart:useexternalprice";
     public static final String CLIENT_USE_EXTERNAL_QUANTITY_PROPERTY = "konakart:useexternalquantity";
 
-    private boolean initialized = false;
     private int engineMode;
     private boolean isCustomersShared;
     private boolean isProductsShared;
+    private boolean isCategoriesShared;
     private boolean useExternalPrice;
     private boolean useExternalQuantity;
     private Map<String, String> productNodeTypeMapping = new HashMap<String, String>();
@@ -52,6 +53,14 @@ public class KKClientEngineConfig {
         isProductsShared = productsShared;
     }
 
+    public boolean isCategoriesShared() {
+        return isCategoriesShared;
+    }
+
+    public void setCategoriesShared(boolean categoriesShared) {
+        isCategoriesShared = categoriesShared;
+    }
+
     public boolean isUseExternalPrice() {
         return useExternalPrice;
     }
@@ -76,10 +85,6 @@ public class KKClientEngineConfig {
         productNodeTypeMapping.put(namespace, nodeType);
     }
 
-    public boolean isInitialized() {
-        return initialized;
-    }
-
     /**
      * @param session the Jcr session
      */
@@ -90,10 +95,9 @@ public class KKClientEngineConfig {
             setEngineMode(NodeUtils.getLong(node, CLIENT_ENGINEMODE_PROPERTY, 0L));
             setCustomersShared(NodeUtils.getBoolean(node, CLIENT_IS_CUSTOMERS_SHARED_PROPERTY, false));
             setProductsShared(NodeUtils.getBoolean(node, CLIENT_IS_PRODUCTS_SHARED_PROPERTY, false));
+            setCategoriesShared(NodeUtils.getBoolean(node, CLIENT_IS_CATEGORIES_SHARED_PROPERTY, false));
             setUseExternalPrice(NodeUtils.getBoolean(node, CLIENT_USE_EXTERNAL_PRICE_PROPERTY, false));
             setUseExternalQuantity(NodeUtils.getBoolean(node, CLIENT_USE_EXTERNAL_QUANTITY_PROPERTY, false));
-
-            initialized = true;
         } catch (RepositoryException e) {
             throw new IllegalStateException("Failed to load client engine mapping. Check the " + CLIENT_ENGINE_CONFIG_NODE_PATH + " node.", e);
         }

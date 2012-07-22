@@ -45,14 +45,6 @@ public class KKAdminEngine {
     }
 
     /**
-     * @return true if the client has been initialize, false otherwise
-     */
-    public boolean isInitialized() {
-        return adminEngineConfig != null;
-    }
-
-
-    /**
      * @return true if we are in Enterprise Mode
      */
     public boolean isEnterprise() {
@@ -136,22 +128,22 @@ public class KKAdminEngine {
     */
     private void init() throws Exception {
 
-        if (kkAdminEng == null) {
-            KKAdminEngineMgr kkAdminEngMgr = new KKAdminEngineMgr();
-            AdminEngineConfig adEngConf = new AdminEngineConfig();
-            adEngConf.setMode(adminEngineConfig.getEngineMode()); //
-            adEngConf.setCustomersShared(adminEngineConfig.isCustomersShared());
-            adEngConf.setProductsShared(adminEngineConfig.isProductsShared());
-            adEngConf.setPropertiesFileName(KONAKART_PROPERTIES);
+        KKAdminEngineMgr kkAdminEngMgr = new KKAdminEngineMgr();
+        AdminEngineConfig adEngConf = new AdminEngineConfig();
+        adEngConf.setMode(adminEngineConfig.getEngineMode()); //
+        adEngConf.setStoreId(adminEngineConfig.getStoreId()); //
+        adEngConf.setCustomersShared(adminEngineConfig.isCustomersShared());
+        adEngConf.setProductsShared(adminEngineConfig.isProductsShared());
+        adEngConf.setCategoriesShared(adminEngineConfig.isCategoriesShared());
+        adEngConf.setPropertiesFileName(KONAKART_PROPERTIES);
 
-            /*
-            * This creates a KonaKart Admin Engine by name using the constructor that requires an
-            * AdminEngineConfig object. This is the recommended approach.
-            */
-            kkAdminEng = kkAdminEngMgr.getKKAdminByName(ENG_CLASS_NAME, adEngConf);
+        /*
+        * This creates a KonaKart Admin Engine by name using the constructor that requires an
+        * AdminEngineConfig object. This is the recommended approach.
+        */
+        kkAdminEng = kkAdminEngMgr.getKKAdminByName(ENG_CLASS_NAME, adEngConf);
 
-            isEnterprise = adEngConf.getEngineId().equals("E");
-        }
+        isEnterprise = adEngConf.getEngineId().equals("E");
     }
 
     /**

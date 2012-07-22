@@ -70,16 +70,20 @@ public class KonakartSynchronizationService extends Plugin {
 
         for (KKStoreConfig kkStoreConfig : kkStoreConfigs) {
             try {
-                JobDetail jobDetail = new JobDetail(MASS_SYNC_JOB, MASS_SYNC_JOB_GROUP, Class.forName(kkStoreConfig.getJobClass()));
+                String triggerName = MASS_SYNC_JOB_TRIGGER + "-" + kkStoreConfig.getStoreId();
+                String jobName = MASS_SYNC_JOB + "-" + kkStoreConfig.getStoreId();
+
+                JobDetail jobDetail = new JobDetail(jobName, MASS_SYNC_JOB_GROUP, Class.forName(kkStoreConfig.getJobClass()));
 
                 JobDataMap dataMap = new JobDataMap();
                 dataMap.put(KK_STORE_ID, kkStoreConfig.getStoreId());
                 dataMap.put(LOCALES, locales);
                 jobDetail.setJobDataMap(dataMap);
 
+
                 if (StringUtils.isNotEmpty(kkStoreConfig.getCronExpression())) {
-                    CronTrigger trigger = new CronTrigger(MASS_SYNC_JOB_TRIGGER, MASS_SYNC_JOB_TRIGGER_GROUP,
-                            MASS_SYNC_JOB, MASS_SYNC_JOB_GROUP, kkStoreConfig.getCronExpression());
+                    CronTrigger trigger = new CronTrigger(triggerName, MASS_SYNC_JOB_TRIGGER_GROUP,
+                            jobName, MASS_SYNC_JOB_GROUP, kkStoreConfig.getCronExpression());
 
                     if (triggerExists(trigger)) {
                         if (triggerChanged(trigger)) {
@@ -90,7 +94,7 @@ public class KonakartSynchronizationService extends Plugin {
                     }
                 } else {
                     // Create a trigger that fires immediately, the repeats every 60 seconds, forever
-                    Trigger trigger = new SimpleTrigger(MASS_SYNC_JOB_TRIGGER, MASS_SYNC_JOB_TRIGGER_GROUP, new Date(),
+                    Trigger trigger = new SimpleTrigger(triggerName, MASS_SYNC_JOB_TRIGGER_GROUP, new Date(),
                             null, SimpleTrigger.REPEAT_INDEFINITELY, 300L * 1000L);
 
                     resourceScheduler.scheduleJob(jobDetail, trigger);

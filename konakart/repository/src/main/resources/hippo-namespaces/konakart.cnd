@@ -16,14 +16,17 @@
 [konakart:adminengine] > nt:base
   - konakart:adminusername (string) mandatory
   - konakart:adminpassword (string) mandatory
+  - konakart:defaultstoreid (string) mandatory
   - konakart:enginemode (long) mandatory
-  - konakart:iscustomershared (boolean) mandatory
-  - konakart:isproductshared (boolean) mandatory
+  - konakart:iscustomersshared (boolean) mandatory
+  - konakart:isproductsshared (boolean) mandatory
+  - konakart:iscategoriesshared (boolean) mandatory
 
 [konakart:clientengine] > nt:base
   - konakart:enginemode (long) mandatory
-  - konakart:iscustomershared (boolean) mandatory
-  - konakart:isproductshared (boolean) mandatory
+  - konakart:iscustomersshared (boolean) mandatory
+  - konakart:isproductsshared (boolean) mandatory
+  - konakart:iscategoriesshared (boolean) mandatory
   - konakart:useexternalprice (boolean) mandatory
   - konakart:useexternalquantity (boolean) mandatory
 

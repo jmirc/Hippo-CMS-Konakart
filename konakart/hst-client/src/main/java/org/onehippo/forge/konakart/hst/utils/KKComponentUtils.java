@@ -38,6 +38,7 @@ public class KKComponentUtils {
     public static final String DISPLAY_PRICE_WITH_TAX = "displayPriceWithTax";
     public static final String IS_LOGGED = "isLogged";
     public static final String CURRENT_CATEGORIES = "currentCategories";
+    public static final String CURRENCIES = "currencies";
 
 
     /**
@@ -162,6 +163,16 @@ public class KKComponentUtils {
         }
 
         request.setAttribute(CURRENT_CATEGORIES, categoryIfs);
+    }
+
+    /**
+     * Set the current currencies
+     *
+     * @param request the hst request to set
+     */
+    public static void setCurrencies(HstRequest request) {
+        KKAppEng kkAppEng = getKKAppEng(request);
+        request.setAttribute(CURRENCIES, kkAppEng.getCurrencies());
     }
 
     /**

@@ -6,6 +6,7 @@ import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
 import org.onehippo.cms7.hst.hippokart.channels.WebsiteInfo;
+import org.onehippo.forge.konakart.hst.utils.KKActionsHelper;
 import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ public class Header extends BaseHstComponent {
 
         if (info != null) {
             request.setAttribute("headerName", info.getHeaderName());
+            request.setAttribute("cssTheme", info.getCssTheme());
         } else {
             log.warn("No channel info available for website '{}'", mount.getMountPath());
         }
@@ -28,6 +30,14 @@ public class Header extends BaseHstComponent {
         KKComponentUtils.setGlobalKonakartAttributes(request);
 
         request.setAttribute("menu",request.getRequestContext().getHstSiteMenus().getSiteMenu("quicklinks"));
+
+
+        // Set the list of currencies
+        KKComponentUtils.setCurrencies(request);
     }
 
+    @Override
+    public void doAction(HstRequest request, HstResponse response) throws HstComponentException {
+        KKActionsHelper.doAction(request, response);
+    }
 }

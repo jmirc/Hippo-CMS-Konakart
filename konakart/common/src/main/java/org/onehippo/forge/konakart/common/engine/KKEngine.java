@@ -24,22 +24,21 @@ public final class KKEngine {
     static public void init(Session session) {
 
         // Initialize the Engine conf if not exits
-        if (KKAppEng.getEngConf() == null) {
-            KKClientEngineConfig clientEngineConfig = HippoModuleConfig.getConfig().getClientEngineConfig(session);
+        KKClientEngineConfig clientEngineConfig = HippoModuleConfig.getConfig().getClientEngineConfig(session);
 
-            // Initialize the engine conf
-            EngineConfig engConf = new EngineConfig();
-            engConf.setMode(clientEngineConfig.getEngineMode());
-            engConf.setCustomersShared(clientEngineConfig.isCustomersShared());
-            engConf.setProductsShared(clientEngineConfig.isProductsShared());
-            engConf.setPropertiesFileName(KONAKART_PROPERTIES);
-            engConf.setAppPropertiesFileName(KONAKART_APP_PROPERTIES);
+        // Initialize the engine conf
+        EngineConfig engConf = new EngineConfig();
+        engConf.setMode(clientEngineConfig.getEngineMode());
+        engConf.setCustomersShared(clientEngineConfig.isCustomersShared());
+        engConf.setProductsShared(clientEngineConfig.isProductsShared());
+        engConf.setCategoriesShared(clientEngineConfig.isCategoriesShared());
+        engConf.setPropertiesFileName(KONAKART_PROPERTIES);
+        engConf.setAppPropertiesFileName(KONAKART_APP_PROPERTIES);
 
-            try {
-                new KKAppEng(engConf);
-            } catch (Exception e) {
-                throw new IllegalStateException("Failed to start the Konakart engine", e);
-            }
+        try {
+            new KKAppEng(engConf);
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to start the Konakart engine", e);
         }
     }
 

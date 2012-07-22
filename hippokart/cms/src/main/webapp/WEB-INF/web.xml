@@ -34,6 +34,44 @@
         <filter-class>org.hippoecm.frontend.plugins.login.ConcurrentLoginFilter</filter-class>
     </filter>
 
+    <servlet>
+        <servlet-name>XinhaResourceServlet</servlet-name>
+        <servlet-class>org.onehippo.cms7.utilities.servlet.ResourceServlet</servlet-class>
+        <init-param>
+            <param-name>jarPathPrefix</param-name>
+            <param-value>/xinha</param-value>
+        </init-param>
+        <init-param>
+            <param-name>allowedResourcePaths</param-name>
+            <param-value>
+                ^/.*\..*
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>cacheTimeout</param-name>
+            <param-value>0</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet>
+        <servlet-name>SkinResourceServlet</servlet-name>
+        <servlet-class>org.onehippo.cms7.utilities.servlet.ResourceServlet</servlet-class>
+        <init-param>
+            <param-name>jarPathPrefix</param-name>
+            <param-value>/skin</param-value>
+        </init-param>
+        <init-param>
+            <param-name>allowedResourcePaths</param-name>
+            <param-value>
+                ^/.*\..*
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>cacheTimeout</param-name>
+            <param-value>0</param-value>
+        </init-param>
+    </servlet>
+
 
     <!--Default application-->
     <filter>
@@ -135,6 +173,17 @@
         </init-param>
         <load-on-startup>5</load-on-startup>
     </servlet>
+
+
+    <servlet-mapping>
+        <servlet-name>XinhaResourceServlet</servlet-name>
+        <url-pattern>/xinha/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>SkinResourceServlet</servlet-name>
+        <url-pattern>/skin/*</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>StatusServlet</servlet-name>

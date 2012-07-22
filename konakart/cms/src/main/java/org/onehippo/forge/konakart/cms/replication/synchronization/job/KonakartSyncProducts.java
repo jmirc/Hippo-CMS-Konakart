@@ -6,7 +6,6 @@ import com.konakart.appif.DataDescriptorIf;
 import com.konakart.appif.LanguageIf;
 import com.konakart.appif.ProductIf;
 import com.konakart.appif.ProductSearchIf;
-import com.konakart.util.KKConstants;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.frontend.translation.ILocaleProvider;
 import org.hippoecm.repository.api.HippoNodeType;
@@ -22,11 +21,12 @@ import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -41,8 +41,8 @@ public class KonakartSyncProducts {
      * @param locales       list of available locales
      * @throws Exception an exception
      */
-    public static synchronized void updateRepositoryToKonakart(KKStoreConfig kkStoreConfig, List<? extends ILocaleProvider.HippoLocale> locales, Session jcrSession) throws Exception {
-        KKAppEng kkengine = KKEngine.get(KKConstants.KONAKART_DEFAULT_STORE_ID);
+    public static synchronized boolean updateKonakartToHippo(KKStoreConfig kkStoreConfig, List<? extends ILocaleProvider.HippoLocale> locales, Session jcrSession) throws Exception {
+        KKAppEng kkengine = KKEngine.get(kkStoreConfig.getStoreId());
 
         // Retrieve the list of languages defined into konakart.
         LanguageIf[] languages = kkengine.getEng().getAllLanguages();
@@ -51,6 +51,8 @@ public class KonakartSyncProducts {
         Node contentRoot = getProductRoot(kkStoreConfig, jcrSession);
         Locale currentLocale = getLocale(contentRoot, locales);
 
+        boolean updated = false;
+
         // For each language defined into Konakart we need to add the product under Hippo
         for (LanguageIf language : languages) {
 
@@ -58,10 +60,24 @@ public class KonakartSyncProducts {
 
             if (currentLocale == null || !StringUtils.equals(currentLocale.toString(), language.getLocale())) {
                 log.info("############################################################################");
+                log.info("##");
+                log.info("##");
                 log.info("Unable to map the Konakart locale <" + language.getLocale() + "> with any available hippo locale");
+                log.info("##");
+                log.info("##");
                 log.info("############################################################################");
                 continue;
             }
+
+            log.info("############################################################################");
+            log.info("##");
+            log.info("##");
+            log.info("Sync the Konakart locale <" + language.getLocale() + ">");
+            log.info("##");
+            log.info("##");
+            log.info("############################################################################");
+
+            updated = true;
 
             // Initialize the KKEngine
             kkengine = KKEngine.get(storeId);
@@ -70,7 +86,7 @@ public class KonakartSyncProducts {
             CustomProductMgr productMgr;
 
             // In the development mode the entire product lists is retrieved.
-            if (kkStoreConfig.isDevelopmentMode()) {
+            if (kkStoreConfig.isDevelopmentMode() || !hasProducts(kkStoreConfig, jcrSession)) {
                 productMgr = new CustomProductMgr(kkengine.getEng());
             } else {
                 productMgr = new CustomProductMgr(kkengine.getEng(), kkStoreConfig.getLastUpdatedTimeKonakartToRepository());
@@ -105,6 +121,10 @@ public class KonakartSyncProducts {
                 continue;
             }
 
+            if (log.isInfoEnabled()) {
+                log.info(products.getProductArray().length + " product(s) will be synchronized from Konakart to Hippo.");
+            }
+
             // Insert products into konakart
             for (Product product : products.getProductArray()) {
 
@@ -116,6 +136,8 @@ public class KonakartSyncProducts {
                 productFactory.add(storeId, product, language, baseImagePath);
             }
         }
+
+        return updated;
     }
 
 
@@ -126,7 +148,7 @@ public class KonakartSyncProducts {
      * @param jcrSession    JCR Session
      * @throws Exception .
      */
-    public static synchronized void updateKonakartToRepository(KKStoreConfig kkStoreConfig, Session jcrSession) throws Exception {
+    public static synchronized void updateHippoToKonakart(KKStoreConfig kkStoreConfig, Session jcrSession) throws Exception {
 
         NodeHelper nodeHelper = new NodeHelper(jcrSession);
 
@@ -134,33 +156,53 @@ public class KonakartSyncProducts {
 
         Node seed = getProductRoot(kkStoreConfig, jcrSession);
 
-        if (seed != null) {
-            List<SyncProduct> syncProducts = new LinkedList<SyncProduct>();
-            findAllProductIdsFromRepository(seed, syncProducts);
+        List<SyncProduct> syncProducts = findAllProductIdsFromRepository(seed, false);
 
-            if (syncProducts.size() > 0) {
-                if (log.isInfoEnabled()) {
-                    log.info(syncProducts.size() + " Hippo product(s) will be synchronized to Konakart");
-                }
+        if (syncProducts.size() > 0) {
+            if (log.isInfoEnabled()) {
+                log.info(syncProducts.size() + " product(s) will be synchronized from Hippo to Konakart");
             }
+        }
 
-            for (SyncProduct syncProduct : syncProducts) {
-                // Retrieve the product from Konakart
-                ProductIf productIf = kkengine.getEng().getProduct(kkengine.getSessionId(), syncProduct.getkProductId(),
-                        kkengine.getLangId());
+        for (SyncProduct syncProduct : syncProducts) {
+            // Retrieve the product from Konakart
+            ProductIf productIf = kkengine.getEng().getProduct(kkengine.getSessionId(), syncProduct.getkProductId(),
+                    kkengine.getLangId());
 
-                // Retrieve the hippo node
-                Node node = jcrSession.getNodeByIdentifier(syncProduct.getHippoUuid());
+            // Retrieve the hippo node
+            Node node = jcrSession.getNodeByIdentifier(syncProduct.getHippoUuid());
 
-                // If the product is null, it means that the product has been removed from the store.
-                // So the Hippo document should be unpublished.
-                if (productIf == null) {
-                    nodeHelper.updateState(node.getParent(), NodeHelper.UNPUBLISHED_STATE);
-                }
+            // If the product is null, it means that the product has been removed from the store.
+            // So the Hippo document should be unpublished.
+            if (productIf == null) {
+                nodeHelper.updateState(node.getParent(), NodeHelper.UNPUBLISHED_STATE);
             }
         }
     }
 
+    /**
+     * During the development process, sometimes the sync node contains the sync date but no product has been synchronized.
+     * The goal of this method is to validate if the sync dates must be forgot.
+     * @param kkStoreConfig the current konakart config
+     * @param jcrSession the JCR session
+     * @return true if Hippo repository has products, false otherwise
+     */
+    private static boolean hasProducts(KKStoreConfig kkStoreConfig, Session jcrSession) {
+        try {
+            Node seed = getProductRoot(kkStoreConfig, jcrSession);
+
+            List<SyncProduct> syncProducts = findAllProductIdsFromRepository(seed, true);
+
+            return syncProducts != null && syncProducts.size() > 0;
+        } catch (Exception e) {
+            log.error("Failed to check if at least a product has been synchronized.", e);
+        }
+
+        return false;
+    }
+
+
+    @Nonnull
     private static Node getProductRoot(KKStoreConfig kkStoreConfig, Session jcrSession) throws Exception {
         Node seed = null;
 
@@ -240,28 +282,40 @@ public class KonakartSyncProducts {
     }
 
 
-    private static void findAllProductIdsFromRepository(Node seed, List<SyncProduct> syncProducts) throws RepositoryException {
-        if (seed.isNodeType("hippo:handle")) {
-            seed = seed.getNode(seed.getName());
-        }
+    private static List<SyncProduct> findAllProductIdsFromRepository(Node seed, Boolean onlyFirstRetrieve) throws RepositoryException {
 
-        if (seed.isNodeType(KKCndConstants.PRODUCT_DOC_TYPE)) {
+        List<SyncProduct> syncProducts = new ArrayList<SyncProduct>();
 
-            SyncProduct syncProduct = new SyncProduct();
-            syncProduct.setHippoUuid(seed.getIdentifier());
-            syncProduct.setkProductId((int) seed.getProperty(KKCndConstants.PRODUCT_ID).getLong());
+        try {
+            if (seed.isNodeType("hippo:handle")) {
+                seed = seed.getNode(seed.getName());
+            }
 
-            syncProducts.add(syncProduct);
+            if (seed.isNodeType(KKCndConstants.PRODUCT_DOC_TYPE)) {
+                SyncProduct syncProduct = new SyncProduct();
+                syncProduct.setHippoUuid(seed.getIdentifier());
+                syncProduct.setkProductId((int) seed.getProperty(KKCndConstants.PRODUCT_ID).getLong());
 
-        } else if (seed.isNodeType("hippostd:folder")) {
-            for (NodeIterator nodeIt = seed.getNodes(); nodeIt.hasNext(); ) {
-                Node child = nodeIt.nextNode();
+                syncProducts.add(syncProduct);
 
-                if (child != null) {
-                    findAllProductIdsFromRepository(child, syncProducts);
+                if (onlyFirstRetrieve) {
+                    return syncProducts;
+                }
+
+            } else if (seed.isNodeType("hippostd:folder")) {
+                for (NodeIterator nodeIt = seed.getNodes(); nodeIt.hasNext(); ) {
+                    Node child = nodeIt.nextNode();
+
+                    if (child != null) {
+                        syncProducts.addAll(findAllProductIdsFromRepository(child, false));
+                    }
                 }
             }
+        } catch (Exception e) {
+            log.error("Failed to retrieve the list of products");
         }
+
+        return syncProducts;
     }
 
 

@@ -90,9 +90,7 @@ public class HippoModuleConfig {
      * @return the admin engine config.
      */
     public KKAdminEngineConfig getAdminEngineConfig(Session session) {
-        if (!adminEngineConfig.isInitialized()) {
-            adminEngineConfig.loadAdminEngineConfiguration(session);
-        }
+        adminEngineConfig.loadAdminEngineConfiguration(session);
 
         return adminEngineConfig;
     }
@@ -101,9 +99,7 @@ public class HippoModuleConfig {
      * @return the client engine config.
      */
     public KKClientEngineConfig getClientEngineConfig(Session session) {
-        if (!clientEngineConfig.isInitialized()) {
-            clientEngineConfig.loadClientEngineConfiguration(session);
-        }
+        clientEngineConfig.loadClientEngineConfiguration(session);
 
         return clientEngineConfig;
     }

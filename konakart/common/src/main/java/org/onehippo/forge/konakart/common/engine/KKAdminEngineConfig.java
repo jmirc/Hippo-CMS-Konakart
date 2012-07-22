@@ -13,17 +13,19 @@ public class KKAdminEngineConfig {
 
     public static final String ADMIN_USERNAME_PROPERTY = "konakart:adminusername";
     public static final String ADMIN_PASSWORD_PROPERTY = "konakart:adminpassword";
+    public static final String ADMIN_STORE_ID_PROPERTY = "konakart:defaultstoreid";
     public static final String ADMIN_ENGINEMODE_PROPERTY = "konakart:enginemode";
-    public static final String ADMIN_IS_CUSTOMERS_SHARED_PROPERTY = "konakart:iscustomershared";
-    public static final String ADMIN_IS_PRODUCTS_SHARED_PROPERTY = "konakart:isproductshared";
-
+    public static final String ADMIN_IS_CUSTOMERS_SHARED_PROPERTY = "konakart:iscustomersshared";
+    public static final String ADMIN_IS_PRODUCTS_SHARED_PROPERTY = "konakart:isproductsshared";
+    public static final String ADMIN_IS_CATEGORIES_SHARED_PROPERTY = "konakart:iscategoriesshared";
 
     private String username;
     private String password;
+    private String storeId;
     private int engineMode;
     private boolean isCustomersShared;
     private boolean isProductsShared;
-    private boolean initialized = false;
+    private boolean isCategoriesShared;
 
     public String getUsername() {
         return username;
@@ -39,6 +41,14 @@ public class KKAdminEngineConfig {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
     }
 
     public int getEngineMode() {
@@ -65,8 +75,12 @@ public class KKAdminEngineConfig {
         isProductsShared = productsShared;
     }
 
-    public boolean isInitialized() {
-        return initialized;
+    public boolean isCategoriesShared() {
+        return isCategoriesShared;
+    }
+
+    public void setCategoriesShared(boolean categoriesShared) {
+        isCategoriesShared = categoriesShared;
     }
 
     /**
@@ -78,11 +92,12 @@ public class KKAdminEngineConfig {
 
             setUsername(NodeUtils.getString(node, ADMIN_USERNAME_PROPERTY));
             setPassword(NodeUtils.getString(node, ADMIN_PASSWORD_PROPERTY));
+            setStoreId(NodeUtils.getString(node, ADMIN_STORE_ID_PROPERTY));
             setEngineMode(NodeUtils.getLong(node, ADMIN_ENGINEMODE_PROPERTY, 0L));
             setCustomersShared(NodeUtils.getBoolean(node, ADMIN_IS_CUSTOMERS_SHARED_PROPERTY, false));
             setProductsShared(NodeUtils.getBoolean(node, ADMIN_IS_PRODUCTS_SHARED_PROPERTY, false));
+            setCategoriesShared(NodeUtils.getBoolean(node, ADMIN_IS_CATEGORIES_SHARED_PROPERTY, false));
 
-            this.initialized = true;
         } catch (RepositoryException e) {
             throw new IllegalStateException("Failed to load client engine mapping. Check the " + ADMIN_ENGINE_CONFIG_NODE_PATH + " node.", e);
         }

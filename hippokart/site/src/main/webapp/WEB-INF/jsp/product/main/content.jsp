@@ -110,9 +110,9 @@
                 </div>
 
                 <div class="span2">
-                    <%--<c:if test="${wishListEnabled}">--%>
-                    <p><a href="#" id="wishlistLink">Add to wish list</a></p>
-                    <%--</c:if>--%>
+                    <c:if test="${wishListEnabled}">
+                        <p><a href="#" id="wishlistLink">Add to wish list</a></p>
+                    </c:if>
 
                     <p><a href="#" id="compareLink">Add to Compare</a></p>
                 </div>

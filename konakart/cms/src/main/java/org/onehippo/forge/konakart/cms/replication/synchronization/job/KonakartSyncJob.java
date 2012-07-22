@@ -57,19 +57,16 @@ public class KonakartSyncJob implements Job {
             // Initialize the Konakart engine
             KKEngine.init(jcrSession);
 
-
             try {
                 // Synchronize konakart information
-                syncRepositoryToKonakart(kkStoreConfig, locales);
-                kkStoreConfig.updateLastUpdatedTimeRepositoryToKonakart(jcrSession);
+                syncKonakartToHippo(kkStoreConfig, locales);
             } catch (Exception e) {
                 log.warn("Failed to update Repository to Konakart. ", e);
             }
 
             // Synchronize hippo product
             try {
-                syncKonakartToRepository(kkStoreConfig);
-                kkStoreConfig.updateLastUpdatedTimeKonakartToRepository(jcrSession);
+                syncHippoToKonakart(kkStoreConfig);
             } catch (Exception e) {
                 log.warn("Failed to update Konakart to Repository. ", e);
             }
@@ -86,11 +83,13 @@ public class KonakartSyncJob implements Job {
      * @param locales       list of available locales
      * @throws Exception an exception
      */
-    protected void syncRepositoryToKonakart(KKStoreConfig kkStoreConfig,
-                                          List<? extends HippoLocale> locales) throws Exception {
+    protected void syncKonakartToHippo(KKStoreConfig kkStoreConfig,
+                                       List<? extends HippoLocale> locales) throws Exception {
 
         // Synchronize products
-        KonakartSyncProducts.updateRepositoryToKonakart(kkStoreConfig, locales, jcrSession);
+        if (KonakartSyncProducts.updateKonakartToHippo(kkStoreConfig, locales, jcrSession)) {
+            kkStoreConfig.updateLastUpdatedTimeKonakartToRepository(jcrSession);
+        }
     }
 
     /**
@@ -99,9 +98,10 @@ public class KonakartSyncJob implements Job {
      * @param kkStoreConfig the store config
      * @throws Exception an exception
      */
-    protected void syncKonakartToRepository(KKStoreConfig kkStoreConfig) throws Exception {
+    protected void syncHippoToKonakart(KKStoreConfig kkStoreConfig) throws Exception {
 
         // Synchronize products
-        KonakartSyncProducts.updateKonakartToRepository(kkStoreConfig, jcrSession);
+        KonakartSyncProducts.updateHippoToKonakart(kkStoreConfig, jcrSession);
+        kkStoreConfig.updateLastUpdatedTimeKonakartToRepository(jcrSession);
     }
 }

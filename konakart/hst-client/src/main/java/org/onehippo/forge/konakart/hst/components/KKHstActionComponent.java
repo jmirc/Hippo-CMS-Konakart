@@ -32,9 +32,9 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
 
     @Override
     final public void doAction(HstRequest request, HstResponse response) {
-        String type = KKUtil.getEscapedParameter(request, KKActionsConstants.ACTION);
+        String action = KKUtil.getEscapedParameter(request, KKActionsConstants.ACTION);
 
-        doAction(type, request, response);
+        doAction(action, request, response);
     }
 
     /**

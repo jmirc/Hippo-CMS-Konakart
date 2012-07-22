@@ -82,9 +82,9 @@
                     <div class="span2">
                         <p><button class="btn btn-primary" type="submit">Add to cart</button></p>
 
-                        <%--<c:if test="${wishListEnabled}">--%>
-                        <p><a href="#" id="wishlistLink">Add to wish list</a></p>
-                        <%--</c:if>--%>
+                        <c:if test="${wishListEnabled}">
+                            <p><a href="#" id="wishlistLink">Add to wish list</a></p>
+                        </c:if>
 
                         <p><a href="#" id="compareLink">Add to Compare</a></p>
                     </div>

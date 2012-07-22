@@ -927,10 +927,91 @@
                             <goal>install-file</goal>
                         </goals>
                         <configuration>
-                            <groupId>org.apache.torque</groupId>
+                            <groupId>com.konakart.torque</groupId>
                             <artifactId>village</artifactId>
                             <version>${torque.village.version}</version>
                             <file>${env.KONAKART_HOME}/webapps/konakart/WEB-INF/lib/konakart_village-3.3.jar</file>
+                            <packaging>jar</packaging>
+                            <createChecksum>true</createChecksum>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                    <!-- Install the jars for the enterprise version -->
+                    <execution>
+                        <id>Install 56</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>com.konakart.enterprise</groupId>
+                            <artifactId>konakart</artifactId>
+                            <version>${konakart.version}</version>
+                            <file>${env.KONAKART_HOME}/webapps/konakart/WEB-INF/lib/konakart_enterprise.jar</file>
+                            <packaging>jar</packaging>
+                            <createChecksum>true</createChecksum>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>Install 57</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>com.konakart.enterprise</groupId>
+                            <artifactId>multistore</artifactId>
+                            <version>${konakart.version}</version>
+                            <file>${env.KONAKART_HOME}/webapps/konakart/WEB-INF/lib/konakart_multistore.jar</file>
+                            <packaging>jar</packaging>
+                            <createChecksum>true</createChecksum>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>Install 58</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>com.konakart.enterprise</groupId>
+                            <artifactId>solr</artifactId>
+                            <version>${konakart.version}</version>
+                            <file>${env.KONAKART_HOME}/webapps/konakart/WEB-INF/lib/konakart_solr.jar</file>
+                            <packaging>jar</packaging>
+                            <createChecksum>true</createChecksum>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>Install 59</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>com.konakart.enterprise</groupId>
+                            <artifactId>konakartadmin</artifactId>
+                            <version>${konakart.version}</version>
+                            <file>${env.KONAKART_HOME}/webapps/konakart/WEB-INF/lib/konakartadmin_enterprise.jar</file>
+                            <packaging>jar</packaging>
+                            <createChecksum>true</createChecksum>
+                            <generatePom>true</generatePom>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>Install 60</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>com.konakart.enterprise</groupId>
+                            <artifactId>multistoreadmin</artifactId>
+                            <version>${konakart.version}</version>
+                            <file>${env.KONAKART_HOME}/webapps/konakart/WEB-INF/lib/konakartadmin_multistore.jar</file>
                             <packaging>jar</packaging>
                             <createChecksum>true</createChecksum>
                             <generatePom>true</generatePom>

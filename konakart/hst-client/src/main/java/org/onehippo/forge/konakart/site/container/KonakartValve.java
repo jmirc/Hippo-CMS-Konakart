@@ -33,7 +33,7 @@ public class KonakartValve implements Valve {
 
     public static Logger log = LoggerFactory.getLogger(KonakartValve.class);
 
-    public final static String REDIRECT_LOGOUT_URL = "/login/logout";
+    public final static String REDIRECT_LOGOUT_URL = "/j_spring_security_logout";
 
     @Override
     public void initialize() throws ContainerException {
@@ -60,14 +60,6 @@ public class KonakartValve implements Valve {
             throw new IllegalStateException("Failed to retrieve the Jcr Session", e);
         }
 
-        // Initialize the Konakart Admin Client
-        try {
-            KKAdminEngine.getInstance().init(jcrSession);
-        } catch (Exception e) {
-            throw new IllegalStateException("Failed to initialize the Konakart Admin Client", e);
-        }
-
-
         // Pre-load the checkout activities
         try {
             HippoModuleConfig.getConfig().preLoadActivityList(jcrSession);
@@ -90,6 +82,13 @@ public class KonakartValve implements Valve {
             storeName = KKActionsConstants.DEF_STORE_ID;
         }
 
+        // Initialize the Konakart Admin Client
+        try {
+            KKAdminEngine.getInstance().init(jcrSession);
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to initialize the Konakart Admin Client", e);
+        }
+
 
         // Check if the store config has been created under /hippo-configuration/cms-services/KonakartSynchronizationService
         KKStoreConfig kkStoreConfig;
@@ -103,10 +102,9 @@ public class KonakartValve implements Valve {
         }
 
         // Initialize the konakart client if it has not been created
-        // TODO: how to handle multiple stores??????
         if (kkAppEng == null) {
             // Initialize Konakart Engine
-            kkAppEng = KKServiceHelper.getKKEngineService().initKKEngine(request, response, kkStoreConfig);
+            kkAppEng = KKServiceHelper.getKKEngineService().initKKEngine(request, response, jcrSession, kkStoreConfig);
         }
 
         // Validate the current konakart session

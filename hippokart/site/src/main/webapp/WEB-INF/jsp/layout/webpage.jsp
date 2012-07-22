@@ -11,9 +11,6 @@
     <hst:link var="bootstrapcss" path="/libs/bootstrap/css/bootstrap.css"/>
     <link rel="stylesheet" href="${bootstrapcss}" type="text/css"/>
 
-    <hst:link var="bootstrapswitchcss" path="/libs/bootstrap/css/united/bootstrap.css"/>
-    <link id="switch_style" rel="stylesheet" href="${bootstrapswitchcss}" type="text/css"/>
-
     <hst:headContributions categoryIncludes="css" xhtml="true"/>
 
 

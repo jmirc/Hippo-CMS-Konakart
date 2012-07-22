@@ -1,10 +1,17 @@
 <%@ include file="/WEB-INF/jspf/htmlTags.jspf" %>
-<%--@elvariable id="headerName" type="java.lang.String"--%>
+<%--@elvariable id="currency" type="com.konakart.appif.CurrencyIf"--%>
+
+<hst:headContribution category="css">
+    <hst:link var="bootstrapswitchcss" path="/libs/bootstrap/css/${cssTheme}/bootstrap.css"/>
+    <link id="switch_style" rel="stylesheet" href="${bootstrapswitchcss}" type="text/css"/>
+</hst:headContribution>
+
+
 
 <div class="span4 logo">
     <hst:link var="homeLink" path="/"/>
     <a href="${homeLink}">
-        <h1>Hippo Cart</h1>
+        <h1>${headerName}</h1>
     </a>
 </div>
 <div class="span8">
@@ -13,9 +20,20 @@
         <div class="span1">&nbsp;</div>
         <div class="span2">
             <h4>Currency</h4>
-            <a href="#"><strong>USD</strong></a> |
-            <a href="#">GBP</a> |
-            <a href="#">EUR</a>
+
+            <c:forEach items="${currencies}" var="currency" varStatus="status">
+                <hst:actionURL var="currencyLink">
+                    <hst:param name="action" value="SELECT_CURRENCY"/>
+                    <hst:param name="currencyCode" value="${currency.code}"/>
+                </hst:actionURL>
+
+                <a href="${currencyLink}">
+                    <c:if test="${status.first}"><strong></c:if>
+                    ${currency.code}
+                    <c:if test="${status.first}"></strong></c:if>
+                </a> <c:if test="${not status.last}">|
+            </c:if>
+            </c:forEach>
         </div>
         <div class="span2">
 

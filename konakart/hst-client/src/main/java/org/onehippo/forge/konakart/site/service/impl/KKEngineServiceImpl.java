@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.jcr.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -51,7 +52,7 @@ public class KKEngineServiceImpl implements KKEngineService {
 
     @Override
     public KKAppEng initKKEngine(@Nonnull HttpServletRequest servletRequest, @Nonnull HttpServletResponse servletResponse,
-                                 @Nonnull KKStoreConfig kkStoreConfig) throws HstComponentException {
+                                 @Nonnull Session jcrSession, @Nonnull KKStoreConfig kkStoreConfig) throws HstComponentException {
 
         KKCookieServiceImpl kkCookieServiceImpl = new KKCookieServiceImpl();
 
