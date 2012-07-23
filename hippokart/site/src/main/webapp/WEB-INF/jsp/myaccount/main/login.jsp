@@ -69,7 +69,7 @@
         </p>
 
 
-        <hst:link var="myaccountLink" fullyQualified="true"/>
+        <hst:link var="myaccountLink" siteMapItemRefId="myaccount" fullyQualified="true"/>
         <hst:link var="loginLink" path="/j_spring_security_check"/>
         <form id="loginFormID" action="${loginLink}?spring-security-redirect=${myaccountLink}" method="post">
             <div class="control-group">

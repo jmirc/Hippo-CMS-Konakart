@@ -146,34 +146,6 @@
     </sv:property> 
   </sv:node>  
   <!-- Website -->  
-  <sv:node sv:name="hippokart-sitemap"> 
-    <sv:property sv:name="jcr:primaryType" sv:type="Name"> 
-      <sv:value>hippo:initializeitem</sv:value> 
-    </sv:property>  
-    <sv:property sv:name="hippo:sequence" sv:type="Double"> 
-      <sv:value>10056</sv:value> 
-    </sv:property>  
-    <sv:property sv:name="hippo:contentresource" sv:type="String"> 
-      <sv:value>hst/configurations/hippokart/sitemap.xml</sv:value> 
-    </sv:property>  
-    <sv:property sv:name="hippo:contentroot" sv:type="String"> 
-      <sv:value>/hst:hst/hst:configurations/hippokart</sv:value> 
-    </sv:property> 
-  </sv:node>  
-  <sv:node sv:name="hippokart-sitemenus"> 
-    <sv:property sv:name="jcr:primaryType" sv:type="Name"> 
-      <sv:value>hippo:initializeitem</sv:value> 
-    </sv:property>  
-    <sv:property sv:name="hippo:sequence" sv:type="Double"> 
-      <sv:value>10057</sv:value> 
-    </sv:property>  
-    <sv:property sv:name="hippo:contentresource" sv:type="String"> 
-      <sv:value>hst/configurations/hippokart/sitemenus.xml</sv:value> 
-    </sv:property>  
-    <sv:property sv:name="hippo:contentroot" sv:type="String"> 
-      <sv:value>/hst:hst/hst:configurations/hippokart</sv:value> 
-    </sv:property> 
-  </sv:node>  
   <!-- Subsite components -->  
   <sv:node sv:name="hippokart-subsite-common-configuration-components"> 
     <sv:property sv:name="jcr:primaryType" sv:type="Name"> 
@@ -853,20 +825,6 @@
       <sv:value>/hst:hst/hst:configurations/common/hst:components</sv:value> 
     </sv:property> 
   </sv:node>  
-  <sv:node sv:name="hippokart-hst-hst-hst-configurations-hippokart-store2-hst-sitemenus"> 
-    <sv:property sv:name="jcr:primaryType" sv:type="Name"> 
-      <sv:value>hippo:initializeitem</sv:value> 
-    </sv:property>  
-    <sv:property sv:name="hippo:sequence" sv:type="Double"> 
-      <sv:value>10056.0</sv:value> 
-    </sv:property>  
-    <sv:property sv:name="hippo:contentresource" sv:type="String"> 
-      <sv:value>hst/configurations/hippokart-store2/sitemenus.xml</sv:value> 
-    </sv:property>  
-    <sv:property sv:name="hippo:contentroot" sv:type="String"> 
-      <sv:value>/hst:hst/hst:configurations/hippokart-store2</sv:value> 
-    </sv:property> 
-  </sv:node>  
   <sv:node sv:name="hippokart-hst-hst-hst-configurations-common-hst-components-content"> 
     <sv:property sv:name="jcr:primaryType" sv:type="Name"> 
       <sv:value>hippo:initializeitem</sv:value> 
@@ -907,20 +865,6 @@
     </sv:property>  
     <sv:property sv:name="hippo:contentroot" sv:type="String"> 
       <sv:value>/hst:hst/hst:configurations/common/hst:pages</sv:value> 
-    </sv:property> 
-  </sv:node>  
-  <sv:node sv:name="hippokart-hst-hst-hst-configurations-hippokart-store2-hst-sitemap"> 
-    <sv:property sv:name="jcr:primaryType" sv:type="Name"> 
-      <sv:value>hippo:initializeitem</sv:value> 
-    </sv:property>  
-    <sv:property sv:name="hippo:sequence" sv:type="Double"> 
-      <sv:value>10056.0</sv:value> 
-    </sv:property>  
-    <sv:property sv:name="hippo:contentresource" sv:type="String"> 
-      <sv:value>hst/configurations/hippokart-store2/sitemap.xml</sv:value> 
-    </sv:property>  
-    <sv:property sv:name="hippo:contentroot" sv:type="String"> 
-      <sv:value>/hst:hst/hst:configurations/hippokart-store2</sv:value> 
     </sv:property> 
   </sv:node>  
   <sv:node sv:name="hippokart-hst-hst-hst-configurations-common-hst-pages-cartdetail"> 
@@ -1035,46 +979,74 @@
       <sv:value>/hst:hst/hst:configurations/common/hst:components</sv:value> 
     </sv:property> 
   </sv:node>  
-  <sv:node sv:name="hippokart-hst-hst-hst-channels-hippokart-store2">
+  <sv:node sv:name="hippokart-hst-hst-hst-channels-hippokart-store2"> 
+    <sv:property sv:name="jcr:primaryType" sv:type="Name"> 
+      <sv:value>hippo:initializeitem</sv:value> 
+    </sv:property>  
+    <sv:property sv:name="hippo:sequence" sv:type="Double"> 
+      <sv:value>10053.0</sv:value> 
+    </sv:property>  
+    <sv:property sv:name="hippo:contentresource" sv:type="String"> 
+      <sv:value>hst/channels/hippokart-store2.xml</sv:value> 
+    </sv:property>  
+    <sv:property sv:name="hippo:contentroot" sv:type="String"> 
+      <sv:value>/hst:hst/hst:channels</sv:value> 
+    </sv:property> 
+  </sv:node>  
+  <sv:node sv:name="hippokart-konakart-konakart-konakart-stores-store2"> 
+    <sv:property sv:name="jcr:primaryType" sv:type="Name"> 
+      <sv:value>hippo:initializeitem</sv:value> 
+    </sv:property>  
+    <sv:property sv:name="hippo:sequence" sv:type="Double"> 
+      <sv:value>30000.3</sv:value> 
+    </sv:property>  
+    <sv:property sv:name="hippo:contentresource" sv:type="String"> 
+      <sv:value>konakart/stores/store2.xml</sv:value> 
+    </sv:property>  
+    <sv:property sv:name="hippo:contentroot" sv:type="String"> 
+      <sv:value>/konakart:konakart/konakart:stores</sv:value> 
+    </sv:property> 
+  </sv:node>  
+  <sv:node sv:name="hippokart-hippo-configuration-hippo-frontend-cms"> 
+    <sv:property sv:name="jcr:primaryType" sv:type="Name"> 
+      <sv:value>hippo:initializeitem</sv:value> 
+    </sv:property>  
+    <sv:property sv:name="hippo:sequence" sv:type="Double"> 
+      <sv:value>30000.3</sv:value> 
+    </sv:property>  
+    <sv:property sv:name="hippo:contentresource" sv:type="String"> 
+      <sv:value>configuration/frontend/cms.xml</sv:value> 
+    </sv:property>  
+    <sv:property sv:name="hippo:contentroot" sv:type="String"> 
+      <sv:value>/hippo:configuration/hippo:frontend</sv:value> 
+    </sv:property> 
+  </sv:node>  
+  <sv:node sv:name="hippokart-hst-hst-hst-configurations-common-hst-sitemap">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hippo:initializeitem</sv:value>
     </sv:property>
     <sv:property sv:name="hippo:sequence" sv:type="Double">
-      <sv:value>10053.0</sv:value>
+      <sv:value>10056.0</sv:value>
     </sv:property>
     <sv:property sv:name="hippo:contentresource" sv:type="String">
-      <sv:value>hst/channels/hippokart-store2.xml</sv:value>
+      <sv:value>hst/configurations/common/sitemap.xml</sv:value>
     </sv:property>
     <sv:property sv:name="hippo:contentroot" sv:type="String">
-      <sv:value>/hst:hst/hst:channels</sv:value>
+      <sv:value>/hst:hst/hst:configurations/common</sv:value>
     </sv:property>
   </sv:node>
-  <sv:node sv:name="hippokart-konakart-konakart-konakart-stores-store2">
+  <sv:node sv:name="hippokart-hst-hst-hst-configurations-common-hst-sitemenus">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hippo:initializeitem</sv:value>
     </sv:property>
     <sv:property sv:name="hippo:sequence" sv:type="Double">
-      <sv:value>30000.3</sv:value>
+      <sv:value>10056.0</sv:value>
     </sv:property>
     <sv:property sv:name="hippo:contentresource" sv:type="String">
-      <sv:value>konakart/stores/store2.xml</sv:value>
+      <sv:value>hst/configurations/common/sitemenus.xml</sv:value>
     </sv:property>
     <sv:property sv:name="hippo:contentroot" sv:type="String">
-      <sv:value>/konakart:konakart/konakart:stores</sv:value>
-    </sv:property>
-  </sv:node>
-  <sv:node sv:name="hippokart-hippo-configuration-hippo-frontend-cms">
-    <sv:property sv:name="jcr:primaryType" sv:type="Name">
-      <sv:value>hippo:initializeitem</sv:value>
-    </sv:property>
-    <sv:property sv:name="hippo:sequence" sv:type="Double">
-      <sv:value>30000.3</sv:value>
-    </sv:property>
-    <sv:property sv:name="hippo:contentresource" sv:type="String">
-      <sv:value>configuration/frontend/cms.xml</sv:value>
-    </sv:property>
-    <sv:property sv:name="hippo:contentroot" sv:type="String">
-      <sv:value>/hippo:configuration/hippo:frontend</sv:value>
+      <sv:value>/hst:hst/hst:configurations/common</sv:value>
     </sv:property>
   </sv:node>
 </sv:node>

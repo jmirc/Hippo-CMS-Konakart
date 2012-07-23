@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" sv:name="store2">
+  <sv:property sv:name="jcr:primaryType" sv:type="Name">
+    <sv:value>konakart:store</sv:value>
+  </sv:property>
+  <sv:property sv:name="konakart:catalogid" sv:type="String">
+    <sv:value/>
+  </sv:property>
+  <sv:property sv:name="konakart:contentroot" sv:type="String">
+    <sv:value>/content/documents/hippokart-store2</sv:value>
+  </sv:property>
+  <sv:property sv:name="konakart:galleryroot" sv:type="String">
+    <sv:value>/content/gallery/hippokart-store2</sv:value>
+  </sv:property>
+  <sv:property sv:name="konakart:storeid" sv:type="String">
+    <sv:value>store2</sv:value>
+  </sv:property>
+  <sv:node sv:name="konakart:sync">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>konakart:sync</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:lastupdatedtimekonakarttorepository" sv:type="Date">
+      <sv:value>2012-07-22T22:17:00.887-04:00</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:lastupdatedtimerepositorytokonnakart" sv:type="Date">
+      <sv:value>2012-07-17T18:48:00.281-04:00</sv:value>
+    </sv:property>
+  </sv:node>
+</sv:node>

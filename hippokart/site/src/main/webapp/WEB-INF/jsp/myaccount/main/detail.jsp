@@ -7,7 +7,35 @@
 </ul>
 
 <div class="row">
-    <div class="span9">
+    <div class="span12">
         <h1>My Account Information</h1>
+        <hr/>
+
+        <div class="row-fluid">
+            <div class="span4">
+                <h3>My Account</h3>
+
+                <ul class="nav nav-list">
+                    <li><a href="">View or change my account information.</a></li>
+                    <li><a href="">View or change entries in my address book.</a></li>
+                    <li><a href="">Change my account password.</a></li>
+                </ul>
+            </div>
+            <div class="span4">
+                <h3>My Orders</h3>
+
+                <ul class="nav nav-list">
+                    <li><a href="">View the orders I have made.</a></li>
+                </ul>
+            </div>
+            <div class="span4">
+                <h3>E-Mail Notifications</h3>
+
+                <ul class="nav nav-list">
+                    <li><a href="">Subscribe or unsubscribe from newsletters.</a></li>
+                    <li><a href="">View or change my product notification list.</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>

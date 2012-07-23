@@ -13,10 +13,9 @@
         <intercept-url pattern="/css/**" filters="none"/>
         <intercept-url pattern="/images/**" filters="none"/>
         <intercept-url pattern="/binaries/**" filters="none"/>
-        <intercept-url pattern="/login*" filters="none"/>
         <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY, ROLE_everybody" />
-        <form-login login-page="/myaccount"
-                    authentication-failure-url="/myaccount?loginError=true"/>
+        <form-login login-page="/login"
+                    authentication-failure-url="/login?loginError=true"/>
         <logout/>
         <remember-me
                 key="60dc2e90-d1f9-11e1-9b23-0800200c9a66"

@@ -167,6 +167,15 @@
       <sv:value>jsp/checkout/main/detail.jsp</sv:value>
     </sv:property>
   </sv:node>
+  <sv:node sv:name="myaccount.main.login">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:template</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:containers" sv:type="String" sv:multiple="true"/>
+    <sv:property sv:name="hst:renderpath" sv:type="String">
+      <sv:value>jsp/myaccount/main/login.jsp</sv:value>
+    </sv:property>
+  </sv:node>
   <sv:node sv:name="myaccount.main.detail">
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
       <sv:value>hst:template</sv:value>
@@ -174,6 +183,15 @@
     <sv:property sv:name="hst:containers" sv:type="String" sv:multiple="true"/>
     <sv:property sv:name="hst:renderpath" sv:type="String">
       <sv:value>jsp/myaccount/main/detail.jsp</sv:value>
+    </sv:property>
+  </sv:node>
+  <sv:node sv:name="myaccount.main.leftmenu">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>hst:template</sv:value>
+    </sv:property>
+    <sv:property sv:name="hst:containers" sv:type="String" sv:multiple="true"/>
+    <sv:property sv:name="hst:renderpath" sv:type="String">
+      <sv:value>jsp/myaccount/main/leftmenu.jsp</sv:value>
     </sv:property>
   </sv:node>
 </sv:node>
