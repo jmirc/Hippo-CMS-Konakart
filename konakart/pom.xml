@@ -38,6 +38,7 @@
 
     <modules>
         <module>dependencies</module>
+		<module>enterprise-dependencies</module>
         <module>common</module>
         <module>cms</module>
         <module>repository</module>
