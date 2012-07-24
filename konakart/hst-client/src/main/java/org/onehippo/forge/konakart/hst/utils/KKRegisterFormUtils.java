@@ -17,6 +17,10 @@ import java.util.*;
 public class KKRegisterFormUtils {
     protected Logger log = LoggerFactory.getLogger(getClass());
 
+    public static final String MALE_GENDER =  "m";
+    public static final String FEMALE_GENDER =  "f";
+    public static final String DEFAULT_GENDER = MALE_GENDER;
+
     public static final String COUNTRIES = "countries";
     public static final String PROVINCES = "provinces";
     public static final String ADDRESSES = "addresses";
@@ -139,6 +143,8 @@ public class KKRegisterFormUtils {
         FormField formField = formMap.getField(GENDER);
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
             customerRegistration.setGender(formField.getValue());
+        } else {
+            customerRegistration.setGender(DEFAULT_GENDER);
         }
 
         formField = formMap.getField(FIRSTNAME);
@@ -159,6 +165,8 @@ public class KKRegisterFormUtils {
         formField = formMap.getField(DATEOFBIRTH);
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
             customerRegistration.setBirthDate(computeBirthDate(formField.getValue()));
+        } else {
+            customerRegistration.setBirthDate(new GregorianCalendar());
         }
 
         formField = formMap.getField(COMPANYNAME);
