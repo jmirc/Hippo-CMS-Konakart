@@ -19,7 +19,6 @@ import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
 import org.hippoecm.hst.util.HstResponseUtils;
 import org.onehippo.forge.konakart.common.KKCndConstants;
-import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
@@ -67,21 +66,6 @@ public class KKBaseHstComponent extends BaseHstComponent {
         KKAppEng kkAppEng = KKComponentUtils.getKKAppEng(request);
 
         return checkNotNull(kkAppEng);
-    }
-
-
-    /**
-     * Retrieve the current StoreConfig from the HstRequest
-     * The config has been set by the Konakart Valve
-     *
-     * @param request the hst request
-     * @return the Konakart store config.
-     */
-    @Nonnull
-    public KKStoreConfig getKKStoreConfig(@Nonnull HstRequest request) {
-        KKStoreConfig kkStoreConfig = (KKStoreConfig) request.getAttribute(KKStoreConfig.KK_STORE_CONFIG);
-
-        return checkNotNull(kkStoreConfig);
     }
 
     /**

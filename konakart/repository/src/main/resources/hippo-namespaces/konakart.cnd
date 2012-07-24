@@ -53,6 +53,7 @@
   - konakart:galleryroot (string) mandatory
   - konakart:storeid (string) mandatory
   - konakart:catalogid (string)
+  - konakart:securitycustomergroups (string) multiple
   + konakart:sync (konakart:sync) = konakart:sync
   + konakart:producttypenamespaces (konakart:producttypenamespaces) = konakart:producttypenamespaces
 

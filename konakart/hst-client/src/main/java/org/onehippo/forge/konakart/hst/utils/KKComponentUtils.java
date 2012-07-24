@@ -4,14 +4,22 @@ import com.konakart.al.CategoryMgr;
 import com.konakart.al.KKAppEng;
 import com.konakart.appif.CategoryIf;
 import org.apache.commons.lang.StringUtils;
+import org.hippoecm.hst.configuration.hosting.Mount;
 import org.hippoecm.hst.core.component.HstRequest;
+import org.hippoecm.hst.core.request.HstRequestContext;
 import org.hippoecm.hst.security.servlet.LoginServlet;
+import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
+import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.onehippo.forge.konakart.hst.components.KKCheckout;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -176,16 +184,46 @@ public class KKComponentUtils {
     }
 
     /**
-     * Retrieve the Konakart client from the HstRequest.
+     * Retrieve the Konakart client from the http servlet request.
      * The client has been set by the Konakart Valve.
      *
-     * @param request the hst request
+     * @param request the http servlet request
      * @return the Konakart client.
      */
     @Nonnull
-    public static KKAppEng getKKAppEng(@Nonnull HstRequest request) {
+    public static KKAppEng getKKAppEng(@Nonnull HttpServletRequest request) {
         KKAppEng kkAppEng = (KKAppEng) request.getAttribute(KKAppEng.KONAKART_KEY);
 
         return checkNotNull(kkAppEng);
+    }
+
+    /**
+     * Retrieve the Konakart Store config from the context
+     *
+     * @param context the hst request context
+     * @param jcrSession the jcr session
+     * @return the associated Konakart store config
+     */
+    @Nonnull
+    public static KKStoreConfig getKKStoreConfig(HstRequestContext context, Session jcrSession) {
+        // Set the current store config
+        Mount resolvedMount = context.getResolvedMount().getMount();
+        String storeName = resolvedMount.getProperty(KKCndConstants.KONAKART_CONFIG_STORE_NAME);
+
+        //  Set the default one
+        if (org.apache.cxf.common.util.StringUtils.isEmpty(storeName)) {
+            storeName = KKActionsConstants.DEF_STORE_ID;
+        }
+
+        // Check if the store config has been created under /hippo-configuration/cms-services/KonakartSynchronizationService
+        KKStoreConfig kkStoreConfig;
+        try {
+            kkStoreConfig = HippoModuleConfig.getConfig().getStoreConfigByName(jcrSession, storeName);
+
+        } catch (RepositoryException e) {
+            throw new IllegalStateException("Failed to load the storeConfig. Please verify if a new storeConfig named "
+                    + storeName + " within /hippo-configuration/cms-services/KonakartSynchronizationService");
+        }
+        return kkStoreConfig;
     }
 }

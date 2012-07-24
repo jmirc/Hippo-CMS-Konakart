@@ -1,20 +1,17 @@
 package org.onehippo.forge.konakart.site.container;
 
 import com.konakart.al.KKAppEng;
-import org.apache.cxf.common.util.StringUtils;
-import org.hippoecm.hst.configuration.hosting.Mount;
 import org.hippoecm.hst.core.container.ContainerException;
 import org.hippoecm.hst.core.container.Valve;
 import org.hippoecm.hst.core.container.ValveContext;
 import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
 import org.hippoecm.hst.core.request.HstRequestContext;
-import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
-import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
+import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
 import org.onehippo.forge.konakart.site.security.KKUser;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.slf4j.Logger;
@@ -73,33 +70,16 @@ public class KonakartValve implements Valve {
         // Retrieve the Konakart client
         KKAppEng kkAppEng = KKServiceHelper.getKKEngineService().getKKAppEng(request);
 
-        // Set the current store config
-        Mount resolvedMount = context.getRequestContext().getResolvedMount().getMount();
-        String storeName = resolvedMount.getProperty(KKCndConstants.KONAKART_CONFIG_STORE_NAME);
-
-        //  Set the default one
-        if (StringUtils.isEmpty(storeName)) {
-            storeName = KKActionsConstants.DEF_STORE_ID;
-        }
-
         // Initialize the Konakart Admin Client
         try {
-            KKAdminEngine.getInstance().init(jcrSession);
+            KKAdminEngine.init(jcrSession);
         } catch (Exception e) {
             throw new IllegalStateException("Failed to initialize the Konakart Admin Client", e);
         }
 
+        KKStoreConfig kkStoreConfig = KKComponentUtils.getKKStoreConfig(context.getRequestContext(), jcrSession);
 
-        // Check if the store config has been created under /hippo-configuration/cms-services/KonakartSynchronizationService
-        KKStoreConfig kkStoreConfig;
-        try {
-            kkStoreConfig = HippoModuleConfig.getConfig().getStoreConfigByName(jcrSession, storeName);
-
-            request.setAttribute(KKStoreConfig.KK_STORE_CONFIG, kkStoreConfig);
-        } catch (RepositoryException e) {
-            throw new IllegalStateException("Failed to load the storeConfig. Please verify if a new storeConfig named "
-                    + storeName + " within /hippo-configuration/cms-services/KonakartSynchronizationService");
-        }
+        request.getSession().setAttribute(KKStoreConfig.KK_STORE_CONFIG, kkStoreConfig);
 
         // Initialize the konakart client if it has not been created
         if (kkAppEng == null) {
@@ -156,6 +136,8 @@ public class KonakartValve implements Valve {
         // Instantiate the next context
         context.invokeNext();
     }
+
+
 
     private void logout(HttpServletRequest request, HttpServletResponse response, HstRequestContext requestContext) {
         try {

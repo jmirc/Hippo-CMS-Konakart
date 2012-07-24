@@ -199,53 +199,6 @@
             <sv:value>/hippo:configuration/hippo:frontend/cms/cms-folder-views/hipposysedit:namespacefolder/root/filters</sv:value>
         </sv:property>
     </sv:node>
-
-
-    <sv:node sv:name="cms-services-manufacturer-provider">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10109.2</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-configuration/cms-services/manufacturerprovider.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:frontend/cms/cms-services</sv:value>
-        </sv:property>
-    </sv:node>
-
-    <sv:node sv:name="cms-services-taxprovider-provider">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10109.3</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-configuration/cms-services/taxclassprovider.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:frontend/cms/cms-services</sv:value>
-        </sv:property>
-    </sv:node>
-
-    <sv:node sv:name="cms-services-storeidprovider-provider">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10109.3</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-configuration/cms-services/storeidprovider.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:frontend/cms/cms-services</sv:value>
-        </sv:property>
-    </sv:node>
-
     <sv:node sv:name="cms-services-konakart-synchronization-service">
         <sv:property sv:name="jcr:primaryType" sv:type="Name">
             <sv:value>hippo:initializeitem</sv:value>
@@ -255,21 +208,6 @@
         </sv:property>
         <sv:property sv:name="hippo:contentresource" sv:type="String">
             <sv:value>hippo-configuration/cms-services/synchronizationservice.xml</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentroot" sv:type="String">
-            <sv:value>/hippo:configuration/hippo:frontend/cms/cms-services</sv:value>
-        </sv:property>
-    </sv:node>
-
-    <sv:node sv:name="cms-services-konakart-admin-service">
-        <sv:property sv:name="jcr:primaryType" sv:type="Name">
-            <sv:value>hippo:initializeitem</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:sequence" sv:type="Double">
-            <sv:value>10109.5</sv:value>
-        </sv:property>
-        <sv:property sv:name="hippo:contentresource" sv:type="String">
-            <sv:value>hippo-configuration/cms-services/kkadminengineservice.xml</sv:value>
         </sv:property>
         <sv:property sv:name="hippo:contentroot" sv:type="String">
             <sv:value>/hippo:configuration/hippo:frontend/cms/cms-services</sv:value>

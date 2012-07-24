@@ -24,7 +24,7 @@ public class KKAdminEngine {
      */
     private static final String ENG_CLASS_NAME = "com.konakartadmin.bl.KKAdmin";
 
-    private static KKAdminEngine instance = new KKAdminEngine();
+    public static final ThreadLocal<KKAdminEngine> adminEngineThreadLocal = new ThreadLocal<KKAdminEngine>();
 
     private KKAdminEngineConfig adminEngineConfig;
 
@@ -34,15 +34,12 @@ public class KKAdminEngine {
 
     private String session;
 
-    private KKAdminEngine() {
+    protected KKAdminEngine() {
     }
 
-    /**
-     * @return the KKAdminEngine instance
-     */
-    public static KKAdminEngine getInstance() {
-        return instance;
-    }
+
+
+
 
     /**
      * @return true if we are in Enterprise Mode
@@ -65,6 +62,16 @@ public class KKAdminEngine {
     public AdminMgrFactory getFactory() {
         return new AdminMgrFactory(getEngine());
     }
+
+    /**
+     * @return an helper class used to access to the administration functions
+     */
+    @Nonnull
+    public static KKAdminEngine getInstance() {
+        return adminEngineThreadLocal.get();
+    }
+
+
 
     /**
      * @return the Konakart Admin client
@@ -113,12 +120,31 @@ public class KKAdminEngine {
      * @param session the Jcr Session
      * @throws Exception .
      */
-    public void init(@Nonnull Session session) throws Exception {
+    public static void init(@Nonnull Session session) throws Exception {
+
+        KKAdminEngine kkAdminEngine = adminEngineThreadLocal.get();
+
+        if (kkAdminEngine == null) {
+            kkAdminEngine = new KKAdminEngine();
+            kkAdminEngine.internalInit(session);
+
+            adminEngineThreadLocal.set(kkAdminEngine);
+        }
+    }
+
+    /**
+     * Initialize internal init.
+     * @param session the JCR Session
+     * @throws Exception .
+     */
+    private void internalInit(@Nonnull Session session) throws Exception {
         // Retrieve the global admin engine.
         adminEngineConfig = HippoModuleConfig.getConfig().getAdminEngineConfig(session);
 
         // Initialize the admin engine
         init();
+
+        adminEngineThreadLocal.set(this);
     }
 
 

@@ -62,11 +62,9 @@ public class KKUserDetailsServiceImpl implements KKUserDetailsService {
             Collection<? extends GrantedAuthority> authorities = getGrantedAuthoritiesOfUser(username);
 
             if (checkPassword) {
-                return new KKUser(adminCustomer.getEmailAddr(), adminCustomer.getPassword(), adminCustomer.isEnabled(),
-                        accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+                return new KKUser(adminCustomer, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
             } else {
-                return new KKUser(adminCustomer.getId(), adminCustomer.getEmailAddr(), adminCustomer.getPassword(), adminCustomer.isEnabled(),
-                        accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+                return new KKUser(adminCustomer, true, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
             }
 
         }  catch (NoSuchAlgorithmException e) {

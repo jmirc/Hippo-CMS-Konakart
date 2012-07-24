@@ -1,5 +1,6 @@
 package org.onehippo.forge.konakart.site.security;
 
+import com.konakartadmin.app.AdminCustomer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -13,20 +14,21 @@ import java.util.Collection;
 public class KKUser extends User {
 
     private boolean isRememberMeAuthentication = false;
-    private int customerId;
+    private AdminCustomer adminCustomer;
 
+    public KKUser(AdminCustomer adminCustomer, boolean accountNonExpired, boolean credentialsNonExpired,
+                  boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+        super(adminCustomer.getEmailAddr(), adminCustomer.getPassword(), adminCustomer.isEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 
-    public KKUser(String username, String password, boolean enabled, boolean accountNonExpired,
-                  boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+        this.adminCustomer = adminCustomer;
     }
 
-    public KKUser(int customerId, String username, String password, boolean enabled, boolean accountNonExpired,
-                  boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+    public KKUser(AdminCustomer adminCustomer, boolean rememberMeAuthentication, boolean accountNonExpired, boolean credentialsNonExpired,
+                  boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+        super(adminCustomer.getEmailAddr(), adminCustomer.getPassword(), adminCustomer.isEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 
-        this.isRememberMeAuthentication = true;
-        this.customerId = customerId;
+        this.adminCustomer = adminCustomer;
+        this.isRememberMeAuthentication = rememberMeAuthentication;
     }
 
 
@@ -35,6 +37,10 @@ public class KKUser extends User {
     }
 
     public int getCustomerId() {
-        return customerId;
+        return adminCustomer.getId();
+    }
+
+    public AdminCustomer getAdminCustomer() {
+        return adminCustomer;
     }
 }

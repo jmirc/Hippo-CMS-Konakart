@@ -2,8 +2,6 @@ package org.onehippo.forge.konakart.cms.replication.factory;
 
 import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
-import com.konakartadmin.app.AdminCategory;
-import com.konakartadmin.app.AdminProduct;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingGalleryProcessor;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingParameters;
@@ -13,7 +11,6 @@ import org.onehippo.forge.konakart.cms.replication.utils.Codecs;
 import org.onehippo.forge.konakart.cms.replication.utils.NodeHelper;
 import org.onehippo.forge.konakart.cms.replication.utils.NodeImagesHelper;
 import org.onehippo.forge.konakart.common.KKCndConstants;
-import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.slf4j.Logger;
@@ -132,7 +129,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         updateProperties(product, productNode);
 
         // Create the konakart ref product
-        createOrUpdateKonakartProduct(storeId, product, productNode);
+        createOrUpdateKonakartProduct(product, productNode);
 
         // Upload images
         uploadImages(productNode, baseImagePath, kkProductTypeName, product);
@@ -177,32 +174,13 @@ public abstract class AbstractProductFactory implements ProductFactory {
     /**
      * Create or update the konakart node.
      *
-     * @param storeId     the store id
      * @param product     the konakart product
      * @param productNode the hippo product's node
      * @throws javax.jcr.RepositoryException if any exception occurs
      */
-    private void createOrUpdateKonakartProduct(String storeId, Product product, Node productNode) throws RepositoryException {
+    private void createOrUpdateKonakartProduct(Product product, Node productNode) throws RepositoryException {
 
         productNode.setProperty(KKCndConstants.PRODUCT_ID, product.getId());
-    }
-
-    protected AdminCategory[] retrieveCategories(int id) {
-        try {
-            AdminProduct adminProduct = KKAdminEngine.getInstance().getFactory().getAdminProdMgr(true).getProduct(id);
-
-            if (adminProduct != null) {
-                return adminProduct.getCategories();
-
-            }
-
-        } catch (Exception e) {
-            log.warn("Failed to retrieve the list of categories", e);
-        }
-
-        return new AdminCategory[0];
-
-
     }
 
     /**

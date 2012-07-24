@@ -1,7 +1,6 @@
 package org.onehippo.forge.konakart.common.engine;
 
 import org.apache.commons.lang.StringUtils;
-import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +26,7 @@ public class KKStoreConfig {
     private Date lastUpdatedTimeRepositoryToKonakart = null;
     private String catalogId;
     private String storeId;
+    private String[] securityCustomerGroups;
     private String cronExpression;
     private boolean initialized;
     private String jobClass;
@@ -121,6 +121,35 @@ public class KKStoreConfig {
     public void setStoreId(String storeId) {
         this.storeId = storeId;
     }
+
+    public void setSecurityCustomerGroups(String[] securityCustomerGroups) {
+        this.securityCustomerGroups = securityCustomerGroups;
+    }
+
+    /**
+     * Check if the customer group associated to a customer can access the channel or not.
+     *
+     * By default, if no securityCustomerGroups property is defined, this method always returns true.
+     *
+     * @param customerGroup the customer group
+     * @return true if the customer can access the channel, false otherwise
+     */
+    public boolean acceptSecurityCustomerGroup(String customerGroup) {
+
+        if ((securityCustomerGroups == null)) {
+            return true;
+        }
+
+        for (String securityCustomerGroup : securityCustomerGroups) {
+            if (StringUtils.equalsIgnoreCase(customerGroup, securityCustomerGroup)) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
 
     public String getCatalogId() {
         return catalogId;
