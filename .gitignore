@@ -46,3 +46,5 @@ atlassian*
 /hippokart/.idea
 /hippokart/target
 /hippokart/myrepo
+
+/konakart/enterprise-dependencies/target
