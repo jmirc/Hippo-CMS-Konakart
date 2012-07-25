@@ -66,7 +66,7 @@ public class KKAdminEngine {
     /**
      * @return an helper class used to access to the administration functions
      */
-    @Nonnull
+    @Nullable
     public static KKAdminEngine getInstance() {
         return adminEngineThreadLocal.get();
     }
