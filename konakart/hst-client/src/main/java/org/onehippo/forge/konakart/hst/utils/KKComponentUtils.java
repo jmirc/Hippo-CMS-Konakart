@@ -200,6 +200,19 @@ public class KKComponentUtils {
     /**
      * Retrieve the Konakart Store config from the context
      *
+     * @param request the http servlet request
+     * @return the associated Konakart store config
+     */
+    @Nonnull
+    public static KKStoreConfig getKKStoreConfig(@Nonnull HttpServletRequest request) {
+        KKStoreConfig kkStoreConfig = (KKStoreConfig) request.getSession().getAttribute(KKStoreConfig.KK_STORE_CONFIG);
+
+        return checkNotNull(kkStoreConfig);
+    }
+
+    /**
+     * Retrieve the Konakart Store config from the context
+     *
      * @param context the hst request context
      * @param jcrSession the jcr session
      * @return the associated Konakart store config

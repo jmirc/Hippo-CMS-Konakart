@@ -33,6 +33,7 @@ public class KKStoreConfig {
     private String productFactoryClassName;
     private boolean developmentMode;
 
+
     public String getNodePath() {
         return nodePath;
     }

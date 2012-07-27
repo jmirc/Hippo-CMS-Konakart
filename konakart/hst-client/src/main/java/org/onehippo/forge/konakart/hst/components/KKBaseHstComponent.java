@@ -11,7 +11,6 @@ import org.hippoecm.hst.content.beans.query.HstQuery;
 import org.hippoecm.hst.content.beans.query.HstQueryResult;
 import org.hippoecm.hst.content.beans.query.filter.Filter;
 import org.hippoecm.hst.content.beans.standard.HippoBean;
-import org.hippoecm.hst.content.beans.standard.HippoFolder;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
@@ -19,6 +18,7 @@ import org.hippoecm.hst.core.linking.HstLink;
 import org.hippoecm.hst.core.linking.HstLinkCreator;
 import org.hippoecm.hst.util.HstResponseUtils;
 import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKComponentUtils;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.jcr.Node;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -161,17 +162,16 @@ public class KKBaseHstComponent extends BaseHstComponent {
         }
 
         try {
-            HippoBean scope = getContentBean(hstRequest);
 
-            if (scope == null || !(scope instanceof HippoFolder)) {
-                scope = getSiteContentBaseBean(hstRequest);
-            }
+            KKStoreConfig kkStoreConfig = KKComponentUtils.getKKStoreConfig(hstRequest);
+
+            Node scope = hstRequest.getRequestContext().getSession().getNode(kkStoreConfig.getContentRoot());
 
             // the third argument, 'true', indicates whether to include subtypes
             HstQuery hstQuery = getQueryManager(hstRequest).createQuery(scope, KKProductDocument.class, true);
 
             Filter filter = hstQuery.createFilter();
-            filter.addEqualTo(KKCndConstants.PRODUCT_ID, Long.valueOf(product.getId()));
+            filter.addEqualTo(KKCndConstants.PRODUCT_ID, (long) product.getId());
 
             hstQuery.setFilter(filter);
 
