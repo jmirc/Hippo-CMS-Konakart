@@ -1,9 +1,8 @@
 package org.onehippo.forge.konakart.hst.components;
 
-import java.util.List;
-
-import javax.annotation.Nonnull;
-
+import com.konakart.app.KKException;
+import com.konakart.appif.ProductIf;
+import org.apache.cxf.common.util.StringUtils;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
@@ -12,8 +11,8 @@ import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.onehippo.forge.utilities.hst.paging.IterablePagination;
 
-import com.konakart.app.KKException;
-import com.konakart.appif.ProductIf;
+import javax.annotation.Nonnull;
+import java.util.List;
 
 /**
  * This overview component offers methods used to retrieve products information
@@ -41,9 +40,13 @@ public class KKProductsOverview extends KKHstActionComponent {
         int resultCount = products.size();
 
         // Retrieve the current page
-        String currentPageParam = getPublicRequestParameter(request, PARAM_CURRENT_PAGE);
-        int currentPage = KKUtil.parseIntParameter(PARAM_CURRENT_PAGE, currentPageParam, DEFAULT_CURRENT_PAGE, log);
+        String currentPageParam = request.getParameter(PARAM_CURRENT_PAGE);
 
+        if (StringUtils.isEmpty(currentPageParam)) {
+            currentPageParam = getPublicRequestParameter(request, PARAM_CURRENT_PAGE);
+        }
+
+        int currentPage = KKUtil.parseIntParameter(PARAM_CURRENT_PAGE, currentPageParam, DEFAULT_CURRENT_PAGE, log);
 
         // Create the pagination
         IterablePagination<KKProductDocument> pages =

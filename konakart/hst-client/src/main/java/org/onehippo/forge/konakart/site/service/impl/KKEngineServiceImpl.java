@@ -8,6 +8,7 @@ import com.konakart.appif.CustomerTagIf;
 import com.konakart.appif.FetchProductOptionsIf;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
+import org.hippoecm.hst.core.request.HstRequestContext;
 import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
@@ -52,7 +53,7 @@ public class KKEngineServiceImpl implements KKEngineService {
 
     @Override
     public KKAppEng initKKEngine(@Nonnull HttpServletRequest servletRequest, @Nonnull HttpServletResponse servletResponse,
-                                 @Nonnull Session jcrSession, @Nonnull KKStoreConfig kkStoreConfig) throws HstComponentException {
+                                 @Nonnull HstRequestContext requestContext, @Nonnull Session jcrSession, @Nonnull KKStoreConfig kkStoreConfig) throws HstComponentException {
 
         KKCookieServiceImpl kkCookieServiceImpl = new KKCookieServiceImpl();
 
@@ -69,6 +70,9 @@ public class KKEngineServiceImpl implements KKEngineService {
 
                 // Create the Konakart engine
                 kkAppEng = KKEngine.get(storeId);
+
+                // Set the locale
+                kkAppEng.setLocale(requestContext.getPreferredLocale().toString());
 
                 // initialize the Fetch production options
                 FetchProductOptionsIf productOptions = new FetchProductOptions();

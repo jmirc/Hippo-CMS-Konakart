@@ -3,6 +3,7 @@ package org.onehippo.forge.konakart.site.service;
 import com.konakart.al.KKAppEng;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
+import org.hippoecm.hst.core.request.HstRequestContext;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 
 import javax.annotation.Nonnull;
@@ -35,13 +36,14 @@ public interface KKEngineService {
      *
      * @param servletRequest  http servlet request
      * @param servletResponse http servlet response
+     * @param requestContext request context
      * @param jcrSession the jcr session
-     *@param kkStoreConfig   contains configurations set for the current selected store. See hst:mount (konakart:storeName)  @return Returns a KonaKart client engine instance
+     * @param kkStoreConfig   contains configurations set for the current selected store. See hst:mount (konakart:storeName)  @return Returns a KonaKart client engine instance
      * @throws org.hippoecm.hst.core.component.HstComponentException
      *          thrown if the Konakart engine can't be initialized
      */
     KKAppEng initKKEngine(HttpServletRequest servletRequest, HttpServletResponse servletResponse,
-                          Session jcrSession, KKStoreConfig kkStoreConfig) throws HstComponentException;
+                          HstRequestContext requestContext, Session jcrSession, KKStoreConfig kkStoreConfig) throws HstComponentException;
 
     /**
      * Checks to see whether we are logged in.

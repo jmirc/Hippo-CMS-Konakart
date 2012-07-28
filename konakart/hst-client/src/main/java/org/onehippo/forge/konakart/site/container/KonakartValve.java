@@ -67,8 +67,7 @@ public class KonakartValve implements Valve {
         // Initialize internal Konakart Engine configuration
         KKEngine.init(jcrSession);
 
-        // Retrieve the Konakart client
-        KKAppEng kkAppEng = KKServiceHelper.getKKEngineService().getKKAppEng(request);
+
 
         // Initialize the Konakart Admin Client
         try {
@@ -81,10 +80,13 @@ public class KonakartValve implements Valve {
 
         request.getSession().setAttribute(KKStoreConfig.KK_STORE_CONFIG, kkStoreConfig);
 
+        // Retrieve the Konakart client
+        KKAppEng kkAppEng = KKServiceHelper.getKKEngineService().getKKAppEng(request);
+
         // Initialize the konakart client if it has not been created
         if (kkAppEng == null) {
             // Initialize Konakart Engine
-            kkAppEng = KKServiceHelper.getKKEngineService().initKKEngine(request, response, jcrSession, kkStoreConfig);
+            kkAppEng = KKServiceHelper.getKKEngineService().initKKEngine(request, response, requestContext, jcrSession, kkStoreConfig);
         }
 
         // Validate the current konakart session
