@@ -6,6 +6,9 @@ import com.konakart.app.FetchProductOptions;
 import com.konakart.app.KKException;
 import com.konakart.appif.CustomerTagIf;
 import com.konakart.appif.FetchProductOptionsIf;
+import org.apache.commons.lang.LocaleUtils;
+import org.hippoecm.hst.configuration.hosting.Mount;
+import org.hippoecm.hst.configuration.sitemap.HstSiteMapItem;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.request.HstRequestContext;
@@ -24,6 +27,7 @@ import javax.jcr.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Locale;
 
 import static org.onehippo.forge.konakart.site.service.KKTagsService.TAG_PRODUCTS_VIEWED;
 
@@ -72,7 +76,11 @@ public class KKEngineServiceImpl implements KKEngineService {
                 kkAppEng = KKEngine.get(storeId);
 
                 // Set the locale
-                kkAppEng.setLocale(requestContext.getPreferredLocale().toString());
+                Locale preferredLocale = findPreferredLocale(requestContext);
+
+                if (preferredLocale != null) {
+                    kkAppEng.setLocale(preferredLocale.toString());
+                }
 
                 // initialize the Fetch production options
                 FetchProductOptionsIf productOptions = new FetchProductOptions();
@@ -318,5 +326,29 @@ public class KKEngineServiceImpl implements KKEngineService {
             }
         }
     }
+
+    private Locale findPreferredLocale(HstRequestContext requestContext) {
+        if(requestContext.getResolvedSiteMapItem() != null) {
+            HstSiteMapItem siteMapItem =  requestContext.getResolvedSiteMapItem().getHstSiteMapItem();
+            if(siteMapItem.getLocale() != null) {
+                Locale locale = LocaleUtils.toLocale(siteMapItem.getLocale());
+                log.debug("Preferred locale for request is set to '{}' by sitemap item '{}'", siteMapItem.getLocale(), siteMapItem.getId());
+                return locale;
+            }
+        }
+        // if we did not yet find a locale, test the Mount
+        if(requestContext.getResolvedMount() != null) {
+            Mount mount = requestContext.getResolvedMount().getMount();
+            if(mount.getLocale() != null) {
+                Locale locale = LocaleUtils.toLocale(mount.getLocale());
+                log.debug("Preferred locale for request is set to '{}' by Mount '{}'", mount.getLocale(), mount.getName());
+                return locale;
+            }
+        }
+
+        // no locale found
+        return null;
+    }
+
 
 }
