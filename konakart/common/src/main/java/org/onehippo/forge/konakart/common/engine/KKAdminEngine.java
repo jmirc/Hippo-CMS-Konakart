@@ -45,7 +45,11 @@ public class KKAdminEngine {
      * @return true if we are in Enterprise Mode
      */
     public boolean isEnterprise() {
-        return isEnterprise;
+        try {
+            return kkAdminEng.getEngConf().getEngineId().equals("E");
+        } catch (KKAdminException e) {
+            return false;
+        }
     }
 
     /**
@@ -168,8 +172,6 @@ public class KKAdminEngine {
         * AdminEngineConfig object. This is the recommended approach.
         */
         kkAdminEng = kkAdminEngMgr.getKKAdminByName(ENG_CLASS_NAME, adEngConf);
-
-        isEnterprise = adEngConf.getEngineId().equals("E");
     }
 
     /**
