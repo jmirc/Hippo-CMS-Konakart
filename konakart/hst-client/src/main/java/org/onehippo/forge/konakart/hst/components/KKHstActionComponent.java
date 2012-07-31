@@ -151,15 +151,6 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
                 }
             }
         }
-
-        if (StringUtils.equals(action, KKActionsConstants.ACTIONS.ADD_TO_WISHLIST.name())) {
-            String productId = KKUtil.getActionRequestParameter(request, KKActionsConstants.PRODUCT_ID);
-            String wishListId = KKUtil.getActionRequestParameter(request, KKActionsConstants.WISH_LIST_ID);
-
-            //KKServiceHelper.getKKBasketService().addProductToWishList(kkAppEng, request, wishListId, productId, null)
-
-        }
-
     }
 
 

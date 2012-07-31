@@ -59,8 +59,13 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
             } else {
                 doBeforeRenderNotLoginAction(request, response, formMap);
             }
+        } else { // user is logged-in
+            doCallAfterLoginAction(request, response);
         }
+
+
     }
+
 
     protected abstract List<String> getCreateFormMapFields();
 
@@ -266,5 +271,13 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
      * @param customerId id of the created customer
      */
     protected abstract void doCallAfterRegisterCustomer(HstRequest request, HstResponse response, int customerId);
+
+    /**
+     * This method is called after the user is logged-in
+     * @param request the hst request
+     * @param response the hst response
+     */
+    protected abstract void doCallAfterLoginAction(HstRequest request, HstResponse response);
+
 
 }

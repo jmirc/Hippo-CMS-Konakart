@@ -41,5 +41,11 @@ public interface KKCustomerService {
      */
     WishListIf getDefaultWishList(HstRequest request);
 
-
+    /**
+     * @param request the hst request
+     * @param wishListName the name of the wish list
+     * @param isPublic true if the wish list is public, false otherwise
+     * @return the wish list id, -1 if the wish list has not been created
+     */
+    int createDefaultWishList(@Nonnull HstRequest request, String wishListName, boolean isPublic);
 }
