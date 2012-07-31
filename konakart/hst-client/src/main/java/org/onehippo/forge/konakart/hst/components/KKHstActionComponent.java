@@ -21,6 +21,7 @@ import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKActionsConstants;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
+import org.onehippo.forge.konakart.site.service.KKTagsService;
 import org.onehippo.forge.konakart.site.service.impl.KKEventServiceImpl;
 
 import javax.annotation.Nonnull;
@@ -56,7 +57,7 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
 
 
         if (StringUtils.equals(action, KKActionsConstants.ACTIONS.ADD_TO_BASKET.name())) {
-            String productId = KKUtil.getActionRequestParameter(request, KKActionsConstants.PRODUCT_ID);
+            String sProductId = KKUtil.getActionRequestParameter(request, KKActionsConstants.PRODUCT_ID);
             String addToWishList = KKUtil.getActionRequestParameter(request, KKActionsConstants.ADD_TO_WISH_LIST);
             String sQuantity = KKUtil.getActionRequestParameter(request, KKActionsConstants.QUANTITY);
 
@@ -71,7 +72,9 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
             }
 
             // Add this product to the basket
-            if (StringUtils.isNotEmpty(productId)) {
+            if (StringUtils.isNotEmpty(sProductId)) {
+
+                int productId = Integer.parseInt(sProductId);
 
                 // Get the selected options if exists
                 OptionIf[] optionIfs = retrieveSelectedProductOptions(kkAppEng, request);
@@ -81,8 +84,8 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
                 if (optionIfs.length == 0) {
 
                     try {
-                        ProductIf productIf = kkAppEng.getEng().getProduct(kkAppEng.getSessionId(),
-                                Integer.parseInt(productId), kkAppEng.getLangId());
+                        ProductIf productIf = kkAppEng.getEng().getProduct(kkAppEng.getSessionId(), productId,
+                                kkAppEng.getLangId());
 
                         OptionIf[] currentOptionIfs = productIf.getOpts();
 
@@ -108,14 +111,20 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
                     String wishListId = KKUtil.getActionRequestParameter(request, KKActionsConstants.WISH_LIST_ID);
 
                     if (StringUtils.isNotEmpty(wishListId)) {
+                        try {
+                            kkAppEng.getCustomerTagMgr().addToCustomerTag(KKTagsService.TAG_PRODUCTS_IN_WISHLIST, productId);
+                        } catch (Exception e) {
+                            log.warn("Failed to use the Customer tags feature. Please check if this feature has been enabled.", e);
+                        }
+
                         boolean added = KKServiceHelper.getKKBasketService().addProductToWishList(kkAppEng, request,
-                                Integer.valueOf(wishListId), Integer.valueOf(productId), optionIfs, quantity);
+                                Integer.valueOf(wishListId), productId, optionIfs, quantity);
 
                         redirectAfterProductAddedToWishList(added, request, response);
                     }
                 } else {
                     boolean added = KKServiceHelper.getKKBasketService().addProductToBasket(kkAppEng, request,
-                            Integer.valueOf(productId), optionIfs, quantity);
+                            productId, optionIfs, quantity);
 
                     redirectAfterProductAddedToBasket(added, request, response);
                 }

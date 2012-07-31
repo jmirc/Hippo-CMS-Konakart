@@ -1,6 +1,7 @@
 package org.onehippo.forge.konakart.site.service;
 
 import com.konakart.appif.CustomerIf;
+import com.konakart.appif.ProductIf;
 import com.konakart.appif.WishListIf;
 import org.hippoecm.hst.core.component.HstRequest;
 
@@ -42,10 +43,16 @@ public interface KKCustomerService {
     WishListIf getDefaultWishList(HstRequest request);
 
     /**
-     * @param request the hst request
+     * @param request      the hst request
      * @param wishListName the name of the wish list
-     * @param isPublic true if the wish list is public, false otherwise
+     * @param isPublic     true if the wish list is public, false otherwise
      * @return the wish list id, -1 if the wish list has not been created
      */
     int createDefaultWishList(@Nonnull HstRequest request, String wishListName, boolean isPublic);
+
+    /**
+     * @param request the hst request
+     * @return the list of products that have been reviewed
+     */
+    ProductIf[] getCustomerProductsViewed(@Nonnull HstRequest request);
 }
