@@ -3,16 +3,25 @@
     <sv:property sv:name="jcr:primaryType" sv:type="Name">
         <sv:value>konakart:producttypenamespaces</sv:value>
     </sv:property>
+    <sv:property sv:name="konakart:bookableproduct" sv:type="String">
+        <sv:value>konakart:konakartproduct</sv:value>
+    </sv:property>
     <sv:property sv:name="konakart:bundle" sv:type="String">
         <sv:value>konakart:konakartproduct</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:bundlefreeshipping" sv:type="String">
         <sv:value>konakart:konakartproduct</sv:value>
     </sv:property>
+    <sv:property sv:name="konakart:digitaldownload" sv:type="String">
+        <sv:value>konakart:konakartproduct</sv:value>
+    </sv:property>
     <sv:property sv:name="konakart:giftcertificate" sv:type="String">
         <sv:value>konakart:konakartproduct</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:physicalproduct" sv:type="String">
+        <sv:value>konakart:konakartproduct</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:physicalproductfreeshipping" sv:type="String">
         <sv:value>konakart:konakartproduct</sv:value>
     </sv:property>
 </sv:node>
