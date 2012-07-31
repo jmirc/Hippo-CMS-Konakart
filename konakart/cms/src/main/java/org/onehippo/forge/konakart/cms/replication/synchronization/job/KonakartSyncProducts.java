@@ -175,7 +175,7 @@ public class KonakartSyncProducts {
             // If the product is null, it means that the product has been removed from the store.
             // So the Hippo document should be unpublished.
             if (productIf == null) {
-                nodeHelper.updateState(node.getParent(), NodeHelper.UNPUBLISHED_STATE);
+                nodeHelper.updateState(node, NodeHelper.UNPUBLISHED_STATE);
             }
         }
     }
