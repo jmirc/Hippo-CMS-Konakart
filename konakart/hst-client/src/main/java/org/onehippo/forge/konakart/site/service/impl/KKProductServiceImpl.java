@@ -80,4 +80,20 @@ public class KKProductServiceImpl extends KKBaseServiceImpl implements KKProduct
 
         return new ProductIf[0];
     }
+    
+    @Override
+    public ProductIf fetchProductById(HstRequest hstRequest, int productId) {
+
+        KKAppEng kkAppEng = getKKAppEng(hstRequest);
+
+        try {
+            ProductIf productsIf = kkAppEng.getEng().getProduct(kkAppEng.getSessionId(), productId, kkAppEng.getLangId());
+            return productsIf;
+        } catch (KKException e) {
+            log.warn("Failed to retrieve the product");
+        }
+
+        return null;
+    }
+    
 }

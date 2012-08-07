@@ -7,6 +7,13 @@ import com.konakart.appif.ProductIf;
 public interface KKProductService {
 
     /**
+     * Fetch a product by id.
+     *
+     * @param hstRequest the hst request
+     */
+    ProductIf fetchProductById(HstRequest hstRequest, int productId);
+    
+    /**
      * Get the latest products added to the catalog. No category will be selected.
      * The description will not be fetched and the invisible products will not be displayed
      *
