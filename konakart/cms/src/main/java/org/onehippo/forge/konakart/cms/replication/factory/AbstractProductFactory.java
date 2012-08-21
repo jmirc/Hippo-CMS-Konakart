@@ -82,7 +82,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         KKCndConstants.PRODUCT_TYPE product_type = KKCndConstants.PRODUCT_TYPE.findByType(product.getType());
 
-        String kkProductTypeName = product_type.getName();
         String productDocType = HippoModuleConfig.getConfig().getClientEngineConfig().getProductNodeTypeMapping().get(product_type.getNamespace());
 
 
@@ -93,8 +92,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
             return;
         }
 
-        String absPath = contentRoot + Codecs.encodeNode(productFolder) + "/" + Codecs.encodeNode(kkProductTypeName)
-                + "/" + createProductNodeRoot(product);
+        String absPath = contentRoot + Codecs.encodeNode(productFolder) + "/" + createProductNodeRoot(product);
 
         // Create or retrieve the root folder
         Node rootFolder;
@@ -102,8 +100,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         if (session.getRootNode().hasNode(StringUtils.removeStart(absPath, "/"))) {
             rootFolder = session.getNode(absPath);
         } else {
-            absPath = contentRoot + Codecs.encodeNode(productFolder) + "/" + kkProductTypeName
-                    + "/" + createProductNodeRoot(product);
+            absPath = contentRoot + Codecs.encodeNode(productFolder) + "/" + "/" + createProductNodeRoot(product);
 
             rootFolder = nodeHelper.createMissingFolders(absPath);
         }
@@ -132,7 +129,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         createOrUpdateKonakartProduct(product, productNode);
 
         // Upload images
-        uploadImages(productNode, baseImagePath, kkProductTypeName, product);
+        uploadImages(productNode, baseImagePath, product);
 
         // Save the session
         productNode.getSession().save();
@@ -190,11 +187,12 @@ public abstract class AbstractProductFactory implements ProductFactory {
      * @param baseImagePath path where the konakart's images are located
      * @param product       the konakart product
      */
-    private void uploadImages(Node productNode, String baseImagePath, String kkProductTypeName, Product product) {
+    private void uploadImages(Node productNode, String baseImagePath, Product product) {
         try {
             // Retrieve the gallery root node
             // add the product node root
-            String galleryRootNode = galleryRoot + "/" + kkProductTypeName + "/" + createProductNodeRoot(product) + "/" + product.getName() + "/" + product.getId();
+            String galleryRootNode = galleryRoot + "/" + Codecs.encodeNode(productFolder) + "/" +
+                    createProductNodeRoot(product) + "/" + product.getName() + "/" + product.getId();
 
             // Get the root folder
             Node productGalleryNode = nodeImagesHelper.createMissingFolders(galleryRootNode);
