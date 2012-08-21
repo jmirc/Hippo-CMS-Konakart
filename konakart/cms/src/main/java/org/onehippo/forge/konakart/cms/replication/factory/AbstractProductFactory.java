@@ -228,8 +228,10 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         File file = new File(image);
 
-        if (!file.exists() && !StringUtils.equals(file.getName(), "none.png")) {
-            log.warn("Failed to import image. The image at the path {} has not been found. ", image);
+        if (!file.exists()) {
+            if (!StringUtils.equals(file.getName(), "none.png")) {
+                log.warn("Failed to import image. The image at the path {} has not been found. ", image);
+            }
             return;
         }
 
