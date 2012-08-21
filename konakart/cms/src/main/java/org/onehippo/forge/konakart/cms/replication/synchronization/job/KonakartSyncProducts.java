@@ -1,15 +1,11 @@
 package org.onehippo.forge.konakart.cms.replication.synchronization.job;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import javax.annotation.Nonnull;
-import javax.jcr.Node;
-import javax.jcr.NodeIterator;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
-
+import com.konakart.al.KKAppEng;
+import com.konakart.app.*;
+import com.konakart.appif.DataDescriptorIf;
+import com.konakart.appif.LanguageIf;
+import com.konakart.appif.ProductIf;
+import com.konakart.appif.ProductSearchIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.frontend.translation.ILocaleProvider;
 import org.hippoecm.repository.api.HippoNodeType;
@@ -25,19 +21,17 @@ import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.konakart.al.KKAppEng;
-import com.konakart.app.DataDescriptor;
-import com.konakart.app.FetchProductOptions;
-import com.konakart.app.Product;
-import com.konakart.app.ProductSearch;
-import com.konakart.app.Products;
-import com.konakart.appif.DataDescriptorIf;
-import com.konakart.appif.LanguageIf;
-import com.konakart.appif.ProductIf;
-import com.konakart.appif.ProductSearchIf;
+import javax.annotation.Nonnull;
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class KonakartSyncProducts {
-    
+
     private static final int NBR_PRODUCTS_PER_BATCH = 100;
 
     public static final Logger log = LoggerFactory.getLogger(KonakartSyncProducts.class);
@@ -63,14 +57,8 @@ public class KonakartSyncProducts {
 
         // For each language defined into Konakart we need to add the product under Hippo
         for (LanguageIf language : languages) {
-            
+
             // Get the Hippo product folder name
-            String productFolder = kkStoreConfig.getProductFolder();
-
-            if (productFolder == null) {
-                continue;
-            }
-
             String storeId = kkStoreConfig.getStoreId();
 
             if (currentLocale == null || !StringUtils.equals(currentLocale.toString(), language.getLocale())) {
@@ -96,7 +84,7 @@ public class KonakartSyncProducts {
 
             // Initialize the KKEngine
             kkengine = KKEngine.get(storeId);
-            
+
             // Retrieve the product factory
             CustomProductMgr productMgr;
 
@@ -112,54 +100,57 @@ public class KonakartSyncProducts {
             dataDescriptorIf.setShowInvisible(true);
             dataDescriptorIf.setFillDescription(true);
             dataDescriptorIf.setLimit(NBR_PRODUCTS_PER_BATCH);
-            
+
             // Search products from all stores
             ProductSearchIf productSearchIf = new ProductSearch();
 
             // Used default products options
             FetchProductOptions fetchProductOptions = new FetchProductOptions();
-            
+
 
             if (StringUtils.isNotEmpty(kkStoreConfig.getCatalogId())) {
                 fetchProductOptions.setCatalogId(kkStoreConfig.getCatalogId());
             }
-            
+
             // Retrieve the path where the images are saved
             String baseImagePath = kkengine.getEng().getConfiguration("IMG_BASE_PATH").getValue();
-            
+
             ProductFactory productFactory = createProductFactory(kkStoreConfig.getProductFactoryClassName());
             productFactory.setSession(jcrSession);
             productFactory.setKKStoreConfig(kkStoreConfig);
-            
+
             // We get the products by batches, otherwise it takes too much memory.
             int nbrDone = 0;
-            Products products = null;
-            do
-            {
+            Products products;
+
+            do {
                 // set the offset to start the search from
                 dataDescriptorIf.setOffset(nbrDone);
-                
+
                 // Search
-                products = productMgr.searchForProductsWithOptions(kkengine.getSessionId(), 
-                                                                   dataDescriptorIf, 
-                                                                   productSearchIf, 
-                                                                   language.getId(), 
-                                                                   fetchProductOptions);
-                if(products.getProductArray().length > 0) {
+                products = productMgr.searchForProductsWithOptions(kkengine.getSessionId(),
+                        dataDescriptorIf,
+                        productSearchIf,
+                        language.getId(),
+                        fetchProductOptions);
+                if (products.getProductArray().length > 0) {
                     nbrDone += products.getProductArray().length;
-                    
+
                     if (log.isInfoEnabled()) {
                         log.info("A batch of " + products.getProductArray().length + " product(s) will be synchronized from Konakart to Hippo.");
                     }
-                    
+
                     // Insert products into konakart
                     for (Product product : products.getProductArray()) {
                         productFactory.add(storeId, product, language, baseImagePath);
-                    } 
+                    }
+
+                    // Each batch session, save the inserted products
+                    jcrSession.save();
                 }
 
             } while (nbrDone < products.getTotalNumProducts());
-            
+
         }
 
         return updated;
@@ -208,8 +199,9 @@ public class KonakartSyncProducts {
     /**
      * During the development process, sometimes the sync node contains the sync date but no product has been synchronized.
      * The goal of this method is to validate if the sync dates must be forgot.
+     *
      * @param kkStoreConfig the current konakart config
-     * @param jcrSession the JCR session
+     * @param jcrSession    the JCR session
      * @return true if Hippo repository has products, false otherwise
      */
     private static boolean hasProducts(KKStoreConfig kkStoreConfig, Session jcrSession) {

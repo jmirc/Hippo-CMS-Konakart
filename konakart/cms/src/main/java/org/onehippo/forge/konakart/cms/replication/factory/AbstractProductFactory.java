@@ -166,7 +166,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         // Get the creation time
         DateTime dateTime = new DateTime(product.getDateAdded().getTime().getTime());
-        absPath += "/" + dateTime.getYear() + "/" + dateTime.getMonthOfYear();
+        absPath += "/" + dateTime.getYear() + "/" + dateTime.getMonthOfYear() +  "/" + product.getName().substring(0, 1);
 
         return absPath;
     }
@@ -230,7 +230,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         File file = new File(image);
 
-        if (!file.exists()) {
+        if (!file.exists() && !StringUtils.equals(file.getName(), "none.png")) {
             log.warn("Failed to import image. The image at the path {} has not been found. ", image);
             return;
         }
