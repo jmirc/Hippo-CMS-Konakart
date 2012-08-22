@@ -76,10 +76,6 @@ public class KKBasketServiceImpl extends KKBaseServiceImpl implements KKBasketSe
             b.setOpts(optionIfs);
             b.setProductId(selectedProd.getId());
 
-            // Set the product
-            // TODO GENERATE THE HST LINK FOR THE PRODUCT - THIS PART MUST BE MOVED TO A JSP TAGLIB
-            //b.setCustom1(generateHstLink(request, selectedProd.getId()));
-
             kkAppEng.getBasketMgr().addToBasket(b, /* refresh */true);
 
             return true;
@@ -124,5 +120,51 @@ public class KKBasketServiceImpl extends KKBaseServiceImpl implements KKBasketSe
 
         return false;
 
+    }
+
+    @Override
+    public void removeProductToWishList(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request, int wishListId, int productId) {
+
+        try {
+            // Remove an item from the customer's wish list
+            if (KKServiceHelper.getKKCustomerService().wishListEnabled(request)) {
+                WishListItemIf wli = new WishListItem();
+                wli.setWishListId(wishListId);
+                wli.setProductId(productId);
+
+                kkAppEng.getWishListMgr().removeFromWishList(wli);
+
+                // Refresh the customer's wish list
+                kkAppEng.getWishListMgr().fetchCustomersWishLists();
+            }
+        } catch (KKException e) {
+            log.warn("Failed to add the product with the id {} to the wishlist - {} ", productId, e.toString());
+        } catch (KKAppException e) {
+            log.warn("Failed to add the product with the id {} to the wishlist - {} ", productId, e.toString());
+        }
+    }
+
+    @Override
+    public boolean checkProductInWishList(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request, int wishListId, int productId) {
+
+        try {
+            // Remove an item from the customer's wish list
+            if (KKServiceHelper.getKKCustomerService().wishListEnabled(request)) {
+                WishListIf wli = kkAppEng.getWishListMgr().fetchWishList(wishListId);
+
+                WishListItemIf[] items = wli.getWishListItems();
+
+                for (WishListItemIf item : items) {
+                    if (item.getId() == wishListId) {
+                        return true;
+                    }
+                }
+
+            }
+        } catch (KKException e) {
+            log.warn("Failed to add the product with the id {} to the wishlist - {} ", productId, e.toString());
+        }
+
+        return false;
     }
 }

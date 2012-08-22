@@ -58,12 +58,35 @@ public interface KKBasketService {
      *
      * @param kkAppEng   the konakart engine
      * @param request    the hst request
-     * @param wishListId if of the wishList on which the product will be added
+     * @param wishListId id of the wishList on which the product will be added
      * @param productId  id of the product to add
      * @param optionIfs  list of selected options associated with the product
      * @return true if the product has been added, false otherwise
      */
     public boolean addProductToWishList(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request, int wishListId,
                                         int productId, @Nonnull OptionIf[] optionIfs, int quantity);
+
+    /**
+     * remove a product from a wish list
+     *
+     * @param kkAppEng   the konakart engine
+     * @param request    the hst request
+     * @param wishListId id of the wishList on which the product will be removed
+     * @param productId  id of the product to remove
+     */
+    public void removeProductToWishList(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request, int wishListId,
+                                        int productId);
+
+    /**
+     * check if a wish list contains a specific product id
+     *
+     * @param kkAppEng   the konakart engine
+     * @param request    the hst request
+     * @param wishListId id of the wishList
+     * @param productId  id of the product to check
+     * @return true if the wish list contains the product id, false otherwise
+     */
+    public boolean checkProductInWishList(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request, int wishListId,
+                                        int productId);
 
 }

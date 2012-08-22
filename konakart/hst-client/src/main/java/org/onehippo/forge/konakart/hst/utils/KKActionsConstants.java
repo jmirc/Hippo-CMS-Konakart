@@ -11,7 +11,7 @@ public interface KKActionsConstants {
     // List of actions
     enum ACTIONS {
         REGISTER, CREATE_ACCOUNT, SELECT, EDIT, UPDATE, REVIEW, ADD_TO_BASKET, REMOVE_FROM_BASKET, SELECT_CURRENCY,
-        ADD_TO_WISHLIST
+        REMOVE_FROM_WISHLIST, ADD_TO_WISHLIST
     }
 
     String STATE = "state";
@@ -33,6 +33,7 @@ public interface KKActionsConstants {
     String BASKET_ID = "basketId";
     String QUANTITY = "quantity";
     String ADD_TO_WISH_LIST = "addToWishList";
+    String REMOVE_FROM_WISH_LIST = "removeFromWishList";
     String WISH_LIST_ID = "wishListId";
     String CURRENCY_CODE = "currencyCode";
 
