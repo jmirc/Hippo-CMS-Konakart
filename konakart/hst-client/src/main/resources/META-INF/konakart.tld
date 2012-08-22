@@ -172,6 +172,34 @@
             <description>Set the state that you want to assign to this action. By default the current state will be used</description>
         </attribute>
     </tag>
+    <tag>
+        <description>This tag is used to display a custom attribute value linked with a product.
+            The custom attribute can be identified by his id or his name. </description>
+        <name>productCustomAttr</name>
+        <tag-class>org.onehippo.forge.konakart.hst.tags.ProductCustAttrValueTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>product</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>org.onehippo.forge.konakart.hst.beans.KKProductDocument</type>
+            <description>Set the product on with you want to extract a custom attribute</description>
+        </attribute>
+        <attribute>
+            <name>custAttrId</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Integer</type>
+            <description>Set the id of the custom attribute to retrieve</description>
+        </attribute>
+        <attribute>
+            <name>custAttrName</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+            <description>Set the name of the custom attribute to retrieve</description>
+        </attribute>
+    </tag>
 
 
     <function>
