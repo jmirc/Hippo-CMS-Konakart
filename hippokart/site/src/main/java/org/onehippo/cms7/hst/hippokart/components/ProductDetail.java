@@ -14,7 +14,7 @@ public class ProductDetail extends KKProductDetail {
 
     @Override
     public void doBeforeRender(HstRequest request, HstResponse response, KKProductDocument document) throws HstComponentException {
-        super.doBeforeRender(request, response);
+        super.doBeforeRender(request, response, document);
 
         KKAppEng kkAppEng = getKKAppEng(request);
 
