@@ -39,17 +39,22 @@ public class KKProductDetail extends KKHstActionComponent {
 
 
     @Override
-    public void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
+    public final void doBeforeRender(HstRequest request, HstResponse response) throws HstComponentException {
         super.doBeforeRender(request, response);
-
-        KKAppEng kkAppEng = getKKAppEng(request);
 
         KKProductDocument document = getKKProductDocument(request);
         document.setProductIf(convertProduct(request, document));
-
         request.setAttribute(PRODUCT, document);
 
+        doBeforeRender(request, response, document);
+    }
+
+    public void doBeforeRender(HstRequest request, HstResponse response, KKProductDocument document) throws HstComponentException {
+
+        KKAppEng kkAppEng = getKKAppEng(request);
+
         try {
+
             // Fetch the product related data from the database
             kkAppEng.getProductMgr().fetchSelectedProduct(document.getProductId());
 
