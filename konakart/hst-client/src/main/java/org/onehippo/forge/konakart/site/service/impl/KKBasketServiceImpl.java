@@ -133,11 +133,17 @@ public class KKBasketServiceImpl extends KKBaseServiceImpl implements KKBasketSe
         try {
             // Remove an item from the customer's wish list
             if (KKServiceHelper.getKKCustomerService().wishListEnabled(request)) {
-                WishListItemIf wli = new WishListItem();
-                wli.setWishListId(wishListId);
-                wli.setProductId(productId);
+                WishListIf wli = kkAppEng.getWishListMgr().fetchWishList(wishListId);
 
-                kkAppEng.getWishListMgr().removeFromWishList(wli);
+                if (wli != null) {
+                    WishListItemIf[] items = wli.getWishListItems();
+
+                    for (WishListItemIf item : items) {
+                        if (item.getProduct().getId() == productId) {
+                            kkAppEng.getWishListMgr().removeFromWishList(item);
+                        }
+                    }
+                }
 
                 // Refresh the customer's wish list
                 kkAppEng.getWishListMgr().fetchCustomersWishLists();
