@@ -6,6 +6,7 @@ import com.konakart.appif.OptionIf;
 import org.hippoecm.hst.core.component.HstRequest;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public interface KKBasketService {
 
@@ -64,7 +65,7 @@ public interface KKBasketService {
      * @return true if the product has been added, false otherwise
      */
     public boolean addProductToWishList(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request, int wishListId,
-                                        int productId, @Nonnull OptionIf[] optionIfs, int quantity);
+                                        int productId, @Nullable OptionIf[] optionIfs, int quantity);
 
     /**
      * remove a product from a wish list
@@ -78,7 +79,7 @@ public interface KKBasketService {
                                         int productId);
 
     /**
-     * check if a wish list contains a specific product id
+     * check if a wish list contains a product id
      *
      * @param kkAppEng   the konakart engine
      * @param request    the hst request

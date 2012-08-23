@@ -161,6 +161,16 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
             }
         }
 
+        if (StringUtils.equals(action, KKActionsConstants.ACTIONS.ADD_TO_WISHLIST.name())) {
+            String sProductId = KKUtil.getActionRequestParameter(request, KKActionsConstants.PRODUCT_ID);
+            String wishListId = KKUtil.getActionRequestParameter(request, KKActionsConstants.WISH_LIST_ID);
+
+            if (StringUtils.isNotEmpty(wishListId) && StringUtils.isNotEmpty(sProductId)) {
+                KKServiceHelper.getKKBasketService().addProductToWishList(kkAppEng, request,
+                        Integer.valueOf(wishListId), Integer.valueOf(sProductId), null, 1);
+            }
+        }
+
         if (StringUtils.equals(action, KKActionsConstants.ACTIONS.REMOVE_FROM_WISHLIST.name())) {
             String sProductId = KKUtil.getActionRequestParameter(request, KKActionsConstants.PRODUCT_ID);
             String wishListId = KKUtil.getActionRequestParameter(request, KKActionsConstants.WISH_LIST_ID);

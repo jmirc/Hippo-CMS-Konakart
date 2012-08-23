@@ -12,6 +12,7 @@ import org.onehippo.forge.konakart.site.service.KKBasketService;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class KKBasketServiceImpl extends KKBaseServiceImpl implements KKBasketService {
 
@@ -91,12 +92,16 @@ public class KKBasketServiceImpl extends KKBaseServiceImpl implements KKBasketSe
 
     @Override
     public boolean addProductToWishList(@Nonnull KKAppEng kkAppEng, @Nonnull HstRequest request, int wishListId,
-                                        int productId, @Nonnull OptionIf[] optionIfs, int quantity) {
+                                        int productId, @Nullable OptionIf[] optionIfs, int quantity) {
         try {
             // Add an item to the customer's wish list
             if (KKServiceHelper.getKKCustomerService().wishListEnabled(request)) {
                 WishListItemIf wli = new WishListItem();
-                wli.setOpts(optionIfs);
+
+                if (optionIfs != null) {
+                    wli.setOpts(optionIfs);
+                }
+
                 wli.setProductId(productId);
 
                 // WishListId defaults to -1 to pick up default wish list or create a new one
@@ -155,7 +160,7 @@ public class KKBasketServiceImpl extends KKBaseServiceImpl implements KKBasketSe
                 WishListItemIf[] items = wli.getWishListItems();
 
                 for (WishListItemIf item : items) {
-                    if (item.getId() == wishListId) {
+                    if (item.getProduct().getId() == productId) {
                         return true;
                     }
                 }

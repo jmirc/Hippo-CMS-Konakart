@@ -124,6 +124,62 @@
         </attribute>
     </tag>
     <tag>
+        <description>This tag is used to add a product to a wish list</description>
+        <name>addProductToWishListActionURL</name>
+        <tag-class>org.onehippo.forge.konakart.hst.tags.AddProductToWishListActionURLTag</tag-class>
+        <tei-class>org.onehippo.forge.konakart.hst.tags.AddProductToWishListActionURLTag$TEI</tei-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>The variable name of the actionURL</description>
+            <name>var</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>product</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>org.onehippo.forge.konakart.hst.beans.KKProductDocument</type>
+            <description>Konakart Product</description>
+        </attribute>
+        <attribute>
+            <name>wishListId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Integer</type>
+            <description>id of the wishList</description>
+        </attribute>
+    </tag>
+    <tag>
+        <description>This tag is used to remove a product from a wish list</description>
+        <name>removeProductFromWishListActionURL</name>
+        <tag-class>org.onehippo.forge.konakart.hst.tags.RemoveProductFromWishListActionURLTag</tag-class>
+        <tei-class>org.onehippo.forge.konakart.hst.tags.RemoveProductFromWishListActionURLTag$TEI</tei-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <description>The variable name of the actionURL</description>
+            <name>var</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>product</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>org.onehippo.forge.konakart.hst.beans.KKProductDocument</type>
+            <description>Konakart Product</description>
+        </attribute>
+        <attribute>
+            <name>wishListId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Integer</type>
+            <description>id of the wishList</description>
+        </attribute>
+    </tag>
+    <tag>
         <description>This tag is used to create a link to the product</description>
         <name>productLink</name>
         <tag-class>org.onehippo.forge.konakart.hst.tags.ProductLinkTag</tag-class>
@@ -227,6 +283,15 @@
         <name>checkCheckoutState</name>
         <function-class>org.onehippo.forge.konakart.hst.tags.CheckoutFunctions</function-class>
         <function-signature>boolean checkCheckoutState(org.hippoecm.hst.core.component.HstRequest,java.lang.String)</function-signature>
+    </function>
+
+    <function>
+        <description>
+            Used to valid check if a wish list contains a product id
+        </description>
+        <name>checkProductInWishList</name>
+        <function-class>org.onehippo.forge.konakart.hst.tags.CheckoutFunctions</function-class>
+        <function-signature>boolean checkProductInWishList(org.hippoecm.hst.core.component.HstRequest,java.lang.Integer,java.lang.Integer)</function-signature>
     </function>
 
 

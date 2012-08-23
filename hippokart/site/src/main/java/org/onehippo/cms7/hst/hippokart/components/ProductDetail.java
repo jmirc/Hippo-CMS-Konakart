@@ -19,7 +19,7 @@ public class ProductDetail extends KKProductDetail {
         KKAppEng kkAppEng = getKKAppEng(request);
 
         ProductIf[] crossSellProducts = kkAppEng.getProductMgr().getCrossSellProducts();
-
+        hasCheckoutAsRegister
         if (crossSellProducts != null && crossSellProducts.length > 0) {
             request.setAttribute(CROSS_SELL_PRODUCTS, convertProducts(request, crossSellProducts));
         }
