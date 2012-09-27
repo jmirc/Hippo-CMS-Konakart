@@ -102,6 +102,6 @@ public class KonakartSyncJob implements Job {
 
         // Synchronize products
         KonakartSyncProducts.updateHippoToKonakart(kkStoreConfig, jcrSession);
-        kkStoreConfig.updateLastUpdatedTimeKonakartToRepository(jcrSession);
+        kkStoreConfig.updateLastUpdatedTimeRepositoryToKonakart(jcrSession);
     }
 }
