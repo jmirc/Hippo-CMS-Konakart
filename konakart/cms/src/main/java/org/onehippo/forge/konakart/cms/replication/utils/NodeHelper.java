@@ -181,10 +181,20 @@ public class NodeHelper {
             Node handleNode = parentNode.getNode(encodingName);
 
             if (handleNode.hasNode(encodingName)) {
-                return handleNode.getNode(encodingName);
-            }
+                Node currentNode = handleNode.getNode(encodingName);
 
-            return null;
+                // we need to check if two different products have been created using the same name
+                int productId = (int) currentNode.getProperty(KKCndConstants.PRODUCT_ID).getLong();
+
+                if (product.getId() == productId) {
+                    return currentNode;
+                }
+
+                // Not the same id - so a new product will be created
+                // continue the process used to create a new product's node.
+            } else {
+                return null;
+            }
         }
 
         // Create the handle
