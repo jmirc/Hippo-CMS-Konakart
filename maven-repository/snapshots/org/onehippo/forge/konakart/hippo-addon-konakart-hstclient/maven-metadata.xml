@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.onehippo.forge.konakart</groupId>
+  <artifactId>hippo-addon-konakart-hstclient</artifactId>
+  <versioning>
+    <versions>
+      <version>1.00.00-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20120928144850</lastUpdated>
+  </versioning>
+</metadata>

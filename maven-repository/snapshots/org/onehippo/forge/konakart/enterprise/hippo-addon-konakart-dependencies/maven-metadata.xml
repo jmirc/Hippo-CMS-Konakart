@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.onehippo.forge.konakart.enterprise</groupId>
+  <artifactId>hippo-addon-konakart-dependencies</artifactId>
+  <versioning>
+    <versions>
+      <version>1.00.00-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20120928144833</lastUpdated>
+  </versioning>
+</metadata>

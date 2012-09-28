@@ -1,0 +1,179 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.onehippo.cms7</groupId>
+        <artifactId>hippo-cms7-project</artifactId>
+        <version>11</version>
+    </parent>
+
+    <groupId>org.onehippo.forge.konakart</groupId>
+    <artifactId>konakart</artifactId>
+    <version>1.00.00-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Hippo Konakart Addon</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- 7.7.2 versioning -->
+        <hippo.repository.version>2.22.05</hippo.repository.version>
+        <hippo.hst.version>2.24.04</hippo.hst.version>
+        <hippo.cms.version>2.22.06</hippo.cms.version>
+        <hippo.packages.version>2.22.03</hippo.packages.version>
+        <hippo.addon-publication-workflow.version>2.22.03</hippo.addon-publication-workflow.version>
+
+        <hippo.jcr.version>2.2.10-h1</hippo.jcr.version>
+
+        <forge.selection.version>2.05.06</forge.selection.version>
+        <forge.utilities.version>1.01.01</forge.utilities.version>
+
+        <spring.security.version>3.0.5.RELEASE</spring.security.version>
+        <hst-springsec.version>0.01.00</hst-springsec.version>
+
+        <github.maven.repository>${basedir}../maven-repository/repo</github.maven.repository>
+    </properties>
+
+
+    <modules>
+        <module>dependencies</module>
+		<module>enterprise-dependencies</module>
+        <module>common</module>
+        <module>cms</module>
+        <module>repository</module>
+        <module>hst-client</module>
+        <!--<module>modules</module>-->
+    </modules>
+
+    <repositories>
+        <repository>
+            <id>hippo-maven2</id>
+            <name>Hippo Maven 2</name>
+            <url>http://maven.onehippo.com/maven2/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>hippo-maven2-snapshots</id>
+            <name>Hippo Maven 2 Snapshots</name>
+            <url>http://maven.onehippo.com/maven2-snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>hippo-security</id>
+            <name>Hippo maven 2 repository.</name>
+            <url>https://forge.onehippo.org/svn/hst-springsec/maven2/</url>
+        </repository>
+        <repository>
+            <id>hippo-maven2-forge</id>
+            <name>Hippo Maven 2 Forge</name>
+            <url>http://maven.onehippo.com/maven2-forge/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>hippo-selection-forge</id>
+            <name>Hippo Selection 2</name>
+            <url>https://forge.onehippo.org/svn/selection/maven2/</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+        </repository>
+        <!-- DISABLED repositories which are often "transitively" pulled in
+            and/or were used in the past
+        -->
+        <repository>
+            <id>codehaus</id>
+            <url>https://nexus.codehaus.org/content/repositories/releases/org/codehaus/mojo</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>glassfish</id>
+            <name>Glassfish maven repository</name>
+            <url>http://download.java.net/maven/glassfish</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>openqa</id>
+            <name>OpenQA Repository</name>
+            <url>http://nexus.openqa.org/content/repositories/releases</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>m2snapshots</id>
+            <name>Maven 2 snapshots repository</name>
+            <url>http://people.apache.org/repo/m2-snapshot-repository</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+
+    </repositories>
+
+
+    <distributionManagement>
+        <repository>
+            <id>repo</id>
+            <url>https://github.com/cemerick/cemerick-mvn-repo/raw/master/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshot-repo</id>
+            <url>https://github.com/cemerick/cemerick-mvn-repo/raw/master/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+
+    <profiles>
+
+        <profile>
+            <id>default</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+                <property>
+                    <name>jrebel</name>
+                </property>
+            </activation>
+            <modules>
+                <module>dependencies</module>
+                <module>common</module>
+                <module>cms</module>
+                <module>repository</module>
+                <module>hst-client</module>
+                <module>modules</module>
+            </modules>
+        </profile>
+    </profiles>
+
+</project>
