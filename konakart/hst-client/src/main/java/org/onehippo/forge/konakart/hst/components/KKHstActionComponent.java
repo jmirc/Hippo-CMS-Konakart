@@ -35,6 +35,7 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
     final public void doAction(HstRequest request, HstResponse response) {
         String action = KKUtil.getEscapedParameter(request, KKActionsConstants.ACTION);
 
+        response.setRenderParameter(KKActionsConstants.ACTION, action);
         doAction(action, request, response);
     }
 

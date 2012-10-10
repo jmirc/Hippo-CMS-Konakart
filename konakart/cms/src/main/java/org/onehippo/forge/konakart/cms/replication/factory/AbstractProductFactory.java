@@ -140,12 +140,12 @@ public abstract class AbstractProductFactory implements ProductFactory {
         }
 
         if (addNewProduct) {
-            if (log.isInfoEnabled()) {
-                log.info("The konakart product with id : {} has been added", product.getId());
+            if (log.isDebugEnabled()) {
+                log.debug("The konakart product with id : {} has been added", product.getId());
             }
         } else {
-            if (log.isInfoEnabled()) {
-                log.info("The konakart product with id : {} has been updated", product.getId());
+            if (log.isDebugEnabled()) {
+                log.debug("The konakart product with id : {} has been updated", product.getId());
             }
         }
     }

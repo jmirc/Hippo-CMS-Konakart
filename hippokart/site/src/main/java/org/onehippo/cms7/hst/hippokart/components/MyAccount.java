@@ -91,4 +91,9 @@ public class MyAccount extends KKMyAccount {
     protected void doCallAfterRegisterCustomer(HstRequest request, HstResponse response, int customerId) {
 
     }
+
+    @Override
+    protected void doCallAfterLoginAction(HstRequest request, HstResponse response) {
+
+    }
 }
