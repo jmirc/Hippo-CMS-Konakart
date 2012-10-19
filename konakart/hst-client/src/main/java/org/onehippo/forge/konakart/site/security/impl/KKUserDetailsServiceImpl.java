@@ -24,6 +24,17 @@ public class KKUserDetailsServiceImpl implements KKUserDetailsService {
 
     public static final Logger log = LoggerFactory.getLogger(KKUserDetailsServiceImpl.class);
     public static final String DEFAULT_ROLE = "everybody";
+    public static final String SPRING_ROLE_PREFIX = "ROLE_";
+
+    private String defaultRole = DEFAULT_ROLE;
+
+    /**
+     * Set the default role. By default is equals to everybody
+     * @param defaultRole the default role to set
+     */
+    public void setDefaultRole(String defaultRole) {
+        this.defaultRole = defaultRole;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
@@ -108,7 +119,8 @@ public class KKUserDetailsServiceImpl implements KKUserDetailsService {
     @Nonnull
     protected Collection<? extends GrantedAuthority> getGrantedAuthoritiesOfUser(String username) {
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new GrantedAuthorityImpl(DEFAULT_ROLE));
+        authorities.add(new GrantedAuthorityImpl(defaultRole));
+        authorities.add(new GrantedAuthorityImpl(SPRING_ROLE_PREFIX + defaultRole));
         return authorities;
     }
 

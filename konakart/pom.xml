@@ -10,7 +10,7 @@
 
     <groupId>org.onehippo.forge.konakart</groupId>
     <artifactId>konakart</artifactId>
-    <version>${hippo-konakart.version}</version>
+    <version>1.00.01-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Hippo Konakart Addon</name>
@@ -33,7 +33,6 @@
         <spring.security.version>3.0.5.RELEASE</spring.security.version>
         <hst-springsec.version>0.01.00</hst-springsec.version>
         <hippo-konakart.version>1.00.01-SNAPSHOT</hippo-konakart.version>
-
     </properties>
 
 
