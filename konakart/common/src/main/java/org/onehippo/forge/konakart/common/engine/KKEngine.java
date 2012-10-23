@@ -12,6 +12,9 @@ public final class KKEngine {
     private static final String KONAKART_PROPERTIES = "konakart.properties";
     private static final String KONAKART_APP_PROPERTIES = "konakart_app.properties";
 
+    public static final ThreadLocal<KKAppEng> kkAppEngThreadLocal = new ThreadLocal<KKAppEng>();
+
+
     private KKEngine() {
     }
 
@@ -55,6 +58,21 @@ public final class KKEngine {
         StoreInfo storeInfo = new StoreInfo();
         storeInfo.setStoreId(storeId);
 
-        return new KKAppEng(storeInfo);
+        KKAppEng kkAppEng = new KKAppEng(storeInfo);
+
+        // Set within the thread local. KKAppEng will be accessible without a Http request
+        kkAppEngThreadLocal.set(kkAppEng);
+
+        return kkAppEng;
+    }
+
+    /**
+     * Retrieve the KKAppEng from the thread local.
+     *
+     * @return the konakart engine
+     * @throws Exception e
+     */
+    static public KKAppEng get() throws Exception {
+        return kkAppEngThreadLocal.get();
     }
 }

@@ -5,6 +5,7 @@ import org.hippoecm.repository.quartz.JCRSchedulingContext;
 import org.onehippo.forge.konakart.cms.replication.jcr.GalleryProcesssorConfig;
 import org.onehippo.forge.konakart.cms.replication.service.KonakartSynchronizationService;
 import org.onehippo.forge.konakart.cms.replication.synchronization.KonakartResourceScheduler;
+import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
@@ -56,6 +57,7 @@ public class KonakartSyncJob implements Job {
         try {
             // Initialize the Konakart engine
             KKEngine.init(jcrSession);
+            KKAdminEngine.init(jcrSession);
 
             try {
                 // Synchronize konakart information

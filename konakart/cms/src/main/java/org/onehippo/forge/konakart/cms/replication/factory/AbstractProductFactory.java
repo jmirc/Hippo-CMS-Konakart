@@ -51,10 +51,12 @@ public abstract class AbstractProductFactory implements ProductFactory {
      * This is an helper method that could be used to set others information defined into Konakart but not
      * already integrated within the konakart:konakart document.
      *
+     * @param storeId  the store id - Useful to retrieve the client engine
      * @param product the konakart's product
      * @param node    the product's node
+     * @param language the product's language
      */
-    protected abstract void updateProperties(Product product, Node node);
+    protected abstract void updateProperties(String storeId, Product product, Node node, LanguageIf language);
 
 
     @Override
@@ -123,7 +125,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         nodeHelper.updateState(productNode, state);
 
         // Update the node
-        updateProperties(product, productNode);
+        updateProperties(storeId, product, productNode, language);
 
         // Create the konakart ref product
         createOrUpdateKonakartProduct(product, productNode);

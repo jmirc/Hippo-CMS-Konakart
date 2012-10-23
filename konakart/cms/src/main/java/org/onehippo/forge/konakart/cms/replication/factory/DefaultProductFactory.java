@@ -1,6 +1,7 @@
 package org.onehippo.forge.konakart.cms.replication.factory;
 
 import com.konakart.app.Product;
+import com.konakart.appif.LanguageIf;
 
 import javax.jcr.Node;
 
@@ -12,7 +13,7 @@ import javax.jcr.Node;
 public class DefaultProductFactory extends AbstractProductFactory {
 
     @Override
-    protected void updateProperties(Product product, Node node) {
+    protected void updateProperties(String storeId, Product product, Node node, LanguageIf language) {
         // do nothing
     }
 }
