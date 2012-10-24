@@ -58,12 +58,7 @@ public final class KKEngine {
         StoreInfo storeInfo = new StoreInfo();
         storeInfo.setStoreId(storeId);
 
-        KKAppEng kkAppEng = new KKAppEng(storeInfo);
-
-        // Set within the thread local. KKAppEng will be accessible without a Http request
-        kkAppEngThreadLocal.set(kkAppEng);
-
-        return kkAppEng;
+        return new KKAppEng(storeInfo);
     }
 
     /**
@@ -74,5 +69,13 @@ public final class KKEngine {
      */
     static public KKAppEng get() throws Exception {
         return kkAppEngThreadLocal.get();
+    }
+
+    /**
+     * Set the KKAppEng to the thread local
+     * @param kkAppEng the engine to set
+     */
+    public static void set(KKAppEng kkAppEng) {
+        kkAppEngThreadLocal.set(kkAppEng);
     }
 }

@@ -95,6 +95,8 @@ public class KonakartValve implements Valve {
         // Set the konakart client
         request.setAttribute(KKAppEng.KONAKART_KEY, kkAppEng);
 
+        // Set within the thread local. KKAppEng will be accessible without a Http request
+        KKEngine.set(kkAppEng);
 
         // At this stage, the Konakart client engine is created and is configured.
         // The authentication is a two-phase process. The first phase uses the current JAAS authentication using

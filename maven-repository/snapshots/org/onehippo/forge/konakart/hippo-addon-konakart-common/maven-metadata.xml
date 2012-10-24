@@ -4,9 +4,8 @@
   <artifactId>hippo-addon-konakart-common</artifactId>
   <versioning>
     <versions>
-      <version>1.00.00-SNAPSHOT</version>
       <version>1.00.01-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20121019172259</lastUpdated>
+    <lastUpdated>20121024130851</lastUpdated>
   </versioning>
 </metadata>
