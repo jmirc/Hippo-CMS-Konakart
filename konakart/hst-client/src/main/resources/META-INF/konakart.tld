@@ -31,6 +31,26 @@
     <description>Konakart Tag Library</description>
 
     <tag>
+        <description>This param tag is used to get a KKProductDocument form a Konakart product id.</description>
+        <name>retrieveKKProductDocument</name>
+        <tag-class>org.onehippo.forge.konakart.hst.tags.ProductDocumentTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <description>The variable name used to retrieve the KKProductDocument</description>
+            <name>var</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>productId</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Integer</type>
+            <description>Id of the product</description>
+        </attribute>
+    </tag>
+    <tag>
         <description>This param tag is used to format a price in the current currency or another one if specified.</description>
         <name>formatPrice</name>
         <tag-class>org.onehippo.forge.konakart.hst.tags.FormatPriceTag</tag-class>
