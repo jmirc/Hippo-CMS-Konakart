@@ -64,7 +64,9 @@ public class KKProductDetail extends KKHstActionComponent {
             kkAppEng.getProductMgr().fetchRelatedProducts();
 
             // Set the PRODUCTS_VIEWED customer tag for this customer
-            kkAppEng.getCustomerTagMgr().addToCustomerTag(KKTagsService.TAG_PRODUCTS_VIEWED, document.getProductId());
+            if (isTagProduct()) {
+                kkAppEng.getCustomerTagMgr().addToCustomerTag(KKTagsService.TAG_PRODUCTS_VIEWED, document.getProductId());
+            }
         } catch (KKException e) {
             log.info("Unable to fetch the data for the selected product {}", e.toString());
         } catch (KKAppException e) {
@@ -89,6 +91,13 @@ public class KKProductDetail extends KKHstActionComponent {
         request.setAttribute(NAME, request.getParameter(NAME));
         request.setAttribute(EMAIL, request.getParameter(EMAIL));
         request.setAttribute(SUCCESS, request.getParameter(SUCCESS));
+    }
+
+    /**
+     * @return true if the product should be tagged or not
+     */
+    protected boolean isTagProduct() {
+        return true;
     }
 
     @Override
