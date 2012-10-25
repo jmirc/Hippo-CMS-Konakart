@@ -3,7 +3,6 @@ package org.onehippo.forge.konakart.hst.components;
 import com.konakart.al.KKAppEng;
 import com.konakart.al.KKAppException;
 import com.konakart.al.ProdOptionContainer;
-import com.konakart.al.ReviewMgr;
 import com.konakart.app.KKException;
 import com.konakart.appif.CustomerIf;
 import org.apache.commons.lang.StringUtils;
@@ -159,9 +158,7 @@ public class KKProductDetail extends KKHstActionComponent {
 
         try {
             // Add the review into konakart
-            ReviewMgr reviewMgr = KKServiceHelper.getKKEngineService().getKKAppEng(request).getReviewMgr();
-            reviewMgr.writeReview(comment, rating.intValue(), currentCustomer.getId());
-
+            KKServiceHelper.getKKReviewService().writeReview(request, comment, rating.intValue(), currentCustomer.getId());
         } catch (Exception e) {
             log.warn("Failed to create a review for product '" + product.getName() + "'", e);
         }
