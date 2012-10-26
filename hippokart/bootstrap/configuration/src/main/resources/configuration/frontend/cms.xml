@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" xmlns:h="http://www.onehippo.org/jcr/xmlimport" sv:name="cms" h:merge="combine">
+  <sv:node sv:name="konakart-addon" h:merge="combine">
+    <sv:node sv:name="admin" h:merge="combine">
+      <sv:property sv:name="konakart-admin-url" sv:type="String" h:merge="override">
+        <sv:value>http://localhost:8781/konakartadmin/</sv:value>
+      </sv:property>
+    </sv:node>
+  </sv:node>
+  <sv:node sv:name="cms-services" h:merge="combine">
+    <sv:node sv:name="KonakartSynchronizationService" h:merge="combine">
+      <sv:property sv:name="stores" sv:type="String" h:merge="override" sv:multiple="true">
+        <sv:value>store1</sv:value>
+        <sv:value>store2</sv:value>
+      </sv:property>
+    </sv:node>
+  </sv:node>
+</sv:node>
