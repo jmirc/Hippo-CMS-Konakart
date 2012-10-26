@@ -9,6 +9,7 @@
 /konakart/plugins/target
 /konakart/.idea
 /konakart/cms/.idea
+.idea
 *.iml
 /konakart-dependency/.idea
 /konakart-dependency/atlassian-ide-plugin.xml
@@ -46,5 +47,4 @@ atlassian*
 /hippokart/.idea
 /hippokart/target
 /hippokart/myrepo
-
 /konakart/enterprise-dependencies/target

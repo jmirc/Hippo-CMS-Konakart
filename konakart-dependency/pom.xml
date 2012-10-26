@@ -911,7 +911,7 @@
                             <goal>install-file</goal>
                         </goals>
                         <configuration>
-                            <groupId>org.apache.torque</groupId>
+                            <groupId>com.konakart.torque</groupId>
                             <artifactId>torque</artifactId>
                             <version>${torque.version}</version>
                             <file>${env.KONAKART_HOME}/webapps/konakart/WEB-INF/lib/konakart_torque-3.3.jar</file>

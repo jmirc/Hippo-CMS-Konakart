@@ -431,13 +431,13 @@
 
         <!-- database depedencies -->
         <dependency>
-            <groupId>org.apache.torque</groupId>
+            <groupId>com.konakart.torque</groupId>
             <artifactId>torque</artifactId>
             <version>${torque.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.apache.torque</groupId>
+            <groupId>com.konakart.torque</groupId>
             <artifactId>village</artifactId>
             <version>${torque.village.version}</version>
         </dependency>
