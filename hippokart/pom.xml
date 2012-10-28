@@ -78,6 +78,8 @@ the parent version to 7.7.1 then the property definitions below can be removed -
 
         <filesync.override>false</filesync.override>
         <maven.plugins.filesync.version>1.0.0</maven.plugins.filesync.version>
+
+        <hippo-konakart.version>1.00.01-SNAPSHOT</hippo-konakart.version>
     </properties>
 
     <repositories>
@@ -94,6 +96,21 @@ the parent version to 7.7.1 then the property definitions below can be removed -
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+ <repository>
+            <id>hippo-konakart-plugin-snapshots</id>
+            <url>https://raw.github.com/jmirc/Hippo-CMS-Konakart/master/maven-repository/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>hippo-konakart-plugin-releases</id>
+            <url>https://raw.github.com/jmirc/Hippo-CMS-Konakart/master/maven-repository/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+
     </repositories>
 
     <dependencyManagement>
@@ -101,17 +118,17 @@ the parent version to 7.7.1 then the property definitions below can be removed -
             <dependency>
                 <groupId>org.onehippo.forge.konakart</groupId>
                 <artifactId>hippo-addon-konakart-cms</artifactId>
-                <version>1.00.00-SNAPSHOT</version>
+                <version>${hippo-konakart.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.onehippo.forge.konakart</groupId>
                 <artifactId>hippo-addon-konakart-repository</artifactId>
-                <version>1.00.00-SNAPSHOT</version>
+                <version>${hippo-konakart.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.onehippo.forge.konakart</groupId>
                 <artifactId>hippo-addon-konakart-hstclient</artifactId>
-                <version>1.00.00-SNAPSHOT</version>
+                <version>${hippo-konakart.version}</version>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>
