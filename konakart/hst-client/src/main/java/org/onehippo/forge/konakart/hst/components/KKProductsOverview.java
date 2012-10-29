@@ -2,17 +2,16 @@ package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.app.KKException;
 import com.konakart.appif.ProductIf;
-import org.apache.cxf.common.util.StringUtils;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
-import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 import org.onehippo.forge.konakart.hst.utils.KKUtil;
 import org.onehippo.forge.konakart.site.service.KKServiceHelper;
-import org.onehippo.forge.utilities.hst.paging.IterablePagination;
+import org.onehippo.forge.utilities.hst.paging.DefaultPagination;
+import org.onehippo.forge.utilities.hst.paging.Pageable;
 
 import javax.annotation.Nonnull;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * This overview component offers methods used to retrieve products information
@@ -35,24 +34,25 @@ public class KKProductsOverview extends KKHstActionComponent {
         resetKonkartStates(request);
 
         // Search products
-        List<KKProductDocument> products = convertProducts(request, searchProducts(request));
+        ProductIf[] products = searchProducts(request);
 
-        int resultCount = products.size();
+        int resultCount = products.length;
 
         // Retrieve the current page
         String currentPageParam = request.getParameter(PARAM_CURRENT_PAGE);
 
-        if (StringUtils.isEmpty(currentPageParam)) {
+        if (org.apache.cxf.common.util.StringUtils.isEmpty(currentPageParam)) {
             currentPageParam = getPublicRequestParameter(request, PARAM_CURRENT_PAGE);
         }
 
         int currentPage = KKUtil.parseIntParameter(PARAM_CURRENT_PAGE, currentPageParam, DEFAULT_CURRENT_PAGE, log);
 
         // Create the pagination
-        IterablePagination<KKProductDocument> pages =
-                new IterablePagination<KKProductDocument>(products, getPageSize(), currentPage);
+        Pageable pagination = new DefaultPagination<ProductIf>(resultCount, Arrays.asList(products));
+        pagination.setPageSize(getPageSize());
+        pagination.setPageNumber(currentPage);
 
-        request.setAttribute("products", pages);
+        request.setAttribute("products", pagination);
         request.setAttribute("count", resultCount);
     }
 

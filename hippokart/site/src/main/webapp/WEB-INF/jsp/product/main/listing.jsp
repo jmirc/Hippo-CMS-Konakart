@@ -42,7 +42,9 @@
     <hr>
     <c:if test="${empty products}"><p>No products have been found.</p></c:if>
     <c:if test="${not empty products}">
-        <c:forEach items="${products.items}" var="product">
+        <c:forEach var="productIf" items="${products.items}">
+            <kk:retrieveKKProductDocument productId="${productIf.id}" var="product"/>
+
             <kk:addToBasketActionURL product="${product}" var="productUrl"/>
             <form id="productForm" action="${productUrl}" class="form-inline" method="post">
                 <input type="hidden" id="addToWishList" name="addToWishList" value=""/>
@@ -58,7 +60,7 @@
                     </div>
 
                     <div class="span6">
-                        <a href="${prdLink}"><h5>${product.productIf.name}</h5></a>
+                        <a href="${prdLink}"><h5>${productIf.name}</h5></a>
                         <kk:rating product="${product}" var="rating"/>
                         <fmt:formatNumber value="${rating * 10}" var="ratingStyle" pattern="#0"/>
                         <p class="rating stars-${ratingStyle}">
@@ -71,7 +73,7 @@
                     <div class="span2">
                         <p>
                             <c:if test="${not empty product.specialPrice}"><s></c:if>
-                            <kk:formatPrice price="${product.productIf.price0}"/>
+                            <kk:formatPrice price="${productIf.price0}"/>
                             <c:if test="${not empty product.specialPrice}"></s></c:if>
                             <c:if test="${not empty product.specialPrice}">&nbsp;|&nbsp;
                                 <kk:formatPrice price="${product.specialPrice}"/>
