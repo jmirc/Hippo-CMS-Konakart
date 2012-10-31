@@ -80,17 +80,31 @@
         <body-content>JSP</body-content>
         <attribute>
             <description>The variable name of the rating tag</description>
+            <name>ratingVar</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>The variable name of the number of reviews tag</description>
+            <name>nbReviewsVar</name>
+            <required>true</required>
+            <rtexprvalue>false</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <description>The variable name of the rating tag</description>
             <name>var</name>
             <required>false</required>
             <rtexprvalue>false</rtexprvalue>
             <type>java.lang.String</type>
         </attribute>
         <attribute>
-            <name>product</name>
+            <name>productId</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>org.onehippo.forge.konakart.hst.beans.KKProductDocument</type>
-            <description>Konakart Product</description>
+            <type>java.lang.Integer</type>
+            <description>Konakart Product Id</description>
         </attribute>
         <attribute>
             <name>showVisible</name>

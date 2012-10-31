@@ -1,6 +1,7 @@
 package org.onehippo.forge.konakart.site.container;
 
 import com.konakart.al.KKAppEng;
+import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.core.container.ContainerException;
 import org.hippoecm.hst.core.container.Valve;
 import org.hippoecm.hst.core.container.ValveContext;
@@ -84,9 +85,16 @@ public class KonakartValve implements Valve {
         KKAppEng kkAppEng = KKServiceHelper.getKKEngineService().getKKAppEng(request);
 
         // Initialize the konakart client if it has not been created
-        if (kkAppEng == null) {
-            // Initialize Konakart Engine
-            kkAppEng = KKServiceHelper.getKKEngineService().initKKEngine(request, response, requestContext, jcrSession, kkStoreConfig);
+        if (kkAppEng == null || !StringUtils.equalsIgnoreCase(kkStoreConfig.getStoreId(), kkAppEng.getStoreId())) {
+
+            // Check if a previous kkAppEng client has been created.
+            kkAppEng = (KKAppEng) request.getSession().getAttribute(KKAppEng.KONAKART_KEY + "-" + kkStoreConfig.getStoreId());
+
+            // An new kkAppEng will be created.
+            if (kkAppEng == null) {
+                // Initialize Konakart Engine
+                kkAppEng = KKServiceHelper.getKKEngineService().initKKEngine(request, response, requestContext, jcrSession, kkStoreConfig);
+            }
         }
 
         // Validate the current konakart session

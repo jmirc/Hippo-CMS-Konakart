@@ -4,8 +4,9 @@ import com.konakart.al.KKAppEng;
 import com.konakart.app.*;
 import com.konakart.appif.DataDescriptorIf;
 import com.konakart.appif.LanguageIf;
-import com.konakart.appif.ProductIf;
 import com.konakart.appif.ProductSearchIf;
+import com.konakartadmin.bl.AdminMgrFactory;
+import com.konakartadmin.blif.AdminProductMgrIf;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.frontend.translation.ILocaleProvider;
 import org.hippoecm.repository.api.HippoNodeType;
@@ -16,6 +17,7 @@ import org.onehippo.forge.konakart.cms.replication.utils.Codecs;
 import org.onehippo.forge.konakart.cms.replication.utils.NodeHelper;
 import org.onehippo.forge.konakart.common.KKCndConstants;
 import org.onehippo.forge.konakart.common.bl.CustomProductMgr;
+import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.slf4j.Logger;
@@ -168,7 +170,10 @@ public class KonakartSyncProducts {
 
         NodeHelper nodeHelper = new NodeHelper(jcrSession);
 
-        KKAppEng kkengine = KKEngine.get(kkStoreConfig.getStoreId());
+        AdminMgrFactory adminMgrFactory = KKAdminEngine.getInstance().getFactory();
+
+        AdminProductMgrIf productMgrIf = adminMgrFactory.getAdminProdMgr(true);
+
 
         Node seed = getProductRoot(kkStoreConfig, jcrSession);
 
@@ -181,16 +186,11 @@ public class KonakartSyncProducts {
         }
 
         for (SyncProduct syncProduct : syncProducts) {
-            // Retrieve the product from Konakart
-            ProductIf productIf = kkengine.getEng().getProduct(kkengine.getSessionId(), syncProduct.getkProductId(),
-                    kkengine.getLangId());
-
             // Retrieve the hippo node
             Node node = jcrSession.getNodeByIdentifier(syncProduct.getHippoUuid());
 
-            // If the product is null, it means that the product has been removed from the store.
-            // So the Hippo document should be unpublished.
-            if (productIf == null) {
+            // Check if the product exists
+            if (productMgrIf.doesProductExist(syncProduct.getkProductId())) {
                 nodeHelper.updateState(node, NodeHelper.UNPUBLISHED_STATE);
             }
         }

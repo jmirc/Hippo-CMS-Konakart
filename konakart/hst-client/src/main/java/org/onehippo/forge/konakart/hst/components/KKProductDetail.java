@@ -42,7 +42,6 @@ public class KKProductDetail extends KKHstActionComponent {
         super.doBeforeRender(request, response);
 
         KKProductDocument document = getKKProductDocument(request);
-        document.setProductIf(convertProduct(request, document));
         request.setAttribute(PRODUCT, document);
 
         doBeforeRender(request, response, document);

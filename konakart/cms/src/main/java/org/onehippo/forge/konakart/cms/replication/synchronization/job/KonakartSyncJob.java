@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.Session;
+import java.util.Collection;
 import java.util.List;
 
 import static org.hippoecm.frontend.translation.ILocaleProvider.HippoLocale;
@@ -23,7 +24,6 @@ import static org.hippoecm.frontend.translation.ILocaleProvider.HippoLocale;
 public class KonakartSyncJob implements Job {
 
     private static Logger log = LoggerFactory.getLogger(KonakartSyncJob.class);
-
 
     private Session jcrSession;
 
@@ -37,42 +37,42 @@ public class KonakartSyncJob implements Job {
         // Set the JcrSession
         KonakartResourceScheduler scheduler = (KonakartResourceScheduler) context.getScheduler();
         jcrSession = ((JCRSchedulingContext) scheduler.getCtx()).getSession();
-        String storeId = context.getJobDetail().getJobDataMap().getString(KonakartSynchronizationService.KK_STORE_ID);
 
         @SuppressWarnings("unchecked")
         List<? extends HippoLocale> locales =
                 (List<? extends HippoLocale>) context.getJobDetail().getJobDataMap().get(KonakartSynchronizationService.LOCALES);
 
-        KKStoreConfig kkStoreConfig = HippoModuleConfig.getConfig().getStoresConfig().get(storeId);
-
-
-        if ((kkStoreConfig == null) || !kkStoreConfig.isInitialized()) {
-            log.error("The Konakart synchronization service has not well be initialized. Please check the log.");
-            return;
-        }
-
         // Load the gallery processor service
         GalleryProcesssorConfig.load(jcrSession);
 
         try {
-            // Initialize the Konakart engine
+                // Initialize the Konakart engine
             KKEngine.init(jcrSession);
             KKAdminEngine.init(jcrSession);
 
-            try {
-                // Synchronize konakart information
-                syncKonakartToHippo(kkStoreConfig, locales);
-            } catch (Exception e) {
-                log.warn("Failed to update Repository to Konakart. ", e);
-            }
+            // Synchronize all stores
+            Collection<KKStoreConfig> kkStoreConfigs = HippoModuleConfig.getConfig().getStoresConfig().values();
 
-            // Synchronize hippo product
-            try {
-                syncHippoToKonakart(kkStoreConfig);
-            } catch (Exception e) {
-                log.warn("Failed to update Konakart to Repository. ", e);
-            }
+            for (KKStoreConfig kkStoreConfig : kkStoreConfigs) {
+                if ((kkStoreConfig == null) || !kkStoreConfig.isInitialized()) {
+                    log.error("The Konakart synchronization service has not be initialized. Please check the log.");
+                    continue;
+                }
 
+                try {
+                    // Synchronize konakart information
+                    syncKonakartToHippo(kkStoreConfig, locales);
+                } catch (Exception e) {
+                    log.warn("Failed to update Repository to Konakart. ", e);
+                }
+
+                // Synchronize hippo product
+                try {
+                    syncHippoToKonakart(kkStoreConfig);
+                } catch (Exception e) {
+                    log.warn("Failed to update Konakart to Repository. ", e);
+                }
+            }
         } catch (Exception e) {
             log.warn("Failed to initialize Konakart engine. ", e);
         }

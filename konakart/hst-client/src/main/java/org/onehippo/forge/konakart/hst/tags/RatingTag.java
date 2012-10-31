@@ -5,7 +5,6 @@ import com.konakart.app.KKException;
 import com.konakart.appif.DataDescriptorIf;
 import com.konakart.appif.ReviewIf;
 import com.konakart.appif.ReviewsIf;
-import org.onehippo.forge.konakart.hst.beans.KKProductDocument;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -14,16 +13,21 @@ import java.io.IOException;
 
 public class RatingTag extends KKTagSupport {
 
-    protected KKProductDocument kkProductDocument;
-    protected String var;
+    protected Integer productId;
+    protected String ratingVar;
+    protected String nbReviewsVar;
     protected Boolean showVisible = false;
 
-    public void setProduct(KKProductDocument kkProductDocument) {
-        this.kkProductDocument = kkProductDocument;
+    public void setProductId(Integer productId) {
+        this.productId = productId;
     }
 
-    public void setVar(String var) {
-        this.var = var;
+    public void setRatingVar(String ratingVar) {
+        this.ratingVar = ratingVar;
+    }
+
+    public void setNbReviewsVar(String nbReviewsVar) {
+        this.nbReviewsVar = nbReviewsVar;
     }
 
     public void setShowVisible(Boolean showVisible) {
@@ -35,8 +39,12 @@ public class RatingTag extends KKTagSupport {
     */
     @Override
     public int doStartTag() throws JspException {
-        if (var != null) {
-            pageContext.removeAttribute(var, PageContext.PAGE_SCOPE);
+        if (ratingVar != null) {
+            pageContext.removeAttribute(ratingVar, PageContext.PAGE_SCOPE);
+        }
+
+        if (nbReviewsVar != null) {
+            pageContext.removeAttribute(nbReviewsVar, PageContext.PAGE_SCOPE);
         }
 
         return EVAL_BODY_INCLUDE;
@@ -47,42 +55,45 @@ public class RatingTag extends KKTagSupport {
 
         Double ratingValue = 0D;
 
-        if (kkProductDocument != null) {
-            DataDescriptorIf dataDescriptorIf = new DataDescriptor();
-            dataDescriptorIf.setShowInvisible(showVisible);
+        DataDescriptorIf dataDescriptorIf = new DataDescriptor();
+        dataDescriptorIf.setShowInvisible(showVisible);
 
-            try {
-                ReviewsIf reviewsIf = getKkAppEng().getEng().getReviewsPerProduct(dataDescriptorIf,
-                        kkProductDocument.getProductId());
+        double numberOfReview = 0;
 
-                if (reviewsIf.getTotalNumReviews() == 0) {
-                    return 0;
-                }
+        try {
+            ReviewsIf reviewsIf = getKkAppEng().getEng().getReviewsPerProduct(dataDescriptorIf, productId);
 
-                // Retreive the reviews.
-                ReviewIf[] reviews = reviewsIf.getReviewArray();
-
-                // Double check...
-                if (reviews != null && reviews.length > 0) {
-                    double rating = 0;
-
-                    for (ReviewIf reviewIf : reviews) {
-                        rating += reviewIf.getRating();
-                    }
-
-                    ratingValue = rating / reviews.length;
-                }
-            } catch (KKException e) {
-                ratingValue = 0D;
+            if (reviewsIf.getTotalNumReviews() == 0) {
+                return 0;
             }
+
+            // Retreive the reviews.
+            ReviewIf[] reviews = reviewsIf.getReviewArray();
+
+            // Double check...
+            if (reviews != null && reviews.length > 0) {
+
+                numberOfReview = reviews.length;
+
+                double rating = 0;
+
+                for (ReviewIf reviewIf : reviews) {
+                    rating += reviewIf.getRating();
+                }
+
+                ratingValue = rating / reviews.length;
+            }
+        } catch (KKException e) {
+            ratingValue = 0D;
         }
 
-        writeOrSetVar(ratingValue);
+        writeOrSetVar(ratingVar, ratingValue);
+        writeOrSetVar(nbReviewsVar, numberOfReview);
 
         return EVAL_PAGE;
     }
 
-    private void writeOrSetVar(Double rating) throws JspException {
+    private void writeOrSetVar(String var, Double rating) throws JspException {
         if (var == null) {
             JspWriter writer = pageContext.getOut();
             try {

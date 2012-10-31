@@ -103,7 +103,7 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
                 // Register the customer
                 try {
                     // Set additional informations
-                    doCallBeforeRegisterCustomer(customerRegistration, formMap);
+                    doCallBeforeRegisterCustomer(request, customerRegistration, formMap);
 
                     // Register the customer
                     int customerId = kkAppEng.getEng().registerCustomer(customerRegistration);
@@ -258,10 +258,11 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
     /**
      * This method could be overrides to add additionnal information to the user
      *
+     * @param request the hst request
      * @param customerRegistration the customer registration
      * @param formMap the form map
      */
-    protected abstract void doCallBeforeRegisterCustomer(CustomerRegistrationIf customerRegistration,
+    protected abstract void doCallBeforeRegisterCustomer(HstRequest request, CustomerRegistrationIf customerRegistration,
                                                          FormMap formMap);
 
     /**

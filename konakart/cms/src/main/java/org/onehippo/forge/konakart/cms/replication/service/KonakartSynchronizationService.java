@@ -6,9 +6,9 @@ import org.hippoecm.frontend.plugin.Plugin;
 import org.hippoecm.frontend.plugin.config.IPluginConfig;
 import org.hippoecm.frontend.service.ServiceTracker;
 import org.hippoecm.frontend.translation.ILocaleProvider;
+import org.onehippo.forge.konakart.cms.replication.synchronization.HippoKonakartDaemonModule;
 import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
-import org.onehippo.forge.konakart.cms.replication.synchronization.HippoKonakartDaemonModule;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +22,6 @@ public class KonakartSynchronizationService extends Plugin {
 
     private static Logger log = LoggerFactory.getLogger(KonakartSynchronizationService.class);
 
-    public static final String KK_STORE_ID = "kkStoreId";
     public static final String LOCALES = "locales";
     private static final String MASS_SYNC_JOB = "KonkartMassSyncJob";
     private static final String MASS_SYNC_JOB_TRIGGER = MASS_SYNC_JOB + "Trigger";
@@ -68,45 +67,50 @@ public class KonakartSynchronizationService extends Plugin {
     private void initializeJobs(List<? extends ILocaleProvider.HippoLocale> locales) {
         Collection<KKStoreConfig> kkStoreConfigs = HippoModuleConfig.load(HippoKonakartDaemonModule.getSession()).getStoresConfig().values();
 
-        for (KKStoreConfig kkStoreConfig : kkStoreConfigs) {
-            try {
-                String triggerName = MASS_SYNC_JOB_TRIGGER + "-" + kkStoreConfig.getStoreId();
-                String jobName = MASS_SYNC_JOB + "-" + kkStoreConfig.getStoreId();
+        if (kkStoreConfigs.size() == 0) {
+            log.error("No store config has been found. Please check the konakart:konakart configuration");
+            return;
+        }
 
-                JobDetail jobDetail = new JobDetail(jobName, MASS_SYNC_JOB_GROUP, Class.forName(kkStoreConfig.getJobClass()));
+        // Get the first one.
+        KKStoreConfig kkStoreConfig = kkStoreConfigs.iterator().next();
 
-                JobDataMap dataMap = new JobDataMap();
-                dataMap.put(KK_STORE_ID, kkStoreConfig.getStoreId());
-                dataMap.put(LOCALES, locales);
-                jobDetail.setJobDataMap(dataMap);
+        try {
+            String triggerName = MASS_SYNC_JOB_TRIGGER;
+            String jobName = MASS_SYNC_JOB;
+
+            JobDetail jobDetail = new JobDetail(jobName, MASS_SYNC_JOB_GROUP, Class.forName(kkStoreConfig.getJobClass()));
+
+            JobDataMap dataMap = new JobDataMap();
+            dataMap.put(LOCALES, locales);
+            jobDetail.setJobDataMap(dataMap);
 
 
-                if (StringUtils.isNotEmpty(kkStoreConfig.getCronExpression())) {
-                    CronTrigger trigger = new CronTrigger(triggerName, MASS_SYNC_JOB_TRIGGER_GROUP,
-                            jobName, MASS_SYNC_JOB_GROUP, kkStoreConfig.getCronExpression());
+            if (StringUtils.isNotEmpty(kkStoreConfig.getCronExpression())) {
+                CronTrigger trigger = new CronTrigger(triggerName, MASS_SYNC_JOB_TRIGGER_GROUP,
+                        jobName, MASS_SYNC_JOB_GROUP, kkStoreConfig.getCronExpression());
 
-                    if (triggerExists(trigger)) {
-                        if (triggerChanged(trigger)) {
-                            resourceScheduler.rescheduleJob(MASS_SYNC_JOB_TRIGGER, MASS_SYNC_JOB_TRIGGER_GROUP, trigger);
-                        }
-                    } else {
-                        resourceScheduler.scheduleJob(jobDetail, trigger);
+                if (triggerExists(trigger)) {
+                    if (triggerChanged(trigger)) {
+                        resourceScheduler.rescheduleJob(MASS_SYNC_JOB_TRIGGER, MASS_SYNC_JOB_TRIGGER_GROUP, trigger);
                     }
                 } else {
-                    // Create a trigger that fires immediately, the repeats every 60 seconds, forever
-                    Trigger trigger = new SimpleTrigger(triggerName, MASS_SYNC_JOB_TRIGGER_GROUP, new Date(),
-                            null, SimpleTrigger.REPEAT_INDEFINITELY, 300L * 1000L);
-
                     resourceScheduler.scheduleJob(jobDetail, trigger);
                 }
+            } else {
+                // Create a trigger that fires immediately, the repeats every 60 seconds, forever
+                Trigger trigger = new SimpleTrigger(triggerName, MASS_SYNC_JOB_TRIGGER_GROUP, new Date(),
+                        null, SimpleTrigger.REPEAT_INDEFINITELY, 300L * 1000L);
 
-            } catch (ClassNotFoundException e) {
-                log.error("Failed to find the Job class named - " + kkStoreConfig.getJobClass(), e);
-            } catch (ParseException e) {
-                log.error("Failed to parse the cron expression - " + kkStoreConfig.getCronExpression(), e);
-            } catch (SchedulerException e) {
-                log.error("Failed to start the job", e);
+                resourceScheduler.scheduleJob(jobDetail, trigger);
             }
+
+        } catch (ClassNotFoundException e) {
+            log.error("Failed to find the Job class named - " + kkStoreConfig.getJobClass(), e);
+        } catch (ParseException e) {
+            log.error("Failed to parse the cron expression - " + kkStoreConfig.getCronExpression(), e);
+        } catch (SchedulerException e) {
+            log.error("Failed to start the job", e);
         }
     }
 

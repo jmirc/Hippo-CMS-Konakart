@@ -4,8 +4,6 @@ import com.konakart.al.KKAppEng;
 import com.konakart.app.DataDescriptor;
 import com.konakart.appif.DataDescriptorIf;
 import com.konakart.appif.ProductIf;
-import com.konakart.appif.ReviewIf;
-import com.konakart.appif.ReviewsIf;
 import org.hippoecm.hst.component.support.bean.BaseHstComponent;
 import org.hippoecm.hst.content.beans.query.HstQuery;
 import org.hippoecm.hst.content.beans.query.HstQueryResult;
@@ -29,7 +27,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.jcr.Node;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -184,10 +181,7 @@ public class KKBaseHstComponent extends BaseHstComponent {
             }
 
             // return the first element
-            KKProductDocument document =  (KKProductDocument) result.getHippoBeans().next();
-            document.setProductIf(product);
-
-            return document;
+            return (KKProductDocument) result.getHippoBeans().next();
         } catch (Exception e) {
             log.error("Failed to find the Hippo Document for the product id - " + product.getId(), e);
         }
@@ -215,26 +209,6 @@ public class KKBaseHstComponent extends BaseHstComponent {
 
             DataDescriptorIf dataDescriptorIf = new DataDescriptor();
             dataDescriptorIf.setShowInvisible(false);
-
-            ReviewsIf reviewsIf = kkAppEng.getEng().getReviewsPerProduct(dataDescriptorIf, product.getProductId());
-
-            if (reviewsIf.getTotalNumReviews() == 0) {
-                productIf.setRating(new BigDecimal(0));
-            }
-
-            // Retreive the reviews.
-            ReviewIf[] reviews = reviewsIf.getReviewArray();
-
-            // Double check...
-            if (reviews != null && reviews.length > 0) {
-                double rating = 0;
-
-                for (ReviewIf reviewIf : reviews) {
-                    rating += reviewIf.getRating();
-                }
-
-                productIf.setRating(new BigDecimal(rating / reviews.length));
-            }
 
         } catch (Exception e) {
             log.error("Failed to find the Konakart product with the id - " + product.getProductId());

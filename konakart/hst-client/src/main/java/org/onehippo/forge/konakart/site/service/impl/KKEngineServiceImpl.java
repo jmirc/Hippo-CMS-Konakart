@@ -7,6 +7,7 @@ import com.konakart.app.KKException;
 import com.konakart.appif.CustomerTagIf;
 import com.konakart.appif.FetchProductOptionsIf;
 import org.apache.commons.lang.LocaleUtils;
+import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.configuration.hosting.Mount;
 import org.hippoecm.hst.configuration.sitemap.HstSiteMapItem;
 import org.hippoecm.hst.core.component.HstComponentException;
@@ -63,8 +64,7 @@ public class KKEngineServiceImpl implements KKEngineService {
 
         KKAppEng kkAppEng = getKKAppEng(servletRequest);
 
-        if (kkAppEng == null) {
-
+        if (kkAppEng == null || !StringUtils.equalsIgnoreCase(kkStoreConfig.getStoreId(), kkAppEng.getStoreId())) {
             if (log.isInfoEnabled()) {
                 log.info("KKEngine not found on the session");
             }
@@ -96,6 +96,9 @@ public class KKEngineServiceImpl implements KKEngineService {
 
                 // Store the engine under the session
                 servletRequest.getSession().setAttribute(KKAppEng.KONAKART_KEY, kkAppEng);
+
+                // Keep this in the session. To be reused when the customer will switch the locale.
+                servletRequest.getSession().setAttribute(KKAppEng.KONAKART_KEY + "-" + kkStoreConfig.getStoreId(), kkAppEng);
 
                 // Create or retrieve the customer's cookie
                 kkCookieServiceImpl.manageCookies(servletRequest, servletResponse, kkAppEng);

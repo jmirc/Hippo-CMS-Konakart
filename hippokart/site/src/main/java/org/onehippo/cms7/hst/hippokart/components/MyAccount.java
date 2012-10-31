@@ -75,7 +75,7 @@ public class MyAccount extends KKMyAccount {
     }
 
     @Override
-    protected void doCallBeforeRegisterCustomer(CustomerRegistrationIf customerRegistration, FormMap formMap) {
+    protected void doCallBeforeRegisterCustomer(HstRequest request, CustomerRegistrationIf customerRegistration, FormMap formMap) {
         FormField formField = formMap.getField(CUSTOM_CUSTOMER_1);
         if ((formField != null) && StringUtils.isNotBlank(formField.getValue())) {
             customerRegistration.setCustomerCustom1(formField.getValue());

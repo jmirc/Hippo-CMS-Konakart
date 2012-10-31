@@ -4,6 +4,7 @@ import com.konakart.appif.ProductIf;
 import org.hippoecm.hst.content.beans.Node;
 import org.hippoecm.hst.content.beans.standard.*;
 import org.onehippo.forge.konakart.common.KKCndConstants;
+import org.onehippo.forge.konakart.hst.utils.KKBeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,12 +24,21 @@ public class KKProductDocument extends HippoDocument {
     private ProductIf productIf;
     private boolean shouldIncludeTax;
 
+
     public ProductIf getProductIf() {
+        if (productIf == null) {
+            loadProduct();
+        }
+
         return productIf;
     }
 
-    public void setProductIf(ProductIf productIf) {
-        this.productIf = productIf;
+    private void loadProduct() {
+        productIf = KKBeanUtils.getProductById(getProductId());
+
+        if (productIf == null) {
+            throw new IllegalArgumentException("productIf with the id " + getProductId() + "should not be null");
+        }
     }
 
     public void setShouldIncludeTax(boolean shouldIncludeTax) {
