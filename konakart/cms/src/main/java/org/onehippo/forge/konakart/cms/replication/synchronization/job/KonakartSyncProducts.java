@@ -190,7 +190,7 @@ public class KonakartSyncProducts {
             Node node = jcrSession.getNodeByIdentifier(syncProduct.getHippoUuid());
 
             // Check if the product exists
-            if (productMgrIf.doesProductExist(syncProduct.getkProductId())) {
+            if (!productMgrIf.doesProductExist(syncProduct.getkProductId())) {
                 nodeHelper.updateState(node, NodeHelper.UNPUBLISHED_STATE);
             }
         }
