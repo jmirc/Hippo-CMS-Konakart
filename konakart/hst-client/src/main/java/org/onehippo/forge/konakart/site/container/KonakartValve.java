@@ -168,8 +168,7 @@ public class KonakartValve implements Valve {
                         logout(request, response, requestContext);
                     }
                 } else {
-                    SecurityContextHolder.getContext().setAuthentication(null);
-                    request.getSession().invalidate();
+                    SecurityContextHolder.clearContext();
                 }
             }
         } else {
