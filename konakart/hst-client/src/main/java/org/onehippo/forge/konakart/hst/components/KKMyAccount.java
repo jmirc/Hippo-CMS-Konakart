@@ -83,7 +83,6 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
             FormMap formMap = new FormMap(request, getCreateFormMapFields());
 
             if (!doValidForm(formMap, request, response)) {
-                FormUtils.persistFormMap(request, response, formMap, null);
                 response.setRenderParameter(NON_VALID_FORM, "true");
             } else { // the form is valid, we will create the customer
                 KKRegisterFormUtils registerFormUtils = new KKRegisterFormUtils();
@@ -112,13 +111,14 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
                     doAutoLoginAfterSuccessful(request, username, password);
 
                     // call after the customer is registered
-                    doCallAfterRegisterCustomer(request, response, customerId);
+                    doCallAfterRegisterCustomer(request, response, customerId, formMap);
                 } catch (KKException e) {
                     log.error("Failed to register the customer with the email " + username, e);
-                    FormUtils.persistFormMap(request, response, formMap, null);
                     response.setRenderParameter(REGISTER_FAILED, "true");
                 }
             }
+
+            FormUtils.persistFormMap(request, response, formMap, null);
         }
     }
 
@@ -233,7 +233,7 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
      *
      * @param request the hst request
      * @param response the hst response
-     * @param formMap
+     * @param formMap the form map
      */
     protected abstract void doBeforeRenderNotLoginAction(HstRequest request, HstResponse response, FormMap formMap);
 
@@ -242,7 +242,7 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
      *
      * @param request the hst request
      * @param response the hst response
-     * @param formMap
+     * @param formMap the form map
      */
     protected abstract void deBeforeRenderRegisterAction(HstRequest request, HstResponse response, FormMap formMap);
 
@@ -251,7 +251,7 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
      *
      * @param request the hst request
      * @param response the hst response
-     * @param formMap
+     * @param formMap the form map
      */
     protected abstract void doBeforeRenderCreateAction(HstRequest request, HstResponse response, FormMap formMap);
 
@@ -270,8 +270,9 @@ public abstract class KKMyAccount extends KKBaseHstComponent {
      * @param request the hst request
      * @param response the hst response
      * @param customerId id of the created customer
+     * @param formMap the form map
      */
-    protected abstract void doCallAfterRegisterCustomer(HstRequest request, HstResponse response, int customerId);
+    protected abstract void doCallAfterRegisterCustomer(HstRequest request, HstResponse response, int customerId, FormMap formMap);
 
     /**
      * This method is called after the user is logged-in
