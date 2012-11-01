@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.onehippo.forge.konakart</groupId>
         <artifactId>konakart</artifactId>
-        <version>1.00.01-SNAPSHOT</version>
+        <version>1.00.02-SNAPSHOT</version>
     </parent>
 
     <name>Hippo Konakart Addon Common</name>
@@ -39,7 +39,7 @@
         <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-dependencies</artifactId>
-            <version>${hippo-konakart.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>
