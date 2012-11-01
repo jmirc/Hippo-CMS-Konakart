@@ -1,6 +1,8 @@
 package org.onehippo.forge.konakart.site.container;
 
 import com.konakart.al.KKAppEng;
+import com.konakartadmin.app.AdminCustomer;
+import com.konakartadmin.bl.AdminMgrFactory;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.core.container.ContainerException;
 import org.hippoecm.hst.core.container.Valve;
@@ -18,6 +20,7 @@ import org.onehippo.forge.konakart.site.service.KKServiceHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -84,6 +87,12 @@ public class KonakartValve implements Valve {
         // Retrieve the Konakart client
         KKAppEng kkAppEng = KKServiceHelper.getKKEngineService().getKKAppEng(request);
 
+        boolean switchKKAppEng = false;
+
+        if (kkAppEng != null) {
+            switchKKAppEng = !StringUtils.equalsIgnoreCase(kkStoreConfig.getStoreId(), kkAppEng.getStoreId());
+        }
+
         // Initialize the konakart client if it has not been created
         if (kkAppEng == null || !StringUtils.equalsIgnoreCase(kkStoreConfig.getStoreId(), kkAppEng.getStoreId())) {
 
@@ -91,14 +100,14 @@ public class KonakartValve implements Valve {
             kkAppEng = (KKAppEng) request.getSession().getAttribute(KKAppEng.KONAKART_KEY + "-" + kkStoreConfig.getStoreId());
 
             // An new kkAppEng will be created.
-            if (kkAppEng == null) {
+            if (kkAppEng == null || !StringUtils.equalsIgnoreCase(kkStoreConfig.getStoreId(), kkAppEng.getStoreId())) {
                 // Initialize Konakart Engine
                 kkAppEng = KKServiceHelper.getKKEngineService().initKKEngine(request, response, requestContext, jcrSession, kkStoreConfig);
             }
         }
 
         // Validate the current konakart session
-        KKServiceHelper.getKKEngineService().validKKSession(request, response);
+        int customerId = KKServiceHelper.getKKEngineService().validKKSession(request, response);
 
         // Set the konakart client
         request.setAttribute(KKAppEng.KONAKART_KEY, kkAppEng);
@@ -113,30 +122,54 @@ public class KonakartValve implements Valve {
         Principal userPrincipal = request.getUserPrincipal();
 
         if (userPrincipal instanceof Authentication) {
-
             Authentication authentication = (Authentication) userPrincipal;
             KKUser kkUser = (KKUser) authentication.getPrincipal();
 
             if (kkUser.isRememberMeAuthentication()) {
-                int customerId = kkUser.getCustomerId();
+                int kkCustomerId = kkUser.getCustomerId();
 
-                // The Login should work because the validation of the password has been done during the login process
-                // by the KonakartLoginModule.
-                if (!KKServiceHelper.getKKEngineService().loginByAdmin(request, response, customerId)) {
-                    logout(request, response, requestContext);
-                    return;
+                // Auto login same session
+                if (kkCustomerId == customerId) {
+                    // The Login should work because the validation of the password has been done during the login process
+                    // by the KonakartLoginModule.
+                    if (!KKServiceHelper.getKKEngineService().loginByAdmin(request, response, kkCustomerId)) {
+                        logout(request, response, requestContext);
+                        return;
+                    }
                 }
             } else {
-                // Invalid username and password
-                String username =  userPrincipal.getName();
-                String password = String.valueOf(authentication.getCredentials());
+                boolean autoLogin = true;
 
-                // The Login should work because the validation of the password has been done during the login process
-                // by the KonakartLoginModule.
-                if (!KKServiceHelper.getKKEngineService().logIn(request, response,
-                        username, password)) {
-                    logout(request, response, requestContext);
-                    return;
+                if (customerId == -1 && switchKKAppEng) {
+                      AdminMgrFactory adminMgrFactory = KKAdminEngine.getInstance().getFactory();
+
+                    try {
+                        // Retrieve the current logged customer and check if the groupId is accepted by the store
+                        // If it is the case, the user will be logged in within this store
+                        AdminCustomer adminCustomer = adminMgrFactory.getAdminCustMgr(true).getCustomerForId(customerId);
+
+                        autoLogin = adminCustomer != null &&
+                                adminCustomer.getGroupId() > 0 &&
+                                kkStoreConfig.acceptSecurityCustomerGroup(String.valueOf(adminCustomer.getGroupId()));
+                    } catch (Exception e) {
+                        log.error("Failed to retrieve the admin customer", e);
+                    }
+                }
+
+                if (autoLogin) {
+                    // Invalid username and password
+                    String username =  userPrincipal.getName();
+                    String password = String.valueOf(authentication.getCredentials());
+
+                    // The Login should work because the validation of the password has been done during the login process
+                    // by the KonakartLoginModule.
+                    if (!KKServiceHelper.getKKEngineService().logIn(request, response,
+                            username, password)) {
+                        logout(request, response, requestContext);
+                    }
+                } else {
+                    SecurityContextHolder.getContext().setAuthentication(null);
+                    request.getSession().invalidate();
                 }
             }
         } else {

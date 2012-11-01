@@ -70,8 +70,14 @@ public class KKAdminEngine {
     /**
      * @return an helper class used to access to the administration functions
      */
-    @Nullable
+    @Nonnull
     public static KKAdminEngine getInstance() {
+        KKAdminEngine kkAdminEngine = adminEngineThreadLocal.get();
+
+        if (kkAdminEngine == null) {
+            throw new IllegalArgumentException("KKAdminEngine should not be null. This engine has not been initialized.");
+        }
+
         return adminEngineThreadLocal.get();
     }
 
