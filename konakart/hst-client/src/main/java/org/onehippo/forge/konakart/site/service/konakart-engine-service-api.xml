@@ -48,4 +48,7 @@
     <bean name="org.onehippo.forge.konakart.site.service.KKProductService"
           class="org.onehippo.forge.konakart.site.service.impl.KKProductServiceImpl"/>
 
+    <bean name="org.onehippo.forge.konakart.site.service.KKMailerService"
+          class="org.onehippo.forge.konakart.site.service.impl.KKMailerServiceImpl"/>
+
 </beans>

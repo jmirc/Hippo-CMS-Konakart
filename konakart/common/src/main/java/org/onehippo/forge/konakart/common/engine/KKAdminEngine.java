@@ -68,6 +68,15 @@ public class KKAdminEngine {
     }
 
     /**
+     * @return true if the KKAdminEngine has been initialized, false otherwise.
+     */
+    public static boolean isInitialized() {
+        KKAdminEngine kkAdminEngine = adminEngineThreadLocal.get();
+
+        return kkAdminEngine != null;
+    }
+
+    /**
      * @return an helper class used to access to the administration functions
      */
     @Nonnull
@@ -87,7 +96,7 @@ public class KKAdminEngine {
      * @return the Konakart Admin client
      */
     @Nullable
-    private KKAdminIf getEngine() {
+    public KKAdminIf getEngine() {
         boolean reconnect;
 
         try {

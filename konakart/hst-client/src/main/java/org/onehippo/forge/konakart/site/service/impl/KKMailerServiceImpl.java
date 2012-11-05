@@ -6,8 +6,8 @@ import com.konakart.bl.EmailConfig;
 import com.konakartadmin.bl.AdminEmailMgr;
 import org.apache.commons.lang.StringUtils;
 import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
-import org.onehippo.forge.konakart.site.service.KKMailerService;
 import org.onehippo.forge.konakart.site.mailer.KKEmail;
+import org.onehippo.forge.konakart.site.service.KKMailerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,11 +59,10 @@ public class KKMailerServiceImpl implements KKMailerService {
                 }
             };
 
-            List<String> addresses = kkEmail.getToAddresses();
+            List<String> toAddresses = kkEmail.getToAddresses();
 
-            for (String address : addresses) {
-                emailMgr.sendHTML(address, fromAddress, emailReplyTo,
-                        kkEmail.isDoBlindCopy(), kkEmail.getSubject(), kkEmail.getMessage(), false, sync);
+            for (String toAddress : toAddresses) {
+                emailMgr.sendHTML(toAddress, kkEmail.getSubject(), kkEmail.getMessage(), kkEmail.isDoBlindCopy(), sync);
             }
 
             return true;
