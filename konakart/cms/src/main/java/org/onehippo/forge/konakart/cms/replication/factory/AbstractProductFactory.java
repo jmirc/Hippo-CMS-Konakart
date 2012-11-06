@@ -25,7 +25,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * To use the replication synchronization, you need to add a class that will extend this class to define
@@ -131,7 +134,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
         createOrUpdateKonakartProduct(product, productNode);
 
         // Upload images
-        uploadImages(productNode, baseImagePath, product);
+        uploadImages(language, productNode, baseImagePath, product);
 
         // Save the session
         productNode.getSession().save();
@@ -185,11 +188,12 @@ public abstract class AbstractProductFactory implements ProductFactory {
     /**
      * Upload the images from Konakart to Hippo CMS
      *
+     * @param language      the current language
      * @param productNode   product node
      * @param baseImagePath path where the konakart's images are located
      * @param product       the konakart product
      */
-    private void uploadImages(Node productNode, String baseImagePath, Product product) {
+    private void uploadImages(LanguageIf language, Node productNode, String baseImagePath, Product product) {
         try {
             // Retrieve the gallery root node
             // add the product node root
@@ -199,15 +203,26 @@ public abstract class AbstractProductFactory implements ProductFactory {
             // Get the root folder
             Node productGalleryNode = nodeImagesHelper.createMissingFolders(galleryRootNode);
 
-            // upload base main image
-            uploadImage(productNode, productGalleryNode, baseImagePath, product.getImage(), "image1");
-            uploadImage(productNode, productGalleryNode, baseImagePath, product.getImage2(), "image2");
-            uploadImage(productNode, productGalleryNode, baseImagePath, product.getImage3(), "image3");
-            uploadImage(productNode, productGalleryNode, baseImagePath, product.getImage4(), "image4");
+            // Get the list of images to updload
+            Collection<String> images = getImagesByLanguage(product, language);
+
+            uploadImages(productNode, productGalleryNode, baseImagePath, images);
 
         } catch (Exception e) {
             log.error("Failed to add images", e);
         }
+    }
+
+    @Override
+    public Collection<String> getImagesByLanguage(Product product, LanguageIf language) {
+        List<String> images = new ArrayList<String>();
+
+        images.add(product.getImage());
+        images.add(product.getImage2());
+        images.add(product.getImage3());
+        images.add(product.getImage4());
+
+        return images;
     }
 
     /**
@@ -216,108 +231,104 @@ public abstract class AbstractProductFactory implements ProductFactory {
      * @param productNode        the product node. Used to associate the image with the product's node
      * @param productGalleryNode the product gallery node
      * @param baseImagePath      the Konakart images' folder where the images are localed.
-     * @param productImage       the name of the product
+     * @param productImages      list of images to upload
      * @throws javax.jcr.RepositoryException .
      */
-    private void uploadImage(Node productNode, Node productGalleryNode, String baseImagePath, String productImage,
-                             String imageNumber) throws RepositoryException {
+    private void uploadImages(Node productNode, Node productGalleryNode, String baseImagePath,
+                              Collection<String> productImages) throws RepositoryException {
 
-        if (StringUtils.isEmpty(productImage)) {
-            return;
-        }
+        for (String productImage : productImages) {
+            String image = baseImagePath + "/" + productImage;
 
-        String image = baseImagePath + "/" + productImage;
+            File file = new File(image);
 
-        File file = new File(image);
-
-        if (!file.exists()) {
-            if (!StringUtils.equals(file.getName(), "none.png")) {
-                log.warn("Failed to import image. The image at the path {} has not been found. ", image);
-            }
-            return;
-        }
-
-        Node rootImageNode = null;
-
-        try {
-            String contentType = new MimetypesFileTypeMap().getContentType(image);
-
-            // Create the image name
-            rootImageNode = nodeImagesHelper.createGalleryItem(productGalleryNode, imageNumber);
-
-            final ScalingGalleryProcessor processor = new ScalingGalleryProcessor();
-
-            // for each version, create a new image.
-            for (String imagesVersionName : GalleryProcesssorConfig.getConfig().getImagesVersionSet()) {
-
-                // Create the image's node if not exist
-                if (rootImageNode.hasNode(imagesVersionName)) {
-                    rootImageNode.getNode(imagesVersionName).remove();
+            if (!file.exists()) {
+                if (!StringUtils.equals(file.getName(), "none.png")) {
+                    log.warn("Failed to import image. The image at the path {} has not been found. ", image);
                 }
-
-                if (!rootImageNode.hasNode(imagesVersionName)) {
-                    InputStream isStream = new FileInputStream(file);
-
-                    GalleryProcesssorConfig.ImageConfig thumbnailImageConfig =
-                            GalleryProcesssorConfig.getConfig().getImageConfigMap(imagesVersionName);
-
-                    ScalingParameters parameters = new ScalingParameters(thumbnailImageConfig.getWidth(),
-                            thumbnailImageConfig.getHeight(), thumbnailImageConfig.getUpscaling());
-
-                    processor.addScalingParameters(imagesVersionName, parameters);
-
-                    Node node = rootImageNode.addNode(imagesVersionName, "hippogallery:image");
-                    processor.initGalleryResource(node, isStream, contentType, imageNumber, Calendar.getInstance());
-                }
+                return;
             }
 
+            Node rootImageNode = null;
 
-        } catch (FileNotFoundException e) {
-            // should not happends. Already verified.
-        } catch (RepositoryException e) {
-            log.warn("Unable to create the different versions of the original image - {} ", e);
-        }
+            try {
+                String contentType = new MimetypesFileTypeMap().getContentType(image);
 
-        // Save the image
-        if (rootImageNode != null) {
-            rootImageNode.getSession().save();
-        }
+                // Create the image name
+                rootImageNode = nodeImagesHelper.createGalleryItem(productGalleryNode, productImage);
 
-        // Associate the image handle with the product
-        if (rootImageNode != null) {
-            Node imageLink = null;
+                final ScalingGalleryProcessor processor = new ScalingGalleryProcessor();
 
-            // Retrieve the image UUID
-            String imageUUID = rootImageNode.getParent().getIdentifier();
+                // for each version, create a new image.
+                for (String imagesVersionName : GalleryProcesssorConfig.getConfig().getImagesVersionSet()) {
 
-            // Check if the image has been already added
-            if (productNode.hasNode(KKCndConstants.PRODUCT_IMAGES)) {
-                NodeIterator iterator = productNode.getNodes(KKCndConstants.PRODUCT_IMAGES);
+                    // Create the image's node if not exist
+                    if (rootImageNode.hasNode(imagesVersionName)) {
+                        rootImageNode.getNode(imagesVersionName).remove();
+                    }
 
-                while (iterator.hasNext()) {
-                    Node node = iterator.nextNode();
+                    if (!rootImageNode.hasNode(imagesVersionName)) {
+                        InputStream isStream = new FileInputStream(file);
 
-                    if (node.hasProperty("hippo:docbase")) {
-                        String docbase = node.getProperty("hippo:docbase").getString();
+                        GalleryProcesssorConfig.ImageConfig thumbnailImageConfig =
+                                GalleryProcesssorConfig.getConfig().getImageConfigMap(imagesVersionName);
 
-                        if (docbase.contains(imageUUID)) {
-                            imageLink = node;
+                        ScalingParameters parameters = new ScalingParameters(thumbnailImageConfig.getWidth(),
+                                thumbnailImageConfig.getHeight(), thumbnailImageConfig.getUpscaling());
+
+                        processor.addScalingParameters(imagesVersionName, parameters);
+
+                        Node node = rootImageNode.addNode(imagesVersionName, "hippogallery:image");
+                        processor.initGalleryResource(node, isStream, contentType, productImage, Calendar.getInstance());
+                    }
+                }
+            } catch (FileNotFoundException e) {
+                // should not happends. Already verified.
+            } catch (RepositoryException e) {
+                log.warn("Unable to create the different versions of the original image - {} ", e);
+            }
+
+            // Save the image
+            if (rootImageNode != null) {
+                rootImageNode.getSession().save();
+            }
+
+            // Associate the image handle with the product
+            if (rootImageNode != null) {
+                Node imageLink = null;
+
+                // Retrieve the image UUID
+                String imageUUID = rootImageNode.getParent().getIdentifier();
+
+                // Check if the image has been already added
+                if (productNode.hasNode(KKCndConstants.PRODUCT_IMAGES)) {
+                    NodeIterator iterator = productNode.getNodes(KKCndConstants.PRODUCT_IMAGES);
+
+                    while (iterator.hasNext()) {
+                        Node node = iterator.nextNode();
+
+                        if (node.hasProperty("hippo:docbase")) {
+                            String docbase = node.getProperty("hippo:docbase").getString();
+
+                            if (docbase.contains(imageUUID)) {
+                                imageLink = node;
+                            }
                         }
                     }
                 }
+                if (imageLink == null) {
+                    imageLink = productNode.addNode(KKCndConstants.PRODUCT_IMAGES, "hippogallerypicker:imagelink");
+                }
+
+                imageLink.setProperty("hippo:docbase", imageUUID);
+                imageLink.setProperty("hippo:facets", new String[0]);
+                imageLink.setProperty("hippo:values", new String[0]);
+                imageLink.setProperty("hippo:modes", new String[0]);
+
+
+            } else {
+                log.warn("Node has not been created for the image name - " + productImage);
             }
-            if (imageLink == null) {
-                imageLink = productNode.addNode(KKCndConstants.PRODUCT_IMAGES, "hippogallerypicker:imagelink");
-            }
-
-            imageLink.setProperty("hippo:docbase", imageUUID);
-            imageLink.setProperty("hippo:facets", new String[0]);
-            imageLink.setProperty("hippo:values", new String[0]);
-            imageLink.setProperty("hippo:modes", new String[0]);
-
-
-        } else {
-            log.warn("Node has not been created for the image name - " + productImage);
         }
     }
 

@@ -115,7 +115,14 @@ public class KonakartSyncProducts {
             }
 
             // Retrieve the path where the images are saved
-            String baseImagePath = kkengine.getEng().getConfiguration("IMG_BASE_PATH").getValue();
+            // First check if this config has been set within Hippo, if not retrieved from Konakart
+            String baseImagePath;
+
+            if (StringUtils.isNotEmpty(kkStoreConfig.getImageBasePath())) {
+                baseImagePath = kkStoreConfig.getImageBasePath();
+            } else {
+                baseImagePath = kkengine.getEng().getConfiguration("IMG_BASE_PATH").getValue();
+            }
 
             ProductFactory productFactory = createProductFactory(kkStoreConfig.getProductFactoryClassName());
             productFactory.setSession(jcrSession);

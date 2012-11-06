@@ -31,6 +31,7 @@ public class HippoModuleConfig {
     public static final String STORE_GALLERY_ROOT_PROPERTY = "konakart:galleryroot";
     public static final String STORE_STORE_ID_PROPERTY = "konakart:storeid";
     public static final String STORE_CATALOG_ID_PROPERTY = "konakart:catalogid";
+    public static final String STORE_IMAGE_BASE_PATH_PROPERTY = "konakart:imageBasePath";
     public static final String STORE_SECURITY_CUSTOMER_GROUPS_PROPERTY = "konakart:securitycustomergroups";
 
     public static final String SYNC_NODE_PATH = "konakart:sync";
@@ -193,10 +194,7 @@ public class HippoModuleConfig {
     private void loadStoreConfigByName(Session session, String storeName, KKStoreConfig kkStoreConfig) throws RepositoryException {
         Node rootNode = session.getNode(KONAKART_STORES_PATH);
 
-
         // Set the default configurations.
-
-
         if (rootNode.hasNode(storeName)) {
             Node storeNode = rootNode.getNode(storeName);
 
@@ -206,6 +204,7 @@ public class HippoModuleConfig {
             kkStoreConfig.setGalleryRoot(NodeUtils.getString(storeNode, STORE_GALLERY_ROOT_PROPERTY));
             kkStoreConfig.setStoreId(NodeUtils.getString(storeNode, STORE_STORE_ID_PROPERTY));
             kkStoreConfig.setCatalogId(NodeUtils.getString(storeNode, STORE_CATALOG_ID_PROPERTY));
+            kkStoreConfig.setImageBasePath(NodeUtils.getString(storeNode, STORE_IMAGE_BASE_PATH_PROPERTY));
             kkStoreConfig.setSecurityCustomerGroups(NodeUtils.getStrings(storeNode, STORE_SECURITY_CUSTOMER_GROUPS_PROPERTY));
 
             if (storeNode.hasNode(SYNC_NODE_PATH)) {

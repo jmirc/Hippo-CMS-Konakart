@@ -47,10 +47,10 @@
   - konakart:physicalproduct (string)
   - konakart:physicalproductfreeshipping (string)
 
-
 [konakart:store] > nt:base
   - konakart:contentroot (string) mandatory
   - konakart:galleryroot (string) mandatory
+  - konakart:externalImageBasePath (String)
   - konakart:storeid (string) mandatory
   - konakart:catalogid (string)
   - konakart:securitycustomergroups (string) multiple

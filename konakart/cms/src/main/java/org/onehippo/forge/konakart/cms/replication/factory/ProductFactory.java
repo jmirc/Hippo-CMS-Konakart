@@ -6,6 +6,7 @@ import org.onehippo.forge.konakart.common.engine.KKStoreConfig;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import java.util.Collection;
 
 public interface ProductFactory {
 
@@ -30,6 +31,21 @@ public interface ProductFactory {
      * @throws Exception if any exceptions occurs
      */
     void add(final String storeId, final Product product, final LanguageIf language, final String baseImagePath) throws Exception;
+
+
+    /**
+     *  Get the list of images to upload
+     *
+     *  Konakart is not useful to manage images by language. In this case, the project needs to select
+     *  which images will be used for a language.
+     *
+     *  By default the language will be ignored. So all images set within Konakart will be retrieved
+
+     * @param product       the product to add
+     * @param language      the language associated to this product
+     * @return the list of images to upload
+     */
+    Collection<String> getImagesByLanguage(Product product, LanguageIf language);
 
 
 

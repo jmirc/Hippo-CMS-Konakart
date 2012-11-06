@@ -32,6 +32,7 @@ public class KKStoreConfig {
     private String jobClass;
     private String productFactoryClassName;
     private boolean developmentMode;
+    private String imageBasePath;
 
 
     public String getNodePath() {
@@ -192,13 +193,20 @@ public class KKStoreConfig {
         this.productFactoryClassName = productFactoryClassName;
     }
 
-
     public boolean isDevelopmentMode() {
         return developmentMode;
     }
 
     public void setDevelopmentMode(boolean developmentMode) {
         this.developmentMode = developmentMode;
+    }
+
+    public String getImageBasePath() {
+        return imageBasePath;
+    }
+
+    public void setImageBasePath(String imageBasePath) {
+        this.imageBasePath = imageBasePath;
     }
 
     private Node getSyncNode(Session session) throws RepositoryException {
