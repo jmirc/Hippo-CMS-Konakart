@@ -88,7 +88,7 @@ public class MyAccount extends KKMyAccount {
     }
 
     @Override
-    protected void doCallAfterRegisterCustomer(HstRequest request, HstResponse response, int customerId) {
+    protected void doCallAfterRegisterCustomer(HstRequest request, HstResponse response, int customerId, FormMap formap) {
 
     }
 
