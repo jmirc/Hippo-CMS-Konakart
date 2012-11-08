@@ -182,10 +182,10 @@ The authentication process is based on spring security.
 The English locale must be updated from *en_GB* to *en_US*.
 
 
-       
+### How to start the synchronization?
+The synchronization is started after log-in to the CMS. A service has been created to handle this task.
 
 
-                
 
 ### Hippo-Konakart Store1 Configuration
 * You need to update the following node with your needs. "/konakart:konakart/konakart:stores/store1"
