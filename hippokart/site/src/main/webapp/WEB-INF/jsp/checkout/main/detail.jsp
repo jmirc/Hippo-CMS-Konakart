@@ -23,7 +23,7 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $('#CountryDropDown').change(function () {
+        $("select").change(function () {
             $.getJSON("${countryDropDown}/" + $(this).val(), "", function (data) {
                 var list = $('#StateDropDown');
                 list.empty('option')
@@ -42,6 +42,7 @@
                 $.each(data, function (index, itemData) {
                     list.append($('<option />').text(itemData.name).val(itemData.name));
                 });
+                $('#StateDropDown').value(list);
             });
         });
     });

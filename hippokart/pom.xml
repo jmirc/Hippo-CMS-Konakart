@@ -79,7 +79,7 @@ the parent version to 7.7.1 then the property definitions below can be removed -
         <filesync.override>false</filesync.override>
         <maven.plugins.filesync.version>1.0.0</maven.plugins.filesync.version>
 
-        <hippo-konakart.version>1.00.01</hippo-konakart.version>
+        <hippo-konakart.version>1.00.02-SNAPSHOT</hippo-konakart.version>
     </properties>
 
     <repositories>
@@ -96,7 +96,7 @@ the parent version to 7.7.1 then the property definitions below can be removed -
                 <enabled>true</enabled>
             </snapshots>
         </repository>
- <repository>
+        <repository>
             <id>hippo-konakart-plugin-snapshots</id>
             <url>https://raw.github.com/jmirc/Hippo-CMS-Konakart/master/maven-repository/snapshots/</url>
             <snapshots>

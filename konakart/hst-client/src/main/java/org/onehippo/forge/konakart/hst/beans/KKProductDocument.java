@@ -53,10 +53,10 @@ public class KKProductDocument extends HippoDocument {
 
     public BigDecimal getSpecialPrice() {
         if (shouldIncludeTax) {
-            return productIf.getSpecialPriceIncTax();
+            return getProductIf().getSpecialPriceIncTax();
         }
 
-        return productIf.getSpecialPriceExTax();
+        return getProductIf().getSpecialPriceExTax();
     }
 
     /**

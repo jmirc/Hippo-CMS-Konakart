@@ -217,10 +217,21 @@ public abstract class AbstractProductFactory implements ProductFactory {
     public Collection<String> getImagesByLanguage(Product product, LanguageIf language) {
         List<String> images = new ArrayList<String>();
 
-        images.add(product.getImage());
-        images.add(product.getImage2());
-        images.add(product.getImage3());
-        images.add(product.getImage4());
+        if (StringUtils.isNotEmpty(product.getImage())) {
+            images.add(product.getImage());
+        }
+
+        if (StringUtils.isNotEmpty(product.getImage2())) {
+            images.add(product.getImage2());
+        }
+
+        if (StringUtils.isNotEmpty(product.getImage3())) {
+            images.add(product.getImage3());
+        }
+
+        if (StringUtils.isNotEmpty(product.getImage4())) {
+            images.add(product.getImage4());
+        }
 
         return images;
     }
@@ -240,6 +251,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
         for (String productImage : productImages) {
             String image = baseImagePath + "/" + productImage;
 
+            String productImageName = StringUtils.substringAfterLast(productImage, "/");
+
             File file = new File(image);
 
             if (!file.exists()) {
@@ -255,7 +268,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
                 String contentType = new MimetypesFileTypeMap().getContentType(image);
 
                 // Create the image name
-                rootImageNode = nodeImagesHelper.createGalleryItem(productGalleryNode, productImage);
+                rootImageNode = nodeImagesHelper.createGalleryItem(productGalleryNode, productImageName);
 
                 final ScalingGalleryProcessor processor = new ScalingGalleryProcessor();
 
@@ -279,7 +292,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
                         processor.addScalingParameters(imagesVersionName, parameters);
 
                         Node node = rootImageNode.addNode(imagesVersionName, "hippogallery:image");
-                        processor.initGalleryResource(node, isStream, contentType, productImage, Calendar.getInstance());
+                        processor.initGalleryResource(node, isStream, contentType, productImageName, Calendar.getInstance());
                     }
                 }
             } catch (FileNotFoundException e) {

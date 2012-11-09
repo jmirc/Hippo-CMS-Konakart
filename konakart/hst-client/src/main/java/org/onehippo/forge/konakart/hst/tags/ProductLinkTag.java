@@ -55,7 +55,7 @@ public class ProductLinkTag extends HstLinkTag {
             // No result
             if (queryResult.getTotalSize() != 0) {
                 if (linkForAttributeSet) {
-                    log.warn("Incorrect usage of hst:link tag. Not allowed to specifcy two of the attributes 'link', 'hippobean', 'path' or 'siteMapItemRefId' at same time. Ignore the attr hippoBean '{}'", hippoBean.getPath());
+                    log.warn("Incorrect usage of hst:link tag. Not allowed to specifcy two of the attributes 'link', 'hippobean', 'path' or 'siteMapItemRefId' at same time. Ignore the attr hippoBean '{}'", identifiableContentBean.getIdentifier());
                 } else {
                     linkForAttributeSet = true;
                     HippoBean hippoBean1 = queryResult.getHippoBeans().next();

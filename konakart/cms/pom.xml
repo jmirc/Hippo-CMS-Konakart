@@ -27,7 +27,7 @@
     <parent>
         <groupId>org.onehippo.forge.konakart</groupId>
         <artifactId>konakart</artifactId>
-        <version>1.00.02-SNAPSHOT</version>
+        <version>1.01.00-SNAPSHOT</version>
     </parent>
 
     <name>Hippo Konakart Addon Cms</name>
@@ -75,14 +75,6 @@
             <groupId>org.onehippo.cms7</groupId>
             <artifactId>hippo-cms-perspectives</artifactId>
             <version>${hippo.repository.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.apache.jackrabbit</groupId>
-            <artifactId>jackrabbit-jcr-commons</artifactId>
-            <version>${hippo.jcr.version}</version>
             <scope>provided</scope>
         </dependency>
 

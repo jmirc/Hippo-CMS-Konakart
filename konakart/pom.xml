@@ -5,12 +5,12 @@
     <parent>
         <groupId>org.onehippo.cms7</groupId>
         <artifactId>hippo-cms7-project</artifactId>
-        <version>11</version>
+        <version>15-SNAPSHOT</version>
     </parent>
 
     <groupId>org.onehippo.forge.konakart</groupId>
     <artifactId>konakart</artifactId>
-    <version>1.00.02-SNAPSHOT</version>
+    <version>1.01.00-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Hippo Konakart Addon</name>
@@ -18,17 +18,13 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!-- 7.7.2 versioning -->
-        <hippo.repository.version>2.22.05</hippo.repository.version>
-        <hippo.hst.version>2.24.04</hippo.hst.version>
-        <hippo.cms.version>2.22.06</hippo.cms.version>
-        <hippo.packages.version>2.22.03</hippo.packages.version>
-        <hippo.addon-publication-workflow.version>2.22.03</hippo.addon-publication-workflow.version>
+        <hippo.repository.version>2.23.05-SNAPSHOT</hippo.repository.version>
+        <hippo.hst.version>2.25.05-SNAPSHOT</hippo.hst.version>
+        <hippo.cms.version>2.23.05-SNAPSHOT</hippo.cms.version>
+        <hippo.packages.version>2.23.05-SNAPSHOT</hippo.packages.version>
 
-        <hippo.jcr.version>2.2.10-h1</hippo.jcr.version>
-
-        <forge.selection.version>2.05.06</forge.selection.version>
-        <forge.utilities.version>1.01.01</forge.utilities.version>
+        <forge.selection.version>2.05.07</forge.selection.version>
+        <forge.utilities.version>1.01.02</forge.utilities.version>
 
         <spring.security.version>3.0.5.RELEASE</spring.security.version>
         <hst-springsec.version>0.01.00</hst-springsec.version>
@@ -37,7 +33,7 @@
 
     <modules>
         <module>dependencies</module>
-		<module>enterprise-dependencies</module>
+		<!--<module>enterprise-dependencies</module>-->
         <module>common</module>
         <module>cms</module>
         <module>repository</module>

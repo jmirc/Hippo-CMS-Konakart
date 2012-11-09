@@ -83,7 +83,6 @@ public class HippoKonakartDaemonModule implements DaemonModule {
         protected Scheduler instantiate(QuartzSchedulerResources rsrcs, QuartzScheduler qs) {
             JCRSchedulingContext schedCtxt = new JCRSchedulingContext(session);
             schedCtxt.setInstanceId(rsrcs.getInstanceId());
-            schedCtxt.setSession(session);
             return new KonakartResourceScheduler(qs, schedCtxt);
         }
     }

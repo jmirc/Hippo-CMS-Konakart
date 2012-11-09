@@ -40,6 +40,8 @@
                 <tr>
                     <td class=""><input type="checkbox" name="remove_${item.basketItemId}"></td>
                     <td class="muted center_text">
+
+
                         <hst:link var="prdImgLink" hippobean="${item.productDocument.mainImage.original}"/>
                         <img src="${prdImgLink}" border="0" alt="${item.prodName}"
                                                   title="${item.prodName}" width="100"

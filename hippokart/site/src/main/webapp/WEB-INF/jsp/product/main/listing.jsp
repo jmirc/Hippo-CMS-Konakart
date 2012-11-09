@@ -61,7 +61,7 @@
 
                     <div class="span6">
                         <a href="${prdLink}"><h5>${productIf.name}</h5></a>
-                        <kk:rating product="${product}" var="rating"/>
+                        <kk:rating productId="${product.productId}" ratingVar="rating" nbReviewsVar="nbReviews"/>
                         <fmt:formatNumber value="${rating * 10}" var="ratingStyle" pattern="#0"/>
                         <p class="rating stars-${ratingStyle}">
                             <a href="#">

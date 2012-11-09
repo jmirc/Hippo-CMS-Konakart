@@ -48,7 +48,7 @@ public class ProductListing extends KKProductsOverview {
 
         if (currentCategory.getId() > 0) {
             return KKServiceHelper.getKKProductService().
-                    fetchNewProducts(request, currentCategory.getId(), true, false, 100, DataDescConstants.ORDER_BY_NAME_ASCENDING);
+                    fetchNewProducts(request, currentCategory.getId(), false, false, 100, DataDescConstants.ORDER_BY_NAME_ASCENDING);
         }
 
         return super.searchProducts(request);

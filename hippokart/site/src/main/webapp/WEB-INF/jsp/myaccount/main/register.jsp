@@ -15,13 +15,13 @@
     <script src="${myaccountJs}" type="text/javascript"></script>
 </hst:headContribution>
 
-<hst:link var="countryDropDown" path="/restservices/checkout/states"/>
+<hst:link var="countryDropDownLink" path="/restservices/checkout/states"/>
 
 <script type="text/javascript">
 
     $(document).ready(function () {
-        $('#CountryDropDown').change(function () {
-            $.getJSON("${countryDropDown}/" + $(this).val(), "", function (data) {
+        $("#CountryDropDown").change(function () {
+            $.getJSON("${countryDropDownLink}/" + $(this).val(), "", function (data) {
                 var list = $('#StateDropDown');
                 list.empty('option')
                         .append($('<option />').attr('selected', 'true').text('---').val('-1'));

@@ -18,11 +18,23 @@
         <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-cms</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.konakart.enterprise</groupId>
+                    <artifactId>konakart</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-repository</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.konakart.enterprise</groupId>
+                    <artifactId>konakart</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
