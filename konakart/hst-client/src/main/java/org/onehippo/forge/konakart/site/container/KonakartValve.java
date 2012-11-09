@@ -124,9 +124,9 @@ public class KonakartValve implements Valve {
         if (userPrincipal instanceof Authentication) {
             Authentication authentication = (Authentication) userPrincipal;
             KKUser kkUser = (KKUser) authentication.getPrincipal();
+            int kkCustomerId = kkUser.getCustomerId();
 
             if (kkUser.isRememberMeAuthentication()) {
-                int kkCustomerId = kkUser.getCustomerId();
 
                 // Auto login same session
                 if (kkCustomerId == customerId) {
@@ -146,7 +146,7 @@ public class KonakartValve implements Valve {
                     try {
                         // Retrieve the current logged customer and check if the groupId is accepted by the store
                         // If it is the case, the user will be logged in within this store
-                        AdminCustomer adminCustomer = adminMgrFactory.getAdminCustMgr(true).getCustomerForId(customerId);
+                        AdminCustomer adminCustomer = adminMgrFactory.getAdminCustMgr(true).getCustomerForId(kkCustomerId);
 
                         autoLogin = adminCustomer != null &&
                                 adminCustomer.getGroupId() > 0 &&
