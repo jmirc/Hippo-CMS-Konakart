@@ -2,6 +2,7 @@ package org.onehippo.forge.konakart.cms.replication.factory;
 
 import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
+import eu.medsea.mimeutil.MimeUtil2;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingGalleryProcessor;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingParameters;
@@ -16,7 +17,6 @@ import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -41,6 +41,8 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
     private static Logger log = LoggerFactory.getLogger(AbstractProductFactory.class);
 
+    protected  MimeUtil2 mimeUtil = new MimeUtil2();
+
     protected Session session;
     private NodeHelper nodeHelper;
     private NodeImagesHelper nodeImagesHelper;
@@ -49,6 +51,11 @@ public abstract class AbstractProductFactory implements ProductFactory {
     private String contentRoot;
     private String galleryRoot;
     private String productFolder;
+
+    protected AbstractProductFactory() {
+        // Register the mime detector
+        mimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
+    }
 
     /**
      * This is an helper method that could be used to set others information defined into Konakart but not
@@ -135,9 +142,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         // Upload images
         uploadImages(language, productNode, baseImagePath, product);
-
-        // Save the session
-        productNode.getSession().save();
 
         // Save the node
         if (hasCheckout) {
@@ -251,7 +255,11 @@ public abstract class AbstractProductFactory implements ProductFactory {
         for (String productImage : productImages) {
             String image = baseImagePath + "/" + productImage;
 
-            String productImageName = StringUtils.substringAfterLast(productImage, "/");
+            String productImageName = productImage;
+
+            if (StringUtils.contains(productImage, "/")) {
+                productImageName = StringUtils.substringAfterLast(productImage, "/");
+            }
 
             File file = new File(image);
 
@@ -265,7 +273,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
             Node rootImageNode = null;
 
             try {
-                String contentType = new MimetypesFileTypeMap().getContentType(image);
+                String contentType = MimeUtil2.getMostSpecificMimeType(mimeUtil.getMimeTypes(file)).toString();
 
                 // Create the image name
                 rootImageNode = nodeImagesHelper.createGalleryItem(productGalleryNode, productImageName);

@@ -34,8 +34,13 @@ public class ProductCustAttrValueTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
 
-        if (custAttrId ==  -1 && StringUtils.isEmpty(custAttrName)) {
+        if (product == null) {
+            log.warn("Cannot get a custom attribute because no product is set");
 
+            return EVAL_PAGE;
+        }
+
+        if (custAttrId ==  -1 && StringUtils.isEmpty(custAttrName)) {
             log.warn("Cannot get a custom attribute because no custAttrId or custAttrName is set");
 
             return EVAL_PAGE;

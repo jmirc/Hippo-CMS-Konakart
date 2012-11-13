@@ -3,7 +3,6 @@ package org.onehippo.forge.konakart.cms.replication.synchronization.job;
 
 import org.hippoecm.repository.quartz.JCRSchedulingContext;
 import org.onehippo.forge.konakart.cms.replication.jcr.GalleryProcesssorConfig;
-import org.onehippo.forge.konakart.cms.replication.service.KonakartSynchronizationService;
 import org.onehippo.forge.konakart.cms.replication.synchronization.KonakartResourceScheduler;
 import org.onehippo.forge.konakart.common.engine.KKAdminEngine;
 import org.onehippo.forge.konakart.common.engine.KKEngine;
@@ -17,9 +16,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.jcr.Session;
 import java.util.Collection;
-import java.util.List;
-
-import static org.hippoecm.frontend.translation.ILocaleProvider.HippoLocale;
 
 public class KonakartSyncJob implements Job {
 
@@ -37,10 +33,6 @@ public class KonakartSyncJob implements Job {
         // Set the JcrSession
         KonakartResourceScheduler scheduler = (KonakartResourceScheduler) context.getScheduler();
         jcrSession = ((JCRSchedulingContext) scheduler.getCtx()).getSession();
-
-        @SuppressWarnings("unchecked")
-        List<? extends HippoLocale> locales =
-                (List<? extends HippoLocale>) context.getJobDetail().getJobDataMap().get(KonakartSynchronizationService.LOCALES);
 
         // Load the gallery processor service
         GalleryProcesssorConfig.load(jcrSession);
@@ -61,7 +53,7 @@ public class KonakartSyncJob implements Job {
 
                 try {
                     // Synchronize konakart information
-                    syncKonakartToHippo(kkStoreConfig, locales);
+                    syncKonakartToHippo(kkStoreConfig);
                 } catch (Exception e) {
                     log.warn("Failed to update Repository to Konakart. ", e);
                 }
@@ -82,14 +74,12 @@ public class KonakartSyncJob implements Job {
      * Synchronize Konakart information to Hippo
      *
      * @param kkStoreConfig the store config
-     * @param locales       list of available locales
      * @throws Exception an exception
      */
-    protected void syncKonakartToHippo(KKStoreConfig kkStoreConfig,
-                                       List<? extends HippoLocale> locales) throws Exception {
+    protected void syncKonakartToHippo(KKStoreConfig kkStoreConfig) throws Exception {
 
         // Synchronize products
-        if (KonakartSyncProducts.updateKonakartToHippo(kkStoreConfig, locales, jcrSession)) {
+        if (KonakartSyncProducts.updateKonakartToHippo(kkStoreConfig, jcrSession)) {
             kkStoreConfig.updateLastUpdatedTimeKonakartToRepository(jcrSession);
         }
     }

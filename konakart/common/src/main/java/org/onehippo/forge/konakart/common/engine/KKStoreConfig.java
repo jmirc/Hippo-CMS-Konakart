@@ -33,6 +33,7 @@ public class KKStoreConfig {
     private String productFactoryClassName;
     private boolean developmentMode;
     private String imageBasePath;
+    private String locale;
 
 
     public String getNodePath() {
@@ -207,6 +208,14 @@ public class KKStoreConfig {
 
     public void setImageBasePath(String imageBasePath) {
         this.imageBasePath = imageBasePath;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 
     private Node getSyncNode(Session session) throws RepositoryException {

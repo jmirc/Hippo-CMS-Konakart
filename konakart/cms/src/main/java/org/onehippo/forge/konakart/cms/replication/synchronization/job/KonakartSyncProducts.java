@@ -8,9 +8,6 @@ import com.konakart.appif.ProductSearchIf;
 import com.konakartadmin.bl.AdminMgrFactory;
 import com.konakartadmin.blif.AdminProductMgrIf;
 import org.apache.commons.lang.StringUtils;
-import org.hippoecm.frontend.translation.ILocaleProvider;
-import org.hippoecm.repository.api.HippoNodeType;
-import org.hippoecm.repository.translation.HippoTranslationNodeType;
 import org.onehippo.forge.konakart.cms.replication.factory.DefaultProductFactory;
 import org.onehippo.forge.konakart.cms.replication.factory.ProductFactory;
 import org.onehippo.forge.konakart.cms.replication.utils.Codecs;
@@ -30,7 +27,6 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class KonakartSyncProducts {
 
@@ -42,18 +38,16 @@ public class KonakartSyncProducts {
      * Copy products from Konakart to Hippo
      *
      * @param kkStoreConfig the store config
-     * @param locales       list of available locales
      * @throws Exception an exception
      */
-    public static synchronized boolean updateKonakartToHippo(KKStoreConfig kkStoreConfig, List<? extends ILocaleProvider.HippoLocale> locales, Session jcrSession) throws Exception {
+    public static synchronized boolean updateKonakartToHippo(KKStoreConfig kkStoreConfig, Session jcrSession) throws Exception {
         KKAppEng kkengine = KKEngine.get(kkStoreConfig.getStoreId());
 
         // Retrieve the list of languages defined into konakart.
         LanguageIf[] languages = kkengine.getEng().getAllLanguages();
 
         // Retrieve the content root
-        Node contentRoot = getProductRoot(kkStoreConfig, jcrSession);
-        Locale currentLocale = getLocale(contentRoot, locales);
+        String currentLocale = kkStoreConfig.getLocale();
 
         boolean updated = false;
 
@@ -63,7 +57,7 @@ public class KonakartSyncProducts {
             // Get the Hippo product folder name
             String storeId = kkStoreConfig.getStoreId();
 
-            if (currentLocale == null || !StringUtils.equals(currentLocale.toString(), language.getLocale())) {
+            if (currentLocale == null || !StringUtils.equals(currentLocale, language.getLocale())) {
                 log.info("############################################################################");
                 log.info("##");
                 log.info("##");
@@ -245,66 +239,6 @@ public class KonakartSyncProducts {
 
         return seed;
     }
-
-    /**
-     * Get the locale of a node representing a translated document, or a compound therein
-     *
-     * @param node    Node
-     * @param locales list of available locales
-     * @return Locale (nullable)
-     */
-    private static Locale getLocale(Node node, List<? extends ILocaleProvider.HippoLocale> locales) {
-        if (node == null) {
-            return null;
-        }
-
-        Locale locale = null;
-        try {
-
-            // in case of compounds (that should not be translated), move up the tree
-            Node docNode = node;
-            while (!docNode.isNodeType(HippoTranslationNodeType.NT_TRANSLATED)) {
-
-                docNode = docNode.getParent();
-
-                // stop at handle level
-                if (docNode.isNodeType(HippoNodeType.NT_HANDLE)) {
-                    break;
-                }
-            }
-
-            if (!docNode.isNodeType(HippoTranslationNodeType.NT_TRANSLATED)) {
-                log.debug("No translated nodes found for node '{}' and below", HippoTranslationNodeType.LOCALE, docNode.getPath());
-                return null;
-            }
-
-            final String property = docNode.getProperty(HippoTranslationNodeType.LOCALE).getString();
-            if (property.isEmpty()) {
-                log.debug("Property '{}' is empty for node '{}'", HippoTranslationNodeType.LOCALE, docNode.getPath());
-                return null;
-            }
-
-            // create locale
-            final String[] parts = property.split("_");
-
-            if (parts.length >= 1) {
-                String name = parts[0];
-
-                for (ILocaleProvider.HippoLocale hippoLocale : locales) {
-                    if (StringUtils.equals(hippoLocale.getName(), name)) {
-                        locale = hippoLocale.getLocale();
-                        break;
-                    }
-                }
-            }
-
-        } catch (RepositoryException e) {
-            log.warn(e.getMessage(), e);
-        }
-
-        return locale;
-    }
-
 
     private static List<SyncProduct> findAllProductIdsFromRepository(Node seed, Boolean onlyFirstRetrieve) throws RepositoryException {
 
