@@ -2,6 +2,7 @@ package org.onehippo.forge.konakart.cms.replication.factory;
 
 import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
+import eu.medsea.mimeutil.MimeUtil;
 import eu.medsea.mimeutil.MimeUtil2;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingGalleryProcessor;
@@ -17,6 +18,7 @@ import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.activation.MimetypesFileTypeMap;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -142,6 +144,9 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         // Upload images
         uploadImages(language, productNode, baseImagePath, product);
+
+        // Save the session
+        productNode.getSession().save();
 
         // Save the node
         if (hasCheckout) {
