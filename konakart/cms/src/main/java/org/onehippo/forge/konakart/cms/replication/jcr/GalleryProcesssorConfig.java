@@ -1,5 +1,7 @@
 package org.onehippo.forge.konakart.cms.replication.jcr;
 
+import org.apache.commons.lang.StringUtils;
+import org.hippoecm.frontend.plugins.gallery.imageutil.ImageUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,6 +47,7 @@ public class GalleryProcesssorConfig {
     }
 
     /**
+     *
      * @param session a JCR session
      * @return an instance of the config
      */
@@ -66,7 +69,6 @@ public class GalleryProcesssorConfig {
         try {
             Node node = session.getNode(SERVICE_CONFIG_PATH);
 
-
             NodeIterator nodeIterator = node.getNodes();
 
             while (nodeIterator.hasNext()) {
@@ -75,9 +77,26 @@ public class GalleryProcesssorConfig {
                 String serviceName = serviceNode.getName();
 
                 ImageConfig imageConfig = new ImageConfig();
-                imageConfig.setHeight(serviceNode.getProperty(ImageConfig.HEIGHT).getLong());
-                imageConfig.setWidth(serviceNode.getProperty(ImageConfig.WIDTH).getLong());
-                imageConfig.setUpscaling(serviceNode.getProperty(ImageConfig.UPSCALING).getBoolean());
+
+                if (serviceNode.hasProperty(ImageConfig.HEIGHT)) {
+                    imageConfig.setHeight(serviceNode.getProperty(ImageConfig.HEIGHT).getLong());
+                }
+
+                if (serviceNode.hasProperty(ImageConfig.WIDTH)) {
+                    imageConfig.setWidth(serviceNode.getProperty(ImageConfig.WIDTH).getLong());
+                }
+
+                if (serviceNode.hasProperty(ImageConfig.UPSCALING)) {
+                    imageConfig.setUpscaling(serviceNode.getProperty(ImageConfig.UPSCALING).getBoolean());
+                }
+
+                if (serviceNode.hasProperty(ImageConfig.OPTIMIZE)) {
+                    imageConfig.setScalingStrategy(serviceNode.getProperty(ImageConfig.OPTIMIZE).getString());
+                }
+
+                if (serviceNode.hasProperty(ImageConfig.COMPRESSION)) {
+                    imageConfig.setCompression(serviceNode.getProperty(ImageConfig.COMPRESSION).getDouble());
+                }
 
                 imageConfigMap.put(serviceName, imageConfig);
 
@@ -92,10 +111,15 @@ public class GalleryProcesssorConfig {
         public static final String HEIGHT = "height";
         public static final String WIDTH = "width";
         public static final String UPSCALING = "upscaling";
+        public static final String OPTIMIZE = "optimize";
+        public static final String COMPRESSION = "compression";
 
         private Long height;
         private Long width;
         private Boolean upscaling;
+        private ImageUtils.ScalingStrategy scalingStrategy = ImageUtils.ScalingStrategy.QUALITY;
+        private Double compression = 1D;
+
 
         public int getHeight() {
             return height.intValue();
@@ -119,6 +143,41 @@ public class GalleryProcesssorConfig {
 
         public void setUpscaling(Boolean upscaling) {
             this.upscaling = upscaling;
+        }
+
+        public ImageUtils.ScalingStrategy getScalingStrategy() {
+            return scalingStrategy;
+        }
+
+        public void setScalingStrategy(String scalingStrategy) {
+
+            if (StringUtils.equalsIgnoreCase(scalingStrategy, ImageUtils.ScalingStrategy.SPEED.name())) {
+                this.scalingStrategy = ImageUtils.ScalingStrategy.SPEED;
+            }
+
+            if (StringUtils.equalsIgnoreCase(scalingStrategy, ImageUtils.ScalingStrategy.SPEED_AND_QUALITY.name())) {
+                this.scalingStrategy = ImageUtils.ScalingStrategy.SPEED_AND_QUALITY;
+            }
+
+            if (StringUtils.equalsIgnoreCase(scalingStrategy, ImageUtils.ScalingStrategy.QUALITY.name())) {
+                this.scalingStrategy = ImageUtils.ScalingStrategy.QUALITY;
+            }
+
+            if (StringUtils.equalsIgnoreCase(scalingStrategy, ImageUtils.ScalingStrategy.AUTO.name())) {
+                this.scalingStrategy = ImageUtils.ScalingStrategy.AUTO;
+            }
+
+            if (StringUtils.equalsIgnoreCase(scalingStrategy, ImageUtils.ScalingStrategy.BEST_QUALITY.name())) {
+                this.scalingStrategy = ImageUtils.ScalingStrategy.BEST_QUALITY;
+            }
+        }
+
+        public float getCompression() {
+            return compression.floatValue();
+        }
+
+        public void setCompression(Double compression) {
+            this.compression = compression;
         }
     }
 

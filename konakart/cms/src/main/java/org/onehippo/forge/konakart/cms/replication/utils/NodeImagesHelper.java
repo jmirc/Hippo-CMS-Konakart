@@ -133,7 +133,7 @@ public class NodeImagesHelper {
         }
     }
 
-    public Node createGalleryItem(Node parentNode, String filename) throws RepositoryException {
+    public Node createGalleryItem(Node parentNode, String imageNodeTypeName, String filename) throws RepositoryException {
 
         String nodeName = Codecs.encodeNode(filename);
 
@@ -153,7 +153,7 @@ public class NodeImagesHelper {
         handle.addMixin("hippo:translated");
 
         // Create the image folder
-        Node childNode = handle.addNode(filename, "hippogallery:imageset");
+        Node childNode = handle.addNode(filename, imageNodeTypeName);
 
         // Add mixin
         childNode.addMixin("hippo:harddocument");

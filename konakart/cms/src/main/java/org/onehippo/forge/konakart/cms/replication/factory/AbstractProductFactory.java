@@ -2,7 +2,6 @@ package org.onehippo.forge.konakart.cms.replication.factory;
 
 import com.konakart.app.Product;
 import com.konakart.appif.LanguageIf;
-import eu.medsea.mimeutil.MimeUtil;
 import eu.medsea.mimeutil.MimeUtil2;
 import org.apache.commons.lang.StringUtils;
 import org.hippoecm.frontend.plugins.gallery.processor.ScalingGalleryProcessor;
@@ -18,7 +17,6 @@ import org.onehippo.forge.konakart.common.jcr.HippoModuleConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.activation.MimetypesFileTypeMap;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -121,7 +119,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
 
         // Create or retrieve the product node
         Node productNode = nodeHelper.createOrRetrieveDocument(rootFolder, product, productDocType,
-                session.getUserID(), language.getCode());
+                session.getUserID(), language.getLocale());
 
         boolean addNewProduct = !productNode.hasNode(KKCndConstants.PRODUCT_ID);
         boolean hasCheckout = false;
@@ -281,7 +279,7 @@ public abstract class AbstractProductFactory implements ProductFactory {
                 String contentType = MimeUtil2.getMostSpecificMimeType(mimeUtil.getMimeTypes(file)).toString();
 
                 // Create the image name
-                rootImageNode = nodeImagesHelper.createGalleryItem(productGalleryNode, productImageName);
+                rootImageNode = nodeImagesHelper.createGalleryItem(productGalleryNode, getImageNodeTypeName(), productImageName);
 
                 final ScalingGalleryProcessor processor = new ScalingGalleryProcessor();
 
@@ -296,11 +294,12 @@ public abstract class AbstractProductFactory implements ProductFactory {
                     if (!rootImageNode.hasNode(imagesVersionName)) {
                         InputStream isStream = new FileInputStream(file);
 
-                        GalleryProcesssorConfig.ImageConfig thumbnailImageConfig =
+                        GalleryProcesssorConfig.ImageConfig imageConfig =
                                 GalleryProcesssorConfig.getConfig().getImageConfigMap(imagesVersionName);
 
-                        ScalingParameters parameters = new ScalingParameters(thumbnailImageConfig.getWidth(),
-                                thumbnailImageConfig.getHeight(), thumbnailImageConfig.getUpscaling());
+                        ScalingParameters parameters = new ScalingParameters(imageConfig.getWidth(),
+                                imageConfig.getHeight(), imageConfig.getUpscaling(),
+                                imageConfig.getScalingStrategy(), imageConfig.getCompression());
 
                         processor.addScalingParameters(imagesVersionName, parameters);
 
@@ -389,5 +388,12 @@ public abstract class AbstractProductFactory implements ProductFactory {
      */
     private void setProductFolder(String productFolder) {
         this.productFolder = productFolder;
+    }
+
+    /**
+     * @return The name of the primary node type of the new image.
+     */
+    public String getImageNodeTypeName() {
+        return "hippogallery:imageset";
     }
 }
