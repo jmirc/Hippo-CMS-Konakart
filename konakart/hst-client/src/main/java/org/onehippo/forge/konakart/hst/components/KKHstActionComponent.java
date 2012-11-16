@@ -91,7 +91,7 @@ public abstract class KKHstActionComponent extends KKBaseHstComponent {
                         OptionIf[] currentOptionIfs = productIf.getOpts();
 
                         if (currentOptionIfs != null && currentOptionIfs.length > 0) {
-                            KKProductDocument productDocument = convertProduct(request, productIf);
+                            KKProductDocument productDocument = convertProduct(request, productIf.getId());
 
                             HstLinkCreator linkCreator = request.getRequestContext().getHstLinkCreator();
                             HstLink link = linkCreator.create(productDocument, request.getRequestContext());
