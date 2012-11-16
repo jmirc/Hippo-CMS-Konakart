@@ -144,7 +144,6 @@ public class KKBaseHstComponent extends BaseHstComponent {
         return (KKProductDocument) currentBean;
     }
 
-
     /**
      * Convert a konakart products to a KKProductDocument
      *
@@ -153,10 +152,21 @@ public class KKBaseHstComponent extends BaseHstComponent {
      */
     @Nullable
     public KKProductDocument convertProduct(HstRequest hstRequest, ProductIf product) {
-
         if (product == null) {
             return null;
         }
+
+        return convertProduct(hstRequest, product.getId());
+    }
+
+    /**
+        * Convert a konakart products to a KKProductDocument
+        *
+        * @param hstRequest the hst request
+        * @param productId id of the product to search
+        */
+    @Nullable
+    public KKProductDocument convertProduct(HstRequest hstRequest, int productId) {
 
         try {
 
@@ -168,7 +178,7 @@ public class KKBaseHstComponent extends BaseHstComponent {
             HstQuery hstQuery = getQueryManager(hstRequest).createQuery(scope, KKProductDocument.class, true);
 
             Filter filter = hstQuery.createFilter();
-            filter.addEqualTo(KKCndConstants.PRODUCT_ID, (long) product.getId());
+            filter.addEqualTo(KKCndConstants.PRODUCT_ID, (long) productId);
 
             hstQuery.setFilter(filter);
 
@@ -176,14 +186,14 @@ public class KKBaseHstComponent extends BaseHstComponent {
             HstQueryResult result = hstQuery.execute();
 
             if (result.getSize() == 0) {
-                log.error("Failed to retrieve the KKPRoductDocument with the konakart id = " + product.getId());
+                log.error("Failed to retrieve the KKPRoductDocument with the konakart id = " + productId);
                 return null;
             }
 
             // return the first element
             return (KKProductDocument) result.getHippoBeans().next();
         } catch (Exception e) {
-            log.error("Failed to find the Hippo Document for the product id - " + product.getId(), e);
+            log.error("Failed to find the Hippo Document for the product id - " + productId, e);
         }
 
         return null;
@@ -233,7 +243,7 @@ public class KKBaseHstComponent extends BaseHstComponent {
 
         for (ProductIf productIf : productIfs) {
 
-            KKProductDocument document = convertProduct(hstRequest, productIf);
+            KKProductDocument document = convertProduct(hstRequest, productIf.getId());
 
             if (document != null) {
                 documents.addLast(document);
