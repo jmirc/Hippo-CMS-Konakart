@@ -11,20 +11,25 @@
         <h4>Registered Customers</h4></p>
         <p>If you have an account with us, please log in.</p>
 
-        <hst:link var="loginLink" path="/login/proxy" />
-        <form id="loginFormID" action="${loginLink}" method="post">
+        <hst:link var="checkoutLink" fullyQualified="true"/>
+
+        <hst:link var="loginLink" path="/j_spring_security_check"/>
+        <form id="loginFormID" action="${loginLink}?spring-security-redirect=${checkoutLink}" method="post">
             <div class="control-group">
                 <label for="username" class="control-label">Username</label>
+
                 <div class="controls">
-                    <input class="required email highlight input-large" id="username" name="username" value="${username}"
+                    <input class="required email highlight input-large" id="username" name="j_username"
+                           value="${SPRING_SECURITY_LAST_USERNAME}"
                            type="text" placeholder="Email address">
                 </div>
             </div>
             <div class="control-group">
                 <label class="control-label">Password</label>
+
                 <div class="controls">
                     <input class="required highlight input-large" id="inputIcon2"
-                           name="password" type="password"
+                           name="j_password" type="password"
                            placeholder="Password">
 
                     <span class="help-inline">${login.failed}</span>
@@ -32,8 +37,6 @@
             </div>
 
             <%-- destination url when the login is successful --%>
-            <hst:link var="checkoutLink"/>
-            <input type="hidden" name="destination" value="${checkoutLink}"/>
             <button class="btn btn-primary pull-right-signin-button" type="submit"><fmt:message key="login.form.submit"/></button>
         </form>
     </div>

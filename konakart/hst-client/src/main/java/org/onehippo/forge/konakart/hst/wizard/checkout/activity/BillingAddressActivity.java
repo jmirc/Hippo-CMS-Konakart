@@ -34,8 +34,8 @@ public class BillingAddressActivity extends BaseAddressActivity {
         if (action.equals(KKActionsConstants.ACTIONS.SELECT.name())) {
 
 
-            String sAddressId = KKUtil.getEscapedParameter(seedData.getRequest(), KKRegisterFormUtils.ADDRESS);
-            String shippingAddress = KKUtil.getEscapedParameter(seedData.getRequest(), SHIPPING_ADDRESS);
+            String sAddressId = KKUtil.getActionRequestParameter(seedData.getRequest(), KKRegisterFormUtils.ADDRESS);
+            String shippingAddress = KKUtil.getActionRequestParameter(seedData.getRequest(), SHIPPING_ADDRESS);
 
             Integer addressId = -1;
 

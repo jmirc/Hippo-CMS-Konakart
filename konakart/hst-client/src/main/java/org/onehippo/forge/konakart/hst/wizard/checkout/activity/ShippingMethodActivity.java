@@ -33,7 +33,7 @@ public class ShippingMethodActivity extends BaseCheckoutActivity {
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
         if (seedData.getAction().equals(KKActionsConstants.ACTIONS.SELECT.name())) {
-            String shippingMethod = KKUtil.getEscapedParameter(seedData.getRequest(), SHIPPING_METHOD);
+            String shippingMethod = KKUtil.getActionRequestParameter(seedData.getRequest(), SHIPPING_METHOD);
 
             if (StringUtils.isEmpty(shippingMethod)) {
                 updateNextLoggedState(KKActionsConstants.STATES.SHIPPING_METHOD.name());

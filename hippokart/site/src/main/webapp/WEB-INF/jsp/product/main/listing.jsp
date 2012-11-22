@@ -45,7 +45,9 @@
         <c:forEach var="productIf" items="${products.items}">
             <kk:retrieveKKProductDocument productId="${productIf.id}" var="product"/>
 
-            <kk:addToBasketActionURL product="${product}" var="productUrl"/>
+            <c:if test="${not empty product}">
+                <kk:addToBasketActionURL product="${product}" var="productUrl"/>
+            </c:if>
             <form id="productForm" action="${productUrl}" class="form-inline" method="post">
                 <input type="hidden" id="addToWishList" name="addToWishList" value=""/>
                 <input type="hidden" id="addToCompare" name="addToCompare" value=""/>
@@ -61,7 +63,7 @@
 
                     <div class="span6">
                         <a href="${prdLink}"><h5>${productIf.name}</h5></a>
-                        <kk:rating product="${product}" var="rating"/>
+                        <kk:rating productId="${product.productId}" ratingVar="rating" nbReviewsVar="nbReviews"/>
                         <fmt:formatNumber value="${rating * 10}" var="ratingStyle" pattern="#0"/>
                         <p class="rating stars-${ratingStyle}">
                             <a href="#">

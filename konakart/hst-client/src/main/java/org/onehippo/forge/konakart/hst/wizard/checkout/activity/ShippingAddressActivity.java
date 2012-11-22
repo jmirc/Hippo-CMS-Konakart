@@ -24,7 +24,7 @@ public class ShippingAddressActivity extends BaseAddressActivity {
 
 
         if (seedData.getAction().equals(KKActionsConstants.ACTIONS.SELECT.name())) {
-            Integer addressId = Integer.valueOf(KKUtil.getEscapedParameter(seedData.getRequest(), KKRegisterFormUtils.ADDRESS));
+            Integer addressId = Integer.valueOf(KKUtil.getActionRequestParameter(seedData.getRequest(), KKRegisterFormUtils.ADDRESS));
 
             // Ask for a new address
             if (addressId == -1) {

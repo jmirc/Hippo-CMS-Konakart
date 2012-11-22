@@ -63,7 +63,7 @@ public class PaymentMethodActivity extends BaseCheckoutActivity {
         CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
         if (seedData.getAction().equals(KKActionsConstants.ACTIONS.SELECT.name())) {
-            String paymentMethod = KKUtil.getEscapedParameter(seedData.getRequest(), PAYMENT_METHOD);
+            String paymentMethod = KKUtil.getActionRequestParameter(seedData.getRequest(), PAYMENT_METHOD);
 
             if (StringUtils.isEmpty(paymentMethod)) {
                 updateNextLoggedState(KKActionsConstants.STATES.PAYMENT_METHOD.name());

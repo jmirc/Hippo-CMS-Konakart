@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" xmlns:h="http://www.onehippo.org/jcr/xmlimport" sv:name="konakart:konakart" h:merge="combine">
   <sv:node sv:name="konakart:producttypenamespaces" h:merge="combine">
-    <sv:property sv:name="konakart:giftcertificate" sv:type="String" h:merge="override">
-      <sv:value/>
-    </sv:property>
     <sv:property sv:name="konakart:digitaldownload" sv:type="String">
-      <sv:value/>
+      <sv:value>konakart:konakartproduct</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:giftcertificate" sv:type="String" h:merge="override">
+      <sv:value>konakart:konakartproduct</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:physicalproductfreeshipping" sv:type="String">
-      <sv:value/>
+      <sv:value>konakart:konakartproduct</sv:value>
     </sv:property>
     <sv:property sv:name="konakart:bookableproduct" sv:type="String">
-      <sv:value/>
+      <sv:value>konakart:konakartproduct</sv:value>
     </sv:property>
   </sv:node>
 </sv:node>

@@ -15,5 +15,5 @@ $(document).ready(function () {
     // binds form submission and fields to the validation engine
     $("#loginFormID").validate(extra);
     $("#registerFormID").validate(extra);
-    $("#dateofbirth").datepicker();
+    jQuery("#dateofbirth").datepicker();
 });

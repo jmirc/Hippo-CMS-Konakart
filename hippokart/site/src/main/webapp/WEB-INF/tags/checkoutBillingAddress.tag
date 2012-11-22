@@ -33,9 +33,6 @@
         </p>
     </c:if>
 
-    <div id="new-address-form">
-        <tag:checkoutAddress/>
-    </div>
 
     <c:if test="${fn:length(addresses) == 0}">
         <br/>

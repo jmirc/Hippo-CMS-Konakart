@@ -16,37 +16,52 @@
             ${form.message['globalmessage']}
     </div>
 </c:if>
-
 <form action="${shippingMethod}" method="post">
+
+    <c:if test="${fn:length(shippingQuotes) == 0}">
+        <div class="control-group">
+            <div class="controls">
+                <label class="radio inline" for="input01">
+                    <input type="radio" name="shipMethod" class="input-mini" id="input01" value="dummy"
+                           checked="checked"/>
+                    Free shipping
+                </label>
+            </div>
+        </div>
+        <br/>
+    </c:if>
+
     <c:forEach items="${shippingQuotes}" var="quote">
         <fieldset>
             <legend>${quote.title}</legend>
-            <c:choose>
-                <c:when test="${quote.free}">
-                    Free shipping
-                    <input type="hidden" name="shipping" value="dummy"/>
-                </c:when>
-                <c:otherwise>
-                    <div class="control-group">
-                        <div class="controls">
-                            <label class="radio inline" for="input01">
+            <div class="control-group">
+                <div class="controls">
+                    <label class="radio inline" for="input01">
+                        <c:choose>
+                            <c:when test="${quote.free}">
+                                <input type="radio" name="shipMethod" class="input-mini" id="input01" value="dummy"
+                                       checked="checked"/>
+                                Free shipping
+                            </c:when>
+                            <c:otherwise>
                                 <input type="radio" name="shipMethod" class="input-mini" id="input01"
                                        value="${quote.code}"
                                        <c:if test="${shipMethod == quote.code}">checked="checked"</c:if>
                                        <c:if test="${fn:length(shippingQuotes) == 1}">checked="checked"</c:if>
-                                 >
-                                 <b>${quote.responseText} -
+                                        >
+                                <b>${quote.responseText} -
                                     <c:choose>
-                                        <c:when test="${displayPriceWithTax}"><kk:formatPrice price="${quote.totalIncTax}"/> </c:when>
-                                        <c:when test="${!displayPriceWithTax}"><kk:formatPrice price="${quote.totalExTax}"/></c:when>
+                                        <c:when test="${displayPriceWithTax}"><kk:formatPrice
+                                                price="${quote.totalIncTax}"/> </c:when>
+                                        <c:when test="${!displayPriceWithTax}"><kk:formatPrice
+                                                price="${quote.totalExTax}"/></c:when>
                                     </c:choose>
-                                    </b>
-                            </label>
-                        </div>
-                    </div>
-
-                </c:otherwise>
-            </c:choose>
+                                </b>
+                            </c:otherwise>
+                        </c:choose>
+                    </label>
+                </div>
+            </div>
         </fieldset>
         <br/>
     </c:forEach>

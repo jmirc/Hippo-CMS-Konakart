@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/jspf/htmlTags.jspf" %>
 <%--@elvariable id="headTitle" type="java.lang.String"--%>
-<%--@elvariable id="product" type="org.onehippo.forge.konakart.hst.beans.KKProductDocument"--%>
+<%--@elvariable id="product" type="com.konakart.app.Product"--%>
 
 <hst:headContribution category="scripts">
     <hst:link var="carouselJs" path="/libs/bootstrap/js/caroussel.js"/>
@@ -62,20 +62,22 @@
     <h4>New products</h4><br/>
     <ul class="thumbnails">
         <c:forEach var="product" items="${products.items}">
-            <hst:link var="prdImgLink" hippobean="${product.mainImage.original}"/>
-            <hst:link var="prdlink" hippobean="${product}"/>
-            <hst:cmseditlink hippobean="${product}"/>
+            <kk:retrieveKKProductDocument productId="${product.id}" var="kkDocument"/>
+
+            <hst:link var="prdImgLink" hippobean="${kkDocument.mainImage.original}"/>
+            <hst:link var="prdlink" hippobean="${kkDocument}"/>
+            <hst:cmseditlink hippobean="${kkDocument}"/>
             <li class="span2">
                 <div class="thumbnail">
                     <a href="${prdlink}"><img alt="product.mainImage.original.name" width="150" src="${prdImgLink}"/></a>
 
                     <div class="caption">
-                        <a href="${prdlink}"><h5>${product.productIf.name}</h5></a> Price:
-                        <c:if test="${not empty product.specialPrice}"><s></c:if>
-                        <kk:formatPrice price="${product.productIf.price0}"/>
-                        <c:if test="${not empty product.specialPrice}"></s></c:if>
-                        <c:if test="${not empty product.specialPrice}">&nbsp;|&nbsp;
-                            <kk:formatPrice price="${product.specialPrice}"/>
+                        <a href="${prdlink}"><h5>${product.name}</h5></a> Price:
+                        <c:if test="${not empty kkDocument.specialPrice}"><s></c:if>
+                        <kk:formatPrice price="${product.price0}"/>
+                        <c:if test="${not empty kkDocument.specialPrice}"></s></c:if>
+                        <c:if test="${not empty kkDocument.specialPrice}">&nbsp;|&nbsp;
+                            <kk:formatPrice price="${kkDocument.specialPrice}"/>
                         </c:if>
                     </div>
                 </div>

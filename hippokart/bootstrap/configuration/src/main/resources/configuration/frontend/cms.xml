@@ -11,7 +11,6 @@
     <sv:node sv:name="KonakartSynchronizationService" h:merge="combine">
       <sv:property sv:name="stores" sv:type="String" h:merge="override" sv:multiple="true">
         <sv:value>store1</sv:value>
-        <sv:value>store2</sv:value>
       </sv:property>
     </sv:node>
   </sv:node>

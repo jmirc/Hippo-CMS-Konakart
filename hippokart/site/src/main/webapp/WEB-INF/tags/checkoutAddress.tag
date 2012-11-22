@@ -64,7 +64,7 @@
 
         <div class="controls">
             <input type="text" class="input-small highlight required" id="dateofbirth" name="dateofbirth" id="input031"
-                   value="${form.value['dateofbirth'].value}" readonly data-date-format="yyyy/mm/dd">
+                   value="${form.value['dateofbirth'].value}" data-date-format="yyyy/mm/dd">
             <span class="help-inline">${form.message['dateofbirth']}</span>
         </div>
     </div>
