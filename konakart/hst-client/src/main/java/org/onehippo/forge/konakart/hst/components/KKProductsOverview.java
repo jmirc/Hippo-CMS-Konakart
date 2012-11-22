@@ -2,6 +2,7 @@ package org.onehippo.forge.konakart.hst.components;
 
 import com.konakart.app.KKException;
 import com.konakart.appif.ProductIf;
+import org.apache.commons.lang.StringUtils;
 import org.hippoecm.hst.core.component.HstComponentException;
 import org.hippoecm.hst.core.component.HstRequest;
 import org.hippoecm.hst.core.component.HstResponse;
@@ -41,7 +42,7 @@ public class KKProductsOverview extends KKHstActionComponent {
         // Retrieve the current page
         String currentPageParam = request.getParameter(PARAM_CURRENT_PAGE);
 
-        if (org.apache.cxf.common.util.StringUtils.isEmpty(currentPageParam)) {
+        if (StringUtils.isEmpty(currentPageParam)) {
             currentPageParam = getPublicRequestParameter(request, PARAM_CURRENT_PAGE);
         }
 

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.onehippo.forge.konakart</groupId>
+  <artifactId>hippo-addon-konakart-dependencies</artifactId>
+  <version>1.00.04-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20121121.150620</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20121121150620</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>jar</extension>
+        <value>1.00.04-20121121.150620-1</value>
+        <updated>20121121150620</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>1.00.04-20121121.150620-1</value>
+        <updated>20121121150620</updated>
+      </snapshotVersion>
+      <snapshotVersion>
+        <classifier>sources</classifier>
+        <extension>jar</extension>
+        <value>1.00.04-20121121.150620-1</value>
+        <updated>20121121150620</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

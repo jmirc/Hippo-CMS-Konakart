@@ -49,7 +49,7 @@ public class ManufacturerProvider extends Plugin implements IValueListProvider {
         ValueList valueList = new ValueList();
 
         try {
-            if (KKAdminEngine.getInstance() == null) {
+            if (!KKAdminEngine.isInitialized()) {
                 UserSession userSession = (UserSession) Session.get();
                 javax.jcr.Session jcrSession = userSession.getJcrSession();
                 KKAdminEngine.init(jcrSession);
