@@ -398,37 +398,6 @@
             <version>${konakart.version}</version>
         </dependency>
 
-        <!-- enterprise version dependencies -->
-        <dependency>
-            <groupId>com.konakart.enterprise</groupId>
-            <artifactId>konakart</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.enterprise</groupId>
-            <artifactId>multistore</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.enterprise</groupId>
-            <artifactId>solr</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.enterprise</groupId>
-            <artifactId>konakartadmin</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.enterprise</groupId>
-            <artifactId>multistoreadmin</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
         <!-- database depedencies -->
         <dependency>
             <groupId>com.konakart.torque</groupId>
