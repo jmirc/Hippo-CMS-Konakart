@@ -79,7 +79,7 @@ the parent version to 7.7.1 then the property definitions below can be removed -
         <filesync.override>false</filesync.override>
         <maven.plugins.filesync.version>1.0.0</maven.plugins.filesync.version>
 
-        <hippo-konakart.version>1.00.04-SNAPSHOT</hippo-konakart.version>
+        <hippo-konakart.version>1.00.04</hippo-konakart.version>
     </properties>
 
     <repositories>

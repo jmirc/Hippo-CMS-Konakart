@@ -7,6 +7,7 @@
 /konakart/repository/target
 /konakart/replication/target
 /konakart/plugins/target
+/hippokart/scripts/target
 /konakart/.idea
 /konakart/cms/.idea
 .idea
