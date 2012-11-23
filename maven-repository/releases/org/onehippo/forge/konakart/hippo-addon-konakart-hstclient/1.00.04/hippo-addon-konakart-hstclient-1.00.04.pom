@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.onehippo.forge.konakart</groupId>
+        <artifactId>konakart</artifactId>
+        <version>1.00.04</version>
+    </parent>
+
+    <name>Hippo Konakart Addon HST</name>
+    <groupId>org.onehippo.forge.konakart</groupId>
+    <artifactId>hippo-addon-konakart-hstclient</artifactId>
+    <packaging>jar</packaging>
+
+    <properties>
+        <lib.slf4j.version>1.6.4</lib.slf4j.version>
+        <lib.log4j.version>1.2.16</lib.log4j.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet.jsp</groupId>
+            <artifactId>jsp-api</artifactId>
+            <version>2.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.forge.konakart</groupId>
+            <artifactId>hippo-addon-konakart-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.cms7.hst.dependencies</groupId>
+            <artifactId>hst-server-dependencies</artifactId>
+            <version>${hippo.hst.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.geronimo.specs</groupId>
+            <artifactId>geronimo-annotation_1.1_spec</artifactId>
+            <version>1.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.forge.utilities</groupId>
+            <artifactId>hippo-utilities-hst</artifactId>
+            <version>${forge.utilities.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.cms7.hst.components</groupId>
+            <artifactId>hst-jaxrs</artifactId>
+            <version>${hippo.hst.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.cms7.hst.dependencies</groupId>
+            <artifactId>hst-spring-dependencies</artifactId>
+            <version>${hippo.hst.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.cms7.hst.dependencies</groupId>
+            <artifactId>hst-client-dependencies</artifactId>
+            <version>${hippo.hst.version}</version>
+            <type>pom</type>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.cms7.hst</groupId>
+            <artifactId>hst-api</artifactId>
+            <version>${hippo.hst.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.cms7.hst.components</groupId>
+            <artifactId>hst-core</artifactId>
+            <version>${hippo.hst.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.cms7</groupId>
+            <artifactId>hippo-repository-builtin</artifactId>
+            <version>${hippo.repository.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.cms7.hst</groupId>
+            <artifactId>hst-commons</artifactId>
+            <version>${hippo.hst.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!--
+          The HST Spring Security Support requires Spring Framework Libraries.
+          You can declare the Spring Framework dependencies by yourself.
+          One of the simplest way is to use hst-spring-dependencies pom dependency for convenience.
+        -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.onehippo.forge.hst-springsec</groupId>
+            <artifactId>hst-springsec</artifactId>
+            <version>${hst-springsec.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+            <version>${lib.slf4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${lib.log4j.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/java</directory>
+                <includes>
+                    <include>**/*.html</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**/*.tld</include>
+                    <include>**/*.conf</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
+</project>

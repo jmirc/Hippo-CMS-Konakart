@@ -3,13 +3,14 @@
   <groupId>org.onehippo.forge.konakart</groupId>
   <artifactId>hippo-addon-konakart-repository</artifactId>
   <versioning>
-    <release>1.00.03</release>
+    <release>1.00.04</release>
     <versions>
       <version>1.00.00</version>
       <version>1.00.01</version>
       <version>1.00.02</version>
       <version>1.00.03</version>
+      <version>1.00.04</version>
     </versions>
-    <lastUpdated>20121121150553</lastUpdated>
+    <lastUpdated>20121123012309</lastUpdated>
   </versioning>
 </metadata>
