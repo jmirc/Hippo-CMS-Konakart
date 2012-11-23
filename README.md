@@ -49,17 +49,17 @@ The following steps need to be executed:
        	  <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-cms</artifactId>
-            <version>1.00.02</version>
+            <version>1.00.03</version>
           </dependency>
           <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-repository</artifactId>
-            <version>1.00.02</version>
+            <version>1.00.03</version>
           </dependency>
           <dependency>
             <groupId>org.onehippo.forge.konakart</groupId>
             <artifactId>hippo-addon-konakart-hstclient</artifactId>
-            <version>1.00.02</version>
+            <version>1.00.03</version>
           </dependency>          
           <dependency>
               <groupId>mysql</groupId>
