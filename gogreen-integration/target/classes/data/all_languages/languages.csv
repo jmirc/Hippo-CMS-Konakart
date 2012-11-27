@@ -1,0 +1,9 @@
+name,code,image,directory,sort_order,locale,display_only,storeId,setAsdefault
+English,en,icon.gif,english,1,en_US,false,store1,true
+Français,fr,icon.gif,français,2,fr_FR,false,store1,false
+Dutch,nl,icon.gif,dutch,3,nl_NL,false,store1,false
+Italian,it,icon.gif,italian,4,it_IT,false,store1,false
+Chinese,zh,icon.gif,chinese,5,cn_ZH,false,store1,false
+Spanish,es,icon.gif,spanish,6,es_ES,false,store1,false
+Russian,ru,icon.gif,russian,7,ru_RU,false,store1,false
+German,de,icon.gif,german,8,de_DE,false,store1,false
