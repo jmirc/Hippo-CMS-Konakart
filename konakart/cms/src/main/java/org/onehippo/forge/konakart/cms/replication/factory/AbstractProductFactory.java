@@ -109,12 +109,11 @@ public abstract class AbstractProductFactory implements ProductFactory {
         // Create or retrieve the root folder
         Node rootFolder;
 
-        if (session.getRootNode().hasNode(StringUtils.removeStart(absPath, "/"))) {
-            rootFolder = session.getNode(absPath);
-        } else {
-            absPath = contentRoot + Codecs.encodeNode(productFolder) + "/" + "/" + createProductNodeRoot(product);
-
+        // Does not exist - create it.
+        if (!session.getRootNode().hasNode(StringUtils.removeStart(absPath, "/"))) {
             rootFolder = nodeHelper.createMissingFolders(absPath);
+        } else {
+            rootFolder = session.getNode(absPath);
         }
 
         // Create or retrieve the product node
@@ -165,10 +164,12 @@ public abstract class AbstractProductFactory implements ProductFactory {
     /**
      * Create a unique page where the product will be created.
      *
+     * It will create also the SEO URL of the product
+     *
      * @param product a product
      * @return a unique path where the product will be created
      */
-    private String createProductNodeRoot(Product product) {
+    protected String createProductNodeRoot(Product product) {
 
         // Get the manufacturer name
         String absPath = Codecs.encodeNode(product.getManufacturerName());
@@ -188,7 +189,6 @@ public abstract class AbstractProductFactory implements ProductFactory {
      * @throws javax.jcr.RepositoryException if any exception occurs
      */
     private void createOrUpdateKonakartProduct(Product product, Node productNode) throws RepositoryException {
-
         productNode.setProperty(KKCndConstants.PRODUCT_ID, product.getId());
     }
 

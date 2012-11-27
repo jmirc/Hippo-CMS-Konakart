@@ -24,5 +24,4 @@ public class Search extends BaseComponent {
 
        createAndExecuteSearch(request, info, scope, query);
     }
-
 }

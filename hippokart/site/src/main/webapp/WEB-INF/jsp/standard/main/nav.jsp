@@ -22,7 +22,7 @@
                     <ul class="nav pull-right">
                         <li class="divider-vertical"></li>
                         <hst:link var="link" path="/search"/>
-                        <form class="navbar-search" action="${link}" method="post">
+                        <form class="navbar-search" action="${link}" method="get">
                             <input type="text" class="search-query span2" placeholder="Search">
                             <button class="btn btn-primary btn-small search_btn" type="submit">Go</button>
                         </form>

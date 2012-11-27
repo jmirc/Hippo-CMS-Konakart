@@ -187,7 +187,9 @@
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="1">
-                    <p>${product.productIf.description}</p>
+                    <c:set var="description" value="${fn:substringAfter(product.productIf.description, '-------')}"/>
+
+                    <p>${description}</p>
                 </div>
                 <div class="tab-pane" id="2">
                     <c:choose>

@@ -3,6 +3,9 @@
   <sv:property sv:name="konakart:galleryroot" sv:type="String" h:merge="override">
     <sv:value>/content/gallery/hippokart</sv:value>
   </sv:property>
+  <sv:property sv:name="konakart:locale" sv:type="String">
+    <sv:value>en_US</sv:value>
+  </sv:property>
   <sv:property sv:name="konakart:contentroot" sv:type="String" h:merge="override">
     <sv:value>/content/documents/hippokart</sv:value>
   </sv:property>

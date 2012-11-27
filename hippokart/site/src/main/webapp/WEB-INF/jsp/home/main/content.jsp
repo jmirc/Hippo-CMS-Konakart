@@ -20,35 +20,52 @@
     <div id="myCarousel" class="carousel slide">
         <div class="carousel-inner">
             <div class="item active">
-                <img src="<hst:link path="/css/images/carousel_1.jpg"/>" alt="">
+                <img src="<hst:link path="/images/magna-plaza-shopping.png"/>" alt="">
 
                 <div class="carousel-caption">
-                    <h4>First Thumbnail label</h4>
+                    <h4>New Record: World's Largest Wind Turbine</h4>
 
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida
-                        at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                    <p><br/>&nbsp;</p>
                 </div>
 
             </div>
             <div class="item">
-                <img src="<hst:link path="/css/images/carousel_2.jpg"/>" alt="">
+                <img src="<hst:link path="/images/organic-lunch-bag-prints.png"/>" alt="">
 
                 <div class="carousel-caption">
-                    <h4>Second Thumbnail label</h4>
+                    <h4>Solar power: the sky is the limit</h4>
 
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida
-                        at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                    <p><br/>&nbsp;</p>
                 </div>
             </div>
 
             <div class="item">
-                <img src="<hst:link path="/css/images/carousel_3.jpg"/>" alt="">
+                <img src="<hst:link path="/images/solar-panels.png"/>" alt="">
 
                 <div class="carousel-caption">
-                    <h4>Third Thumbnail label</h4>
+                    <h4>European Retailers Adopt Voluntary <br/> Sustainable Business Code</h4>
 
-                    <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida
-                        at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+                    <p>&nbsp;</p>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="<hst:link path="/images/wind-turbines.png"/>" alt="">
+
+                <div class="carousel-caption">
+                    <h4>Organic Cotton Reusable Lunch Bag</h4>
+
+                    <p><br/>&nbsp;</p>
+                </div>
+            </div>
+
+            <div class="item">
+                <img src="<hst:link path="/images/gree-home-and-living-show.png"/>" alt="">
+
+                <div class="carousel-caption">
+                    <h4>Rhode Island Green Home and Living Show</h4>
+
+                    <p><br/>&nbsp;</p>
                 </div>
             </div>
         </div>
@@ -69,7 +86,7 @@
             <hst:cmseditlink hippobean="${kkDocument}"/>
             <li class="span2">
                 <div class="thumbnail">
-                    <a href="${prdlink}"><img alt="product.mainImage.original.name" width="150" src="${prdImgLink}"/></a>
+                    <a href="${prdlink}"><img alt="${kkDocument.mainImage.original.name}" width="150" src="${prdImgLink}"/></a>
 
                     <div class="caption">
                         <a href="${prdlink}"><h5>${product.name}</h5></a> Price:
@@ -100,8 +117,8 @@
         </form>
     </div>
     <br/><br/>
-    <a href="#"><img alt="" title="" src="css/images/paypal_mc_visa_amex_disc_150x139.gif"/></a>
-    <a href="#"><img alt="" src="css/images/bnr_nowAccepting_150x60.gif"/></a>
+    <a href="#"><img alt="" title="" src="<hst:link path="/images/paypal_mc_visa_amex_disc_150x139.gif"/>"/></a>
+    <a href="#"><img alt="" src="<hst:link path="/images/bnr_nowAccepting_150x60.gif"/>"/></a>
 
 </div>
 

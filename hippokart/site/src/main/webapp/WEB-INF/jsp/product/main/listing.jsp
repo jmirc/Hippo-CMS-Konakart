@@ -2,6 +2,7 @@
 <%--@elvariable id="category" type="com.konakart.appif.CategoryIf"--%>
 <%--@elvariable id="products" type="org.onehippo.forge.utilities.hst.paging.IterablePagination"--%>
 <%--@elvariable id="product" type="org.onehippo.forge.konakart.hst.beans.KKProductDocument"--%>
+<%--@elvariable id="productIf" type="com.konakart.appif.ProductIf"--%>
 
 
 <hst:headContribution category="scripts">
@@ -69,6 +70,11 @@
                             <a href="#">
                                 <span style="margin-left: 100px;">&nbsp;</span>
                             </a>
+                        </p>
+                        <p>
+                            <c:set var="summary" value="${fn:substringBefore(productIf.description, '-------')}"/>
+
+                            ${summary}
                         </p>
                     </div>
 

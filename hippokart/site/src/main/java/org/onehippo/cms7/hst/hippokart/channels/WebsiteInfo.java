@@ -21,8 +21,8 @@ public interface WebsiteInfo extends ChannelInfo {
     String getHeaderName();
 
 
-    @Parameter(name = "cssTheme", defaultValue = "united")
-    @DropDownList({"united", "spacelab", "amelia"})
+    @Parameter(name = "cssTheme", defaultValue = "gogreen")
+    @DropDownList({"united", "spacelab", "amelia", "gogreen"})
     String getCssTheme();
 
 }

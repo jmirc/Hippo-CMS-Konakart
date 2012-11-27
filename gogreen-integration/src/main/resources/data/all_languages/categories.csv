@@ -1,0 +1,12 @@
+name_en,name_fr,name_nl,name_it,name_cn,name_es,name_ru,name_de,image,categories_invisible
+Default,Default,Default,Default,Default,Default,Default,Default,none.png,true
+Animals,Animals,Dier,Animale,食物,Animal,Животные,Animals,none.png,FALSE
+Animal & Garden,Animal et Jardin,Dier & Tuin,Animale & Jardin,食物,Animal y Jardín,Животные и сада,Animal & Garten,none.png,FALSE
+Architect,Architecture,Architect,Architetto,建筑师,Arquitecto,aрхитектор,Architekt,none.png,FALSE
+Clothing,Vêtements,Kleding,Abbigliamento,服装,Ropa,oдежда,Kleidung,none.png,FALSE
+Food,Alimentation,Voedsel,Cibo,食物,Alimento,питание,Lebensmittel,none.png,FALSE
+Gadgets,Gadgets,Gadgets,Gadget,小工具,Gadgets,Гаджеты,Gadgets,none.png,FALSE
+Health Care,Soins de santé,Gezondheidszorg,Assistenza sanitaria,保健,Cuidado de la salud,здравоохранение,Gesundheitspflege,none.png,FALSE
+Print,Impression,Afdrukken,Stampa,印刷,Imprimir,печать,Drucken,none.png,FALSE
+Solar,Solaire,Zonne,Solare,太阳能,Solar,солнечный,Solar,none.png,FALSE
+Transport,Transport,Transport,Trasporto,运输,Transportes,Транспорт,Transport,none.png,FALSE

@@ -11,6 +11,9 @@
     <hst:link var="bootstrapcss" path="/libs/bootstrap/css/bootstrap.css"/>
     <link rel="stylesheet" href="${bootstrapcss}" type="text/css"/>
 
+    <hst:link var="gogreencss" path="/css/green.css"/>
+    <link rel="stylesheet" href="${gogreencss}" type="text/css"/>
+
     <hst:headContributions categoryIncludes="css" xhtml="true"/>
 
 

@@ -67,11 +67,11 @@ public class KKProductServiceImpl extends KKBaseServiceImpl implements KKProduct
         dataDescriptorIf.setOrderBy(orderBy);
 
         try {
-            ProductsIf productsIf = kkAppEng.getEng().getProductsPerCategoryPerManufacturerWithOptions(kkAppEng.getSessionId(), 
-                                                                                                       dataDescriptorIf, 
+            ProductsIf productsIf = kkAppEng.getEng().getProductsPerCategoryPerManufacturerWithOptions(kkAppEng.getSessionId(),
+                                                                                                       dataDescriptorIf,
                                                                                                        categoryId,
-                                                                                                       manufacturerId, 
-                                                                                                       kkAppEng.getLangId(), 
+                                                                                                       manufacturerId,
+                                                                                                       kkAppEng.getLangId(),
                                                                                                        kkAppEng.getFetchProdOptions());
             return productsIf.getProductArray();
         } catch (KKException e) {

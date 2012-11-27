@@ -1,0 +1,43 @@
+/**
+ * Copyright (C) 2011 Hippo B.V.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/* General */
+a { color: #007aa6; }
+
+/* Document */
+body { background: #e9e5c1 url(../images/bg-body.png) repeat-x; }
+
+/* Header */
+#hd { background: url(../images/bg-header.png) no-repeat; }
+
+/* Body - General - Right */
+#bd .box-right li.subtitle { color: #007aa6; }
+
+/* Body - General - Pagenav */
+#bd #content #page-nav li.prev a:hover, #bd #content #page-nav li.next a:hover { color: #007aa6; }
+
+/* Body - General - Box */
+#bd .box-general li.subtitle { color: #007aa6; }
+#bd #content .box-bottom li.subtitle { color: #007aa6; }
+
+/* Body - Events - Overview */
+#bd #events #calendar .box .info .date-title { color: #007aa6; }
+#bd #events #calendar .box .info .event-title a { color: #007aa6; }
+
+/* Body - Home */
+#bd #home-news #top-item .next-teaser a { color: #007aa6; }
+
+#bd .display-feeds .more { color: #007aa6; }
