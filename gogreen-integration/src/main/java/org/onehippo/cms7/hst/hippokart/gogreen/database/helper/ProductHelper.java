@@ -55,6 +55,7 @@ public class ProductHelper {
 
         // Set mandatory fields
         adminProduct.setType(0);
+        adminProduct.setQuantity(100);
         adminProduct.setTaxClassId(defaultTaxClassId);
         adminProduct.setWeight(new BigDecimal(0));
         adminProduct.setStatus((byte) 1);

@@ -2,6 +2,10 @@ package org.onehippo.cms7.hst.hippokart.gogreen.database;
 
 import com.konakart.bl.KKCriteria;
 import com.konakart.om.*;
+import com.konakartadmin.app.AdminLanguage;
+import com.konakartadmin.bl.AdminMgrFactory;
+import com.konakartadmin.blif.AdminLanguageMgrIf;
+import org.apache.commons.lang.StringUtils;
 import org.apache.torque.util.BasePeer;
 import org.apache.torque.util.Transaction;
 
@@ -14,7 +18,7 @@ public class CleanDatabase {
 
 
 
-    public static void execute() throws Exception {
+    public static void execute(AdminMgrFactory adminMgrFactory) throws Exception {
 
         // Delete products
         deleteAllProducts();
@@ -34,23 +38,8 @@ public class CleanDatabase {
         // Delete all Tags Groups
         deleteAllTagsGroups();
 
-        // Delete language
-        deleteAllLanguages();
-
-        // Delete tax rates
-        deleteAllTaxRates();
-
-        // Delete all tax classes
-        deleteAllTaxClasses();
-
-        // Delete all tax area mapping classes
-        deleteAllTaxAreMapping();
-
-        // Delete all tax areas classes
-        deleteAllTaxAreas();
-
-        // Delete all currencies
-        deleteAllCurrencies();
+        // Update language
+        deleteLanguages(adminMgrFactory);
     }
 
 
@@ -215,156 +204,16 @@ public class CleanDatabase {
         }
     }
 
-    public static void deleteAllLanguages() throws Exception {
+    public static void deleteLanguages(AdminMgrFactory adminMgrFactory) throws Exception {
+        AdminLanguageMgrIf languageMgr = adminMgrFactory.getAdminLanguageMgr(false);
 
-        KKCriteria kkCriteria = new KKCriteria();
-        Connection connection = Transaction.begin(kkCriteria.getDbName());
-        try {
-            BasePeer.doDelete(kkCriteria, BaseLanguagesPeer.TABLE_NAME);
+        AdminLanguage[] languages = languageMgr.getAllLanguages();
 
-            Transaction.commit(connection);
-
-            System.out.println("All languages have been deleted.");
-
-        } catch (Exception e) {
-            System.out.println("Problem deleting languages : " + e.getMessage());
-            Transaction.safeRollback(connection);
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch(Exception ex) {
-                    System.out.println("Problem closing the connection : " + ex.getMessage());
-                }
+        for (AdminLanguage language : languages) {
+            if (!StringUtils.equalsIgnoreCase("en", language.getCode())) {
+                languageMgr.deleteLanguage(language.getId());
+                System.out.println(language.getCode() + " language has been deleted.");
             }
         }
     }
-
-    public static void deleteAllTaxRates() throws Exception {
-
-        KKCriteria kkCriteria = new KKCriteria();
-        Connection connection = Transaction.begin(kkCriteria.getDbName());
-        try {
-            BasePeer.doDelete(kkCriteria, BaseTaxRatesPeer.TABLE_NAME);
-
-            Transaction.commit(connection);
-
-            System.out.println("All tax rates have been deleted.");
-
-        } catch (Exception e) {
-            System.out.println("Problem deleting tax rate : " + e.getMessage());
-            Transaction.safeRollback(connection);
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch(Exception ex) {
-                    System.out.println("Problem closing the connection : " + ex.getMessage());
-                }
-            }
-        }
-    }
-
-    public static void deleteAllTaxClasses() throws Exception {
-
-        KKCriteria kkCriteria = new KKCriteria();
-        Connection connection = Transaction.begin(kkCriteria.getDbName());
-        try {
-            BasePeer.doDelete(kkCriteria, BaseTaxClassPeer.TABLE_NAME);
-
-            Transaction.commit(connection);
-
-            System.out.println("All tax classes have been deleted.");
-
-        } catch (Exception e) {
-            System.out.println("Problem deleting tax classes : " + e.getMessage());
-            Transaction.safeRollback(connection);
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch(Exception ex) {
-                    System.out.println("Problem closing the connection : " + ex.getMessage());
-                }
-            }
-        }
-
-    }
-
-    public static void deleteAllTaxAreMapping() throws Exception {
-
-        KKCriteria kkCriteria = new KKCriteria();
-        Connection connection = Transaction.begin(kkCriteria.getDbName());
-        try {
-            BasePeer.doDelete(kkCriteria, BaseZonesToGeoZonesPeer.TABLE_NAME);
-
-            Transaction.commit(connection);
-
-            System.out.println("All tax area mapping have been deleted.");
-
-        } catch (Exception e) {
-            System.out.println("Problem deleting tax area mapping : " + e.getMessage());
-            Transaction.safeRollback(connection);
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch(Exception ex) {
-                    System.out.println("Problem closing the connection : " + ex.getMessage());
-                }
-            }
-        }
-    }
-
-    public static void deleteAllTaxAreas() throws Exception {
-
-        KKCriteria kkCriteria = new KKCriteria();
-        Connection connection = Transaction.begin(kkCriteria.getDbName());
-        try {
-            BasePeer.doDelete(kkCriteria, BaseGeoZonesPeer.TABLE_NAME);
-
-            Transaction.commit(connection);
-
-            System.out.println("All tax areas mapping have been deleted.");
-
-        } catch (Exception e) {
-            System.out.println("Problem deleting tax areas mapping : " + e.getMessage());
-            Transaction.safeRollback(connection);
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch(Exception ex) {
-                    System.out.println("Problem closing the connection : " + ex.getMessage());
-                }
-            }
-        }
-
-    }
-
-    public static void deleteAllCurrencies() throws Exception {
-
-        KKCriteria kkCriteria = new KKCriteria();
-        Connection connection = Transaction.begin(kkCriteria.getDbName());
-        try {
-            BasePeer.doDelete(kkCriteria, BaseCurrenciesPeer.TABLE_NAME);
-
-            Transaction.commit(connection);
-
-            System.out.println("All currencies have been deleted.");
-
-        } catch (Exception e) {
-            System.out.println("Problem deleting currencies : " + e.getMessage());
-            Transaction.safeRollback(connection);
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch(Exception ex) {
-                    System.out.println("Problem closing the connection : " + ex.getMessage());
-                }
-            }
-        }
-    }
-
 }

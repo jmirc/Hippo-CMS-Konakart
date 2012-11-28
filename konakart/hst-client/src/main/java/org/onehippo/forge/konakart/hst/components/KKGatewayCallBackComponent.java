@@ -78,9 +78,6 @@ public abstract class KKGatewayCallBackComponent extends KKHstActionComponent {
             connection.setRequestProperty("Referer", pd.getReferrer());
         }
 
-        // This one is deprecated but we still need to call it
-        customizeConnection(connection, pd, ccParmList);
-
         // This is the one that should be used from v5.5.0.0
         customizeConnection(connection, pd, ccParmList);
 

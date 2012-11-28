@@ -105,7 +105,7 @@ public class SynchronizeGoGreenData {
         AdminMgrFactory adminMgrFactory = createAdminMgrFactory(username, password, "store1", propertiesFile);
 
         // Clean database
-        CleanDatabase.execute();
+        CleanDatabase.execute(adminMgrFactory);
 
         // Load data
         InitializeDatabase.execute(adminMgrFactory);

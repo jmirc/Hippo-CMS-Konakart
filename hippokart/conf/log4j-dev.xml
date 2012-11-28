@@ -159,14 +159,14 @@
         <level value="fatal"/>
     </logger>
 
-    <!--<logger name="org.apache.torque.util.BasePeer" additivity="false">-->
-        <!--<level value="debug"/>-->
-        <!--<appender-ref ref="sql"/>-->
-    <!--</logger>-->
-    <!--<logger name="com.workingdogs.village"  additivity="false">-->
-        <!--<level value="debug"/>-->
-        <!--<appender-ref ref="sql"/>-->
-    <!--</logger>-->
+    <logger name="org.apache.torque.util.BasePeer" additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="sql"/>
+    </logger>
+    <logger name="com.workingdogs.village"  additivity="false">
+        <level value="debug"/>
+        <appender-ref ref="sql"/>
+    </logger>
 
     <!-- more info wanted -->
     <logger name="org.apache.jackrabbit.core.persistence.bundle">
