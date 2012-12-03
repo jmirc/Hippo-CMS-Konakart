@@ -40,6 +40,21 @@ The following steps need to be executed:
     <dependencyManagement>
      ...
      <dependency>
+     	<groupId>org.onehippo.forge.konakart</groupId>
+        <artifactId>hippo-addon-konakart-cms</artifactId>
+        <version>${hippo-konakart.version}</version>
+     </dependency>
+     <dependency>
+        <groupId>org.onehippo.forge.konakart</groupId>
+        <artifactId>hippo-addon-konakart-repository</artifactId>
+        <version>${hippo-konakart.version}</version>
+     </dependency>
+     <dependency>
+        <groupId>org.onehippo.forge.konakart</groupId>
+        <artifactId>hippo-addon-konakart-hstclient</artifactId>
+     	<version>${hippo-konakart.version}</version>
+     </dependency> 
+     <dependency>
          <groupId>mysql</groupId>
          <artifactId>mysql-connector-java</artifactId>
          <version>${mysql.version}</version>
@@ -50,21 +65,6 @@ The following steps need to be executed:
     <profile>
        <id>cargo.run</id>
        <dependencies>
-       	  <dependency>
-            <groupId>org.onehippo.forge.konakart</groupId>
-            <artifactId>hippo-addon-konakart-cms</artifactId>
-            <version>${hippo-konakart.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.onehippo.forge.konakart</groupId>
-            <artifactId>hippo-addon-konakart-repository</artifactId>
-            <version>${hippo-konakart.version}</version>
-          </dependency>
-          <dependency>
-            <groupId>org.onehippo.forge.konakart</groupId>
-            <artifactId>hippo-addon-konakart-hstclient</artifactId>
-            <version>${hippo-konakart.version}</version>
-          </dependency>          
           <dependency>
               <groupId>mysql</groupId>
               <artifactId>mysql-connector-java</artifactId>
