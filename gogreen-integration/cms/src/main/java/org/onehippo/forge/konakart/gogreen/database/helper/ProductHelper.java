@@ -90,6 +90,8 @@ public class ProductHelper {
 
     adminProduct.setPriceExTax(new BigDecimal(price));
 
+    // Set the reseller price
+    adminProduct.setPrice1(new BigDecimal(price * 0.9));
 
     AdminProductDescription[] descriptions = new AdminProductDescription[descriptionVos.size()];
 

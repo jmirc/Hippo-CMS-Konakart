@@ -113,10 +113,10 @@ public class GogreenKonakartSynchronizationService extends KonakartSynchronizati
           try {
             String primaryNodeTypeName = productSubFolder.getPrimaryNodeType().getName();
 
-//            if (StringUtils.equalsIgnoreCase(primaryNodeTypeName, "hippofacnav:facetnavigation")) {
-//              productSubFolder.remove();
-//            }
-//
+            if (StringUtils.equalsIgnoreCase(primaryNodeTypeName, "hippofacnav:facetnavigation")) {
+              productSubFolder.remove();
+            }
+
             if (StringUtils.equalsIgnoreCase(primaryNodeTypeName, "hippostd:folder")) {
               productSubFolder.remove();
             }
