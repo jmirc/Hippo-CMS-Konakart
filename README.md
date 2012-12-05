@@ -33,12 +33,31 @@ The following steps need to be executed:
 ### Global POM.XML
 * Add the following conf
 ```xml
+    <properties>
+      <mysql.version>5.1.18</mysql.version>
+      <hippo-konakart.version>1.00.04</hippo-konakart.version>
+    </properties>
     <dependencyManagement>
      ...
      <dependency>
+     	<groupId>org.onehippo.forge.konakart</groupId>
+        <artifactId>hippo-addon-konakart-cms</artifactId>
+        <version>${hippo-konakart.version}</version>
+     </dependency>
+     <dependency>
+        <groupId>org.onehippo.forge.konakart</groupId>
+        <artifactId>hippo-addon-konakart-repository</artifactId>
+        <version>${hippo-konakart.version}</version>
+     </dependency>
+     <dependency>
+        <groupId>org.onehippo.forge.konakart</groupId>
+        <artifactId>hippo-addon-konakart-hstclient</artifactId>
+     	<version>${hippo-konakart.version}</version>
+     </dependency> 
+     <dependency>
          <groupId>mysql</groupId>
          <artifactId>mysql-connector-java</artifactId>
-         <version>5.1.18</version>
+         <version>${mysql.version}</version>
      </dependency>
       ...
     </dependencyManagement>
@@ -46,25 +65,10 @@ The following steps need to be executed:
     <profile>
        <id>cargo.run</id>
        <dependencies>
-       	  <dependency>
-            <groupId>org.onehippo.forge.konakart</groupId>
-            <artifactId>hippo-addon-konakart-cms</artifactId>
-            <version>1.00.04</version>
-          </dependency>
-          <dependency>
-            <groupId>org.onehippo.forge.konakart</groupId>
-            <artifactId>hippo-addon-konakart-repository</artifactId>
-            <version>1.00.04</version>
-          </dependency>
-          <dependency>
-            <groupId>org.onehippo.forge.konakart</groupId>
-            <artifactId>hippo-addon-konakart-hstclient</artifactId>
-            <version>1.00.04</version>
-          </dependency>          
           <dependency>
               <groupId>mysql</groupId>
               <artifactId>mysql-connector-java</artifactId>
-              <version>5.1.18</version>
+              <version>${mysql.version}</version>
           </dependency>
        </dependencies>
        <build>
