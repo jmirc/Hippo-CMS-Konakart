@@ -8,33 +8,32 @@ import org.hippoecm.hst.core.component.HstResponse;
 
 public class KKActionsHelper {
 
-    /**
-     * Used to set a new currency. You need to create an action URL using the following format
-     *
-     *  <hst:actionURL var="currencyLink">
-     *      <hst:param name="action" value="SELECT_CURRENCY"/>
-     *      <hst:param name="currencyCode" value="${currency.code}"/>
-     *  </hst:actionURL>
-     *
-     *
-     * @param request the hst request
-     * @param hstResponse the hst response
-     */
-    public static void doAction(HstRequest request, HstResponse hstResponse) throws HstComponentException {
+  /**
+   * Used to set a new currency. You need to create an action URL using the following format
+   * <p/>
+   * <hst:actionURL var="currencyLink">
+   * <hst:param name="action" value="SELECT_CURRENCY"/>
+   * <hst:param name="currencyCode" value="${currency.code}"/>
+   * </hst:actionURL>
+   *
+   * @param request     the hst request
+   * @param hstResponse the hst response
+   */
+  public static void doAction(HstRequest request, HstResponse hstResponse) throws HstComponentException {
 
-        String action = KKUtil.getActionRequestParameter(request, KKActionsConstants.ACTION);
+    String action = KKUtil.getActionRequestParameter(request, KKActionsConstants.ACTION);
 
-        if (StringUtils.equals(action, KKActionsConstants.ACTIONS.SELECT_CURRENCY.name())) {
-            String code = KKUtil.getActionRequestParameter(request, KKActionsConstants.CURRENCY_CODE);
+    if (StringUtils.equals(action, KKActionsConstants.ACTIONS.SELECT_CURRENCY.name())) {
+      String code = KKUtil.getActionRequestParameter(request, KKActionsConstants.CURRENCY_CODE);
 
-            try {
-                KKComponentUtils.getKKAppEng(request).setUserCurrency(code);
-            } catch (KKException e) {
-                throw new HstComponentException("Unable to set the currency to " + code, e);
-            }
-
-        }
+      try {
+        KKComponentUtils.getKKAppEng(request).setUserCurrency(code);
+      } catch (KKException e) {
+        throw new HstComponentException("Unable to set the currency to " + code, e);
+      }
 
     }
+
+  }
 
 }

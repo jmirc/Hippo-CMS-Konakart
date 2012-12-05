@@ -19,153 +19,153 @@ import java.util.List;
 
 public class BillingAddressActivity extends BaseAddressActivity {
 
-    public static final String SHIPPING_ADDRESS = "shippingAddress";
-    public static final String SELECT_SAME_SHIPPING_ADDRESS = "same";
+  public static final String SHIPPING_ADDRESS = "shippingAddress";
+  public static final String SELECT_SAME_SHIPPING_ADDRESS = "same";
 
-    @Override
-    public void doAction() throws ActivityException {
-        super.doAction();
+  @Override
+  public void doAction() throws ActivityException {
+    super.doAction();
 
-        CheckoutProcessContext checkoutProcessContext = (CheckoutProcessContext) processorContext;
-        CheckoutSeedData seedData = checkoutProcessContext.getSeedData();
+    CheckoutProcessContext checkoutProcessContext = (CheckoutProcessContext) processorContext;
+    CheckoutSeedData seedData = checkoutProcessContext.getSeedData();
 
-        String action = seedData.getAction();
+    String action = seedData.getAction();
 
-        if (action.equals(KKActionsConstants.ACTIONS.SELECT.name())) {
+    if (action.equals(KKActionsConstants.ACTIONS.SELECT.name())) {
 
 
-            String sAddressId = KKUtil.getActionRequestParameter(seedData.getRequest(), KKRegisterFormUtils.ADDRESS);
-            String shippingAddress = KKUtil.getActionRequestParameter(seedData.getRequest(), SHIPPING_ADDRESS);
+      String sAddressId = KKUtil.getActionRequestParameter(seedData.getRequest(), KKRegisterFormUtils.ADDRESS);
+      String shippingAddress = KKUtil.getActionRequestParameter(seedData.getRequest(), SHIPPING_ADDRESS);
 
-            Integer addressId = -1;
+      Integer addressId = -1;
 
-            if (StringUtils.isNotEmpty(sAddressId)) {
-                addressId = Integer.parseInt(sAddressId);
-            }
+      if (StringUtils.isNotEmpty(sAddressId)) {
+        addressId = Integer.parseInt(sAddressId);
+      }
 
-            // User is already logged in - Create a new address
-            if (StringUtils.isNotEmpty(sAddressId) && (StringUtils.equals(sAddressId, "-1"))) {
-                try {
-                    addressId = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getCustomerMgr().
-                            addAddressToCustomer(registerFormUtils.createAddressForCustomer(formMap));
-                } catch (Exception e) {
-                    updateNextLoggedState(KKActionsConstants.STATES.INITIAL.name());
-                    addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.failed.create.address"));
-                    return;
-                }
-            } else if (StringUtils.isEmpty(sAddressId) && (isCheckoutAsGuest() || isCheckoutAsRegister())) { // User is not logged-in. User wants to checkout as guest.
-
-                CustomerRegistrationIf customerRegistration = registerFormUtils.createCustomerRegistration(formMap);
-
-                String username = formMap.getField(KKRegisterFormUtils.EMAIL).getValue();
-
-                // Generate a random password.
-                String password = String.valueOf(System.currentTimeMillis());
-
-                if (isCheckoutAsRegister()) {
-                    password = formMap.getField(KKRegisterFormUtils.PASSWORD).getValue();
-                }
-
-                // Set the password
-                customerRegistration.setPassword(password);
-
-                // Set the locale
-                customerRegistration.setLocale(hstRequest.getLocale().toString());
-
-                // Set additional informations
-                addAdditionalInformationToCustomerRegistration(customerRegistration);
-
-                try {
-                    // Register the customer as guest
-                    if (isCheckoutAsGuest()) {
-                        kkAppEng.getEng().forceRegisterCustomer(customerRegistration);
-                    } else { // Register the customer a real customer
-                        kkAppEng.getEng().registerCustomer(customerRegistration);
-                    }
-
-                    // Logged-in
-                    KKServiceHelper.getKKEngineService().logIn(hstRequest, hstResponse, username, password);
-                } catch (KKException e) {
-                    log.error("Failed to register a customer", e);
-                    addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.failed.register.customer"));
-                    return;
-                }
-            }
-
-            // At this stage, the customer has been logged-in.
-            // The checkout order can be created.
-            createCheckoutOrder();
-
-            // Set the billing address
-            KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().setCheckoutOrderBillingAddress(addressId);
-
-            if (shippingAddress.equals(SELECT_SAME_SHIPPING_ADDRESS)) {
-                try {
-                    KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().setCheckoutOrderShippingAddress(addressId);
-
-                    // Skip the SHIPPING ADDRESS step because the customer has decided to use the
-                    // same billing address
-                    hstResponse.setRenderParameter(KKActionsConstants.FORCE_NEXT_LOGGED_STATE, KKActionsConstants.STATES.SHIPPING_METHOD.name());
-                } catch (KKException e) {
-                    log.error("Failed to set the shipping address", e);
-                }
-            }
-
-            OrderIf checkoutOrder = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().getCheckoutOrder();
-
-            // Set the comment
-            OrderStatusHistoryIf osh = new OrderStatusHistory();
-            // TODO CAN SET COMMENTS
-            osh.setComments("");
-            OrderStatusHistoryIf[] oshArray = new OrderStatusHistoryIf[1];
-            oshArray[0] = osh;
-            osh.setUpdatedById(kkAppEng.getOrderMgr().getIdForUserUpdatingOrder(checkoutOrder));
-            checkoutOrder.setStatusTrail(oshArray);
-        }
-
-        hstResponse.setRenderParameter(KKActionsConstants.ACTION, action);
-    }
-
-    @Override
-    public void doAdditionalData() {
-        super.doAdditionalData();
-
-        CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
-
-        List<String> acceptedStates = Arrays.asList(KKActionsConstants.STATES.SHIPPING_ADDRESS.name(), KKActionsConstants.STATES.SHIPPING_METHOD.name(),
-                KKActionsConstants.STATES.PAYMENT_METHOD.name(), KKActionsConstants.STATES.ORDER_REVIEW.name());
-
-        String state = seedData.getState();
-
-        if (StringUtils.isNotEmpty(state) && acceptedStates.contains(state)) {
-            hstRequest.getRequestContext().setAttribute(getAcceptState().concat("_EDIT"), true);
-            hstRequest.setAttribute(getAcceptState().concat("_EDIT"), true);
-        }
-
-    }
-
-    /**
-     * This method could be overrides to add additionnal information to the user
-     *
-     * @param customerRegistration the customer registration
-     */
-    protected void addAdditionalInformationToCustomerRegistration(CustomerRegistrationIf customerRegistration) {
-        // nothing to add by default.
-    }
-
-    /**
-     * Create a checkout order
-     */
-    private void createCheckoutOrder() {
+      // User is already logged in - Create a new address
+      if (StringUtils.isNotEmpty(sAddressId) && (StringUtils.equals(sAddressId, "-1"))) {
         try {
-            // Create an order object that we will use for the checkout process
-            KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().createCheckoutOrder();
-
-            // Get shipping quotes from the engine
-            KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().createShippingQuotes();
-
+          addressId = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getCustomerMgr().
+              addAddressToCustomer(registerFormUtils.createAddressForCustomer(formMap));
         } catch (Exception e) {
-            log.error("A new Order could not be created", e);
+          updateNextLoggedState(KKActionsConstants.STATES.INITIAL.name());
+          addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.failed.create.address"));
+          return;
         }
+      } else if (StringUtils.isEmpty(sAddressId) && (isCheckoutAsGuest() || isCheckoutAsRegister())) { // User is not logged-in. User wants to checkout as guest.
+
+        CustomerRegistrationIf customerRegistration = registerFormUtils.createCustomerRegistration(formMap);
+
+        String username = formMap.getField(KKRegisterFormUtils.EMAIL).getValue();
+
+        // Generate a random password.
+        String password = String.valueOf(System.currentTimeMillis());
+
+        if (isCheckoutAsRegister()) {
+          password = formMap.getField(KKRegisterFormUtils.PASSWORD).getValue();
+        }
+
+        // Set the password
+        customerRegistration.setPassword(password);
+
+        // Set the locale
+        customerRegistration.setLocale(hstRequest.getLocale().toString());
+
+        // Set additional informations
+        addAdditionalInformationToCustomerRegistration(customerRegistration);
+
+        try {
+          // Register the customer as guest
+          if (isCheckoutAsGuest()) {
+            kkAppEng.getEng().forceRegisterCustomer(customerRegistration);
+          } else { // Register the customer a real customer
+            kkAppEng.getEng().registerCustomer(customerRegistration);
+          }
+
+          // Logged-in
+          KKServiceHelper.getKKEngineService().logIn(hstRequest, hstResponse, username, password);
+        } catch (KKException e) {
+          log.error("Failed to register a customer", e);
+          addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.failed.register.customer"));
+          return;
+        }
+      }
+
+      // At this stage, the customer has been logged-in.
+      // The checkout order can be created.
+      createCheckoutOrder();
+
+      // Set the billing address
+      KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().setCheckoutOrderBillingAddress(addressId);
+
+      if (shippingAddress.equals(SELECT_SAME_SHIPPING_ADDRESS)) {
+        try {
+          KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().setCheckoutOrderShippingAddress(addressId);
+
+          // Skip the SHIPPING ADDRESS step because the customer has decided to use the
+          // same billing address
+          hstResponse.setRenderParameter(KKActionsConstants.FORCE_NEXT_LOGGED_STATE, KKActionsConstants.STATES.SHIPPING_METHOD.name());
+        } catch (KKException e) {
+          log.error("Failed to set the shipping address", e);
+        }
+      }
+
+      OrderIf checkoutOrder = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().getCheckoutOrder();
+
+      // Set the comment
+      OrderStatusHistoryIf osh = new OrderStatusHistory();
+      // TODO CAN SET COMMENTS
+      osh.setComments("");
+      OrderStatusHistoryIf[] oshArray = new OrderStatusHistoryIf[1];
+      oshArray[0] = osh;
+      osh.setUpdatedById(kkAppEng.getOrderMgr().getIdForUserUpdatingOrder(checkoutOrder));
+      checkoutOrder.setStatusTrail(oshArray);
     }
+
+    hstResponse.setRenderParameter(KKActionsConstants.ACTION, action);
+  }
+
+  @Override
+  public void doAdditionalData() {
+    super.doAdditionalData();
+
+    CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
+
+    List<String> acceptedStates = Arrays.asList(KKActionsConstants.STATES.SHIPPING_ADDRESS.name(), KKActionsConstants.STATES.SHIPPING_METHOD.name(),
+        KKActionsConstants.STATES.PAYMENT_METHOD.name(), KKActionsConstants.STATES.ORDER_REVIEW.name());
+
+    String state = seedData.getState();
+
+    if (StringUtils.isNotEmpty(state) && acceptedStates.contains(state)) {
+      hstRequest.getRequestContext().setAttribute(getAcceptState().concat("_EDIT"), true);
+      hstRequest.setAttribute(getAcceptState().concat("_EDIT"), true);
+    }
+
+  }
+
+  /**
+   * This method could be overrides to add additionnal information to the user
+   *
+   * @param customerRegistration the customer registration
+   */
+  protected void addAdditionalInformationToCustomerRegistration(CustomerRegistrationIf customerRegistration) {
+    // nothing to add by default.
+  }
+
+  /**
+   * Create a checkout order
+   */
+  private void createCheckoutOrder() {
+    try {
+      // Create an order object that we will use for the checkout process
+      KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().createCheckoutOrder();
+
+      // Get shipping quotes from the engine
+      KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().createShippingQuotes();
+
+    } catch (Exception e) {
+      log.error("A new Order could not be created", e);
+    }
+  }
 }

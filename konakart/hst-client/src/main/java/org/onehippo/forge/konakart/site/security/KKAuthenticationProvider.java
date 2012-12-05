@@ -13,50 +13,50 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class KKAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
-    public static final Logger log = LoggerFactory.getLogger(KKAuthenticationProvider.class);
+  public static final Logger log = LoggerFactory.getLogger(KKAuthenticationProvider.class);
 
-    private KKUserDetailsService kkUserDetailsService;
+  private KKUserDetailsService kkUserDetailsService;
 
-    public void setKkUserDetailsService(KKUserDetailsService kkUserDetailsService) {
-        this.kkUserDetailsService = kkUserDetailsService;
+  public void setKkUserDetailsService(KKUserDetailsService kkUserDetailsService) {
+    this.kkUserDetailsService = kkUserDetailsService;
+  }
+
+  public KKUserDetailsService getKkUserDetailsService() {
+    if (kkUserDetailsService == null) {
+      kkUserDetailsService = new KKUserDetailsServiceImpl();
     }
 
-    public KKUserDetailsService getKkUserDetailsService() {
-        if (kkUserDetailsService == null) {
-            kkUserDetailsService = new KKUserDetailsServiceImpl();
-        }
+    return kkUserDetailsService;
+  }
 
-        return kkUserDetailsService;
+  @Override
+  protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+    if (authentication.getCredentials() == null) {
+      log.debug("Authentication failed: no credentials provided");
+
+      throw new BadCredentialsException(messages.getMessage(
+          "AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"),
+          null);
+    }
+  }
+
+  @Override
+  protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
+    UserDetails loadedUser;
+
+    try {
+      String password = authentication.getCredentials().toString();
+      loadedUser = getKkUserDetailsService().loadUserByUsernameAndPassword(username, password);
+    } catch (DataAccessException repositoryProblem) {
+      throw new AuthenticationServiceException(repositoryProblem.getMessage(), repositoryProblem);
     }
 
-    @Override
-    protected void additionalAuthenticationChecks(UserDetails userDetails, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-        if (authentication.getCredentials() == null) {
-            log.debug("Authentication failed: no credentials provided");
-
-            throw new BadCredentialsException(messages.getMessage(
-                    "AbstractUserDetailsAuthenticationProvider.badCredentials", "Bad credentials"),
-                    null);
-        }
+    if (loadedUser == null) {
+      throw new AuthenticationServiceException(
+          "UserDetailsService returned null, which is an interface contract violation");
     }
 
-    @Override
-    protected UserDetails retrieveUser(String username, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-        UserDetails loadedUser;
+    return loadedUser;
 
-        try {
-            String password = authentication.getCredentials().toString();
-            loadedUser = getKkUserDetailsService().loadUserByUsernameAndPassword(username, password);
-        } catch (DataAccessException repositoryProblem) {
-            throw new AuthenticationServiceException(repositoryProblem.getMessage(), repositoryProblem);
-        }
-
-        if (loadedUser == null) {
-            throw new AuthenticationServiceException(
-                    "UserDetailsService returned null, which is an interface contract violation");
-        }
-
-        return loadedUser;
-
-    }
+  }
 }

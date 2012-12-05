@@ -12,36 +12,36 @@ import javax.servlet.jsp.tagext.VariableInfo;
 public class AddToBasketActionURLTag extends HstActionURLTag {
 
 
-    private KKProductDocument kkProductDocument;
+  private KKProductDocument kkProductDocument;
 
-    public void setProduct(KKProductDocument kkProductDocument) {
-        this.kkProductDocument = kkProductDocument;
+  public void setProduct(KKProductDocument kkProductDocument) {
+    this.kkProductDocument = kkProductDocument;
+  }
+
+  @Override
+  protected void setUrlParameters(HstURL url) {
+    super.setUrlParameters(url);
+
+    url.setParameter("action", KKActionsConstants.ACTIONS.ADD_TO_BASKET.name());
+    url.setParameter("prodId", String.valueOf(kkProductDocument.getProductId()));
+  }
+
+  /**
+   * TagExtraInfo class for HstURLTag.
+   */
+  public static class TEI extends TagExtraInfo {
+
+    public VariableInfo[] getVariableInfo(TagData tagData) {
+      VariableInfo vi[] = null;
+      String var = tagData.getAttributeString("var");
+      if (var != null) {
+        vi = new VariableInfo[1];
+        vi[0] =
+            new VariableInfo(var, "java.lang.String", true,
+                VariableInfo.AT_BEGIN);
+      }
+      return vi;
     }
 
-    @Override
-    protected void setUrlParameters(HstURL url) {
-        super.setUrlParameters(url);
-
-        url.setParameter("action", KKActionsConstants.ACTIONS.ADD_TO_BASKET.name());
-        url.setParameter("prodId", String.valueOf(kkProductDocument.getProductId()));
-    }
-
-    /**
-     * TagExtraInfo class for HstURLTag.
-     */
-    public static class TEI extends TagExtraInfo {
-
-        public VariableInfo[] getVariableInfo(TagData tagData) {
-            VariableInfo vi[] = null;
-            String var = tagData.getAttributeString("var");
-            if (var != null) {
-                vi = new VariableInfo[1];
-                vi[0] =
-                        new VariableInfo(var, "java.lang.String", true,
-                                VariableInfo.AT_BEGIN);
-            }
-            return vi;
-        }
-
-    }
+  }
 }

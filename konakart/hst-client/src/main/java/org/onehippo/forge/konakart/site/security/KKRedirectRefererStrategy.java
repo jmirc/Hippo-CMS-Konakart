@@ -9,8 +9,8 @@ import java.io.IOException;
 
 public class KKRedirectRefererStrategy implements RedirectStrategy {
 
-    @Override
-    public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
-        response.sendRedirect(request.getHeader("Referer"));
-    }
+  @Override
+  public void sendRedirect(HttpServletRequest request, HttpServletResponse response, String url) throws IOException {
+    response.sendRedirect(request.getHeader("Referer"));
+  }
 }

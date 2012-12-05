@@ -13,34 +13,34 @@ import java.util.Collection;
  */
 public class KKUser extends User {
 
-    private boolean isRememberMeAuthentication = false;
-    private AdminCustomer adminCustomer;
+  private boolean isRememberMeAuthentication = false;
+  private AdminCustomer adminCustomer;
 
-    public KKUser(AdminCustomer adminCustomer, boolean accountNonExpired, boolean credentialsNonExpired,
-                  boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-        super(adminCustomer.getEmailAddr(), adminCustomer.getPassword(), adminCustomer.isEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+  public KKUser(AdminCustomer adminCustomer, boolean accountNonExpired, boolean credentialsNonExpired,
+                boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    super(adminCustomer.getEmailAddr(), adminCustomer.getPassword(), adminCustomer.isEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 
-        this.adminCustomer = adminCustomer;
-    }
+    this.adminCustomer = adminCustomer;
+  }
 
-    public KKUser(AdminCustomer adminCustomer, boolean rememberMeAuthentication, boolean accountNonExpired, boolean credentialsNonExpired,
-                  boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-        super(adminCustomer.getEmailAddr(), adminCustomer.getPassword(), adminCustomer.isEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
+  public KKUser(AdminCustomer adminCustomer, boolean rememberMeAuthentication, boolean accountNonExpired, boolean credentialsNonExpired,
+                boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
+    super(adminCustomer.getEmailAddr(), adminCustomer.getPassword(), adminCustomer.isEnabled(), accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
 
-        this.adminCustomer = adminCustomer;
-        this.isRememberMeAuthentication = rememberMeAuthentication;
-    }
+    this.adminCustomer = adminCustomer;
+    this.isRememberMeAuthentication = rememberMeAuthentication;
+  }
 
 
-    public boolean isRememberMeAuthentication() {
-        return isRememberMeAuthentication;
-    }
+  public boolean isRememberMeAuthentication() {
+    return isRememberMeAuthentication;
+  }
 
-    public int getCustomerId() {
-        return adminCustomer.getId();
-    }
+  public int getCustomerId() {
+    return adminCustomer.getId();
+  }
 
-    public AdminCustomer getAdminCustomer() {
-        return adminCustomer;
-    }
+  public AdminCustomer getAdminCustomer() {
+    return adminCustomer;
+  }
 }

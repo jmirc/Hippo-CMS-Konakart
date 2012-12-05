@@ -34,324 +34,324 @@ import static org.onehippo.forge.konakart.site.service.KKTagsService.TAG_PRODUCT
 
 public class KKEngineServiceImpl implements KKEngineService {
 
-    private static Logger log = LoggerFactory.getLogger(KKEngineServiceImpl.class);
+  private static Logger log = LoggerFactory.getLogger(KKEngineServiceImpl.class);
 
 
-    @Override
-    public KKAppEng getKKAppEng(@Nonnull HttpServletRequest servletRequest) {
-        // Check if the Konakart engine has been created
-        HttpSession session = servletRequest.getSession();
+  @Override
+  public KKAppEng getKKAppEng(@Nonnull HttpServletRequest servletRequest) {
+    // Check if the Konakart engine has been created
+    HttpSession session = servletRequest.getSession();
 
-        return (KKAppEng) session.getAttribute(KKAppEng.KONAKART_KEY);
-    }
+    return (KKAppEng) session.getAttribute(KKAppEng.KONAKART_KEY);
+  }
 
-    /**
-     * Retrieve the Konakart client or null if it is not found into the session
-     *
-     * @param request http request
-     * @return the KonaKart client engine instance
-     */
-    @Nullable
-    public KKAppEng getKKAppEng(@Nonnull HstRequest request) {
-        return (KKAppEng) request.getAttribute(KKAppEng.KONAKART_KEY);
-    }
+  /**
+   * Retrieve the Konakart client or null if it is not found into the session
+   *
+   * @param request http request
+   * @return the KonaKart client engine instance
+   */
+  @Nullable
+  public KKAppEng getKKAppEng(@Nonnull HstRequest request) {
+    return (KKAppEng) request.getAttribute(KKAppEng.KONAKART_KEY);
+  }
 
-    @Override
-    public KKAppEng initKKEngine(@Nonnull HttpServletRequest servletRequest, @Nonnull HttpServletResponse servletResponse,
-                                 @Nonnull HstRequestContext requestContext, @Nonnull Session jcrSession, @Nonnull KKStoreConfig kkStoreConfig) throws HstComponentException {
+  @Override
+  public KKAppEng initKKEngine(@Nonnull HttpServletRequest servletRequest, @Nonnull HttpServletResponse servletResponse,
+                               @Nonnull HstRequestContext requestContext, @Nonnull Session jcrSession, @Nonnull KKStoreConfig kkStoreConfig) throws HstComponentException {
 
-        KKCookieServiceImpl kkCookieServiceImpl = new KKCookieServiceImpl();
+    KKCookieServiceImpl kkCookieServiceImpl = new KKCookieServiceImpl();
 
-        KKAppEng kkAppEng = getKKAppEng(servletRequest);
+    KKAppEng kkAppEng = getKKAppEng(servletRequest);
 
-        if (kkAppEng == null || !StringUtils.equalsIgnoreCase(kkStoreConfig.getStoreId(), kkAppEng.getStoreId())) {
-            if (log.isInfoEnabled()) {
-                log.info("KKEngine not found on the session");
-            }
+    if (kkAppEng == null || !StringUtils.equalsIgnoreCase(kkStoreConfig.getStoreId(), kkAppEng.getStoreId())) {
+      if (log.isInfoEnabled()) {
+        log.info("KKEngine not found on the session");
+      }
 
-            try {
-                String storeId = kkStoreConfig.getStoreId();
+      try {
+        String storeId = kkStoreConfig.getStoreId();
 
-                // Create the Konakart engine
-                kkAppEng = KKEngine.get(storeId);
+        // Create the Konakart engine
+        kkAppEng = KKEngine.get(storeId);
 
-                // Set the locale
-                Locale preferredLocale = findPreferredLocale(requestContext);
+        // Set the locale
+        Locale preferredLocale = findPreferredLocale(requestContext);
 
-                if (preferredLocale != null) {
-                    kkAppEng.setLocale(preferredLocale.toString());
-                }
-
-                // initialize the Fetch production options
-                FetchProductOptionsIf productOptions = new FetchProductOptions();
-                productOptions.setCatalogId(kkStoreConfig.getCatalogId());
-                productOptions.setUseExternalPrice(HippoModuleConfig.getConfig().getClientEngineConfig().isUseExternalPrice());
-                productOptions.setUseExternalQuantity(HippoModuleConfig.getConfig().getClientEngineConfig().isUseExternalQuantity());
-
-                kkAppEng.setFetchProdOptions(productOptions);
-
-                if (log.isInfoEnabled()) {
-                    log.info("Set KKAppEng on the session for storeId " + storeId);
-                }
-
-                // Store the engine under the session
-                servletRequest.getSession().setAttribute(KKAppEng.KONAKART_KEY, kkAppEng);
-
-                // Keep this in the session. To be reused when the customer will switch the locale.
-                servletRequest.getSession().setAttribute(KKAppEng.KONAKART_KEY + "-" + kkStoreConfig.getStoreId(), kkAppEng);
-
-                // Create or retrieve the customer's cookie
-                kkCookieServiceImpl.manageCookies(servletRequest, servletResponse, kkAppEng);
-
-                // Retrieve the config.
-                kkAppEng.refreshAllClientConfigs();
-            } catch (Exception e) {
-                log.error("Failed to create Konakart engine ", e);
-                throw new HstComponentException("Failed to create Konakart engine", e);
-            }
+        if (preferredLocale != null) {
+          kkAppEng.setLocale(preferredLocale.toString());
         }
 
-        return kkAppEng;
+        // initialize the Fetch production options
+        FetchProductOptionsIf productOptions = new FetchProductOptions();
+        productOptions.setCatalogId(kkStoreConfig.getCatalogId());
+        productOptions.setUseExternalPrice(HippoModuleConfig.getConfig().getClientEngineConfig().isUseExternalPrice());
+        productOptions.setUseExternalQuantity(HippoModuleConfig.getConfig().getClientEngineConfig().isUseExternalQuantity());
+
+        kkAppEng.setFetchProdOptions(productOptions);
+
+        if (log.isInfoEnabled()) {
+          log.info("Set KKAppEng on the session for storeId " + storeId);
+        }
+
+        // Store the engine under the session
+        servletRequest.getSession().setAttribute(KKAppEng.KONAKART_KEY, kkAppEng);
+
+        // Keep this in the session. To be reused when the customer will switch the locale.
+        servletRequest.getSession().setAttribute(KKAppEng.KONAKART_KEY + "-" + kkStoreConfig.getStoreId(), kkAppEng);
+
+        // Create or retrieve the customer's cookie
+        kkCookieServiceImpl.manageCookies(servletRequest, servletResponse, kkAppEng);
+
+        // Retrieve the config.
+        kkAppEng.refreshAllClientConfigs();
+      } catch (Exception e) {
+        log.error("Failed to create Konakart engine ", e);
+        throw new HstComponentException("Failed to create Konakart engine", e);
+      }
     }
 
+    return kkAppEng;
+  }
 
-    @Override
-    public int validKKSession(@Nonnull HttpServletRequest servletRequest, @Nonnull HttpServletResponse servletResponse) throws HstComponentException {
 
-        HttpSession session = servletRequest.getSession();
-        KKAppEng kkAppEng = (KKAppEng) session.getAttribute(KKAppEng.KONAKART_KEY);
+  @Override
+  public int validKKSession(@Nonnull HttpServletRequest servletRequest, @Nonnull HttpServletResponse servletResponse) throws HstComponentException {
 
-        if (kkAppEng == null) {
-            return -1;
-        }
+    HttpSession session = servletRequest.getSession();
+    KKAppEng kkAppEng = (KKAppEng) session.getAttribute(KKAppEng.KONAKART_KEY);
 
-        try {
-            // If the session is null, set the forward and return a negative number
-            if (kkAppEng.getSessionId() == null) {
-                return -1;
-            }
+    if (kkAppEng == null) {
+      return -1;
+    }
 
-            // If the user can't be logged-in, an exception if thrown
-            try {
-                // At this point we return a valid customer id
-                return kkAppEng.getEng().checkSession(kkAppEng.getSessionId());
-            } catch (KKException e) {
-                logOut(servletRequest, servletResponse);
-            }
-        } catch (Exception e) {
-            log.warn("Unable to check the Konakart session - {} ", e.toString());
-        }
-
+    try {
+      // If the session is null, set the forward and return a negative number
+      if (kkAppEng.getSessionId() == null) {
         return -1;
+      }
+
+      // If the user can't be logged-in, an exception if thrown
+      try {
+        // At this point we return a valid customer id
+        return kkAppEng.getEng().checkSession(kkAppEng.getSessionId());
+      } catch (KKException e) {
+        logOut(servletRequest, servletResponse);
+      }
+    } catch (Exception e) {
+      log.warn("Unable to check the Konakart session - {} ", e.toString());
     }
 
-    @Override
-    public boolean logIn(HttpServletRequest request, HttpServletResponse response, String username, String password) {
+    return -1;
+  }
 
-        KKAppEng kkAppEng = getKKAppEng(request);
+  @Override
+  public boolean logIn(HttpServletRequest request, HttpServletResponse response, String username, String password) {
 
-        if (kkAppEng == null) {
-            return false;
+    KKAppEng kkAppEng = getKKAppEng(request);
+
+    if (kkAppEng == null) {
+      return false;
+    }
+
+    try {
+      int custId = validKKSession(request, response);
+
+      // Check if the user is already logged in
+      if (custId >= 0) {
+        if (log.isDebugEnabled()) {
+          log.debug("User already logged in");
         }
 
-        try {
-            int custId = validKKSession(request, response);
+        // Refresh the data relevant to the customer such as his basked and recent orders.
+        kkAppEng.getCustomerMgr().refreshCustomerCachedData();
 
-            // Check if the user is already logged in
-            if (custId >= 0) {
-                if (log.isDebugEnabled()) {
-                    log.debug("User already logged in");
-                }
+        return true;
+      }
 
-                // Refresh the data relevant to the customer such as his basked and recent orders.
-                kkAppEng.getCustomerMgr().refreshCustomerCachedData();
+      // Get recently viewed products before logging in
+      CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
 
-                return true;
-            }
+      // Login
+      String result = kkAppEng.getCustomerMgr().login(username, password);
 
-            // Get recently viewed products before logging in
-            CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
-
-            // Login
-            String result = kkAppEng.getCustomerMgr().login(username, password);
-
-            if (result == null) {
-                return false;
-            }
+      if (result == null) {
+        return false;
+      }
 
             /*
             * Manage Cookies
             */
-            KKServiceHelper.getKKCookieService().manageCookiesLogin(request, response, kkAppEng);
+      KKServiceHelper.getKKCookieService().manageCookiesLogin(request, response, kkAppEng);
 
-            // Insert event
-            KKServiceHelper.getKKEventService().insertCustomerEvent(request, KKEventServiceImpl.ACTION_CUSTOMER_LOGIN);
+      // Insert event
+      KKServiceHelper.getKKEventService().insertCustomerEvent(request, KKEventServiceImpl.ACTION_CUSTOMER_LOGIN);
 
-            // Set recently viewed products for the logged in customer if changed as guest
-            CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
-            updateRecentlyViewedProducts(kkAppEng, prodsViewedTagGuest, prodsViewedTagCust);
+      // Set recently viewed products for the logged in customer if changed as guest
+      CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+      updateRecentlyViewedProducts(kkAppEng, prodsViewedTagGuest, prodsViewedTagCust);
 
-            return true;
+      return true;
 
-        } catch (Exception e) {
-            log.warn("Unable to logged-in. Force to be logged-out", e);
-            try {
-                kkAppEng.getCustomerMgr().logout();
-            } catch (KKException e1) {
-                // do nothing
-            }
-        }
-
-        return false;
+    } catch (Exception e) {
+      log.warn("Unable to logged-in. Force to be logged-out", e);
+      try {
+        kkAppEng.getCustomerMgr().logout();
+      } catch (KKException e1) {
+        // do nothing
+      }
     }
 
-    @Override
-    public boolean loginByAdmin(HttpServletRequest request, HttpServletResponse response, int customerId) {
+    return false;
+  }
 
-        KKAppEng kkAppEng = getKKAppEng(request);
+  @Override
+  public boolean loginByAdmin(HttpServletRequest request, HttpServletResponse response, int customerId) {
 
-        if (kkAppEng == null) {
-            return false;
+    KKAppEng kkAppEng = getKKAppEng(request);
+
+    if (kkAppEng == null) {
+      return false;
+    }
+
+    try {
+      int custId = validKKSession(request, response);
+
+      // Check if the user is already logged in
+      if (custId >= 0) {
+        if (log.isDebugEnabled()) {
+          log.debug("User already logged in");
         }
 
-        try {
-            int custId = validKKSession(request, response);
+        // Refresh the data relevant to the customer such as his basked and recent orders.
+        kkAppEng.getCustomerMgr().refreshCustomerCachedData();
 
-            // Check if the user is already logged in
-            if (custId >= 0) {
-                if (log.isDebugEnabled()) {
-                    log.debug("User already logged in");
-                }
+        return true;
+      }
 
-                // Refresh the data relevant to the customer such as his basked and recent orders.
-                kkAppEng.getCustomerMgr().refreshCustomerCachedData();
+      // Get recently viewed products before logging in
+      CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
 
-                return true;
-            }
+      String adminSessionId = KKAdminEngine.getInstance().getSession();
 
-            // Get recently viewed products before logging in
-            CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+      // Login
+      String result = kkAppEng.getCustomerMgr().loginByAdmin(adminSessionId, customerId);
 
-            String adminSessionId = KKAdminEngine.getInstance().getSession();
-
-            // Login
-            String result = kkAppEng.getCustomerMgr().loginByAdmin(adminSessionId, customerId);
-
-            if (result == null) {
-                return false;
-            }
+      if (result == null) {
+        return false;
+      }
 
             /*
             * Manage Cookies
             */
-            KKServiceHelper.getKKCookieService().manageCookiesLogin(request, response, kkAppEng);
+      KKServiceHelper.getKKCookieService().manageCookiesLogin(request, response, kkAppEng);
 
-            // Insert event
-            KKServiceHelper.getKKEventService().insertCustomerEvent(request, KKEventServiceImpl.ACTION_CUSTOMER_LOGIN);
+      // Insert event
+      KKServiceHelper.getKKEventService().insertCustomerEvent(request, KKEventServiceImpl.ACTION_CUSTOMER_LOGIN);
 
-            // Set recently viewed products for the logged in customer if changed as guest
-            CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
-            updateRecentlyViewedProducts(kkAppEng, prodsViewedTagGuest, prodsViewedTagCust);
+      // Set recently viewed products for the logged in customer if changed as guest
+      CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+      updateRecentlyViewedProducts(kkAppEng, prodsViewedTagGuest, prodsViewedTagCust);
 
-            return true;
+      return true;
 
-        } catch (Exception e) {
-            log.warn("Unable to logged-in. Force to be logged-out", e);
-            try {
-                kkAppEng.getCustomerMgr().logout();
-            } catch (KKException e1) {
-                // do nothing
-            }
-        }
-
-        return false;
+    } catch (Exception e) {
+      log.warn("Unable to logged-in. Force to be logged-out", e);
+      try {
+        kkAppEng.getCustomerMgr().logout();
+      } catch (KKException e1) {
+        // do nothing
+      }
     }
 
-    @Override
-    public void logOut(HttpServletRequest request, HttpServletResponse response) {
+    return false;
+  }
 
-        try {
-            KKAppEng kkAppEng = getKKAppEng(request);
+  @Override
+  public void logOut(HttpServletRequest request, HttpServletResponse response) {
 
-            if (kkAppEng == null) {
-                return;
-            }
+    try {
+      KKAppEng kkAppEng = getKKAppEng(request);
 
-            KKCookieServiceImpl kkCookieServiceImpl = new KKCookieServiceImpl();
+      if (kkAppEng == null) {
+        return;
+      }
 
-            //Get recently viewed products before logging out
-            CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+      KKCookieServiceImpl kkCookieServiceImpl = new KKCookieServiceImpl();
 
-            // Log out
-            kkAppEng.getCustomerMgr().logout();
+      //Get recently viewed products before logging out
+      CustomerTagIf prodsViewedTagCust = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
 
-            // Ensure that the guest customer is the one in the cookie
-            kkCookieServiceImpl.manageCookieLogout(request, response, kkAppEng);
+      // Log out
+      kkAppEng.getCustomerMgr().logout();
 
-            // Set recently viewed products for the guest customer if changed while logged in
-            CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+      // Ensure that the guest customer is the one in the cookie
+      kkCookieServiceImpl.manageCookieLogout(request, response, kkAppEng);
 
-            updateRecentlyViewedProducts(kkAppEng, prodsViewedTagCust, prodsViewedTagGuest);
+      // Set recently viewed products for the guest customer if changed while logged in
+      CustomerTagIf prodsViewedTagGuest = kkAppEng.getCustomerTagMgr().getCustomerTag(TAG_PRODUCTS_VIEWED);
+
+      updateRecentlyViewedProducts(kkAppEng, prodsViewedTagCust, prodsViewedTagGuest);
 
 
-        } catch (KKException e) {
-            log.error("Failed to log out from konakart", e);
-        } catch (KKAppException e) {
-            log.error("Failed to log out from konakart", e);
-        }
+    } catch (KKException e) {
+      log.error("Failed to log out from konakart", e);
+    } catch (KKAppException e) {
+      log.error("Failed to log out from konakart", e);
     }
+  }
 
-    /**
-     * Method called when a customer logs in or logs out. When logging in we need to decide whether
-     * to update the customer's PRODUCTS_VIEWED tag value from the value of the guest customer's
-     * tag. When logging out we need to make the same decision in the opposite direction. We only do
-     * the updates if the tag value of the "oldTag" is more recent than the tag value of the
-     * "newTag".
-     *
-     * @param oldTag When logging in, it is the tag of the guest customer. When logging out, it is the
-     *               tag of the logged in customer.
-     * @param newTag When logging in, it is the tag of the logged in customer. When logging out, it is
-     *               the tag of the guest customer.
-     * @throws com.konakart.al.KKAppException .
-     * @throws com.konakart.app.KKException   .
-     */
-    private void updateRecentlyViewedProducts(@Nonnull KKAppEng kkAppEng, @Nullable CustomerTagIf oldTag,
-                                              @Nullable CustomerTagIf newTag) throws KKException, KKAppException {
-        if (oldTag != null && oldTag.getDateAdded() != null && oldTag.getValue() != null
-                && oldTag.getValue().length() > 0) {
-            if (newTag == null || newTag.getDateAdded() == null
-                    || newTag.getDateAdded().before(oldTag.getDateAdded())) {
+  /**
+   * Method called when a customer logs in or logs out. When logging in we need to decide whether
+   * to update the customer's PRODUCTS_VIEWED tag value from the value of the guest customer's
+   * tag. When logging out we need to make the same decision in the opposite direction. We only do
+   * the updates if the tag value of the "oldTag" is more recent than the tag value of the
+   * "newTag".
+   *
+   * @param oldTag When logging in, it is the tag of the guest customer. When logging out, it is the
+   *               tag of the logged in customer.
+   * @param newTag When logging in, it is the tag of the logged in customer. When logging out, it is
+   *               the tag of the guest customer.
+   * @throws com.konakart.al.KKAppException .
+   * @throws com.konakart.app.KKException   .
+   */
+  private void updateRecentlyViewedProducts(@Nonnull KKAppEng kkAppEng, @Nullable CustomerTagIf oldTag,
+                                            @Nullable CustomerTagIf newTag) throws KKException, KKAppException {
+    if (oldTag != null && oldTag.getDateAdded() != null && oldTag.getValue() != null
+        && oldTag.getValue().length() > 0) {
+      if (newTag == null || newTag.getDateAdded() == null
+          || newTag.getDateAdded().before(oldTag.getDateAdded())) {
                 /*
                  * If new tag doesn't exist or old tag is newer than new tag, then give newTag the
                  * value of old tag
                  */
-                kkAppEng.getCustomerTagMgr().insertCustomerTag(TAG_PRODUCTS_VIEWED, oldTag.getValue());
-            }
-        }
+        kkAppEng.getCustomerTagMgr().insertCustomerTag(TAG_PRODUCTS_VIEWED, oldTag.getValue());
+      }
+    }
+  }
+
+  private Locale findPreferredLocale(HstRequestContext requestContext) {
+    if (requestContext.getResolvedSiteMapItem() != null) {
+      HstSiteMapItem siteMapItem = requestContext.getResolvedSiteMapItem().getHstSiteMapItem();
+      if (siteMapItem.getLocale() != null) {
+        Locale locale = LocaleUtils.toLocale(siteMapItem.getLocale());
+        log.debug("Preferred locale for request is set to '{}' by sitemap item '{}'", siteMapItem.getLocale(), siteMapItem.getId());
+        return locale;
+      }
+    }
+    // if we did not yet find a locale, test the Mount
+    if (requestContext.getResolvedMount() != null) {
+      Mount mount = requestContext.getResolvedMount().getMount();
+      if (mount.getLocale() != null) {
+        Locale locale = LocaleUtils.toLocale(mount.getLocale());
+        log.debug("Preferred locale for request is set to '{}' by Mount '{}'", mount.getLocale(), mount.getName());
+        return locale;
+      }
     }
 
-    private Locale findPreferredLocale(HstRequestContext requestContext) {
-        if(requestContext.getResolvedSiteMapItem() != null) {
-            HstSiteMapItem siteMapItem =  requestContext.getResolvedSiteMapItem().getHstSiteMapItem();
-            if(siteMapItem.getLocale() != null) {
-                Locale locale = LocaleUtils.toLocale(siteMapItem.getLocale());
-                log.debug("Preferred locale for request is set to '{}' by sitemap item '{}'", siteMapItem.getLocale(), siteMapItem.getId());
-                return locale;
-            }
-        }
-        // if we did not yet find a locale, test the Mount
-        if(requestContext.getResolvedMount() != null) {
-            Mount mount = requestContext.getResolvedMount().getMount();
-            if(mount.getLocale() != null) {
-                Locale locale = LocaleUtils.toLocale(mount.getLocale());
-                log.debug("Preferred locale for request is set to '{}' by Mount '{}'", mount.getLocale(), mount.getName());
-                return locale;
-            }
-        }
-
-        // no locale found
-        return null;
-    }
+    // no locale found
+    return null;
+  }
 
 
 }

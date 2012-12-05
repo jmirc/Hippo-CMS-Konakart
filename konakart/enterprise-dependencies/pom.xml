@@ -1,84 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.onehippo.forge.konakart</groupId>
-        <artifactId>konakart</artifactId>
-        <version>1.00.05-SNAPSHOT</version>
-    </parent>
+  <parent>
+    <groupId>org.onehippo.forge.konakart</groupId>
+    <artifactId>konakart</artifactId>
+    <version>1.00.05-SNAPSHOT</version>
+  </parent>
 
-    <name>Hippo Konakart Enterprise Dependencies</name>
-    <groupId>org.onehippo.forge.konakart.enterprise</groupId>
-    <artifactId>hippo-addon-konakart-dependencies</artifactId>
-    <packaging>jar</packaging>
+  <name>Hippo Konakart Enterprise Dependencies</name>
+  <groupId>org.onehippo.forge.konakart.enterprise</groupId>
+  <artifactId>hippo-addon-konakart-dependencies</artifactId>
+  <packaging>jar</packaging>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.javaVersion>1.6</project.build.javaVersion>
-        <plugin.compiler.version>2.3.2</plugin.compiler.version>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.javaVersion>1.6</project.build.javaVersion>
+    <plugin.compiler.version>2.3.2</plugin.compiler.version>
 
-        <konakart.version>6.3.0.0</konakart.version>
-    </properties>
+    <konakart.version>6.3.0.0</konakart.version>
+  </properties>
 
-    <dependencies>
+  <dependencies>
 
-        <!-- enterprise version dependencies -->
-        <dependency>
-            <groupId>com.konakart.enterprise</groupId>
-            <artifactId>konakart</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
+    <!-- enterprise version dependencies -->
+    <dependency>
+      <groupId>com.konakart.enterprise</groupId>
+      <artifactId>konakart</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>com.konakart.enterprise</groupId>
-            <artifactId>multistore</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>com.konakart.enterprise</groupId>
+      <artifactId>multistore</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>com.konakart.enterprise</groupId>
-            <artifactId>solr</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>com.konakart.enterprise</groupId>
+      <artifactId>solr</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>com.konakart.enterprise</groupId>
-            <artifactId>konakartadmin</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
+    <dependency>
+      <groupId>com.konakart.enterprise</groupId>
+      <artifactId>konakartadmin</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
 
-        <dependency>
-            <groupId>com.konakart.enterprise</groupId>
-            <artifactId>multistoreadmin</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-    </dependencies>
+    <dependency>
+      <groupId>com.konakart.enterprise</groupId>
+      <artifactId>multistoreadmin</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+  </dependencies>
 
-    <build>
+  <build>
 
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${plugin.compiler.version}</version>
-                <configuration>
-                    <source>${project.build.javaVersion}</source>
-                    <target>${project.build.javaVersion}</target>
-                </configuration>
-            </plugin>
-        </plugins>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${plugin.compiler.version}</version>
+        <configuration>
+          <source>${project.build.javaVersion}</source>
+          <target>${project.build.javaVersion}</target>
+        </configuration>
+      </plugin>
+    </plugins>
 
-        <resources>
-            <resource>
-                <filtering>false</filtering>
-                <directory>${basedir}/src/main/java</directory>
-                <includes>
-                    <include>**/*.html</include>
-                    <include>**/*.properties</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>
+    <resources>
+      <resource>
+        <filtering>false</filtering>
+        <directory>${basedir}/src/main/java</directory>
+        <includes>
+          <include>**/*.html</include>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
 </project>

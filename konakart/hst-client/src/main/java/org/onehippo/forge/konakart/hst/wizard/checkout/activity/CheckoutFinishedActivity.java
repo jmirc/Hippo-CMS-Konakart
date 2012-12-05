@@ -16,100 +16,100 @@ import java.util.List;
 
 public class CheckoutFinishedActivity extends BaseCheckoutActivity {
 
-    public static final String REMOVE = "remove_";
+  public static final String REMOVE = "remove_";
 
-    public static final String GLOBAL_PRODUCT_NOTIFIER_ENABLED = "globalProductNotifierEnabled";
-    public static final String NOTIFIED_PRODUCTS = "notifiedProducts";
+  public static final String GLOBAL_PRODUCT_NOTIFIER_ENABLED = "globalProductNotifierEnabled";
+  public static final String NOTIFIED_PRODUCTS = "notifiedProducts";
 
-    @Override
-    public void doBeforeRender() throws ActivityException {
+  @Override
+  public void doBeforeRender() throws ActivityException {
 
-        // Set events
-        OrderIf order = kkAppEng.getOrderMgr().getCheckoutOrder();
-        if (order != null) {
-            KKServiceHelper.getKKEventService().
-                    insertCustomerEvent(hstRequest, KKEventServiceImpl.ACTION_CONFIRM_ORDER, order.getId());
-            KKServiceHelper.getKKEventService().
-                    insertCustomerEvent(hstRequest, KKEventServiceImpl.ACTION_PAYMENT_METHOD_SELECTED, order.getPaymentModuleCode());
-        }
-
-        CustomerIf currentCustomer = kkAppEng.getCustomerMgr().getCurrentCustomer();
-
-        if ((currentCustomer != null) && (currentCustomer.getType() != 2)) {
-            if (currentCustomer.getGlobalProdNotifier() == 0) {
-
-                OrderIf currentOrder = kkAppEng.getOrderMgr().getCheckoutOrder();
-
-                if (currentOrder != null && currentOrder.getOrderProducts() != null) {
-
-                    List<NotifiedProductItem> notifiedProductItems = Lists.newArrayList();
-
-                    for (OrderProductIf orderProductIf : currentOrder.getOrderProducts()) {
-                        NotifiedProductItem notifiedProductItem = new NotifiedProductItem(orderProductIf.getProductId(),
-                                orderProductIf.getName());
-                        notifiedProductItem.setRemove(false);
-                        notifiedProductItems.add(notifiedProductItem);
-                    }
-
-                    hstRequest.setAttribute(NOTIFIED_PRODUCTS, notifiedProductItems);
-                }
-
-                hstRequest.setAttribute(GLOBAL_PRODUCT_NOTIFIER_ENABLED, true);
-            }
-        }
+    // Set events
+    OrderIf order = kkAppEng.getOrderMgr().getCheckoutOrder();
+    if (order != null) {
+      KKServiceHelper.getKKEventService().
+          insertCustomerEvent(hstRequest, KKEventServiceImpl.ACTION_CONFIRM_ORDER, order.getId());
+      KKServiceHelper.getKKEventService().
+          insertCustomerEvent(hstRequest, KKEventServiceImpl.ACTION_PAYMENT_METHOD_SELECTED, order.getPaymentModuleCode());
     }
 
-    @Override
-    public void doAction() throws ActivityException {
-        super.doAction();
+    CustomerIf currentCustomer = kkAppEng.getCustomerMgr().getCurrentCustomer();
+
+    if ((currentCustomer != null) && (currentCustomer.getType() != 2)) {
+      if (currentCustomer.getGlobalProdNotifier() == 0) {
 
         OrderIf currentOrder = kkAppEng.getOrderMgr().getCheckoutOrder();
 
-        if (currentOrder != null) {
-            OrderProductIf[] orderProductIfs = currentOrder.getOrderProducts();
+        if (currentOrder != null && currentOrder.getOrderProducts() != null) {
 
-            if (orderProductIfs != null) {
-                String[] definedFormFields = new String[orderProductIfs.length];
+          List<NotifiedProductItem> notifiedProductItems = Lists.newArrayList();
 
-                int i = 0;
+          for (OrderProductIf orderProductIf : currentOrder.getOrderProducts()) {
+            NotifiedProductItem notifiedProductItem = new NotifiedProductItem(orderProductIf.getProductId(),
+                orderProductIf.getName());
+            notifiedProductItem.setRemove(false);
+            notifiedProductItems.add(notifiedProductItem);
+          }
 
-                for (OrderProductIf orderProductIf : orderProductIfs) {
-                    definedFormFields[i] = REMOVE + orderProductIf.getProductId();
-                    i++;
-                }
-
-                FormMap formMap = new FormMap(hstRequest, definedFormFields);
-
-                for (OrderProductIf orderProductIf : orderProductIfs) {
-                    FormField removeFormField = formMap.getField(REMOVE + orderProductIf.getProductId());
-
-                    // Remove the basket item
-                    if (removeFormField != null && removeFormField.getValues() != null
-                            && removeFormField.getValues().size() > 0) {
-
-                        try {
-                            kkAppEng.getCustomerMgr().addProductNotificationsToCustomer(orderProductIf.getProductId());
-                        } catch (KKException e) {
-                            log.warn("Failed to notify the customer about the availability of the product", e);
-                        }
-                    }
-                }
-            }
+          hstRequest.setAttribute(NOTIFIED_PRODUCTS, notifiedProductItems);
         }
 
-        // Remove checkout order
-        kkAppEng.getOrderMgr().setCheckoutOrder(null);
-
-        // Update the order history array
-        try {
-            kkAppEng.getProductMgr().fetchOrderHistoryArray();
-        } catch (KKException e) {
-            log.warn("Failed to fetch the orders' history ");
-        }
-
-
-        processorContext.getSeedData().getKkBaseHstComponent().redirectByRefId(hstRequest, hstResponse,
-                processorContext.getSeedData().getKkBaseHstComponent().getMyAccountRefId());
-
+        hstRequest.setAttribute(GLOBAL_PRODUCT_NOTIFIER_ENABLED, true);
+      }
     }
+  }
+
+  @Override
+  public void doAction() throws ActivityException {
+    super.doAction();
+
+    OrderIf currentOrder = kkAppEng.getOrderMgr().getCheckoutOrder();
+
+    if (currentOrder != null) {
+      OrderProductIf[] orderProductIfs = currentOrder.getOrderProducts();
+
+      if (orderProductIfs != null) {
+        String[] definedFormFields = new String[orderProductIfs.length];
+
+        int i = 0;
+
+        for (OrderProductIf orderProductIf : orderProductIfs) {
+          definedFormFields[i] = REMOVE + orderProductIf.getProductId();
+          i++;
+        }
+
+        FormMap formMap = new FormMap(hstRequest, definedFormFields);
+
+        for (OrderProductIf orderProductIf : orderProductIfs) {
+          FormField removeFormField = formMap.getField(REMOVE + orderProductIf.getProductId());
+
+          // Remove the basket item
+          if (removeFormField != null && removeFormField.getValues() != null
+              && removeFormField.getValues().size() > 0) {
+
+            try {
+              kkAppEng.getCustomerMgr().addProductNotificationsToCustomer(orderProductIf.getProductId());
+            } catch (KKException e) {
+              log.warn("Failed to notify the customer about the availability of the product", e);
+            }
+          }
+        }
+      }
+    }
+
+    // Remove checkout order
+    kkAppEng.getOrderMgr().setCheckoutOrder(null);
+
+    // Update the order history array
+    try {
+      kkAppEng.getProductMgr().fetchOrderHistoryArray();
+    } catch (KKException e) {
+      log.warn("Failed to fetch the orders' history ");
+    }
+
+
+    processorContext.getSeedData().getKkBaseHstComponent().redirectByRefId(hstRequest, hstResponse,
+        processorContext.getSeedData().getKkBaseHstComponent().getMyAccountRefId());
+
+  }
 }

@@ -13,97 +13,97 @@ import java.io.IOException;
 
 public class RatingTag extends KKTagSupport {
 
-    protected Integer productId;
-    protected String ratingVar;
-    protected String nbReviewsVar;
-    protected Boolean showVisible = false;
+  protected Integer productId;
+  protected String ratingVar;
+  protected String nbReviewsVar;
+  protected Boolean showVisible = false;
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+  public void setProductId(Integer productId) {
+    this.productId = productId;
+  }
+
+  public void setRatingVar(String ratingVar) {
+    this.ratingVar = ratingVar;
+  }
+
+  public void setNbReviewsVar(String nbReviewsVar) {
+    this.nbReviewsVar = nbReviewsVar;
+  }
+
+  public void setShowVisible(Boolean showVisible) {
+    this.showVisible = showVisible;
+  }
+
+  /* (non-Javadoc)
+  * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
+  */
+  @Override
+  public int doStartTag() throws JspException {
+    if (ratingVar != null) {
+      pageContext.removeAttribute(ratingVar, PageContext.PAGE_SCOPE);
     }
 
-    public void setRatingVar(String ratingVar) {
-        this.ratingVar = ratingVar;
+    if (nbReviewsVar != null) {
+      pageContext.removeAttribute(nbReviewsVar, PageContext.PAGE_SCOPE);
     }
 
-    public void setNbReviewsVar(String nbReviewsVar) {
-        this.nbReviewsVar = nbReviewsVar;
-    }
+    return EVAL_BODY_INCLUDE;
+  }
 
-    public void setShowVisible(Boolean showVisible) {
-        this.showVisible = showVisible;
-    }
+  @Override
+  public int doEndTag() throws JspException {
 
-    /* (non-Javadoc)
-    * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
-    */
-    @Override
-    public int doStartTag() throws JspException {
-        if (ratingVar != null) {
-            pageContext.removeAttribute(ratingVar, PageContext.PAGE_SCOPE);
+    Double ratingValue = 0D;
+
+    DataDescriptorIf dataDescriptorIf = new DataDescriptor();
+    dataDescriptorIf.setShowInvisible(showVisible);
+
+    double numberOfReview = 0;
+
+    try {
+      ReviewsIf reviewsIf = getKkAppEng().getEng().getReviewsPerProduct(dataDescriptorIf, productId);
+
+      if (reviewsIf.getTotalNumReviews() == 0) {
+        return 0;
+      }
+
+      // Retreive the reviews.
+      ReviewIf[] reviews = reviewsIf.getReviewArray();
+
+      // Double check...
+      if (reviews != null && reviews.length > 0) {
+
+        numberOfReview = reviews.length;
+
+        double rating = 0;
+
+        for (ReviewIf reviewIf : reviews) {
+          rating += reviewIf.getRating();
         }
 
-        if (nbReviewsVar != null) {
-            pageContext.removeAttribute(nbReviewsVar, PageContext.PAGE_SCOPE);
-        }
-
-        return EVAL_BODY_INCLUDE;
+        ratingValue = rating / reviews.length;
+      }
+    } catch (KKException e) {
+      ratingValue = 0D;
     }
 
-    @Override
-    public int doEndTag() throws JspException {
+    writeOrSetVar(ratingVar, ratingValue);
+    writeOrSetVar(nbReviewsVar, numberOfReview);
 
-        Double ratingValue = 0D;
+    return EVAL_PAGE;
+  }
 
-        DataDescriptorIf dataDescriptorIf = new DataDescriptor();
-        dataDescriptorIf.setShowInvisible(showVisible);
-
-        double numberOfReview = 0;
-
-        try {
-            ReviewsIf reviewsIf = getKkAppEng().getEng().getReviewsPerProduct(dataDescriptorIf, productId);
-
-            if (reviewsIf.getTotalNumReviews() == 0) {
-                return 0;
-            }
-
-            // Retreive the reviews.
-            ReviewIf[] reviews = reviewsIf.getReviewArray();
-
-            // Double check...
-            if (reviews != null && reviews.length > 0) {
-
-                numberOfReview = reviews.length;
-
-                double rating = 0;
-
-                for (ReviewIf reviewIf : reviews) {
-                    rating += reviewIf.getRating();
-                }
-
-                ratingValue = rating / reviews.length;
-            }
-        } catch (KKException e) {
-            ratingValue = 0D;
-        }
-
-        writeOrSetVar(ratingVar, ratingValue);
-        writeOrSetVar(nbReviewsVar, numberOfReview);
-
-        return EVAL_PAGE;
+  private void writeOrSetVar(String var, Double rating) throws JspException {
+    if (var == null) {
+      JspWriter writer = pageContext.getOut();
+      try {
+        writer.write(rating.toString());
+      } catch (IOException e) {
+        throw new JspException("IOException while trying to write script tag", e);
+      }
+    } else {
+      int varScope = PageContext.PAGE_SCOPE;
+      pageContext.setAttribute(var, rating, varScope);
     }
-
-    private void writeOrSetVar(String var, Double rating) throws JspException {
-        if (var == null) {
-            JspWriter writer = pageContext.getOut();
-            try {
-                writer.write(rating.toString());
-            } catch (IOException e) {
-                throw new JspException("IOException while trying to write script tag", e);
-            }
-        } else {
-            int varScope = PageContext.PAGE_SCOPE;
-            pageContext.setAttribute(var, rating, varScope);
-        }
-    }
+  }
 }

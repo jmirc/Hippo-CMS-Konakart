@@ -10,21 +10,21 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 public class KKTagSupport extends HstTagSupport {
 
-    /**
-     * Retrieve the Konakart App Engine.
-     *
-     * @return the engine
-     * @throws javax.servlet.jsp.JspException thrown if the engine could not be retrieved
-     */
-    public KKAppEng getKkAppEng() throws JspException {
+  /**
+   * Retrieve the Konakart App Engine.
+   *
+   * @return the engine
+   * @throws javax.servlet.jsp.JspException thrown if the engine could not be retrieved
+   */
+  public KKAppEng getKkAppEng() throws JspException {
 
-        HttpSession session = pageContext.getSession();
-        KKAppEng kkAppEng = (KKAppEng) session.getAttribute(KKAppEng.KONAKART_KEY);
+    HttpSession session = pageContext.getSession();
+    KKAppEng kkAppEng = (KKAppEng) session.getAttribute(KKAppEng.KONAKART_KEY);
 
-        if (kkAppEng == null) {
-            throw new JspException("Failed to retrieve the Engine");
-        }
-
-        return kkAppEng;
+    if (kkAppEng == null) {
+      throw new JspException("Failed to retrieve the Engine");
     }
+
+    return kkAppEng;
+  }
 }

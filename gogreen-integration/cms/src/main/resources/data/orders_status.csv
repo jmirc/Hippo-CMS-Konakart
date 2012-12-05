@@ -1,0 +1,9 @@
+status_id,en_code,fr_code,nl_code,it_code,zh_code,es_code,ru_code,de_code
+1,Pending,En attente,In afwachting van,In attesa di,有待,Pendiente,в ожидании,Offen
+2,Processing,En traitement,Verwerking,Elaborazione,处理,Proceso,обработка,In Bearbeitung
+3,Delivered,Livré,Geleverd,Consegnato,交付,Entregado,Поставляются,Versendet
+4,Waiting for Payment,En attente de paiment,Wachten op betaling,In attesa di pagamento,等待付款,Para pago que espera,В ожидании оплаты,Wartezahlung
+5,Payment Received,Paiement reçu,Betaling Ontvangen,Pagamento Ricevuto,收到付款,Pago recibido,Оплата поступила,Zahlung empfing
+6,Payment Declined,Paiement refusé,Betaling Afgewezen,Pagamento Rifiutato,付款被拒收,Pago declinado,Платеж отклонен,Zahlung sank
+7,Partially Delivered,Livré partiellement,Gedeeltelijk Geleverd,Consegnato Parzialmente,部分交付,Entregado parcialmente,Частично Поставляются,Teilweise geliefert
+8,Cancelled,Annulé,Geannuleerd,Annullato,注销,Cancelado,Отменено,Abgesagt

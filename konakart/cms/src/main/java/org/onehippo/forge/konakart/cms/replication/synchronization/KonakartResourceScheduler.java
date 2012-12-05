@@ -10,23 +10,23 @@ import javax.jcr.Session;
 
 public class KonakartResourceScheduler extends StdScheduler implements Scheduler {
 
-    private QuartzScheduler qs;
-    private SchedulingContext ctx;
+  private QuartzScheduler qs;
+  private SchedulingContext ctx;
 
 
-    public KonakartResourceScheduler(QuartzScheduler sched, SchedulingContext schedCtxt) {
-        super(sched, schedCtxt);
+  public KonakartResourceScheduler(QuartzScheduler sched, SchedulingContext schedCtxt) {
+    super(sched, schedCtxt);
 
-        this.qs = sched;
-        this.ctx = schedCtxt;
-    }
+    this.qs = sched;
+    this.ctx = schedCtxt;
+  }
 
-    public KonakartResourceScheduler(KonakartResourceScheduler sched, Session session) {
-        super(sched.qs, new JCRSchedulingContext(sched.ctx, session));
-    }
+  public KonakartResourceScheduler(KonakartResourceScheduler sched, Session session) {
+    super(sched.qs, new JCRSchedulingContext(sched.ctx, session));
+  }
 
-    public SchedulingContext getCtx() {
-        return ctx;
-    }
+  public SchedulingContext getCtx() {
+    return ctx;
+  }
 
 }

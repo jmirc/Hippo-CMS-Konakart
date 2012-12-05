@@ -9,34 +9,34 @@ import org.slf4j.LoggerFactory;
 
 public class CheckoutProcessContext implements ProcessorContext {
 
-    private Logger log = LoggerFactory.getLogger(CheckoutProcessContext.class);
+  private Logger log = LoggerFactory.getLogger(CheckoutProcessContext.class);
 
-    private Processor processor;
-    private CheckoutSeedData seedData;
+  private Processor processor;
+  private CheckoutSeedData seedData;
 
-    @Override
-    public void setProcessor(Processor processor) {
-        this.processor = processor;
+  @Override
+  public void setProcessor(Processor processor) {
+    this.processor = processor;
+  }
+
+  @Override
+  public Processor getProcessor() {
+    return processor;
+  }
+
+  @Override
+  public void setSeedData(SeedData seedObject) throws ActivityException {
+    if (!(seedObject instanceof CheckoutSeedData)) {
+      log.error("STOPPING Workflow Process, seed data instance is incorrect. " +
+          "Required class is " + CheckoutSeedData.class.getName() + " " +
+          "bug found class: " + seedObject.getClass().getName());
+      throw new ActivityException("STOPPING Workflow Process");
     }
+    seedData = (CheckoutSeedData) seedObject;
+  }
 
-    @Override
-    public Processor getProcessor() {
-        return processor;
-    }
-
-    @Override
-    public void setSeedData(SeedData seedObject) throws ActivityException {
-        if (!(seedObject instanceof CheckoutSeedData)) {
-            log.error("STOPPING Workflow Process, seed data instance is incorrect. " +
-                    "Required class is " + CheckoutSeedData.class.getName() + " " +
-                    "bug found class: " + seedObject.getClass().getName());
-            throw new ActivityException("STOPPING Workflow Process");
-        }
-        seedData = (CheckoutSeedData) seedObject;
-    }
-
-    @Override
-    public CheckoutSeedData getSeedData() {
-        return seedData;
-    }
+  @Override
+  public CheckoutSeedData getSeedData() {
+    return seedData;
+  }
 }

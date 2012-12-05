@@ -19,81 +19,81 @@ import java.util.Collection;
 
 public class KonakartSyncJob implements Job {
 
-    private static Logger log = LoggerFactory.getLogger(KonakartSyncJob.class);
+  private static Logger log = LoggerFactory.getLogger(KonakartSyncJob.class);
 
-    private Session jcrSession;
+  private Session jcrSession;
 
-    /**
-     * Start the replication
-     */
-    @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
-        log.debug("Executing Konakart Products Replicator ...");
+  /**
+   * Start the replication
+   */
+  @Override
+  public void execute(JobExecutionContext context) throws JobExecutionException {
+    log.debug("Executing Konakart Products Replicator ...");
 
-        // Set the JcrSession
-        KonakartResourceScheduler scheduler = (KonakartResourceScheduler) context.getScheduler();
-        jcrSession = ((JCRSchedulingContext) scheduler.getCtx()).getSession();
+    // Set the JcrSession
+    KonakartResourceScheduler scheduler = (KonakartResourceScheduler) context.getScheduler();
+    jcrSession = ((JCRSchedulingContext) scheduler.getCtx()).getSession();
 
-        // Load the gallery processor service
-        GalleryProcesssorConfig.load(jcrSession);
+    // Load the gallery processor service
+    GalleryProcesssorConfig.load(jcrSession);
+
+    try {
+      // Initialize the Konakart engine
+      KKEngine.init(jcrSession);
+      KKAdminEngine.init(jcrSession);
+
+      // Synchronize all stores
+      Collection<KKStoreConfig> kkStoreConfigs = HippoModuleConfig.getConfig().getStoresConfig().values();
+
+      for (KKStoreConfig kkStoreConfig : kkStoreConfigs) {
+        if ((kkStoreConfig == null) || !kkStoreConfig.isInitialized()) {
+          log.error("The Konakart synchronization service has not be initialized. Please check the log.");
+          continue;
+        }
 
         try {
-                // Initialize the Konakart engine
-            KKEngine.init(jcrSession);
-            KKAdminEngine.init(jcrSession);
-
-            // Synchronize all stores
-            Collection<KKStoreConfig> kkStoreConfigs = HippoModuleConfig.getConfig().getStoresConfig().values();
-
-            for (KKStoreConfig kkStoreConfig : kkStoreConfigs) {
-                if ((kkStoreConfig == null) || !kkStoreConfig.isInitialized()) {
-                    log.error("The Konakart synchronization service has not be initialized. Please check the log.");
-                    continue;
-                }
-
-                try {
-                    // Synchronize konakart information
-                    syncKonakartToHippo(kkStoreConfig);
-                } catch (Exception e) {
-                    log.warn("Failed to update Repository to Konakart. ", e);
-                }
-
-                // Synchronize hippo product
-                try {
-                    syncHippoToKonakart(kkStoreConfig);
-                } catch (Exception e) {
-                    log.warn("Failed to update Konakart to Repository. ", e);
-                }
-            }
+          // Synchronize konakart information
+          syncKonakartToHippo(kkStoreConfig);
         } catch (Exception e) {
-            log.warn("Failed to initialize Konakart engine. ", e);
+          log.warn("Failed to update Repository to Konakart. ", e);
         }
-    }
 
-    /**
-     * Synchronize Konakart information to Hippo
-     *
-     * @param kkStoreConfig the store config
-     * @throws Exception an exception
-     */
-    protected void syncKonakartToHippo(KKStoreConfig kkStoreConfig) throws Exception {
-
-        // Synchronize products
-        if (KonakartSyncProducts.updateKonakartToHippo(kkStoreConfig, jcrSession)) {
-            kkStoreConfig.updateLastUpdatedTimeKonakartToRepository(jcrSession);
+        // Synchronize hippo product
+        try {
+          syncHippoToKonakart(kkStoreConfig);
+        } catch (Exception e) {
+          log.warn("Failed to update Konakart to Repository. ", e);
         }
+      }
+    } catch (Exception e) {
+      log.warn("Failed to initialize Konakart engine. ", e);
     }
+  }
 
-    /**
-     * Synchronize Konakart information to Hippo
-     *
-     * @param kkStoreConfig the store config
-     * @throws Exception an exception
-     */
-    protected void syncHippoToKonakart(KKStoreConfig kkStoreConfig) throws Exception {
+  /**
+   * Synchronize Konakart information to Hippo
+   *
+   * @param kkStoreConfig the store config
+   * @throws Exception an exception
+   */
+  protected void syncKonakartToHippo(KKStoreConfig kkStoreConfig) throws Exception {
 
-        // Synchronize products
-        KonakartSyncProducts.updateHippoToKonakart(kkStoreConfig, jcrSession);
-        kkStoreConfig.updateLastUpdatedTimeRepositoryToKonakart(jcrSession);
+    // Synchronize products
+    if (KonakartSyncProducts.updateKonakartToHippo(kkStoreConfig, jcrSession)) {
+      kkStoreConfig.updateLastUpdatedTimeKonakartToRepository(jcrSession);
     }
+  }
+
+  /**
+   * Synchronize Konakart information to Hippo
+   *
+   * @param kkStoreConfig the store config
+   * @throws Exception an exception
+   */
+  protected void syncHippoToKonakart(KKStoreConfig kkStoreConfig) throws Exception {
+
+    // Synchronize products
+    KonakartSyncProducts.updateHippoToKonakart(kkStoreConfig, jcrSession);
+    kkStoreConfig.updateLastUpdatedTimeRepositoryToKonakart(jcrSession);
+  }
 }

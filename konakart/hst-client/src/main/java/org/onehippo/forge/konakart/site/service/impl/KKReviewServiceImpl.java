@@ -18,72 +18,72 @@ import javax.annotation.Nonnull;
 
 public class KKReviewServiceImpl extends KKBaseServiceImpl implements KKReviewService {
 
-    @Override
-    public ReviewIf[] getReviewsForProductId(@Nonnull HstRequest request, int productId) {
-        return getReviewsForProductId(request, productId, false);
+  @Override
+  public ReviewIf[] getReviewsForProductId(@Nonnull HstRequest request, int productId) {
+    return getReviewsForProductId(request, productId, false);
+  }
+
+  @Override
+  @Nonnull
+  public ReviewIf[] getReviewsForProductId(@Nonnull HstRequest request, int productId, boolean showInvisible) {
+    KKAppEng kkAppEng = getKKAppEng(request);
+
+    ReviewMgr reviewMgr = kkAppEng.getReviewMgr();
+
+    try {
+      reviewMgr.getDataDesc().setShowInvisible(showInvisible);
+      int nbReviews = reviewMgr.fetchReviewsPerProduct(productId);
+
+      if (nbReviews > 0) {
+        return reviewMgr.getCurrentReviews();
+      }
+    } catch (KKException e) {
+      log.warn("Failed to fetch the list of reviews");
+    } catch (KKAppException e) {
+      log.warn("Failed to fetch the list of reviews");
     }
 
-    @Override
-    @Nonnull
-    public ReviewIf[] getReviewsForProductId(@Nonnull HstRequest request, int productId, boolean showInvisible) {
-        KKAppEng kkAppEng = getKKAppEng(request);
 
-        ReviewMgr reviewMgr = kkAppEng.getReviewMgr();
+    return new Review[0];
+  }
 
-        try {
-            reviewMgr.getDataDesc().setShowInvisible(showInvisible);
-            int nbReviews = reviewMgr.fetchReviewsPerProduct(productId);
+  @Override
+  public void writeReview(HstRequest request, String reviewText, int rating, int customerId) throws Exception {
+    ReviewMgr reviewMgr = KKServiceHelper.getKKEngineService().getKKAppEng(request).getReviewMgr();
+    reviewMgr.writeReview(reviewText, rating, customerId);
+  }
 
-            if (nbReviews > 0) {
-                return reviewMgr.getCurrentReviews();
-            }
-        } catch (KKException e) {
-            log.warn("Failed to fetch the list of reviews");
-        } catch (KKAppException e) {
-            log.warn("Failed to fetch the list of reviews");
-        }
+  @Override
+  public int writeReview(HstRequest request, int productId, String reviewText, int rating, int customerId) throws Exception {
 
+    KKAppEng kkAppEng = getKKAppEng(request);
 
-        return new Review[0];
-    }
+    Review review = new Review();
 
-    @Override
-    public void writeReview(HstRequest request, String reviewText, int rating, int customerId) throws Exception {
-        ReviewMgr reviewMgr = KKServiceHelper.getKKEngineService().getKKAppEng(request).getReviewMgr();
-        reviewMgr.writeReview(reviewText, rating, customerId);
-    }
+    review.setRating(rating);
+    review.setReviewText(Utils.escapeHtml(reviewText));
+    review.setProductId(productId);
+    review.setLanguageId(kkAppEng.getLangId());
+    review.setCustomerId(customerId);
 
-    @Override
-    public int writeReview(HstRequest request, int productId, String reviewText, int rating, int customerId) throws Exception {
+    return kkAppEng.getEng().writeReview(kkAppEng.getSessionId(), review);
+  }
 
-        KKAppEng kkAppEng = getKKAppEng(request);
+  @Override
+  public int writeReview(HstRequest request, int productId, String reviewText, int rating, int customerId, boolean isVisible) throws Exception {
 
-        Review review = new Review();
+    KKAppEng kkAppEng = getKKAppEng(request);
 
-        review.setRating(rating);
-        review.setReviewText(Utils.escapeHtml(reviewText));
-        review.setProductId(productId);
-        review.setLanguageId(kkAppEng.getLangId());
-        review.setCustomerId(customerId);
+    AdminReviewMgrIf reviewMgr = KKAdminEngine.getInstance().getFactory().getAdminReviewMgr(true);
 
-        return kkAppEng.getEng().writeReview(kkAppEng.getSessionId(), review);
-    }
+    AdminReview review = new AdminReview();
+    review.setRating(rating);
+    review.setReviewText(Utils.escapeHtml(reviewText));
+    review.setProductId(productId);
+    review.setLanguageId(kkAppEng.getLangId());
+    review.setCustomerId(customerId);
+    review.setStatus(isVisible ? 1 : 0);
 
-    @Override
-    public int writeReview(HstRequest request, int productId, String reviewText, int rating, int customerId, boolean isVisible) throws Exception {
-
-        KKAppEng kkAppEng = getKKAppEng(request);
-
-        AdminReviewMgrIf reviewMgr = KKAdminEngine.getInstance().getFactory().getAdminReviewMgr(true);
-
-        AdminReview review = new AdminReview();
-        review.setRating(rating);
-        review.setReviewText(Utils.escapeHtml(reviewText));
-        review.setProductId(productId);
-        review.setLanguageId(kkAppEng.getLangId());
-        review.setCustomerId(customerId);
-        review.setStatus(isVisible ? 1 : 0);
-
-        return reviewMgr.insertReview(review);
-    }
+    return reviewMgr.insertReview(review);
+  }
 }

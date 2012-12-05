@@ -20,498 +20,499 @@
   ~ =========================================================
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.onehippo.forge.konakart</groupId>
-        <artifactId>konakart</artifactId>
-        <version>1.00.05-SNAPSHOT</version>
-    </parent>
-
-    <name>Hippo Konakart Dependencies</name>
+  <parent>
     <groupId>org.onehippo.forge.konakart</groupId>
-    <artifactId>hippo-addon-konakart-dependencies</artifactId>
-    <packaging>jar</packaging>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.build.javaVersion>1.6</project.build.javaVersion>
-
-        <jcr.version>2.0</jcr.version>
-        <lib.slf4j.version>1.6.1</lib.slf4j.version>
-        <plugin.compiler.version>2.3.2</plugin.compiler.version>
-
-        <struts.version>1.2.9</struts.version>
-        <konakart.version>6.3.0.0</konakart.version>
-        <torque.version>3.3</torque.version>
-        <torque.village.version>3.3.1</torque.village.version>
-        <velocity.version>1.6.4</velocity.version>
-        <velocity-tools.version>2.0</velocity-tools.version>
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${lib.slf4j.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.jcr</groupId>
-            <artifactId>jcr</artifactId>
-            <version>${jcr.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!-- Konakart dependencies -->
-        <dependency>
-            <groupId>konakart-struts</groupId>
-            <artifactId>struts</artifactId>
-            <version>${struts.version}</version>
-        </dependency>
-
-
-        <!-- Konakart admin dependencies -->
-        <dependency>
-            <groupId>com.konakart.admin</groupId>
-            <artifactId>konakart</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.admin</groupId>
-            <artifactId>custom</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-
-        <!-- Konakart client dependencies -->
-        <dependency>
-            <groupId>com.konakart.client</groupId>
-            <artifactId>client</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.client</groupId>
-            <artifactId>utils</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.client</groupId>
-            <artifactId>app</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.client</groupId>
-            <artifactId>custom</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.client</groupId>
-            <artifactId>custom-utils</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <!-- Konakart Order Total dependencies -->
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>buyxgetyfree</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>freeproduct</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>giftcertificate</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>productdiscount</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>redeempoints</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>rewardpoints</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>shipping</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>shippingdiscount</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>subtotal</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>tax</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>taxcloud</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>total</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.order</groupId>
-            <artifactId>totaldiscount</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-
-        <!-- Konakart Payment dependencies -->
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>authorizenet</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>barclaycardsmartpayapi</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>barclaycardsmartpayhosted</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>bluepay</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>caledon</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>chronopay</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>cod</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>commideavanguard</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>cybersource</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>cybersourcehop</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>elink</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>au</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>moneybookers</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>netpayintl</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>payflowpro</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>payjunction</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>paypal</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>usaepay</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>worldpay</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>worldpayxmlredirect</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.payment</groupId>
-            <artifactId>yourpay</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <!-- Konakart Shipping dependencies -->
-        <dependency>
-            <groupId>com.konakart.module.shipping</groupId>
-            <artifactId>digitaldownload</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.shipping</groupId>
-            <artifactId>fedex</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.shipping</groupId>
-            <artifactId>flat</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.shipping</groupId>
-            <artifactId>free</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.shipping</groupId>
-            <artifactId>freeproduct</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.shipping</groupId>
-            <artifactId>item</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.shipping</groupId>
-            <artifactId>pickupinstore</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.shipping</groupId>
-            <artifactId>table</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.shipping</groupId>
-            <artifactId>ups</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.shipping</groupId>
-            <artifactId>usps</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.shipping</groupId>
-            <artifactId>uspsint</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.module.shipping</groupId>
-            <artifactId>zones</artifactId>
-            <version>${konakart.version}</version>
-        </dependency>
-
-        <!-- database depedencies -->
-        <dependency>
-            <groupId>com.konakart.torque</groupId>
-            <artifactId>torque</artifactId>
-            <version>${torque.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.konakart.torque</groupId>
-            <artifactId>village</artifactId>
-            <version>${torque.village.version}</version>
-        </dependency>
-
-        <!-- velocity depedencies -->
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity</artifactId>
-            <version>${velocity.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-tools</artifactId>
-            <version>${velocity-tools.version}</version>
-        </dependency>
-
-        <!-- Guava dependencies -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>12.0</version>
-        </dependency>
-
-        <!-- apache commons dependencies -->
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-            <version>1.7.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>3.2.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-configuration</groupId>
-            <artifactId>commons-configuration</artifactId>
-            <version>1.7</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.1.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-pool</groupId>
-            <artifactId>commons-pool</artifactId>
-            <version>1.5.4</version>
-        </dependency>
-
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.16</version>
-        </dependency>
-
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.1</version>
-        </dependency>
-
-
-    </dependencies>
-
-    <build>
-
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${plugin.compiler.version}</version>
-                <configuration>
-                    <source>${project.build.javaVersion}</source>
-                    <target>${project.build.javaVersion}</target>
-                </configuration>
-            </plugin>
-        </plugins>
-
-        <resources>
-            <resource>
-                <filtering>false</filtering>
-                <directory>${basedir}/src/main/java</directory>
-                <includes>
-                    <include>**/*.html</include>
-                    <include>**/*.properties</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>
+    <artifactId>konakart</artifactId>
+    <version>1.00.05-SNAPSHOT</version>
+  </parent>
+
+  <name>Hippo Konakart Dependencies</name>
+  <groupId>org.onehippo.forge.konakart</groupId>
+  <artifactId>hippo-addon-konakart-dependencies</artifactId>
+  <packaging>jar</packaging>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.javaVersion>1.6</project.build.javaVersion>
+
+    <jcr.version>2.0</jcr.version>
+    <lib.slf4j.version>1.6.1</lib.slf4j.version>
+    <plugin.compiler.version>2.3.2</plugin.compiler.version>
+
+    <struts.version>1.2.9</struts.version>
+    <konakart.version>6.3.0.0</konakart.version>
+    <torque.version>3.3</torque.version>
+    <torque.village.version>3.3.1</torque.village.version>
+    <velocity.version>1.6.4</velocity.version>
+    <velocity-tools.version>2.0</velocity-tools.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>${lib.slf4j.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.jcr</groupId>
+      <artifactId>jcr</artifactId>
+      <version>${jcr.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!-- Konakart dependencies -->
+    <dependency>
+      <groupId>konakart-struts</groupId>
+      <artifactId>struts</artifactId>
+      <version>${struts.version}</version>
+    </dependency>
+
+
+    <!-- Konakart admin dependencies -->
+    <dependency>
+      <groupId>com.konakart.admin</groupId>
+      <artifactId>konakart</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.admin</groupId>
+      <artifactId>custom</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+
+    <!-- Konakart client dependencies -->
+    <dependency>
+      <groupId>com.konakart.client</groupId>
+      <artifactId>client</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.client</groupId>
+      <artifactId>utils</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.client</groupId>
+      <artifactId>app</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.client</groupId>
+      <artifactId>custom</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.client</groupId>
+      <artifactId>custom-utils</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <!-- Konakart Order Total dependencies -->
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>buyxgetyfree</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>freeproduct</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>giftcertificate</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>productdiscount</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>redeempoints</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>rewardpoints</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>shipping</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>shippingdiscount</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>subtotal</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>tax</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>taxcloud</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>total</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.order</groupId>
+      <artifactId>totaldiscount</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+
+    <!-- Konakart Payment dependencies -->
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>authorizenet</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>barclaycardsmartpayapi</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>barclaycardsmartpayhosted</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>bluepay</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>caledon</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>chronopay</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>cod</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>commideavanguard</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>cybersource</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>cybersourcehop</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>elink</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>au</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>moneybookers</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>netpayintl</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>payflowpro</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>payjunction</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>paypal</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>usaepay</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>worldpay</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>worldpayxmlredirect</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.payment</groupId>
+      <artifactId>yourpay</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <!-- Konakart Shipping dependencies -->
+    <dependency>
+      <groupId>com.konakart.module.shipping</groupId>
+      <artifactId>digitaldownload</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.shipping</groupId>
+      <artifactId>fedex</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.shipping</groupId>
+      <artifactId>flat</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.shipping</groupId>
+      <artifactId>free</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.shipping</groupId>
+      <artifactId>freeproduct</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.shipping</groupId>
+      <artifactId>item</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.shipping</groupId>
+      <artifactId>pickupinstore</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.shipping</groupId>
+      <artifactId>table</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.shipping</groupId>
+      <artifactId>ups</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.shipping</groupId>
+      <artifactId>usps</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.shipping</groupId>
+      <artifactId>uspsint</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.module.shipping</groupId>
+      <artifactId>zones</artifactId>
+      <version>${konakart.version}</version>
+    </dependency>
+
+    <!-- database depedencies -->
+    <dependency>
+      <groupId>com.konakart.torque</groupId>
+      <artifactId>torque</artifactId>
+      <version>${torque.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.konakart.torque</groupId>
+      <artifactId>village</artifactId>
+      <version>${torque.village.version}</version>
+    </dependency>
+
+    <!-- velocity depedencies -->
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>${velocity.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.velocity</groupId>
+      <artifactId>velocity-tools</artifactId>
+      <version>${velocity-tools.version}</version>
+    </dependency>
+
+    <!-- Guava dependencies -->
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>12.0</version>
+    </dependency>
+
+    <!-- apache commons dependencies -->
+    <dependency>
+      <groupId>commons-beanutils</groupId>
+      <artifactId>commons-beanutils</artifactId>
+      <version>1.7.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.2.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-configuration</groupId>
+      <artifactId>commons-configuration</artifactId>
+      <version>1.7</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <version>1.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.6</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <version>1.1.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>commons-pool</groupId>
+      <artifactId>commons-pool</artifactId>
+      <version>1.5.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.16</version>
+    </dependency>
+
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>2.1</version>
+    </dependency>
+
+
+  </dependencies>
+
+  <build>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${plugin.compiler.version}</version>
+        <configuration>
+          <source>${project.build.javaVersion}</source>
+          <target>${project.build.javaVersion}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+
+    <resources>
+      <resource>
+        <filtering>false</filtering>
+        <directory>${basedir}/src/main/java</directory>
+        <includes>
+          <include>**/*.html</include>
+          <include>**/*.properties</include>
+        </includes>
+      </resource>
+    </resources>
+  </build>
 </project>

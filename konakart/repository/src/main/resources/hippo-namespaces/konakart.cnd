@@ -53,7 +53,7 @@
   - konakart:externalImageBasePath (String)
   - konakart:storeid (string) mandatory
   - konakart:catalogid (string)
-  - konakart:locale (string)
+  - konakart:locale (string) mandatory
   - konakart:securitycustomergroups (string) multiple
   + konakart:sync (konakart:sync) = konakart:sync
   + konakart:producttypenamespaces (konakart:producttypenamespaces) = konakart:producttypenamespaces

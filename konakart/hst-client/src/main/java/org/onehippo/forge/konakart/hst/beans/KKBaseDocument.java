@@ -9,5 +9,5 @@ import org.slf4j.LoggerFactory;
 @Node(jcrType = KKCndConstants.BASEDOCUMENT_DOC_TYPE)
 public class KKBaseDocument extends HippoDocument {
 
-    protected Logger log = LoggerFactory.getLogger(getClass());
+  protected Logger log = LoggerFactory.getLogger(getClass());
 }

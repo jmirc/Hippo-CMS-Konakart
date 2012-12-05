@@ -15,85 +15,85 @@ import java.util.List;
 
 public class PaymentMethodActivity extends BaseCheckoutActivity {
 
-    private static final String PAYMENT_METHOD = "paymentMethod";
-    private static final String PAYMENT_DETAILS = "paymentDetails";
+  private static final String PAYMENT_METHOD = "paymentMethod";
+  private static final String PAYMENT_DETAILS = "paymentDetails";
 
-    @Override
-    public void doBeforeRender() throws ActivityException {
+  @Override
+  public void doBeforeRender() throws ActivityException {
 
-        if (!validateCurrentCart()) {
-            return;
-        }
+    if (!validateCurrentCart()) {
+      return;
+    }
 
-        // Ensure that the user hasn't submitted the order and then got back to here using the
-        // back button. We check to see whether the basket is null
-        // Check to see whether there is something in the cart
-        CustomerIf cust = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getCustomerMgr().getCurrentCustomer();
+    // Ensure that the user hasn't submitted the order and then got back to here using the
+    // back button. We check to see whether the basket is null
+    // Check to see whether there is something in the cart
+    CustomerIf cust = KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getCustomerMgr().getCurrentCustomer();
 
-        if (cust.getBasketItems() == null || cust.getBasketItems().length == 0) {
-            processorContext.getSeedData().getKkBaseHstComponent().redirectByRefId(
-                    processorContext.getSeedData().getRequest(),
-                    processorContext.getSeedData().getResponse(),
-                    processorContext.getSeedData().getKkBaseHstComponent().getCartDetailRefId());
+    if (cust.getBasketItems() == null || cust.getBasketItems().length == 0) {
+      processorContext.getSeedData().getKkBaseHstComponent().redirectByRefId(
+          processorContext.getSeedData().getRequest(),
+          processorContext.getSeedData().getResponse(),
+          processorContext.getSeedData().getKkBaseHstComponent().getCartDetailRefId());
 
-            return;
-        }
+      return;
+    }
 
 
-        // Get payment gateways from the engine
-        try {
-            kkAppEng.getOrderMgr().createPaymentGatewayList();
+    // Get payment gateways from the engine
+    try {
+      kkAppEng.getOrderMgr().createPaymentGatewayList();
 
-            hstRequest.setAttribute(PAYMENT_DETAILS, kkAppEng.getOrderMgr().getPaymentDetailsArray());
-            hstRequest.setAttribute(PAYMENT_METHOD, kkAppEng.getOrderMgr().getPaymentType());
+      hstRequest.setAttribute(PAYMENT_DETAILS, kkAppEng.getOrderMgr().getPaymentDetailsArray());
+      hstRequest.setAttribute(PAYMENT_METHOD, kkAppEng.getOrderMgr().getPaymentType());
 
-        } catch (KKException e) {
-            throw new ActivityException("Failed to retrieve the list of payment gateway", e);
-        }
+    } catch (KKException e) {
+      throw new ActivityException("Failed to retrieve the list of payment gateway", e);
+    }
 
-        OrderIf checkoutOrder = kkAppEng.getOrderMgr().getCheckoutOrder();
-        processorContext.getSeedData().getRequest().setAttribute(PAYMENT_METHOD, checkoutOrder.getPaymentModuleCode());
+    OrderIf checkoutOrder = kkAppEng.getOrderMgr().getCheckoutOrder();
+    processorContext.getSeedData().getRequest().setAttribute(PAYMENT_METHOD, checkoutOrder.getPaymentModuleCode());
+
+  }
+
+  @Override
+  public void doAction() throws ActivityException {
+    super.doAction();
+
+    CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
+
+    if (seedData.getAction().equals(KKActionsConstants.ACTIONS.SELECT.name())) {
+      String paymentMethod = KKUtil.getActionRequestParameter(seedData.getRequest(), PAYMENT_METHOD);
+
+      if (StringUtils.isEmpty(paymentMethod)) {
+        updateNextLoggedState(KKActionsConstants.STATES.PAYMENT_METHOD.name());
+        addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.select.payment.method"));
+        return;
+      }
+
+      // Attach the payment method to the order
+      KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().addPaymentDetailsToOrder(paymentMethod);
+
 
     }
 
-    @Override
-    public void doAction() throws ActivityException {
-        super.doAction();
+  }
 
-        CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
+  @Override
+  public void doAdditionalData() {
+    super.doAdditionalData();
 
-        if (seedData.getAction().equals(KKActionsConstants.ACTIONS.SELECT.name())) {
-            String paymentMethod = KKUtil.getActionRequestParameter(seedData.getRequest(), PAYMENT_METHOD);
+    CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
-            if (StringUtils.isEmpty(paymentMethod)) {
-                updateNextLoggedState(KKActionsConstants.STATES.PAYMENT_METHOD.name());
-                addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.select.payment.method"));
-                return;
-            }
+    List<String> acceptedStates = Arrays.asList(KKActionsConstants.STATES.PAYMENT_METHOD.name(), KKActionsConstants.STATES.ORDER_REVIEW.name());
 
-            // Attach the payment method to the order
-            KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().addPaymentDetailsToOrder(paymentMethod);
+    String state = seedData.getState();
 
-
-        }
-
+    if (StringUtils.isNotEmpty(state) && acceptedStates.contains(state)) {
+      hstRequest.getRequestContext().setAttribute(getAcceptState().concat("_EDIT"), true);
+      hstRequest.setAttribute(getAcceptState().concat("_EDIT"), true);
     }
-
-    @Override
-    public void doAdditionalData() {
-        super.doAdditionalData();
-
-        CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
-
-        List<String> acceptedStates = Arrays.asList(KKActionsConstants.STATES.PAYMENT_METHOD.name(), KKActionsConstants.STATES.ORDER_REVIEW.name());
-
-        String state = seedData.getState();
-
-        if (StringUtils.isNotEmpty(state) && acceptedStates.contains(state)) {
-            hstRequest.getRequestContext().setAttribute(getAcceptState().concat("_EDIT"), true);
-            hstRequest.setAttribute(getAcceptState().concat("_EDIT"), true);
-        }
-    }
+  }
 
 
 }

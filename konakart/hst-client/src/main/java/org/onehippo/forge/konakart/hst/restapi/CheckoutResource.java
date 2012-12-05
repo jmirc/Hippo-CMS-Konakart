@@ -23,41 +23,41 @@ import java.util.List;
 @Path("/checkout/")
 public class CheckoutResource extends AbstractResource {
 
-    protected Logger log = LoggerFactory.getLogger(CheckoutResource.class);
+  protected Logger log = LoggerFactory.getLogger(CheckoutResource.class);
 
-    @GET
-    @Path("states/{country}/")
-    @Produces("application/json")
-    public List<SelectRepresentation> getStatesResources(@Context HttpServletRequest servletRequest,
-                                                         @Context HttpServletResponse servletResponse, @Context UriInfo uriInfo,
-                                                         @PathParam("country") Integer country) {
+  @GET
+  @Path("states/{country}/")
+  @Produces("application/json")
+  public List<SelectRepresentation> getStatesResources(@Context HttpServletRequest servletRequest,
+                                                       @Context HttpServletResponse servletResponse, @Context UriInfo uriInfo,
+                                                       @PathParam("country") Integer country) {
 
-        if (country == null || country == -1) {
-            return Collections.emptyList();
-        }
-
-        List<SelectRepresentation> states = new ArrayList<SelectRepresentation>();
-
-        KKAppEng kkAppEng = (KKAppEng) servletRequest.getSession().getAttribute(KKAppEng.KONAKART_KEY);
-
-        if (kkAppEng != null) {
-            // retrieve the list of province
-            try {
-                ZoneIf[] zones = kkAppEng.getEng().getZonesPerCountry(country);
-
-                for (ZoneIf zone : zones) {
-                    SelectRepresentation state = new SelectRepresentation();
-                    state.setId(zone.getZoneId());
-                    state.setName(zone.getZoneName());
-                    states.add(state);
-                }
-
-            } catch (KKException e) {
-                log.error("Unable to retrieve the list of states for the country id - " + country, e);
-            }
-        }
-
-        return states;
-
+    if (country == null || country == -1) {
+      return Collections.emptyList();
     }
+
+    List<SelectRepresentation> states = new ArrayList<SelectRepresentation>();
+
+    KKAppEng kkAppEng = (KKAppEng) servletRequest.getSession().getAttribute(KKAppEng.KONAKART_KEY);
+
+    if (kkAppEng != null) {
+      // retrieve the list of province
+      try {
+        ZoneIf[] zones = kkAppEng.getEng().getZonesPerCountry(country);
+
+        for (ZoneIf zone : zones) {
+          SelectRepresentation state = new SelectRepresentation();
+          state.setId(zone.getZoneId());
+          state.setName(zone.getZoneName());
+          states.add(state);
+        }
+
+      } catch (KKException e) {
+        log.error("Unable to retrieve the list of states for the country id - " + country, e);
+      }
+    }
+
+    return states;
+
+  }
 }

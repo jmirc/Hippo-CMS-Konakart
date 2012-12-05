@@ -22,65 +22,65 @@ import javax.servlet.jsp.PageContext;
 
 public class ProductDocumentTag extends HstTagSupport {
 
-    private Logger log = LoggerFactory.getLogger(ProductDocumentTag.class);
+  private Logger log = LoggerFactory.getLogger(ProductDocumentTag.class);
 
-    private int productId;
-    private String var;
+  private int productId;
+  private String var;
 
-    public void setProductId(int productId) {
-        this.productId = productId;
+  public void setProductId(int productId) {
+    this.productId = productId;
+  }
+
+  public void setVar(String var) {
+    this.var = var;
+  }
+
+  /* (non-Javadoc)
+  * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
+  */
+  @Override
+  public int doStartTag() throws JspException {
+    if (var != null) {
+      pageContext.removeAttribute(var, PageContext.PAGE_SCOPE);
     }
 
-    public void setVar(String var) {
-        this.var = var;
+    return EVAL_BODY_INCLUDE;
+  }
+
+  @Override
+  public int doEndTag() throws JspException {
+
+    try {
+      HttpServletRequest servletRequest = (HttpServletRequest) pageContext.getRequest();
+      HstRequest hstRequest = HstRequestUtils.getHstRequest(servletRequest);
+      HstRequestContext requestContext = hstRequest.getRequestContext();
+
+      HstQueryManager queryManager = KKUtil.getQueryManager(requestContext);
+
+      HippoBean scope = KKUtil.getSiteContentBaseBean(hstRequest);
+
+      HstQuery hstQuery = queryManager.createQuery(scope, KKProductDocument.class);
+      Filter filter = hstQuery.createFilter();
+      filter.addEqualTo(KKCndConstants.PRODUCT_ID, (long) productId);
+
+      hstQuery.setFilter(filter);
+
+      HstQueryResult queryResult = hstQuery.execute();
+
+      // No result
+      if (queryResult.getTotalSize() != 0) {
+        HippoBean hippoBean1 = queryResult.getHippoBeans().next();
+
+        int varScope = PageContext.PAGE_SCOPE;
+        pageContext.setAttribute(var, hippoBean1, varScope);
+      }
+    } catch (QueryException e) {
+      log.error("Failed to find the Hippo product document for the productId {} - {}", productId, e.toString());
     }
 
-    /* (non-Javadoc)
-    * @see javax.servlet.jsp.tagext.TagSupport#doStartTag()
-    */
-    @Override
-    public int doStartTag() throws JspException {
-        if (var != null) {
-            pageContext.removeAttribute(var, PageContext.PAGE_SCOPE);
-        }
 
-        return EVAL_BODY_INCLUDE;
-    }
-
-    @Override
-    public int doEndTag() throws JspException {
-
-        try {
-            HttpServletRequest servletRequest = (HttpServletRequest) pageContext.getRequest();
-            HstRequest hstRequest = HstRequestUtils.getHstRequest(servletRequest);
-            HstRequestContext requestContext = hstRequest.getRequestContext();
-
-            HstQueryManager queryManager = KKUtil.getQueryManager(requestContext);
-
-            HippoBean scope = KKUtil.getSiteContentBaseBean(hstRequest);
-
-            HstQuery hstQuery = queryManager.createQuery(scope, KKProductDocument.class);
-            Filter filter = hstQuery.createFilter();
-            filter.addEqualTo(KKCndConstants.PRODUCT_ID, (long) productId);
-
-            hstQuery.setFilter(filter);
-
-            HstQueryResult queryResult = hstQuery.execute();
-
-            // No result
-            if (queryResult.getTotalSize() != 0) {
-                HippoBean hippoBean1 = queryResult.getHippoBeans().next();
-
-                int varScope = PageContext.PAGE_SCOPE;
-                pageContext.setAttribute(var, hippoBean1, varScope);
-            }
-        } catch (QueryException e) {
-            log.error("Failed to find the Hippo product document for the productId {} - {}", productId, e.toString());
-        }
+    return super.doStartTag();
 
 
-        return super.doStartTag();
-
-
-    }
+  }
 }

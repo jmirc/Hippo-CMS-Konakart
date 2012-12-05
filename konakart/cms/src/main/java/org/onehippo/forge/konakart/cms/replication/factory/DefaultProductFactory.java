@@ -12,8 +12,8 @@ import javax.jcr.Node;
  */
 public class DefaultProductFactory extends AbstractProductFactory {
 
-    @Override
-    protected void updateProperties(String storeId, Product product, Node node, LanguageIf language) {
-        // do nothing
-    }
+  @Override
+  protected void updateProperties(String storeId, Product product, Node node, LanguageIf language) {
+    // do nothing
+  }
 }

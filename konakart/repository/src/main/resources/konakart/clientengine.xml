@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <sv:node sv:name="konakart:clientengine" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
-    <sv:property sv:name="jcr:primaryType" sv:type="Name">
-        <sv:value>konakart:clientengine</sv:value>
-    </sv:property>
-    <sv:property sv:name="konakart:enginemode" sv:type="Long">
-        <sv:value>0</sv:value>
-    </sv:property>
-    <sv:property sv:name="konakart:iscustomersshared" sv:type="Boolean">
-        <sv:value>false</sv:value>
-    </sv:property>
-    <sv:property sv:name="konakart:isproductsshared" sv:type="Boolean">
-        <sv:value>false</sv:value>
-    </sv:property>
-    <sv:property sv:name="konakart:iscategoriesshared" sv:type="Boolean">
-        <sv:value>false</sv:value>
-    </sv:property>
-    <sv:property sv:name="konakart:useexternalprice" sv:type="Boolean">
-        <sv:value>false</sv:value>
-    </sv:property>
-    <sv:property sv:name="konakart:useexternalquantity" sv:type="Boolean">
-        <sv:value>false</sv:value>
-    </sv:property>
+  <sv:property sv:name="jcr:primaryType" sv:type="Name">
+    <sv:value>konakart:clientengine</sv:value>
+  </sv:property>
+  <sv:property sv:name="konakart:enginemode" sv:type="Long">
+    <sv:value>0</sv:value>
+  </sv:property>
+  <sv:property sv:name="konakart:iscustomersshared" sv:type="Boolean">
+    <sv:value>false</sv:value>
+  </sv:property>
+  <sv:property sv:name="konakart:isproductsshared" sv:type="Boolean">
+    <sv:value>false</sv:value>
+  </sv:property>
+  <sv:property sv:name="konakart:iscategoriesshared" sv:type="Boolean">
+    <sv:value>false</sv:value>
+  </sv:property>
+  <sv:property sv:name="konakart:useexternalprice" sv:type="Boolean">
+    <sv:value>false</sv:value>
+  </sv:property>
+  <sv:property sv:name="konakart:useexternalquantity" sv:type="Boolean">
+    <sv:value>false</sv:value>
+  </sv:property>
 </sv:node>

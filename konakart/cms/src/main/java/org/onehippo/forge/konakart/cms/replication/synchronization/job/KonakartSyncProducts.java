@@ -30,289 +30,289 @@ import java.util.List;
 
 public class KonakartSyncProducts {
 
-    private static final int NBR_PRODUCTS_PER_BATCH = 100;
+  private static final int NBR_PRODUCTS_PER_BATCH = 100;
 
-    public static final Logger log = LoggerFactory.getLogger(KonakartSyncProducts.class);
+  public static final Logger log = LoggerFactory.getLogger(KonakartSyncProducts.class);
 
-    /**
-     * Copy products from Konakart to Hippo
-     *
-     * @param kkStoreConfig the store config
-     * @throws Exception an exception
-     */
-    public static synchronized boolean updateKonakartToHippo(KKStoreConfig kkStoreConfig, Session jcrSession) throws Exception {
-        KKAppEng kkengine = KKEngine.get(kkStoreConfig.getStoreId());
+  /**
+   * Copy products from Konakart to Hippo
+   *
+   * @param kkStoreConfig the store config
+   * @throws Exception an exception
+   */
+  public static synchronized boolean updateKonakartToHippo(KKStoreConfig kkStoreConfig, Session jcrSession) throws Exception {
+    KKAppEng kkengine = KKEngine.get(kkStoreConfig.getStoreId());
 
-        // Retrieve the list of languages defined into konakart.
-        LanguageIf[] languages = kkengine.getEng().getAllLanguages();
+    // Retrieve the list of languages defined into konakart.
+    LanguageIf[] languages = kkengine.getEng().getAllLanguages();
 
-        // Retrieve the content root
-        String currentLocale = kkStoreConfig.getLocale();
+    // Retrieve the content root
+    String currentLocale = kkStoreConfig.getLocale();
 
-        boolean updated = false;
+    boolean updated = false;
 
-        // For each language defined into Konakart we need to add the product under Hippo
-        for (LanguageIf language : languages) {
+    // For each language defined into Konakart we need to add the product under Hippo
+    for (LanguageIf language : languages) {
 
-            // Get the Hippo product folder name
-            String storeId = kkStoreConfig.getStoreId();
+      // Get the Hippo product folder name
+      String storeId = kkStoreConfig.getStoreId();
 
-            if (currentLocale == null || !StringUtils.equals(currentLocale, language.getLocale())) {
-                log.info("############################################################################");
-                log.info("##");
-                log.info("##");
-                log.info("Unable to map the Konakart locale <" + language.getLocale() + "> with any available hippo locale");
-                log.info("##");
-                log.info("##");
-                log.info("############################################################################");
-                continue;
-            }
+      if (currentLocale == null || !StringUtils.equals(currentLocale, language.getLocale())) {
+        log.info("############################################################################");
+        log.info("##");
+        log.info("##");
+        log.info("Unable to map the Konakart locale <" + language.getLocale() + "> with any available hippo locale");
+        log.info("##");
+        log.info("##");
+        log.info("############################################################################");
+        continue;
+      }
 
-            log.info("############################################################################");
-            log.info("##");
-            log.info("##");
-            log.info("Sync the Konakart locale <" + language.getLocale() + ">");
-            log.info("##");
-            log.info("##");
-            log.info("############################################################################");
+      log.info("############################################################################");
+      log.info("##");
+      log.info("##");
+      log.info("Sync the Konakart locale <" + language.getLocale() + ">");
+      log.info("##");
+      log.info("##");
+      log.info("############################################################################");
 
-            updated = true;
+      updated = true;
 
-            // Initialize the KKEngine
-            kkengine = KKEngine.get(storeId);
+      // Initialize the KKEngine
+      kkengine = KKEngine.get(storeId);
 
-            // Retrieve the product factory
-            CustomProductMgr productMgr;
+      // Retrieve the product factory
+      CustomProductMgr productMgr;
 
-            // In the development mode the entire product lists is retrieved.
-            if (kkStoreConfig.isDevelopmentMode() || !hasProducts(kkStoreConfig, jcrSession)) {
-                productMgr = new CustomProductMgr(kkengine.getEng());
-            } else {
-                productMgr = new CustomProductMgr(kkengine.getEng(), kkStoreConfig.getLastUpdatedTimeKonakartToRepository());
-            }
+      // In the development mode the entire product lists is retrieved.
+      if (kkStoreConfig.isDevelopmentMode() || !hasProducts(kkStoreConfig, jcrSession)) {
+        productMgr = new CustomProductMgr(kkengine.getEng());
+      } else {
+        productMgr = new CustomProductMgr(kkengine.getEng(), kkStoreConfig.getLastUpdatedTimeKonakartToRepository());
+      }
 
-            // Get all products - visible or not
-            DataDescriptorIf dataDescriptorIf = new DataDescriptor();
-            dataDescriptorIf.setShowInvisible(true);
-            dataDescriptorIf.setFillDescription(true);
-            dataDescriptorIf.setLimit(NBR_PRODUCTS_PER_BATCH);
+      // Get all products - visible or not
+      DataDescriptorIf dataDescriptorIf = new DataDescriptor();
+      dataDescriptorIf.setShowInvisible(true);
+      dataDescriptorIf.setFillDescription(true);
+      dataDescriptorIf.setLimit(NBR_PRODUCTS_PER_BATCH);
 
-            // Search products from all stores
-            ProductSearchIf productSearchIf = new ProductSearch();
+      // Search products from all stores
+      ProductSearchIf productSearchIf = new ProductSearch();
 
-            // Used default products options
-            FetchProductOptions fetchProductOptions = new FetchProductOptions();
+      // Used default products options
+      FetchProductOptions fetchProductOptions = new FetchProductOptions();
 
 
-            if (StringUtils.isNotEmpty(kkStoreConfig.getCatalogId())) {
-                fetchProductOptions.setCatalogId(kkStoreConfig.getCatalogId());
-            }
+      if (StringUtils.isNotEmpty(kkStoreConfig.getCatalogId())) {
+        fetchProductOptions.setCatalogId(kkStoreConfig.getCatalogId());
+      }
 
-            // Retrieve the path where the images are saved
-            // First check if this config has been set within Hippo, if not retrieved from Konakart
-            String baseImagePath;
+      // Retrieve the path where the images are saved
+      // First check if this config has been set within Hippo, if not retrieved from Konakart
+      String baseImagePath;
 
-            if (StringUtils.isNotEmpty(kkStoreConfig.getImageBasePath())) {
-                baseImagePath = kkStoreConfig.getImageBasePath();
-            } else {
-                baseImagePath = kkengine.getEng().getConfiguration("IMG_BASE_PATH").getValue();
-            }
+      if (StringUtils.isNotEmpty(kkStoreConfig.getImageBasePath())) {
+        baseImagePath = kkStoreConfig.getImageBasePath();
+      } else {
+        baseImagePath = kkengine.getEng().getConfiguration("IMG_BASE_PATH").getValue();
+      }
 
-            ProductFactory productFactory = createProductFactory(kkStoreConfig.getProductFactoryClassName());
-            productFactory.setSession(jcrSession);
-            productFactory.setKKStoreConfig(kkStoreConfig);
+      ProductFactory productFactory = createProductFactory(kkStoreConfig.getProductFactoryClassName());
+      productFactory.setSession(jcrSession);
+      productFactory.setKKStoreConfig(kkStoreConfig);
 
-            // We get the products by batches, otherwise it takes too much memory.
-            int nbrDone = 0;
-            Products products;
+      // We get the products by batches, otherwise it takes too much memory.
+      int nbrDone = 0;
+      Products products;
 
-            do {
-                // set the offset to start the search from
-                dataDescriptorIf.setOffset(nbrDone);
+      do {
+        // set the offset to start the search from
+        dataDescriptorIf.setOffset(nbrDone);
 
-                // Search
-                products = productMgr.searchForProductsWithOptions(kkengine.getSessionId(),
-                        dataDescriptorIf,
-                        productSearchIf,
-                        language.getId(),
-                        fetchProductOptions);
-                if (products.getProductArray().length > 0) {
-                    nbrDone += products.getProductArray().length;
+        // Search
+        products = productMgr.searchForProductsWithOptions(kkengine.getSessionId(),
+            dataDescriptorIf,
+            productSearchIf,
+            language.getId(),
+            fetchProductOptions);
+        if (products.getProductArray().length > 0) {
+          nbrDone += products.getProductArray().length;
 
-                    if (log.isInfoEnabled()) {
-                        log.info("A batch of " + products.getProductArray().length + " product(s) will be synchronized from Konakart to Hippo.");
-                    }
+          if (log.isInfoEnabled()) {
+            log.info("A batch of " + products.getProductArray().length + " product(s) will be synchronized from Konakart to Hippo.");
+          }
 
-                    // Insert products into konakart
-                    for (Product product : products.getProductArray()) {
-                        productFactory.add(storeId, product, language, baseImagePath);
-                    }
+          // Insert products into konakart
+          for (Product product : products.getProductArray()) {
+            productFactory.add(storeId, product, language, baseImagePath);
+          }
 
-                    // Each batch session, save the inserted products
-                    jcrSession.save();
-                }
-
-            } while (nbrDone < products.getTotalNumProducts());
-
+          // Each batch session, save the inserted products
+          jcrSession.save();
         }
 
-        return updated;
+      } while (nbrDone < products.getTotalNumProducts());
+
     }
 
-
-    /**
-     * Synchronize produts status updates and multi-store update
-     *
-     * @param kkStoreConfig the store config
-     * @param jcrSession    JCR Session
-     * @throws Exception .
-     */
-    public static synchronized void updateHippoToKonakart(KKStoreConfig kkStoreConfig, Session jcrSession) throws Exception {
-
-        NodeHelper nodeHelper = new NodeHelper(jcrSession);
-
-        AdminMgrFactory adminMgrFactory = KKAdminEngine.getInstance().getFactory();
-
-        AdminProductMgrIf productMgrIf = adminMgrFactory.getAdminProdMgr(true);
+    return updated;
+  }
 
 
-        Node seed = getProductRoot(kkStoreConfig, jcrSession);
+  /**
+   * Synchronize produts status updates and multi-store update
+   *
+   * @param kkStoreConfig the store config
+   * @param jcrSession    JCR Session
+   * @throws Exception .
+   */
+  public static synchronized void updateHippoToKonakart(KKStoreConfig kkStoreConfig, Session jcrSession) throws Exception {
 
-        List<SyncProduct> syncProducts = findAllProductIdsFromRepository(seed, false);
+    NodeHelper nodeHelper = new NodeHelper(jcrSession);
 
-        if (syncProducts.size() > 0) {
-            if (log.isInfoEnabled()) {
-                log.info(syncProducts.size() + " product(s) will be synchronized from Hippo to Konakart");
-            }
-        }
+    AdminMgrFactory adminMgrFactory = KKAdminEngine.getInstance().getFactory();
 
-        for (SyncProduct syncProduct : syncProducts) {
-            // Retrieve the hippo node
-            Node node = jcrSession.getNodeByIdentifier(syncProduct.getHippoUuid());
+    AdminProductMgrIf productMgrIf = adminMgrFactory.getAdminProdMgr(true);
 
-            // Check if the product exists
-            if (!productMgrIf.doesProductExist(syncProduct.getkProductId())) {
-                nodeHelper.updateState(node, NodeHelper.UNPUBLISHED_STATE);
-            }
-        }
+
+    Node seed = getProductRoot(kkStoreConfig, jcrSession);
+
+    List<SyncProduct> syncProducts = findAllProductIdsFromRepository(seed, false);
+
+    if (syncProducts.size() > 0) {
+      if (log.isInfoEnabled()) {
+        log.info(syncProducts.size() + " product(s) will be synchronized from Hippo to Konakart");
+      }
     }
 
-    /**
-     * During the development process, sometimes the sync node contains the sync date but no product has been synchronized.
-     * The goal of this method is to validate if the sync dates must be forgot.
-     *
-     * @param kkStoreConfig the current konakart config
-     * @param jcrSession    the JCR session
-     * @return true if Hippo repository has products, false otherwise
-     */
-    private static boolean hasProducts(KKStoreConfig kkStoreConfig, Session jcrSession) {
-        try {
-            Node seed = getProductRoot(kkStoreConfig, jcrSession);
+    for (SyncProduct syncProduct : syncProducts) {
+      // Retrieve the hippo node
+      Node node = jcrSession.getNodeByIdentifier(syncProduct.getHippoUuid());
 
-            List<SyncProduct> syncProducts = findAllProductIdsFromRepository(seed, true);
+      // Check if the product exists
+      if (!productMgrIf.doesProductExist(syncProduct.getkProductId())) {
+        nodeHelper.updateState(node, NodeHelper.UNPUBLISHED_STATE);
+      }
+    }
+  }
 
-            return syncProducts != null && syncProducts.size() > 0;
-        } catch (Exception e) {
-            log.error("Failed to check if at least a product has been synchronized.", e);
-        }
+  /**
+   * During the development process, sometimes the sync node contains the sync date but no product has been synchronized.
+   * The goal of this method is to validate if the sync dates must be forgot.
+   *
+   * @param kkStoreConfig the current konakart config
+   * @param jcrSession    the JCR session
+   * @return true if Hippo repository has products, false otherwise
+   */
+  private static boolean hasProducts(KKStoreConfig kkStoreConfig, Session jcrSession) {
+    try {
+      Node seed = getProductRoot(kkStoreConfig, jcrSession);
 
-        return false;
+      List<SyncProduct> syncProducts = findAllProductIdsFromRepository(seed, true);
+
+      return syncProducts != null && syncProducts.size() > 0;
+    } catch (Exception e) {
+      log.error("Failed to check if at least a product has been synchronized.", e);
     }
 
+    return false;
+  }
 
-    @Nonnull
-    private static Node getProductRoot(KKStoreConfig kkStoreConfig, Session jcrSession) throws Exception {
-        Node seed = null;
 
-        String productRoot = kkStoreConfig.getContentRoot() + "/" + Codecs.encodeNode(kkStoreConfig.getProductFolder());
+  @Nonnull
+  private static Node getProductRoot(KKStoreConfig kkStoreConfig, Session jcrSession) throws Exception {
+    Node seed = null;
 
-        if (jcrSession.itemExists(productRoot)) {
-            seed = jcrSession.getNode(productRoot);
-        }
+    String productRoot = kkStoreConfig.getContentRoot() + "/" + Codecs.encodeNode(kkStoreConfig.getProductFolder());
 
-        if (seed == null) {
-            String absPath = kkStoreConfig.getContentRoot() + "/" + kkStoreConfig.getProductFolder();
-
-            NodeHelper nodeHelper = new NodeHelper(jcrSession);
-            seed = nodeHelper.createMissingFolders(absPath);
-        }
-
-        return seed;
+    if (jcrSession.itemExists(productRoot)) {
+      seed = jcrSession.getNode(productRoot);
     }
 
-    private static List<SyncProduct> findAllProductIdsFromRepository(Node seed, Boolean onlyFirstRetrieve) throws RepositoryException {
+    if (seed == null) {
+      String absPath = kkStoreConfig.getContentRoot() + "/" + kkStoreConfig.getProductFolder();
 
-        List<SyncProduct> syncProducts = new ArrayList<SyncProduct>();
-
-        try {
-            if (seed.isNodeType("hippo:handle")) {
-                seed = seed.getNode(seed.getName());
-            }
-
-            if (seed.isNodeType(KKCndConstants.PRODUCT_DOC_TYPE)) {
-                SyncProduct syncProduct = new SyncProduct();
-                syncProduct.setHippoUuid(seed.getIdentifier());
-                syncProduct.setkProductId((int) seed.getProperty(KKCndConstants.PRODUCT_ID).getLong());
-
-                syncProducts.add(syncProduct);
-
-                if (onlyFirstRetrieve) {
-                    return syncProducts;
-                }
-
-            } else if (seed.isNodeType("hippostd:folder")) {
-                for (NodeIterator nodeIt = seed.getNodes(); nodeIt.hasNext(); ) {
-                    Node child = nodeIt.nextNode();
-
-                    if (child != null) {
-                        syncProducts.addAll(findAllProductIdsFromRepository(child, false));
-                    }
-                }
-            }
-        } catch (Exception e) {
-            log.error("Failed to retrieve the list of products");
-        }
-
-        return syncProducts;
+      NodeHelper nodeHelper = new NodeHelper(jcrSession);
+      seed = nodeHelper.createMissingFolders(absPath);
     }
 
+    return seed;
+  }
 
-    private static ProductFactory createProductFactory(String productFactoryClassName) {
-        if (StringUtils.isNotBlank(productFactoryClassName)) {
-            try {
-                return (ProductFactory) Class.forName(productFactoryClassName).newInstance();
+  private static List<SyncProduct> findAllProductIdsFromRepository(Node seed, Boolean onlyFirstRetrieve) throws RepositoryException {
 
-            } catch (InstantiationException e) {
-                log.error("Unable to find the extension class: " + e.toString());
-            } catch (IllegalAccessException e) {
-                log.error("Unable to find the extension class: " + e.toString());
-            } catch (ClassNotFoundException e) {
-                log.error("Unable to find the extension class: " + e.toString());
-            }
+    List<SyncProduct> syncProducts = new ArrayList<SyncProduct>();
+
+    try {
+      if (seed.isNodeType("hippo:handle")) {
+        seed = seed.getNode(seed.getName());
+      }
+
+      if (seed.isNodeType(KKCndConstants.PRODUCT_DOC_TYPE)) {
+        SyncProduct syncProduct = new SyncProduct();
+        syncProduct.setHippoUuid(seed.getIdentifier());
+        syncProduct.setkProductId((int) seed.getProperty(KKCndConstants.PRODUCT_ID).getLong());
+
+        syncProducts.add(syncProduct);
+
+        if (onlyFirstRetrieve) {
+          return syncProducts;
         }
 
-        return new DefaultProductFactory();
+      } else if (seed.isNodeType("hippostd:folder")) {
+        for (NodeIterator nodeIt = seed.getNodes(); nodeIt.hasNext(); ) {
+          Node child = nodeIt.nextNode();
+
+          if (child != null) {
+            syncProducts.addAll(findAllProductIdsFromRepository(child, false));
+          }
+        }
+      }
+    } catch (Exception e) {
+      log.error("Failed to retrieve the list of products");
     }
 
+    return syncProducts;
+  }
 
-    public static class SyncProduct {
-        private int kProductId;
-        private String hippoUuid;
 
-        public int getkProductId() {
-            return kProductId;
-        }
+  private static ProductFactory createProductFactory(String productFactoryClassName) {
+    if (StringUtils.isNotBlank(productFactoryClassName)) {
+      try {
+        return (ProductFactory) Class.forName(productFactoryClassName).newInstance();
 
-        public void setkProductId(int kProductId) {
-            this.kProductId = kProductId;
-        }
-
-        public String getHippoUuid() {
-            return hippoUuid;
-        }
-
-        public void setHippoUuid(String hippoUuid) {
-            this.hippoUuid = hippoUuid;
-        }
+      } catch (InstantiationException e) {
+        log.error("Unable to find the extension class: " + e.toString());
+      } catch (IllegalAccessException e) {
+        log.error("Unable to find the extension class: " + e.toString());
+      } catch (ClassNotFoundException e) {
+        log.error("Unable to find the extension class: " + e.toString());
+      }
     }
+
+    return new DefaultProductFactory();
+  }
+
+
+  public static class SyncProduct {
+    private int kProductId;
+    private String hippoUuid;
+
+    public int getkProductId() {
+      return kProductId;
+    }
+
+    public void setkProductId(int kProductId) {
+      this.kProductId = kProductId;
+    }
+
+    public String getHippoUuid() {
+      return hippoUuid;
+    }
+
+    public void setHippoUuid(String hippoUuid) {
+      this.hippoUuid = hippoUuid;
+    }
+  }
 }

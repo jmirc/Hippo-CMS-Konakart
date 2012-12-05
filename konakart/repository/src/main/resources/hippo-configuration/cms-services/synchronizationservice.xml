@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <sv:node sv:name="KonakartSynchronizationService" xmlns:sv="http://www.jcp.org/jcr/sv/1.0">
-    <sv:property sv:name="jcr:primaryType" sv:type="Name">
-        <sv:value>frontend:plugin</sv:value>
-    </sv:property>
-    <sv:property sv:name="default.product.factory.class" sv:type="String">
-        <sv:value>org.onehippo.forge.konakart.cms.replication.factory.DefaultProductFactory</sv:value>
-    </sv:property>
-    <sv:property sv:name="default.product.folder" sv:type="String">
-        <sv:value>Products</sv:value>
-    </sv:property>
-    <sv:property sv:name="default.sync.cronexpression" sv:type="String">
-        <sv:value>0 0/1 * 1/1 * ? *</sv:value>
-    </sv:property>
-    <sv:property sv:name="default.sync.job.class" sv:type="String">
-        <sv:value>org.onehippo.forge.konakart.cms.replication.synchronization.job.KonakartSyncJob</sv:value>
-    </sv:property>
-    <sv:property sv:name="plugin.class" sv:type="String">
-        <sv:value>org.onehippo.forge.konakart.cms.replication.service.KonakartSynchronizationService</sv:value>
-    </sv:property>
-    <sv:property sv:multiple="true" sv:name="stores" sv:type="String">
-        <sv:value>store1</sv:value>
-    </sv:property>
-    <sv:property sv:name="developper.mode" sv:type="Boolean">
-        <sv:value>false</sv:value>
-    </sv:property>
+  <sv:property sv:name="jcr:primaryType" sv:type="Name">
+    <sv:value>frontend:plugin</sv:value>
+  </sv:property>
+  <sv:property sv:name="default.product.factory.class" sv:type="String">
+    <sv:value>org.onehippo.forge.konakart.cms.replication.factory.DefaultProductFactory</sv:value>
+  </sv:property>
+  <sv:property sv:name="default.product.folder" sv:type="String">
+    <sv:value>Products</sv:value>
+  </sv:property>
+  <sv:property sv:name="default.sync.cronexpression" sv:type="String">
+    <sv:value>0 0/1 * 1/1 * ? *</sv:value>
+  </sv:property>
+  <sv:property sv:name="default.sync.job.class" sv:type="String">
+    <sv:value>org.onehippo.forge.konakart.cms.replication.synchronization.job.KonakartSyncJob</sv:value>
+  </sv:property>
+  <sv:property sv:name="plugin.class" sv:type="String">
+    <sv:value>org.onehippo.forge.konakart.cms.replication.service.KonakartSynchronizationService</sv:value>
+  </sv:property>
+  <sv:property sv:multiple="true" sv:name="stores" sv:type="String">
+    <sv:value>store1</sv:value>
+  </sv:property>
+  <sv:property sv:name="developper.mode" sv:type="Boolean">
+    <sv:value>false</sv:value>
+  </sv:property>
 </sv:node>

@@ -32,211 +32,211 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class KKComponentUtils {
 
-    public static final Logger log = LoggerFactory.getLogger(KKComponentUtils.class);
-    public static final String CATEGORIES_FACET = "categoriesFacet";
-    public static final String NEEDAUTH = "needauth";
-    public static final String LOGIN_ERROR = "loginError";
-    public static final String USERNAME = "username";
-    public static final String DESTINATION = "destination";
-    public static final String DEFAULT_WISH_LIST = "defaultWishList";
-    public static final String CURRENT_CUSTOMER = "currentCustomer";
-    public static final String BASKET_TOTAL = "basketTotal";
-    public static final String NB_ITEMS = "nbItems";
-    public static final String WISH_LIST_ENABLED = "wishListEnabled";
-    public static final String DISPLAY_PRICE_WITH_TAX = "displayPriceWithTax";
-    public static final String IS_LOGGED = "isLogged";
-    public static final String CURRENT_CATEGORIES = "currentCategories";
-    public static final String CURRENCIES = "currencies";
+  public static final Logger log = LoggerFactory.getLogger(KKComponentUtils.class);
+  public static final String CATEGORIES_FACET = "categoriesFacet";
+  public static final String NEEDAUTH = "needauth";
+  public static final String LOGIN_ERROR = "loginError";
+  public static final String USERNAME = "username";
+  public static final String DESTINATION = "destination";
+  public static final String DEFAULT_WISH_LIST = "defaultWishList";
+  public static final String CURRENT_CUSTOMER = "currentCustomer";
+  public static final String BASKET_TOTAL = "basketTotal";
+  public static final String NB_ITEMS = "nbItems";
+  public static final String WISH_LIST_ENABLED = "wishListEnabled";
+  public static final String DISPLAY_PRICE_WITH_TAX = "displayPriceWithTax";
+  public static final String IS_LOGGED = "isLogged";
+  public static final String CURRENT_CATEGORIES = "currentCategories";
+  public static final String CURRENCIES = "currencies";
 
 
-    /**
-     * Set the global konakart attributes to the Hst request
-     *
-     * @param request the hst request to set
-     */
-    public static void setGlobalKonakartAttributes(@Nonnull HstRequest request) {
-        try {
-            // Set the attribut isLogged if the user is a logged user
-            request.setAttribute(IS_LOGGED, !KKServiceHelper.getKKCustomerService().isGuestCustomer(request));
+  /**
+   * Set the global konakart attributes to the Hst request
+   *
+   * @param request the hst request to set
+   */
+  public static void setGlobalKonakartAttributes(@Nonnull HstRequest request) {
+    try {
+      // Set the attribut isLogged if the user is a logged user
+      request.setAttribute(IS_LOGGED, !KKServiceHelper.getKKCustomerService().isGuestCustomer(request));
 
-            // Set the attribut displayPriceWithTax used to display or not the price with or without tax
-            request.setAttribute(DISPLAY_PRICE_WITH_TAX, KKServiceHelper.getKKBasketService().displayPriceWithTax(request));
+      // Set the attribut displayPriceWithTax used to display or not the price with or without tax
+      request.setAttribute(DISPLAY_PRICE_WITH_TAX, KKServiceHelper.getKKBasketService().displayPriceWithTax(request));
 
-            // Set the attibute wishListEnabled. Set to true if the wish list functionality is allowed, false otherwise
-            request.setAttribute(WISH_LIST_ENABLED, KKServiceHelper.getKKCustomerService().wishListEnabled(request));
+      // Set the attibute wishListEnabled. Set to true if the wish list functionality is allowed, false otherwise
+      request.setAttribute(WISH_LIST_ENABLED, KKServiceHelper.getKKCustomerService().wishListEnabled(request));
 
-            // Set the default wish list if exists
-            request.setAttribute(DEFAULT_WISH_LIST, KKServiceHelper.getKKCustomerService().getDefaultWishList(request));
+      // Set the default wish list if exists
+      request.setAttribute(DEFAULT_WISH_LIST, KKServiceHelper.getKKCustomerService().getDefaultWishList(request));
 
-            // Set the current customer
-            request.setAttribute(CURRENT_CUSTOMER, KKServiceHelper.getKKCustomerService().getCurrentCustomer(request));
-            request.setAttribute(BASKET_TOTAL, KKServiceHelper.getKKBasketService().getBasketTotal(request));
-            request.setAttribute(NB_ITEMS, KKServiceHelper.getKKBasketService().getNumberOfITems(request));
-        } catch (Exception e) {
-            log.warn("Failed to render the HST component {}", e.toString());
-        }
+      // Set the current customer
+      request.setAttribute(CURRENT_CUSTOMER, KKServiceHelper.getKKCustomerService().getCurrentCustomer(request));
+      request.setAttribute(BASKET_TOTAL, KKServiceHelper.getKKBasketService().getBasketTotal(request));
+      request.setAttribute(NB_ITEMS, KKServiceHelper.getKKBasketService().getNumberOfITems(request));
+    } catch (Exception e) {
+      log.warn("Failed to render the HST component {}", e.toString());
+    }
+  }
+
+  /**
+   * Set the checkout attributes to the Hst request
+   *
+   * @param request the hst request to set
+   */
+  public static void setCheckoutAttributes(@Nonnull HstRequest request) {
+
+    // Set the checkout order
+    request.setAttribute(KKCheckout.CHECKOUT_ORDER, request.getRequestContext().getAttribute(KKCheckout.CHECKOUT_ORDER));
+
+    // Set the
+    Enumeration<String> attributes = request.getRequestContext().getAttributeNames();
+
+    while (attributes.hasMoreElements()) {
+      String attributeName = attributes.nextElement();
+
+      if (StringUtils.contains(attributeName, "_EDIT")) {
+        request.setAttribute(attributeName, request.getRequestContext().getAttribute(attributeName));
+      }
+    }
+  }
+
+  /**
+   * Set the login attributes to the Hst request
+   *
+   * @param request the hst request to set
+   */
+  public static void setLoginAttributes(@Nonnull HstRequest request) {
+    final String destination = (String) request.getSession().getAttribute(LoginServlet.DESTINATION_ATTR_NAME);
+    if (destination != null) {
+      request.setAttribute(DESTINATION, destination);
     }
 
-    /**
-     * Set the checkout attributes to the Hst request
-     *
-     * @param request the hst request to set
-     */
-    public static void setCheckoutAttributes(@Nonnull HstRequest request) {
-
-        // Set the checkout order
-        request.setAttribute(KKCheckout.CHECKOUT_ORDER, request.getRequestContext().getAttribute(KKCheckout.CHECKOUT_ORDER));
-
-        // Set the
-        Enumeration<String> attributes = request.getRequestContext().getAttributeNames();
-
-        while (attributes.hasMoreElements()) {
-            String attributeName = attributes.nextElement();
-
-            if (StringUtils.contains(attributeName, "_EDIT")) {
-                request.setAttribute(attributeName, request.getRequestContext().getAttribute(attributeName));
-            }
-        }
+    final String username = (String) request.getSession().getAttribute(LoginServlet.USERNAME_ATTR_NAME);
+    if (username != null) {
+      request.setAttribute(USERNAME, username);
     }
 
-    /**
-     * Set the login attributes to the Hst request
-     *
-     * @param request the hst request to set
-     */
-    public static void setLoginAttributes(@Nonnull HstRequest request) {
-        final String destination = (String) request.getSession().getAttribute(LoginServlet.DESTINATION_ATTR_NAME);
-        if (destination != null) {
-            request.setAttribute(DESTINATION, destination);
-        }
-
-        final String username = (String) request.getSession().getAttribute(LoginServlet.USERNAME_ATTR_NAME);
-        if (username != null) {
-            request.setAttribute(USERNAME, username);
-        }
-
-        if (KKUtil.getPublicRequestParameter(request, LOGIN_ERROR) != null) {
-            request.setAttribute(LOGIN_ERROR, true);
-        } else {
-            request.setAttribute(LOGIN_ERROR, false);
-        }
-
-        if (KKUtil.getPublicRequestParameter(request, NEEDAUTH) != null) {
-            request.setAttribute(NEEDAUTH, true);
-        } else {
-            request.setAttribute(NEEDAUTH, false);
-        }
+    if (KKUtil.getPublicRequestParameter(request, LOGIN_ERROR) != null) {
+      request.setAttribute(LOGIN_ERROR, true);
+    } else {
+      request.setAttribute(LOGIN_ERROR, false);
     }
 
-    /**
-     * Set the search categories facet for the category whose id is passed in as a parameter.
-     *
-     * @param request the hst request to set
-     */
-    public static void setCategoriesFacet(HstRequest request) {
+    if (KKUtil.getPublicRequestParameter(request, NEEDAUTH) != null) {
+      request.setAttribute(NEEDAUTH, true);
+    } else {
+      request.setAttribute(NEEDAUTH, false);
+    }
+  }
 
-        KKAppEng kkAppEng = getKKAppEng(request);
+  /**
+   * Set the search categories facet for the category whose id is passed in as a parameter.
+   *
+   * @param request the hst request to set
+   */
+  public static void setCategoriesFacet(HstRequest request) {
 
-        CategoryMgr categoryMgr = kkAppEng.getCategoryMgr();
+    KKAppEng kkAppEng = getKKAppEng(request);
+
+    CategoryMgr categoryMgr = kkAppEng.getCategoryMgr();
 
 
-        List<CategoryIf> categoryList = categoryMgr.getCatMenuList();
+    List<CategoryIf> categoryList = categoryMgr.getCatMenuList();
 
-        // Load the categoryTree
-        if (categoryMgr.getCatMenuList().size() == 0) {
-            getKKAppEng(request).getCategoryMgr().reset();
-            categoryList = categoryMgr.getCatMenuList();
-        }
-
-        request.setAttribute(CATEGORIES_FACET, categoryList);
+    // Load the categoryTree
+    if (categoryMgr.getCatMenuList().size() == 0) {
+      getKKAppEng(request).getCategoryMgr().reset();
+      categoryList = categoryMgr.getCatMenuList();
     }
 
-    /**
-     * Set the current categories
-     *
-     * @param request the hst request to set
-     */
-    public static void setCurrentCategories(HstRequest request) {
+    request.setAttribute(CATEGORIES_FACET, categoryList);
+  }
 
-        KKAppEng kkAppEng = getKKAppEng(request);
+  /**
+   * Set the current categories
+   *
+   * @param request the hst request to set
+   */
+  public static void setCurrentCategories(HstRequest request) {
 
-        LinkedList<CategoryIf> categoryIfs = new LinkedList<CategoryIf>();
-        CategoryIf currentCategory = kkAppEng.getCategoryMgr().getCurrentCat();
+    KKAppEng kkAppEng = getKKAppEng(request);
 
-        categoryIfs.addFirst(currentCategory);
+    LinkedList<CategoryIf> categoryIfs = new LinkedList<CategoryIf>();
+    CategoryIf currentCategory = kkAppEng.getCategoryMgr().getCurrentCat();
 
-        while (currentCategory.getParent() != null) {
-            categoryIfs.addFirst(currentCategory.getParent());
-            currentCategory = currentCategory.getParent();
-        }
+    categoryIfs.addFirst(currentCategory);
 
-        request.setAttribute(CURRENT_CATEGORIES, categoryIfs);
+    while (currentCategory.getParent() != null) {
+      categoryIfs.addFirst(currentCategory.getParent());
+      currentCategory = currentCategory.getParent();
     }
 
-    /**
-     * Set the current currencies
-     *
-     * @param request the hst request to set
-     */
-    public static void setCurrencies(HstRequest request) {
-        KKAppEng kkAppEng = getKKAppEng(request);
-        request.setAttribute(CURRENCIES, kkAppEng.getCurrencies());
+    request.setAttribute(CURRENT_CATEGORIES, categoryIfs);
+  }
+
+  /**
+   * Set the current currencies
+   *
+   * @param request the hst request to set
+   */
+  public static void setCurrencies(HstRequest request) {
+    KKAppEng kkAppEng = getKKAppEng(request);
+    request.setAttribute(CURRENCIES, kkAppEng.getCurrencies());
+  }
+
+  /**
+   * Retrieve the Konakart client from the http servlet request.
+   * The client has been set by the Konakart Valve.
+   *
+   * @param request the http servlet request
+   * @return the Konakart client.
+   */
+  @Nonnull
+  public static KKAppEng getKKAppEng(@Nonnull HttpServletRequest request) {
+    KKAppEng kkAppEng = (KKAppEng) request.getAttribute(KKAppEng.KONAKART_KEY);
+
+    return checkNotNull(kkAppEng);
+  }
+
+  /**
+   * Retrieve the Konakart Store config from the context
+   *
+   * @param request the http servlet request
+   * @return the associated Konakart store config
+   */
+  @Nonnull
+  public static KKStoreConfig getKKStoreConfig(@Nonnull HttpServletRequest request) {
+    KKStoreConfig kkStoreConfig = (KKStoreConfig) request.getSession().getAttribute(KKStoreConfig.KK_STORE_CONFIG);
+
+    return checkNotNull(kkStoreConfig);
+  }
+
+  /**
+   * Retrieve the Konakart Store config from the context
+   *
+   * @param context    the hst request context
+   * @param jcrSession the jcr session
+   * @return the associated Konakart store config
+   */
+  @Nonnull
+  public static KKStoreConfig getKKStoreConfig(HstRequestContext context, Session jcrSession) {
+    // Set the current store config
+    Mount resolvedMount = context.getResolvedMount().getMount();
+    String storeName = resolvedMount.getProperty(KKCndConstants.KONAKART_CONFIG_STORE_NAME);
+
+    //  Set the default one
+    if (StringUtils.isEmpty(storeName)) {
+      storeName = KKActionsConstants.DEF_STORE_ID;
     }
 
-    /**
-     * Retrieve the Konakart client from the http servlet request.
-     * The client has been set by the Konakart Valve.
-     *
-     * @param request the http servlet request
-     * @return the Konakart client.
-     */
-    @Nonnull
-    public static KKAppEng getKKAppEng(@Nonnull HttpServletRequest request) {
-        KKAppEng kkAppEng = (KKAppEng) request.getAttribute(KKAppEng.KONAKART_KEY);
+    // Check if the store config has been created under /hippo-configuration/cms-services/KonakartSynchronizationService
+    KKStoreConfig kkStoreConfig;
+    try {
+      kkStoreConfig = HippoModuleConfig.getConfig().getStoreConfigByName(jcrSession, storeName);
 
-        return checkNotNull(kkAppEng);
+    } catch (RepositoryException e) {
+      throw new IllegalStateException("Failed to load the storeConfig. Please verify if a new storeConfig named "
+          + storeName + " within /hippo-configuration/cms-services/KonakartSynchronizationService");
     }
-
-    /**
-     * Retrieve the Konakart Store config from the context
-     *
-     * @param request the http servlet request
-     * @return the associated Konakart store config
-     */
-    @Nonnull
-    public static KKStoreConfig getKKStoreConfig(@Nonnull HttpServletRequest request) {
-        KKStoreConfig kkStoreConfig = (KKStoreConfig) request.getSession().getAttribute(KKStoreConfig.KK_STORE_CONFIG);
-
-        return checkNotNull(kkStoreConfig);
-    }
-
-    /**
-     * Retrieve the Konakart Store config from the context
-     *
-     * @param context the hst request context
-     * @param jcrSession the jcr session
-     * @return the associated Konakart store config
-     */
-    @Nonnull
-    public static KKStoreConfig getKKStoreConfig(HstRequestContext context, Session jcrSession) {
-        // Set the current store config
-        Mount resolvedMount = context.getResolvedMount().getMount();
-        String storeName = resolvedMount.getProperty(KKCndConstants.KONAKART_CONFIG_STORE_NAME);
-
-        //  Set the default one
-        if (org.apache.cxf.common.util.StringUtils.isEmpty(storeName)) {
-            storeName = KKActionsConstants.DEF_STORE_ID;
-        }
-
-        // Check if the store config has been created under /hippo-configuration/cms-services/KonakartSynchronizationService
-        KKStoreConfig kkStoreConfig;
-        try {
-            kkStoreConfig = HippoModuleConfig.getConfig().getStoreConfigByName(jcrSession, storeName);
-
-        } catch (RepositoryException e) {
-            throw new IllegalStateException("Failed to load the storeConfig. Please verify if a new storeConfig named "
-                    + storeName + " within /hippo-configuration/cms-services/KonakartSynchronizationService");
-        }
-        return kkStoreConfig;
-    }
+    return kkStoreConfig;
+  }
 }

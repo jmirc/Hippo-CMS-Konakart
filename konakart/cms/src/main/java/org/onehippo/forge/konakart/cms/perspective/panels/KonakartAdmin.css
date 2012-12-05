@@ -1,347 +1,346 @@
-body { 
-	background-color: white;
-	color: black;
-	font-family: Arial, sans-serif;
-	margin: 8px;
-	margin-top: 3px;
+body {
+    background-color: white;
+    color: black;
+    font-family: Arial, sans-serif;
+    margin: 8px;
+    margin-top: 3px;
 }
 
 /* For portlet */
-#kkAdmin { 
-	background-color: white;
-	font-family: Arial, sans-serif;
+#kkAdmin {
+    background-color: white;
+    font-family: Arial, sans-serif;
 }
 
-a {	
-	color: #0000aa;
+a {
+    color: #0000aa;
 }
 
-a:visited {	
-	color: #0000aa;
+a:visited {
+    color: #0000aa;
 }
 
 .gwt-DialogBox {
-	border: 2px solid #AAAAAA;
-	background-color: white;
+    border: 2px solid #AAAAAA;
+    background-color: white;
 }
 
 .gwt-DialogBox .Caption {
-	background-image: url(gray_gradient.gif);
-	background-repeat: repeat-x;
-	padding: 4px;
-	padding-bottom: 8px;
-	font-weight: bold;
-	cursor: default;
+    background-image: url(gray_gradient.gif);
+    background-repeat: repeat-x;
+    padding: 4px;
+    padding-bottom: 8px;
+    font-weight: bold;
+    cursor: default;
 }
 
 .gwt-MenuBar {
-	background-color: #C3D9FF;
-	cursor: default;
+    background-color: #C3D9FF;
+    cursor: default;
 }
 
 .gwt-MenuItem {
-	font-size: 80%;
-	margin: 1px;
-	cursor: default;
+    font-size: 80%;
+    margin: 1px;
+    cursor: default;
 }
 
 .gwt-MenuItem-selected {
-	background-color: #E8EEF7;
+    background-color: #E8EEF7;
 }
 
 .gwt-Tree {
-	margin-top: 1em;
-	margin-bottom: 1em;
+    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .gwt-Tree .gwt-TreeItem {
-	font-size: 14px;
-	cursor: default;
+    font-size: 14px;
+    cursor: default;
 }
 
 .gwt-Tree .gwt-TreeItem-selected {
-	background-color: #C3D9FF;
+    background-color: #C3D9FF;
 }
 
 .gwt-StackPanel {
-	background-color: white;
-	border: 1px solid #AAAAAA;
-	width: 12em;
+    background-color: white;
+    border: 1px solid #AAAAAA;
+    width: 12em;
 }
 
 .gwt-StackPanel .gwt-StackPanelItem {
-	background-image: url(gray_gradient.gif);
-	background-repeat: repeat-x;
-	background-color: #EEEEEE;
-	cursor: pointer;
+    background-image: url(gray_gradient.gif);
+    background-repeat: repeat-x;
+    background-color: #EEEEEE;
+    cursor: pointer;
 }
 
 .gwt-StackPanel .gwt-StackPanelItem-selected {
-	background-image: url(gray_gradient.gif);
-	background-repeat: repeat-x;
-	background-color: #EEEEEE;
-	cursor: pointer;
+    background-image: url(gray_gradient.gif);
+    background-repeat: repeat-x;
+    background-color: #EEEEEE;
+    cursor: pointer;
 }
 
 .gwt-TabPanel {
 }
 
 .gwt-TabPanelBottom {
-  border-left: 1px solid #87B3FF;
+    border-left: 1px solid #87B3FF;
 }
 
 .gwt-TabBar {
-  background-color: #C3D9FF;
-  font-size: smaller;
+    background-color: #C3D9FF;
+    font-size: smaller;
 }
 
 .gwt-TabBar .gwt-TabBarFirst {
-  height: 100%;
-  border-bottom: 1px solid #87B3FF;
-  padding-left: 3px;
+    height: 100%;
+    border-bottom: 1px solid #87B3FF;
+    padding-left: 3px;
 }
 
 .gwt-TabBar .gwt-TabBarRest {
-  border-bottom: 1px solid #87B3FF;
-  padding-right: 3px;
+    border-bottom: 1px solid #87B3FF;
+    padding-right: 3px;
 }
 
 .gwt-TabBar .gwt-TabBarItem {
-  border-top: 1px solid #C3D9FF;
-  border-bottom: 1px solid #87B3FF;
-  padding: 2px;
-  cursor: pointer;
+    border-top: 1px solid #C3D9FF;
+    border-bottom: 1px solid #87B3FF;
+    padding: 2px;
+    cursor: pointer;
 }
 
 .gwt-TabBar .gwt-TabBarItem-selected {
-  font-weight: bold;
-  background-color: #E8EEF7;
-  border-top: 1px solid #87B3FF;
-  border-left: 1px solid #87B3FF;
-  border-right: 1px solid #87B3FF;
-  border-bottom: 1px solid #E8EEF7;
-  padding: 2px;
-  cursor: default;
+    font-weight: bold;
+    background-color: #E8EEF7;
+    border-top: 1px solid #87B3FF;
+    border-left: 1px solid #87B3FF;
+    border-right: 1px solid #87B3FF;
+    border-bottom: 1px solid #E8EEF7;
+    padding: 2px;
+    cursor: default;
 }
 
 /*-------------------KonaKart--------------------------------*/
 
 .konakart-MasterPanel  td {
-	padding-right: 2px;
+    padding-right: 2px;
 }
 
 .konakart-MasterRightPanel td {
-	padding-bottom: 2px;
+    padding-bottom: 2px;
 }
 
 .konakart-TopPanel {
-	background-color: white;
-	font-size: 1.0em; 
+    background-color: white;
+    font-size: 1.0em;
 }
 
 .konakart-TopPanelRow2 {
-	background-color: white;
-	padding: 0px 4px 0px 4px;
-	font-size: 1.0em; 
+    background-color: white;
+    padding: 0px 4px 0px 4px;
+    font-size: 1.0em;
 }
 
 .konakart-TopPanelCatalogs {
-	 font-size: 80%; 
+    font-size: 80%;
 }
 
 .konakart-TopPanelLinks td {
-	background-color: white;;
-	font-size: 0.8em; 
-	padding: 4px;
+    background-color: white;;
+    font-size: 0.8em;
+    padding: 4px;
 }
 
 .konakart-AboutText {
-	width: 24em;
-	font-size: 80%;
+    width: 24em;
+    font-size: 80%;
 }
 
 .konakart-LoadingText {
-	width: 15em;
-	font-size: 100%;
+    width: 15em;
+    font-size: 100%;
 }
 
 .konakart-Shortcut-Panel {
-	padding-top: 3px;
-	padding-bottom: 2px;
+    padding-top: 3px;
+    padding-bottom: 2px;
 }
 
 .konakart-TextBox {
-	background-color: white;
+    background-color: white;
 }
 
 .konakart-TextBox-Invalid {
-	background-color: yellow;
+    background-color: yellow;
 }
 
 .konakart-TextBox-NoBorder {
-	border: 0px solid #AAAAAA;
-	background-color: white;
+    border: 0px solid #AAAAAA;
+    background-color: white;
 }
 
 .konakart-BlankCell {
-	border: 0px solid #AAAAAA;
-	background-color: white;
+    border: 0px solid #AAAAAA;
+    background-color: white;
 }
 
 .konakart-ActionLink {
-  color: darkblue;
-  text-decoration: underline;
-  cursor: pointer;
+    color: darkblue;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
 .konakart-HandCursor {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .konakart-PointerCursor {
- cursor: default;
+    cursor: default;
 }
 
 .konakart-smallFont {
-  font-size: 60%;
+    font-size: 60%;
 }
 
 .konakart-SuccessText {
-  color: #009900;
-  font-size: 80%;
+    color: #009900;
+    font-size: 80%;
 }
 
 .konakart-WarningText {
-  color: #CCAA00;
-  background: #ffffff url(warning.gif) left center no-repeat;
-  padding-left: 20px;
-  font-size: 80%;
+    color: #CCAA00;
+    background: #ffffff url(warning.gif) left center no-repeat;
+    padding-left: 20px;
+    font-size: 80%;
 }
 
 .konakart-WarningTextLarge {
-  color: #CCAA00;
-  background: #ffffff url(warning.gif) left center no-repeat;
-  padding-left: 20px;
-  font-size: 100%;
+    color: #CCAA00;
+    background: #ffffff url(warning.gif) left center no-repeat;
+    padding-left: 20px;
+    font-size: 100%;
 }
 
 .konakart-ErrorText {
-  color: #CC0000;
-  background: #ffffff url(error.gif) left center no-repeat;
-  padding-left: 20px;
-  font-size: 80%;
+    color: #CC0000;
+    background: #ffffff url(error.gif) left center no-repeat;
+    padding-left: 20px;
+    font-size: 80%;
 }
-
 
 /* Right Panel */
 .konakart-DetailPanel {
-	border: 1px solid #AAAAAA;
-	margin-top: 4px;
-   font-family: Arial, Helvetica, Sans-Serif;
+    border: 1px solid #AAAAAA;
+    margin-top: 4px;
+    font-family: Arial, Helvetica, Sans-Serif;
 }
 
 /* Right Panel Header */
 .konakart-DetailHeader {
-	background-image: url(gray_gradient.gif);
-	background-repeat: repeat-x;
-	border-bottom: 1px solid #AAAAAA;
-	padding: 4px;
-   font-family: Arial, Helvetica, Sans-Serif;
+    background-image: url(gray_gradient.gif);
+    background-repeat: repeat-x;
+    border-bottom: 1px solid #AAAAAA;
+    padding: 4px;
+    font-family: Arial, Helvetica, Sans-Serif;
 }
 
 /* Right Panel , Modules Panel and Detail Panel Inner */
 .konakart-DetailInner {
-	background-color: white;
-	border-bottom: 1px solid #AAAAAA;
-   font-family: Arial, Helvetica, Sans-Serif;
+    background-color: white;
+    border-bottom: 1px solid #AAAAAA;
+    font-family: Arial, Helvetica, Sans-Serif;
 }
 
 /* Modules Panel */
 .konakart-ModuleDetailPanel {
-	background-color: white;
-	border-top: 1px solid #AAAAAA;
-	border-left: 1px solid #AAAAAA;
-	border-right: 1px solid #AAAAAA;
-	border-bottom: 1px solid #AAAAAA;
+    background-color: white;
+    border-top: 1px solid #AAAAAA;
+    border-left: 1px solid #AAAAAA;
+    border-right: 1px solid #AAAAAA;
+    border-bottom: 1px solid #AAAAAA;
     font-family: Arial, Helvetica, Sans-Serif;
 }
-
 
 /*-------------------KonaKart Table-------------------------*/
 
 .konakart-Table {
-	border: 1px solid #AAAAAA;
-	background-color: white;
-	cursor: default;
+    border: 1px solid #AAAAAA;
+    background-color: white;
+    cursor: default;
     font-family: Arial, Helvetica, Sans-Serif;
-   font-size: 80%;
+    font-size: 80%;
 }
 
 .konakart-table-SelectedRow {
-	background-image: url(blue_gradient.gif);
-	background-repeat: repeat-x;
+    background-image: url(blue_gradient.gif);
+    background-repeat: repeat-x;
 }
 
 .konakart-table-NotSelectedRow {
-	background-color: white;
+    background-color: white;
 }
 
 .kkButtons {
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-left: 10px;
-	margin-right: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 /*------------------ List Table-------------------------*/
 
 .kkListTable {
-	border-collapse:collapse;
-	border:1px solid #aaaaaa;
+    border-collapse: collapse;
+    border: 1px solid #aaaaaa;
     cursor: default;
 }
 
-.kkListTableHeader_td_left  {
-	background: url(gray_gradient.gif);  
-	height: 47px;
-	color: #333333;
-	font-size: 0.8em;
-	font-weight: bold;
-	padding: 0px 7px; /* top&bot left&right */
-	margin: 20px 0px 0px; /* top right bottom left */
-	text-align: left;
-	border-right: 1px solid #FCF1D4;
+.kkListTableHeader_td_left {
+    background: url(gray_gradient.gif);
+    height: 47px;
+    color: #333333;
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 0px 7px; /* top&bot left&right */
+    margin: 20px 0px 0px; /* top right bottom left */
+    text-align: left;
+    border-right: 1px solid #FCF1D4;
 }
 
-.kkListTableHeader_td_right  {
-	background: url(gray_gradient.gif) ; 
-	height: 47px;
-	color: #333333;
-	font-size: 0.8em;
-	font-weight: bold;
-	padding: 0px 7px; /* top&bot left&right */
-	margin: 20px 0px 0px; /* top right bottom left */
-	text-align: right;
-	border-right: 1px solid #FCF1D4;
+.kkListTableHeader_td_right {
+    background: url(gray_gradient.gif);
+    height: 47px;
+    color: #333333;
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 0px 7px; /* top&bot left&right */
+    margin: 20px 0px 0px; /* top right bottom left */
+    text-align: right;
+    border-right: 1px solid #FCF1D4;
 }
 
-.kkListTableHeader_td_center  {
-	background: url(gray_gradient.gif); 
-	height: 47px;
-	color: #333333;
-	font-size: 0.8em;
-	font-weight: bold;
-	padding: 0px 7px; /* top&bot left&right */
-	margin: 20px 0px 0px; /* top right bottom left */
-	text-align: center;
-	border-right: 1px solid #FCF1D4;
+.kkListTableHeader_td_center {
+    background: url(gray_gradient.gif);
+    height: 47px;
+    color: #333333;
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 0px 7px; /* top&bot left&right */
+    margin: 20px 0px 0px; /* top right bottom left */
+    text-align: center;
+    border-right: 1px solid #FCF1D4;
 }
 
 .kkListTable_tr_even {
     background: url(bg_td1.jpg) repeat-x top;
 }
+
 .kkListTable_tr_odd {
-	background: #FFF8E8 url(bg_td2.jpg) repeat-x;
+    background: #FFF8E8 url(bg_td2.jpg) repeat-x;
 }
 
 .kkListTable_tr_SelectedRow {
@@ -349,305 +348,306 @@ a:visited {
 }
 
 .kkListTable_td_left {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	font-family: Arial, Helvetica, sans-serif;
-	color: #333333;
-	padding: 5px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid #DDDDDD;
-	text-align: left;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333333;
+    padding: 5px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid #DDDDDD;
+    text-align: left;
 }
 
 .kkListTable_td_right {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	font-family: Arial, Helvetica, sans-serif;
-	color: #333333;
-	padding: 5px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid #DDDDDD;
-	text-align: right;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333333;
+    padding: 5px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid #DDDDDD;
+    text-align: right;
 }
 
 .kkListTable_td_center {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	font-family: Arial, Helvetica, sans-serif;
-	color: #333333;
-	padding: 5px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid #DDDDDD;
-	text-align: center;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333333;
+    padding: 5px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid #DDDDDD;
+    text-align: center;
 }
-
 
 .kkListTable_a a {
-	color: #333333;
-	font-weight: bold;
-	text-decoration: underline;
+    color: #333333;
+    font-weight: bold;
+    text-decoration: underline;
 }
+
 .kkListTable_a a:hover {
-	color: #aaaaaa;
-	text-decoration: underline;
+    color: #aaaaaa;
+    text-decoration: underline;
 }
 
 .konakart-Custom-Privilege {
-	background-color: #66ff66;
+    background-color: #66ff66;
 }
 
 /*------------------ Form Table-------------------------*/
 
 .kkButtonFlowPanel {
-	border-collapse:collapse;
-	border: 1px solid white;
-	padding: 1px 1px 1px 1px; /* top&bot left&right */
-	font-family: Arial, Helvetica, sans-serif;
-	color: #333333;
+    border-collapse: collapse;
+    border: 1px solid white;
+    padding: 1px 1px 1px 1px; /* top&bot left&right */
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333333;
     cursor: default;
     background: url(bg_td1.jpg) repeat-x top;
 }
 
 .kkInfoDialogTable {
-	border-collapse:collapse;
-	border:1px solid white;
-	border-bottom: 1px solid black;
-	font-family: Arial, Helvetica, sans-serif;
-	color: #333333;
+    border-collapse: collapse;
+    border: 1px solid white;
+    border-bottom: 1px solid black;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333333;
     cursor: default;
 }
 
 .kkInfoDialogText {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	font-family: Arial, Helvetica, sans-serif;
-	color: #333333;
-	padding: 5px 7px; /* top&bot left&right */
-	text-align: center;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333333;
+    padding: 5px 7px; /* top&bot left&right */
+    text-align: center;
 }
 
 .kkInfoDialogImage {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	font-family: Arial, Helvetica, sans-serif;
-	color: #333333;
-	padding: 5px 7px; /* top&bot left&right */
-	text-align: center;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333333;
+    padding: 5px 7px; /* top&bot left&right */
+    text-align: center;
 }
 
 .kkFormTable {
-	border-collapse:collapse;
-	border:1px solid #aaaaaa;
-	font-family: Arial, Helvetica, sans-serif;
-	color: #333333;
+    border-collapse: collapse;
+    border: 1px solid #aaaaaa;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333333;
     cursor: default;
     background: url(bg_td1.jpg) repeat-x top;
 }
 
 .kkFormTable_td_left {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid #DDDDDD;
-	text-align: left;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid #DDDDDD;
+    text-align: left;
+    vertical-align: middle;
 }
 
 .kkFormTable_td_left_no_border {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	text-align: left;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    text-align: left;
+    vertical-align: middle;
 }
 
 .kkFormTable_td_top_left {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid #DDDDDD;
-	text-align: left;
-	vertical-align: top;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid #DDDDDD;
+    text-align: left;
+    vertical-align: top;
 }
 
 .kkFormTable_td_left_below_label {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid white;
-	border-right: 1px solid #DDDDDD;
-	text-align: left;
-	vertical-align: top;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid white;
+    border-right: 1px solid #DDDDDD;
+    text-align: left;
+    vertical-align: top;
 }
 
 /* For labels in the cell to the left of the data */
 
 .kkFormTable_label_left {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid white;
-	text-align: left;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid white;
+    text-align: left;
+    vertical-align: middle;
 }
 
 .kkFormTable_label_left_no_right_border {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	text-align: left;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    text-align: left;
+    vertical-align: middle;
 }
 
 .kkProductFormTable {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid #DDDDDD;
-	text-align: left;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid #DDDDDD;
+    text-align: left;
+    vertical-align: middle;
 }
 
 .kkFormTable_label_left_no_border {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 2px; /* top&bot left&right */
-	text-align: left;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 2px; /* top&bot left&right */
+    text-align: left;
+    vertical-align: middle;
 }
 
 .kkFormTable_label_left_right_border {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 2px; /* top&bot left&right */
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 2px; /* top&bot left&right */
     border-right: 1px solid #DDDDDD;
-	text-align: left;
-	vertical-align: middle;
+    text-align: left;
+    vertical-align: middle;
 }
 
 .kkFormTable_label_center {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid white;
-	text-align: center;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid white;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .kkFormTable_label_center_bold {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid #aaaaaa;
-	text-align: center;
-	vertical-align: middle;
-	font-weight: bold;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid #aaaaaa;
+    text-align: center;
+    vertical-align: middle;
+    font-weight: bold;
 }
 
 .kkFormTable_label_right {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid white;
-	text-align: right;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid white;
+    text-align: right;
+    vertical-align: middle;
 }
 
 .kkFormTable_label_right_no_border {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	text-align: right;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    text-align: right;
+    vertical-align: middle;
 }
 
 .kkFormTable_label_left_warning {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid white;
-	text-align: left;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid white;
+    text-align: left;
+    vertical-align: middle;
     background: #ffffff url(warning.gif) right center no-repeat;
 }
 
 /* For labels in the cell above the data */
 
 .kkFormTable_label_left_above {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid #DDDDDD;
-	border-bottom: 1px solid white;
-	text-align: left;
-	vertical-align: bottom;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid #DDDDDD;
+    border-bottom: 1px solid white;
+    text-align: left;
+    vertical-align: bottom;
 }
 
 .kkFormTable_td_right {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid #DDDDDD;
-	text-align: right;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid #DDDDDD;
+    text-align: right;
+    vertical-align: middle;
 }
 
 .kkFormTable_td_center {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 10px 7px; /* top&bot left&right */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid #DDDDDD;
-	text-align: center;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 10px 7px; /* top&bot left&right */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid #DDDDDD;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .kkFormTable_td_collpased {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 0px 0px; /* top&bot left&right */
-	border-top: 0px;
-	border-right: 0px;
-	text-align: center;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 0px 0px; /* top&bot left&right */
+    border-top: 0px;
+    border-right: 0px;
+    text-align: center;
+    vertical-align: middle;
 }
 
 .kkExpressionBuilder {
-	font-size: 0.8em;
-	line-height: 1.4em;
-	padding: 2px 2px 2px 2px; /* top right bot left */
-	border-top: 1px solid #aaaaaa;
-	border-right: 1px solid #DDDDDD;
-	text-align: center;
-	vertical-align: middle;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    padding: 2px 2px 2px 2px; /* top right bot left */
+    border-top: 1px solid #aaaaaa;
+    border-right: 1px solid #DDDDDD;
+    text-align: center;
+    vertical-align: middle;
 }
 
 /*------------Chart Frame -----------------------*/
 
 .kkChartFrame {
-	border: 1px solid #AAAAAA;
-	text-align: center;
-	vertical-align: middle;
+    border: 1px solid #AAAAAA;
+    text-align: center;
+    vertical-align: middle;
 }
+
 /*------------Fonts -----------------------*/
 
 .kkPagerFont {
-	font-family: Arial, Helvetica, sans-serif;
-	color: #333333;
-	font-size: 0.8em;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333333;
+    font-size: 0.8em;
     font-weight: bold;
     cursor: default;
     vertical-align: bottom;
@@ -656,26 +656,26 @@ a:visited {
 /*------------Menu -----------------------*/
 
 .konakart-SubMenus {
-	margin: 0.5em;
-	font-size: 80%;
+    margin: 0.5em;
+    font-size: 80%;
 
 }
 
 .subMenu-ShortcutPopup {
-	background-image: url(gray_gradient.gif);
-	background-repeat: repeat-x;
-	border: 1px solid #AAAAAA;
-	padding: 4px;
+    background-image: url(gray_gradient.gif);
+    background-repeat: repeat-x;
+    border: 1px solid #AAAAAA;
+    padding: 4px;
 }
 
 .subMenu-ShortcutName {
-	font-size: 80%;
-	font-weight: bold;
+    font-size: 80%;
+    font-weight: bold;
 }
 
 .subMenu-ShortcutInfo {
-	font-size: 80%;
-	font-style: italic;
+    font-size: 80%;
+    font-style: italic;
 }
 
 /*------------Mail -----------------------*/
@@ -684,162 +684,161 @@ a:visited {
 }
 
 .mail-ToolButton {
-	font-size: 80%;
-	width: 10em;
+    font-size: 80%;
+    width: 10em;
 }
-	
+
 .mail-DetailSubject {
-	font-size: 80%;
+    font-size: 80%;
 }
 
 .mail-DetailSender {
-	font-weight: bold;
-	font-size: 80%;
+    font-weight: bold;
+    font-size: 80%;
 }
 
 .mail-DetailRecipient {
-	font-style: italic;
-	font-size: 80%;
+    font-style: italic;
+    font-size: 80%;
 }
 
 .mail-DetailBody {
-	padding: 4px;
+    padding: 4px;
 }
 
 .mail-List {
-	border: 1px solid #AAAAAA;
-	background-color: white;
-	font-size: 80%;
-	cursor: pointer;
+    border: 1px solid #AAAAAA;
+    background-color: white;
+    font-size: 80%;
+    cursor: pointer;
 }
 
 .mail-ListHeader {
-	background-image: url(gray_gradient.gif);
-	background-repeat: repeat-x;
-	font-weight: bold;
+    background-image: url(gray_gradient.gif);
+    background-repeat: repeat-x;
+    font-weight: bold;
 }
 
 .mail-ListNavBar {
-	font-size: 80%;
+    font-size: 80%;
 }
 
 .mail-table-SelectedRow {
-	background-image: url(blue_gradient.gif);
-	background-repeat: repeat-x;
+    background-image: url(blue_gradient.gif);
+    background-repeat: repeat-x;
     cursor: default;
 }
-
 
 /*------------Calendar Widget -----------------------*/
 
 .CalendarWidget {
-  border: 1px solid #ACA899;
-  background-color: #FFFFFF;
+    border: 1px solid #ACA899;
+    background-color: #FFFFFF;
 }
 
 .CalendarWidget .navbar {
-  width: 100%;
-  background-color: #C3D9FF;
-  vertical-align: middle;
-  border-bottom: 1px solid #ACA899;
+    width: 100%;
+    background-color: #C3D9FF;
+    vertical-align: middle;
+    border-bottom: 1px solid #ACA899;
 }
 
 .CalendarWidget .navbar .gwt-Button {
-  padding-left: 5px;
-  padding-right: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .CalendarWidget .table {
-  font: 10pt sans-serif;
-  text-align: center;
+    font: 10pt sans-serif;
+    text-align: center;
 }
 
 .CalendarWidget .weekheader {
-  background-color: #ACA899;
+    background-color: #ACA899;
 }
 
 .CalendarWidget .weekheader .days {
-  width: 3em;
+    width: 3em;
 }
 
 .CalendarWidget .cell {
-  cursor:pointer;
+    cursor: pointer;
 }
 
 .CalendarWidget .cell .gwt-HTML {
-  border: 1px solid #ACA899;
+    border: 1px solid #ACA899;
 }
 
 .CalendarWidget .cell .gwt-HTML span {
-  width: 100%;
-  height: 100%;
-  line-height: 2em;
+    width: 100%;
+    height: 100%;
+    line-height: 2em;
 }
 
 .CalendarWidget .today .gwt-HTML {
-  background-color: #C3D9FF;
+    background-color: #C3D9FF;
 }
 
 .CalendarWidget .day .gwt-HTML {
-  border: 1px solid #C3D9FF;
-} 
+    border: 1px solid #C3D9FF;
+}
 
 /*----------------- Misc -----------------------------*/
 
 .kkNoBorderTop {
-	border-top: 1px solid white;
+    border-top: 1px solid white;
 }
 
 .kkNoBorderRight {
-	border-right: 1px solid white;
+    border-right: 1px solid white;
 }
 
 .kkNoBorderAbove {
-	border-top: 1px solid white;
+    border-top: 1px solid white;
 }
 
 .kkNoBorder {
-	border-top: 1px solid white;
-	border-left: 1px solid white;
-	border-right: 1px solid white;
-	border-bottom: 1px solid white;
+    border-top: 1px solid white;
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+    border-bottom: 1px solid white;
 }
 
 .kkNoBackground {
-	background-image: none;
+    background-image: none;
 }
 
 .kkRichText {
-  border: 1px solid #BBBBBB;
-  border-spacing: 0px;
+    border: 1px solid #BBBBBB;
+    border-spacing: 0px;
 }
 
 /*------------------ RSS Feed -------------------------*/
 
 .RSSTitle {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 120%;
-	color: #33bbff;
-	text-align: center;
-	font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 120%;
+    color: #33bbff;
+    text-align: center;
+    font-weight: bold;
 }
 
 .RSSItemTitle {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 100%;
-	color: #999999;
-	border-bottom: 1px solid #777777;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 100%;
+    color: #999999;
+    border-bottom: 1px solid #777777;
 }
 
-.RSSItemDate{
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 70%;
-	color: #999999;
+.RSSItemDate {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 70%;
+    color: #999999;
 }
 
 .RSSItemDescription {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 80%;
- }
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 80%;
+}
 
 

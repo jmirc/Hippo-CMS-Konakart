@@ -13,17 +13,17 @@ import org.hippoecm.frontend.service.IconSize;
 public class KonakartPerspective extends PanelPluginPerspective {
 
 
-    public KonakartPerspective(IPluginContext context, IPluginConfig config) {
-        super(context, config);
-    }
+  public KonakartPerspective(IPluginContext context, IPluginConfig config) {
+    super(context, config);
+  }
 
-    @Override
-    public ResourceReference getIcon(IconSize type) {
-        return new ResourceReference(KonakartPerspective.class, "konakart-perspective-" + type.getSize() + ".png");
-    }
+  @Override
+  public ResourceReference getIcon(IconSize type) {
+    return new ResourceReference(KonakartPerspective.class, "konakart-perspective-" + type.getSize() + ".png");
+  }
 
-    @Override
-    public String getPanelServiceId() {
-        return KonakartPanelPlugin.KONAKART_PANEL_SERVICE_ID;
-    }
+  @Override
+  public String getPanelServiceId() {
+    return KonakartPanelPlugin.KONAKART_PANEL_SERVICE_ID;
+  }
 }

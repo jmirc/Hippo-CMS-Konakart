@@ -12,54 +12,54 @@ import java.util.List;
 
 public class ShippingMethodActivity extends BaseCheckoutActivity {
 
-    private static final String SHIPPING_QUOTES = "shippingQuotes";
-    private static final String SHIPPING_METHOD = "shipMethod";
+  private static final String SHIPPING_QUOTES = "shippingQuotes";
+  private static final String SHIPPING_METHOD = "shipMethod";
 
-    @Override
-    public void doBeforeRender() throws ActivityException {
+  @Override
+  public void doBeforeRender() throws ActivityException {
 
-        if (!validateCurrentCart()) {
-            return;
-        }
-
-        hstRequest.setAttribute(SHIPPING_QUOTES, kkAppEng.getOrderMgr().getShippingQuotes());
-        hstRequest.setAttribute(SHIPPING_METHOD, kkAppEng.getOrderMgr().getCheckoutOrder().getShippingMethod());
+    if (!validateCurrentCart()) {
+      return;
     }
 
-    @Override
-    public void doAction() throws ActivityException {
-        super.doAction();
+    hstRequest.setAttribute(SHIPPING_QUOTES, kkAppEng.getOrderMgr().getShippingQuotes());
+    hstRequest.setAttribute(SHIPPING_METHOD, kkAppEng.getOrderMgr().getCheckoutOrder().getShippingMethod());
+  }
 
-        CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
+  @Override
+  public void doAction() throws ActivityException {
+    super.doAction();
 
-        if (seedData.getAction().equals(KKActionsConstants.ACTIONS.SELECT.name())) {
-            String shippingMethod = KKUtil.getActionRequestParameter(seedData.getRequest(), SHIPPING_METHOD);
+    CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
-            if (StringUtils.isEmpty(shippingMethod)) {
-                updateNextLoggedState(KKActionsConstants.STATES.SHIPPING_METHOD.name());
-                addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.select.shipping.method"));
-                return;
-            }
+    if (seedData.getAction().equals(KKActionsConstants.ACTIONS.SELECT.name())) {
+      String shippingMethod = KKUtil.getActionRequestParameter(seedData.getRequest(), SHIPPING_METHOD);
 
-            // Attach the shipping quote to the order
-            KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().addShippingQuoteToOrder(shippingMethod);
-        }
+      if (StringUtils.isEmpty(shippingMethod)) {
+        updateNextLoggedState(KKActionsConstants.STATES.SHIPPING_METHOD.name());
+        addMessage(GLOBALMESSAGE, seedData.getBundleAsString("checkout.select.shipping.method"));
+        return;
+      }
 
+      // Attach the shipping quote to the order
+      KKServiceHelper.getKKEngineService().getKKAppEng(hstRequest).getOrderMgr().addShippingQuoteToOrder(shippingMethod);
     }
 
-    @Override
-    public void doAdditionalData() {
-        super.doAdditionalData();
+  }
 
-        CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
+  @Override
+  public void doAdditionalData() {
+    super.doAdditionalData();
 
-        List<String> acceptedStates = Arrays.asList(KKActionsConstants.STATES.PAYMENT_METHOD.name(), KKActionsConstants.STATES.ORDER_REVIEW.name());
+    CheckoutSeedData seedData = (CheckoutSeedData) processorContext.getSeedData();
 
-        String state = seedData.getState();
+    List<String> acceptedStates = Arrays.asList(KKActionsConstants.STATES.PAYMENT_METHOD.name(), KKActionsConstants.STATES.ORDER_REVIEW.name());
 
-        if (StringUtils.isNotEmpty(state) && acceptedStates.contains(state)) {
-            hstRequest.getRequestContext().setAttribute(getAcceptState().concat("_EDIT"), true);
-            hstRequest.setAttribute(getAcceptState().concat("_EDIT"), true);
-        }
+    String state = seedData.getState();
+
+    if (StringUtils.isNotEmpty(state) && acceptedStates.contains(state)) {
+      hstRequest.getRequestContext().setAttribute(getAcceptState().concat("_EDIT"), true);
+      hstRequest.setAttribute(getAcceptState().concat("_EDIT"), true);
     }
+  }
 }

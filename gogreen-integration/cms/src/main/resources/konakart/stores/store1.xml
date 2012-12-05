@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sv:node xmlns:sv="http://www.jcp.org/jcr/sv/1.0" xmlns:h="http://www.onehippo.org/jcr/xmlimport" sv:name="store1" h:merge="combine">
+  <sv:property sv:name="konakart:galleryroot" sv:type="String" h:merge="override">
+    <sv:value>/content/gallery/products</sv:value>
+  </sv:property>
+  <sv:property sv:name="konakart:locale" sv:type="String" h:merge="override">
+    <sv:value>en_US</sv:value>
+  </sv:property>
+  <sv:property sv:name="konakart:contentroot" sv:type="String" h:merge="override">
+    <sv:value>/content/documents/hippogogreen</sv:value>
+  </sv:property>
+  <sv:node sv:name="konakart:sync">
+    <sv:property sv:name="jcr:primaryType" sv:type="Name">
+      <sv:value>konakart:sync</sv:value>
+    </sv:property>
+    <sv:property sv:name="konakart:productfolder" sv:type="String">
+      <sv:value>products</sv:value>
+    </sv:property>
+  </sv:node>
+</sv:node>
