@@ -77,7 +77,7 @@ public class KKProductDocument extends HippoDocument {
       loadImages();
     }
 
-    return images.size() == 0 ? null : images.get(0);
+    return images.size() == 0 ? null : images.get(images.size() - 1);
   }
 
   /**
