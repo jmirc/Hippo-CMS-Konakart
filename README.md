@@ -3,6 +3,8 @@
 The aim of this project is to create a bridge between Hippo CMS and Konakart.
 
 ## Before starting a project
+Don't set to true subjectbasedsession. 
+
 
 ### Konakart installation 
 Please install the [community](http://www.konakart.com/downloads/community_edition) version or the enterprise version.
