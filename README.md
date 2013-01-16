@@ -1,9 +1,13 @@
+# News
+
+2013-01-16: Just release the first enterprise version for the Hippo enterprise offer. This project will not be updated anymore. Please, fell free to contect me for more information.
+
 # Hippo CMS - Konakart integration
 
 The aim of this project is to create a bridge between Hippo CMS and Konakart.
 
 ## Before starting a project
-Don't set to true subjectbasedsession. 
+Don't set to true subjectbasedsession, users are not saved in hippo.  
 
 
 ### Konakart installation 
