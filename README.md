@@ -1,6 +1,6 @@
 # News
 
-2013-01-16: Just released the first version of the connector for our Hippo enterprise offer. This project will not be updated anymore. Please, fell free to contect me for more information.
+2013-01-16: Just released the first version of the connector for our Hippo enterprise offer. This project will not be updated anymore. Fell free to contact me for additional information.
 
 # Hippo CMS - Konakart integration
 
