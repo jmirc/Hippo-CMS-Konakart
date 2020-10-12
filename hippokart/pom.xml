@@ -70,7 +70,7 @@ the parent version to 7.7.1 then the property definitions below can be removed -
         <jstl.version>1.1.2</jstl.version>
         <taglibs.version>1.1.2</taglibs.version>
         <commons.lang.version>2.6</commons.lang.version>
-        <junit.version>4.10</junit.version>
+        <junit.version>4.13.1</junit.version>
         <easymock.version>3.1</easymock.version>
         <freemarker.version>2.3.18</freemarker.version>
 
